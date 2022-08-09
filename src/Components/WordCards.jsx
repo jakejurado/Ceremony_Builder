@@ -1,10 +1,9 @@
 import React from 'react';
 
-function WordCards(){
-  console.log('hi')
+function WordCards(props){
   return(
     <div>
-      Hi! I'm words
+      {props.content}
     </div>
   )
 }

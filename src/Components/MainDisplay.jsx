@@ -19,7 +19,7 @@ class MainDisplay extends Component{
   render(){
     let loadSections = [];
     this.state.load.forEach((item, index) => {
-        loadSections.push(<Sections key={item} id={item} title={ wording[item].title} allWords={ wording[item].words } />);
+        loadSections.push(<Sections key={item} id={item} title={ wording[item].title} words={ wording[item].words} description={ wording[item].description} called={item}/> );
     })
 
     return(
