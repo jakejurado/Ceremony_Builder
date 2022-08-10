@@ -41,7 +41,11 @@ class MainDisplay extends Component{
           varName={item[0]}
           cardIndex={[item[1]]} 
           updateCardIndex = {this.updateCardIndex}
-        /> );
+        />,
+        <div className='addButton'>
+          <button>add</button>
+        </div>
+      );
     })
     return(
       <div> 

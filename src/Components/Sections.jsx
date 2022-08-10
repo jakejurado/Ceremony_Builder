@@ -20,11 +20,11 @@ class Sections extends Component{
     //depending on right or left click, change the state to the next content.
     let theIndex;
     switch(event.target.innerText){
-      case 'left':
+      case 'right':
         if(findI === contentArr.length-1) theIndex = 0;
         else theIndex = findI + 1;
         break;
-      case 'right':
+      case 'left':
         if(findI === 0) theIndex = contentArr.length - 1;
         else theIndex = findI - 1
         break;
