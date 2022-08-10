@@ -2,8 +2,8 @@ import React from 'react';
 
 function WordCards(props){
   return(
-    <div>
-      {props.content}
+    <div className={`cards ${props.class}`}>
+      {props.cardContent}
     </div>
   )
 }
