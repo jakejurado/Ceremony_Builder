@@ -3,6 +3,8 @@ import "./App.css";
 import MainDisplay from './Components/MainDisplay';
 
 
+
+
 function App() {
   return (
     <div className="App">
@@ -17,18 +19,22 @@ function App() {
 
 function Header(){
   return (
-    <div>
+    <div className='titleS'>
       <h1>Ceremony Builder</h1>
-      <h4>construct your wedding script</h4>
     </div>
   );
 }
 
 function TemplateBtn(){
   return(
-    <div>
-      <button>Template</button>
-      <button>Saved</button>
+
+    <div className='template'>
+      Template: 
+      <button>Wedding</button>
+      <button>Elopement</button>
+      Saved: 
+      <button>Ceremony1</button>
+      <button>Ceremony2</button>
     </div>
   )
 }

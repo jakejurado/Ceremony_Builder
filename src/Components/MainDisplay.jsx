@@ -8,12 +8,29 @@ class MainDisplay extends Component{
   constructor(props){
     super(props); 
     this.state = {
+        data: null,
         other: 'hi',
         load: [['giving_away', '00'], ['opening_remarksC', '00'], ['declaration_of_intent', '00'], ['vows', '00'], ['pronouncement', '00']],
     }; 
     this.updateCardIndex = this.updateCardIndex.bind(this);
     //this.updateCardIndex.bind(this)
   }
+
+  componentDidMount() {
+    this.callBackendAPI()
+      .then(res => this.setState({ data: res.express }))
+      .catch(err => console.log(err));
+  }
+  callBackendAPI = async () => {
+    const response = await fetch('/express_backend');
+    const body = await response.json();
+
+    if (response.status !== 200) {
+      throw Error(body.message) 
+    }
+    return body;
+  };
+
   
   //INPUT: name of section to update 'string' & newIndex "string"
   //OUTPUT: updated state
@@ -48,7 +65,8 @@ class MainDisplay extends Component{
       );
     })
     return(
-      <div> 
+      <div className='allSections'> 
+        {this.state.data}
         {loadSections}
       </div>
     )

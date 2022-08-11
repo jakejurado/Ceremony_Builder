@@ -42,8 +42,6 @@ class Sections extends Component{
         <div className='deleteMove'>
           <button>M</button>
           <h3> {this.props.title}</h3>
-          <h4> {this.props.description}</h4>
-          <h5> {this.props.cardIndex}</h5>
           <button>X</button>
         </div>
         <div className='OuterBox'>
