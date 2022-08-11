@@ -8,14 +8,12 @@ import MainDisplay from './Components/MainDisplay';
 function App() {
   return (
     <div className="App">
-      <Header />
-      <TemplateBtn />
+      
       <MainDisplay />
-      <PrintBtn />
+      
     </div>
   );
 }
-
 
 function Header(){
   return (
@@ -27,7 +25,6 @@ function Header(){
 
 function TemplateBtn(){
   return(
-
     <div className='template'>
       Template: 
       <button>Wedding</button>
@@ -38,9 +35,6 @@ function TemplateBtn(){
     </div>
   )
 }
-
-
-
 
 function PrintBtn(){
   return(

@@ -176,7 +176,11 @@ const wording = {
         "02" : "<p>I present to you Mr. and Mrs. _____</p>",
         "03" :"<p>Write your own...</p>",
       }
-    }
+    },
+
+    saved : {
+      ceremonies: [ [["vows", "01"], ["kiss", "01"]] ],
+    },
   }
   
 

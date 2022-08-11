@@ -67,14 +67,10 @@ class Sections extends Component{
 
 
 const Section = props => {
-  console.log(props.cardIndex)
   function handleLeftClick(event){
 
     const arr = Object.entries(props.cardContent); //[[a, 00], [b, 01]]
-    console.log('hi', arr[arr.length-1]);
-    console.log(arr)
     const prevState = {...this.state};
-    console.log(prevState);
 
     switch(event.target.innerText){
       case'left':
