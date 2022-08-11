@@ -19,15 +19,28 @@ class CeremonyImport extends Component{
     this.props.updateCurrentScriptFromSaved(index);
   }
 
-    
+  componentDidMount(){
+    let loadSavedArr = [];
+    const currSaved = this.props.savedCeremonies
+    if(currSaved.length){
+      currSaved.forEach((el, index)=>{
+        loadSavedArr.push(
+          <li key={`load-${index}`} called={`hi{index}`}><button onClick={this.handleSavedBtn}>Ceremony {index}</button></li>
+        )
+      })
+    }
+  }
   
   render(){
     let loadSavedArr = [];
-    this.props.savedCeremonies.forEach((el, index)=>{
-      loadSavedArr.push(
-        <li key={`load-${index}`} called={`hi{index}`}><button onClick={this.handleSavedBtn}>Ceremony {index}</button></li>
-      )
-    });
+    const currSaved = this.props.savedCeremonies
+    if(currSaved.length){
+      currSaved.forEach((el, index)=>{
+        loadSavedArr.push(
+          <li key={`load-${index}`} called={`hi{index}`}><button onClick={this.handleSavedBtn}>Ceremony {index}</button></li>
+        )
+      })
+    }
 
 
     return(

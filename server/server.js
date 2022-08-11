@@ -5,7 +5,7 @@ const fs = require('fs');
 const path = require('path');
 
 
-app.use(express.static('src'));
+app.use(express.static('dist'));
 
 // create a GET route
 // app.get('/express_backend', (req, res) => { //Line 9
@@ -16,7 +16,7 @@ app.use(express.static('src'));
 
 app.get('/', (req, res) => {
   console.log('hi');
-  return res.status(200).res.sendFile(path.resolve(__dirname, '../src/index.html'));
+  return res.status(200).res.sendFile(path.resolve(__dirname, '../dist/index.html'));
 });
 
 app.get("/api", (req, res) => {

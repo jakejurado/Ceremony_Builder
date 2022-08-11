@@ -36,17 +36,7 @@ function TemplateBtn(){
   )
 }
 
-function PrintBtn(){
-  return(
-    <div>
-      <div>
-        <input id='person1'></input>
-        <input id='person2'></input>
-      </div>
-      <button>Print</button><button>Save</button>
-    </div>
-  )
-}
+
 
 
 

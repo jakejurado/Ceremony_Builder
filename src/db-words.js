@@ -179,7 +179,10 @@ const wording = {
     },
 
     saved : {
-      ceremonies: [ [["vows", "01"], ["kiss", "01"]] ],
+      ceremonies: [ 
+        [["vows", "01"], ["kiss", "01"]],
+        [["opening_remarksOP", "14"],["vows", "00"], ["kiss", "04"]] 
+      ]
     },
   }
   

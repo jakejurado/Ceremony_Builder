@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import Sections from './Sections';
 import wording from '../db-words'
 import CeremonyImport from './CeremonyImport'
+import SaveBtn from './SaveBtn'
+//mongosh "mongodb+srv://codesmith.dzpwbsj.mongodb.net/scriptBuilderDatabase" --apiVersion 1 --username jakejurado
 
 
 class MainDisplay extends Component{
@@ -20,6 +22,7 @@ class MainDisplay extends Component{
     //this.updateCardIndex.bind(this)
     this.handleSavedFetch = this.handleSavedFetch.bind(this);
     this.updateCurrentScriptFromSaved = this.updateCurrentScriptFromSaved.bind(this);
+    this.addToSave = this.addToSave.bind(this);
   }
 
   componentDidMount() {
@@ -38,14 +41,10 @@ class MainDisplay extends Component{
   };
 
   handleSavedFetch(arr){
-    console.log('handleSavedFetch');
     this.setState({saved: arr})
   }
 
   updateCurrentScriptFromSaved(index){
-    console.log('hi there');
-    console.log(this.state.saved[0])
-    console.log(this.state.load);
     this.setState({load: this.state.saved[index]})
   }
 
@@ -62,10 +61,18 @@ class MainDisplay extends Component{
     this.setState({load: oldLoad})
   }
 
+  addToSave(input){
+    const databaseLocation = wording.saved.ceremonies;
+    databaseLocation.push(this.state.load);
+    const currSavedArr = [...this.state.saved].push(this.state.load)
+    this.handleSavedFetch(currSavedArr)
+    // console.log('wording.saved', wording.saved)
+    // console.log('pring', databaseLocation, currSavedArr);
+  }
+
   render(){
     let loadSections = [];
     this.state.load.forEach((item, index) => {
-      console.log(wording[item[0]].title)
         loadSections.push(
         <Sections 
           key={item[0]} 
@@ -95,7 +102,7 @@ class MainDisplay extends Component{
           {this.state.data}
           {loadSections}
         </div>
-        <PrintBtn />
+        <SaveBtn addToSave={this.addToSave} />
       </div>
     )
   }
@@ -123,25 +130,7 @@ function TemplateBtn(){
   )
 }
 
-function SavedBtn(){
-  return(
-    <div>
-      <button>saved scripts</button>
-    </div>
-  )
-}
 
-function PrintBtn(){
-  return(
-    <div>
-      <div>
-        <input id='person1'></input>
-        <input id='person2'></input>
-      </div>
-      <button>Print</button><button>Save</button>
-    </div>
-  )
-}
 
 
 
