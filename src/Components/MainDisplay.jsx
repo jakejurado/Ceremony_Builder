@@ -62,13 +62,26 @@ class MainDisplay extends Component{
   }
 
   addToSave(input){
-    const databaseLocation = wording.saved.ceremonies;
-    databaseLocation.push(this.state.load);
-    const currSavedArr = [...this.state.saved].push(this.state.load)
-    this.handleSavedFetch(currSavedArr)
-    // console.log('wording.saved', wording.saved)
-    // console.log('pring', databaseLocation, currSavedArr);
+    let passInfo;
+    if(this.state.saved.length) passInfo = [...this.state.saved, this.state.load ];
+    else passInfo = this.state.load;
+    console.log({passInfo});
+
+    console.log('got here');
+    fetch('http://localhost:3000/save', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(passInfo)
+      }).then( data => {
+        console.log('here is what we got back', data);
+      })
+
+      this.handleSavedFetch(passInfo);
   }
+
+  
 
   render(){
     let loadSections = [];
