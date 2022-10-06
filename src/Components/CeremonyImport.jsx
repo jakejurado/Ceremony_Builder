@@ -9,7 +9,20 @@ class CeremonyImport extends Component{
   }
   
   handleLoadSavedBtn(varName, newIndex){
+    let result = []
+    fetch('http://localhost:3000/save', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        }
+      }).then( data => {
+        result.push(data);
+      })
+
+      console.log({result})
+      console.log(typeof result)
     const loadArr = [...wording.saved.ceremonies];
+    //console.log({loadArr})
     this.props.handleSavedFetch(loadArr); 
   }
 
@@ -19,18 +32,7 @@ class CeremonyImport extends Component{
     this.props.updateCurrentScriptFromSaved(index);
   }
 
-  componentDidMount(){
-    let loadSavedArr = [];
-    const currSaved = this.props.savedCeremonies
-    if(currSaved.length){
-      currSaved.forEach((el, index)=>{
-        loadSavedArr.push(
-          <li key={`load-${index}`} called={`hi{index}`}><button onClick={this.handleSavedBtn}>Ceremony {index}</button></li>
-        )
-      })
-    }
-  }
-  
+
   render(){
     let loadSavedArr = [];
     const currSaved = this.props.savedCeremonies

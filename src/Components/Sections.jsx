@@ -1,14 +1,19 @@
 import React, { Component } from 'react';
 import WordCards from './WordCards';
+import leftArrow from '../../public/assets/arrowLft.png'
+import addButton from '../../public/assets/add.png'
+
 
 
 class Sections extends Component{
   constructor(props){
     super(props);
     this.handleLeftRightClick = this.handleLeftRightClick.bind(this);
+    this.handleXbutton = this.handleXbutton.bind(this);
   }
 
   handleLeftRightClick(event){
+    console.log('hi');
     //turn object into array, so that it can be iterated over.
     const contentArr = Object.entries(this.props.cardContent).sort(); //turn into array
 
@@ -19,12 +24,13 @@ class Sections extends Component{
 
     //depending on right or left click, change the state to the next content.
     let theIndex;
-    switch(event.target.innerText){
-      case 'right':
+    console.log(event.target.id)
+    switch(event.target.id){
+      case 'rightClick':
         if(findI === contentArr.length-1) theIndex = 0;
         else theIndex = findI + 1;
         break;
-      case 'left':
+      case 'leftClick':
         if(findI === 0) theIndex = contentArr.length - 1;
         else theIndex = findI - 1
         break;
@@ -35,29 +41,36 @@ class Sections extends Component{
     this.props.updateCardIndex(this.props.varName, newIndex)
   }
   
+  handleXbutton(event){
+    const name = event.target.className;
+    console.log(event);
+    this.props.removeSection(name);
+  }
+
 
   render(){
     return(
-      <div className={`sec ${this.props.varName}`}>
-        <div className='deleteMove'>
-          <button>M</button>
-          <h3> {this.props.title}</h3>
-          <button>X</button>
-        </div>
-        <div className='OuterBox'>
-          <button className={this.props.varName} onClick={this.handleLeftRightClick} >left</button>
-          <div>
-            <WordCards 
-              className={`${this.props.varName}`} 
-              key={`${this.props.varName}`} 
-              id={`${this.props.varName}`} 
-              cardContent={this.props.cardContent[this.props.cardIndex]} 
-              cardIndex={this.props.cardIndex} 
-              class={`${this.props.varName}-${this.props.cardIndex}`}
-            />
+      <div className={this.props.varName}>
+        <div className='sec'>
+          <div className='deleteMove'>
+            <button>M</button>
+            <h3> {this.props.title}</h3>
+            <button className={`${this.props.varName}`} onClick={this.handleXbutton}>X</button>
           </div>
-          <button className={this.props.varName} onClick={this.handleLeftRightClick} >right</button>
+          <div className='OuterBox'>
+            <button id='leftClick' className={this.props.varName} onClick={this.handleLeftRightClick}>left</button>
+              <WordCards 
+                className={`${this.props.varName}`} 
+                key={`${this.props.varName}`} 
+                id={`${this.props.varName}`} 
+                cardContent={this.props.cardContent[this.props.cardIndex]} 
+                cardIndex={this.props.cardIndex} 
+                class={`${this.props.varName}-${this.props.cardIndex}`}
+              />
+            <button id='rightClick' className={this.props.varName} onClick={this.handleLeftRightClick}>right</button>
+          </div>
         </div>
+        <div className='addButtonDiv'><img id='addButtonImg' src={addButton} /></div>
       </div>
     )
   }
@@ -105,7 +118,7 @@ const Section = props => {
       </div>
       <div className='OuterBox'>
         <button className={props.varName} onClick={handleLeftClick}>left</button>
-        <div>
+        <div id='insetDiv'>
           <WordCards 
             className={`${props.varName}`} 
             key={`${props.varName}`} 

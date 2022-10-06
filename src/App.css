@@ -1,5 +1,7 @@
 .App {
     text-align: center;
+    background-color: white;
+    /* background-image: linear-gradient(#f4eaeb, white); */
   }
 
 #root {
@@ -8,6 +10,9 @@
   flex-direction: column;
 }
 
+#h1Image{
+  width: 75%;
+}
 
 .allSections{
   width: 100%;
@@ -18,10 +23,12 @@
 .sec{
   width: 100%;
   max-width: 50em;
-  border: solid;
+  border-style: outset;
   display: grid;
   grid-template-rows: 2em 1fr 2em;
   margin: 2em auto 2em auto;
+  background-image: url('../public/assets/minimal8.jpeg');
+ 
 }
 
 .deleteMove{
@@ -33,11 +40,15 @@
   padding: 0;
   border-bottom: solid;
   border-width: thin;
+  background-color: #FF5DC7
 }
 
 h3{
+  align-self: center;
   padding: 0;
   margin: 0;
+  color: white;
+  text-shadow: 3px 3px 5px rgb(0, 0, 0);
 }
 
 .OuterBox{
@@ -47,9 +58,26 @@ h3{
   margin-top: 1em;
 }
 
+
+
 .cards{
   border: solid;
   border-width: thin;
   height: 10em;
+  background-color: rgba(255, 221, 244, 0.7);
+  color:rgb(32, 32, 32);
+  font-size: larger;
+  border-style: inset;
   width: 100%;
 }
+
+#addButtonImg{
+  width: 40px;
+}
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+

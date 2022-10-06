@@ -1,6 +1,7 @@
 import React from "react";
 import "./App.css";
 import MainDisplay from './Components/MainDisplay';
+import cbImage from '../public/assets/ceremonybuilder.png'
 
 
 
@@ -8,20 +9,11 @@ import MainDisplay from './Components/MainDisplay';
 function App() {
   return (
     <div className="App">
-      
       <MainDisplay />
-      
     </div>
   );
 }
 
-function Header(){
-  return (
-    <div className='titleS'>
-      <h1>Ceremony Builder</h1>
-    </div>
-  );
-}
 
 function TemplateBtn(){
   return(

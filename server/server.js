@@ -1,6 +1,6 @@
 const express = require('express'); 
 const app = express(); 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 8080;
 const fs = require('fs');
 const path = require('path');
 
@@ -34,7 +34,7 @@ app.post('/save', controller.saveCeremonyScript, (req, res) => {
 
 //get request to /save
 app.get('/save', controller.getCeremonyScripts, (req, res) => {
-  console.log('from the server', res.locals.myScripts);
+  console.log('from the server the json', typeof res.locals.myScripts);
   return res.status(200).json(res.locals.myScripts);
 })
 

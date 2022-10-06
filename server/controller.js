@@ -18,7 +18,7 @@ controller.saveCeremonyScript = (req, res, next) => {
     console.log('save ceremony script enter');
     console.log('here is the request body', req.body)
     console.log(typeof req.body);
-    fs.writeFile(path.join(__dirname, '/files/ceremonyArr.txt'), JSON.stringify(req.body), err =>{
+    fs.writeFile(path.join(__dirname, '/files/ceremonyArr.json'), JSON.stringify(req.body), err =>{
         if(err){
             console.error(err);
         } else {
@@ -31,9 +31,14 @@ controller.saveCeremonyScript = (req, res, next) => {
 
 controller.getCeremonyScripts = (req, res, next) => {
   console.log('entered getCeremonyScripts')
-  const allScripts = {ceremonies: [[["vows", "01"], ["kiss", "01"]],[["opening_remarksOP", "14"],["vows", "00"], ["kiss", "04"]]]}
-  res.locals.myScripts = allScripts;
-  next();
+  fs.readFile(path.join(__dirname, '/files/ceremonyArr.json'), 'utf8', (err, data) => {
+    if(err) console.error(err);
+    else{
+        //console.log('here is the data', typeof data);
+        res.locals.myScripts = data;
+    }
+    next();
+  })
 }
 
 

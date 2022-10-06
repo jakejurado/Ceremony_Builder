@@ -3,6 +3,7 @@ import Sections from './Sections';
 import wording from '../db-words'
 import CeremonyImport from './CeremonyImport'
 import SaveBtn from './SaveBtn'
+import cbImage from '../../public/assets/ceremonybuilder.png'
 //mongosh "mongodb+srv://codesmith.dzpwbsj.mongodb.net/scriptBuilderDatabase" --apiVersion 1 --username jakejurado
 
 
@@ -23,6 +24,7 @@ class MainDisplay extends Component{
     this.handleSavedFetch = this.handleSavedFetch.bind(this);
     this.updateCurrentScriptFromSaved = this.updateCurrentScriptFromSaved.bind(this);
     this.addToSave = this.addToSave.bind(this);
+    this.removeSection = this.removeSection.bind(this);
   }
 
   componentDidMount() {
@@ -30,6 +32,7 @@ class MainDisplay extends Component{
       .then(res => this.setState({ data: res.express }))
       .catch(err => console.log(err));
   }
+  
   callBackendAPI = async () => {
     const response = await fetch('/express_backend');
     const body = await response.json();
@@ -81,6 +84,16 @@ class MainDisplay extends Component{
       this.handleSavedFetch(passInfo);
   }
 
+  removeSection(input){
+    let replaceState = [];
+    this.state.load.forEach(el => {
+      console.log(el[0] === input);
+      if(el[0] !== input) replaceState.push(el);
+    });
+    this.setState({load: replaceState});
+
+
+  }
   
 
   render(){
@@ -96,16 +109,14 @@ class MainDisplay extends Component{
           varName={item[0]}
           cardIndex={[item[1]]} 
           updateCardIndex = {this.updateCardIndex}
+          removeSection = {this.removeSection}
         />,
-        <div className='addButton'>
-          <button>add</button>
-        </div>
       );
     })
     return(
       <div>
         <Header />
-        <TemplateBtn />
+        
         <CeremonyImport 
           handleSavedFetch={this.handleSavedFetch}
           savedCeremonies={this.state.saved}
@@ -128,7 +139,7 @@ class MainDisplay extends Component{
 function Header(){
   return (
     <div className='titleS'>
-      <h1>Ceremony Builder</h1>
+      <h1><img id='h1Image' src={cbImage}/></h1>
     </div>
   );
 }
