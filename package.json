@@ -2,12 +2,13 @@
   "name": "solo",
   "version": "1.0.0",
   "description": "App for creating wedding ceremonies",
-  "main": "index.js",
+  "main": "./src/index.js",
   "scripts": {
     "start": "webpack-dev-server --mode development --hot --open",
     "build": "webpack --mode production",
     "test": "test",
-    "n": "nodemon ./server/server.js"
+    "n": "nodemon ./server/server.js",
+    "d": "nodemon src/server/server.js"
   },
   "repository": {
     "type": "git",
@@ -32,6 +33,7 @@
     "@babel/preset-react": "^7.18.6",
     "babel-loader": "^8.2.5",
     "css-loader": "^6.7.1",
+    "file-loader": "^6.2.0",
     "html-webpack-plugin": "^5.5.0",
     "nodemon": "^2.0.19",
     "npm-run-all": "^4.1.5",
