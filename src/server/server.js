@@ -1,28 +1,16 @@
 const express = require("express");
-require("dotenv").config();
+const app = express();
 const port = process.env.PORT || 8081;
 const path = require("path");
-// const cookieParser = require("cookie-parser");
+const cookieParser = require("cookie-parser");
+const controller = require("./controller");
+const cors = require("cors");
+require("dotenv").config();
 
-console.log(process.env);
-console.log("hi");
-
-const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-// app.use(cookieParser());
-
-//controller
-const controller = require("./controller");
-
-//parse
-app.use(express.json());
-
-//static
+app.use(cookieParser());
 app.use(express.static("dist"));
-
-//cors
-const cors = require("cors");
 app.use(cors());
 
 //post request to /save
@@ -37,6 +25,7 @@ app.get("/save", controller.getCeremonyScripts, (req, res) => {
   return res.status(200).json(res.locals.myScripts);
 });
 
+//load the original page
 app.get("/", (req, res) => {
   console.log("hi");
   return res
