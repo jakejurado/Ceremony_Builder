@@ -1,10 +1,7 @@
 import React from "react";
 import "./App.css";
-import MainDisplay from './Components/MainDisplay';
-import cbImage from '../public/assets/ceremonybuilder.png'
-
-
-
+import MainDisplay from "./Components/MainDisplayHook";
+import cbImage from "../public/assets/ceremonybuilder.png";
 
 function App() {
   return (
@@ -14,22 +11,17 @@ function App() {
   );
 }
 
-
-function TemplateBtn(){
-  return(
-    <div className='template'>
-      Template: 
+function TemplateBtn() {
+  return (
+    <div className="template">
+      Template:
       <button>Wedding</button>
       <button>Elopement</button>
-      Saved: 
+      Saved:
       <button>Ceremony1</button>
       <button>Ceremony2</button>
     </div>
-  )
+  );
 }
-
-
-
-
 
 export default App;
