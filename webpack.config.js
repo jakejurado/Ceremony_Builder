@@ -2,15 +2,15 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
-    entry: './src/index.js',
+  entry: "./src/index.js",
   output: {
     path: path.join(__dirname, "/dist"),
     filename: "bundle.js",
     clean: true,
   },
   resolve: {
-    extensions: ['', '.js', '.jsx']
-    },
+    extensions: ["", ".js", ".jsx"],
+  },
   devtool: "source-map",
   module: {
     rules: [
@@ -29,10 +29,10 @@ module.exports = {
         test: /\.(png|jpe?g|gif)$/i,
         use: [
           {
-            loader: 'file-loader',
+            loader: "file-loader",
           },
         ],
-      }
+      },
     ],
   },
   plugins: [
@@ -42,15 +42,15 @@ module.exports = {
   ],
   devServer: {
     static: {
-      publicPath: '/dist',
-      directory: path.resolve(__dirname, 'dist'),
+      publicPath: "/dist",
+      directory: path.resolve(__dirname, "dist"),
     },
     compress: true,
     hot: true,
     port: 8080,
     historyApiFallback: true,
     proxy: {
-      '/api': 'http://localhost:3001',
+      "/api": "http://localhost:3001",
     },
-  }
+  },
 };

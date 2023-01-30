@@ -7,7 +7,7 @@
     "start": "webpack-dev-server --mode development --hot --open",
     "build": "webpack --mode production",
     "test": "test",
-    "n": "nodemon ./server/server.js",
+    "n": "nodemon ./src/server/server.js",
     "d": "nodemon src/server/server.js"
   },
   "repository": {
@@ -21,10 +21,16 @@
   "author": "Jacob Jurado",
   "license": "UNLICENSED",
   "dependencies": {
+    "cookie-parser": "^1.4.6",
+    "cookie-session": "^2.0.0",
     "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
     "express": "^4.18.1",
     "mongoose": "^6.5.2",
+    "pg": "^8.8.0",
     "react": "^18.2.0",
+    "react-beautiful-dnd": "^13.1.1",
+    "react-dnd-html5-backend": "^16.0.1",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
@@ -42,5 +48,5 @@
     "webpack-cli": "^4.10.0",
     "webpack-dev-server": "^4.9.3"
   },
-  "proxy": "http://localhost:3000"
+  "proxy": "http://localhost:3001"
 }
