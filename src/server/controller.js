@@ -1,6 +1,6 @@
 const db = require("../server/sqlModel");
+const original_template = require("../server/files/serverDB");
 
-const { flushSync } = require("react-dom");
 const fs = require("fs");
 const path = require("path");
 
@@ -20,6 +20,12 @@ const goatcheese = {
 };
 
 const controller = {};
+
+controller.loadPage = (req, res, next) => {
+  console.log("entered load page");
+  res.locals.myTemplates = original_template;
+  next();
+};
 
 controller.saveCeremonyScript = (req, res, next) => {
   console.log("save ceremony script enter");

@@ -25,7 +25,13 @@ app.get("/save", controller.getCeremonyScripts, (req, res) => {
   return res.status(200).json(res.locals.myScripts);
 });
 
-//load the original page
+//populate the original page after loading
+app.get("/display", controller.loadPage, (req, res) => {
+  console.log("from the server the json", typeof res.locals.myTemplates);
+  return res.status(200).json(res.locals.myTemplates);
+});
+
+//serve the original page
 app.get("/", (req, res) => {
   console.log("hi");
   return res
