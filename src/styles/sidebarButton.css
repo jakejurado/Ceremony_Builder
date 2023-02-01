@@ -1,0 +1,17 @@
+#sidebarButton{
+  position:fixed;
+  display: flex;
+  justify-content: center;
+  align-items:flex-end;
+  font-size: 2em;
+  margin: 5% 0 0 0;
+  padding: .5em .75em .5em .75em;
+  border-radius: 5em;
+  background-color: rgb(255, 248, 166);
+  z-index: 3;
+  box-shadow: .05em .05em rgb(234, 234, 234);
+  
+}
+
+
+

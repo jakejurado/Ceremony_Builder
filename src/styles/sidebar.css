@@ -1,0 +1,13 @@
+#sideBar{
+  position: fixed;
+  align-self: flex-start;
+  top: 0;
+  width: 33%;
+  height: 100%;
+  /* border: thin solid black; */
+  margin: 0;
+  background-color: bisque;
+  box-shadow: .15em .15em grey;
+  z-index: 2;
+  transition: width 2s;
+}

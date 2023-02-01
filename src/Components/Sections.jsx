@@ -1,33 +1,28 @@
 import React, { Component, useState } from "react";
 import WordCards from "./WordCards";
 import leftArrow from "../../public/assets/arrowLft.png";
-import addButton from "../../public/assets/add.png";
+// import addButton from "../../public/assets/add.png";
 import { Draggable } from "react-beautiful-dnd";
 
 function Sections(props) {
   //swaping cards
   function handleLeftRightClick(e) {
     const button = e.target.id;
-    const [name, indexNum] =
+    const [title, _] =
       e.target.parentElement.children[1].classList[1].split("-");
-
-    //depending on right or left click, change the state to the next content.
-    switch (e.target.id) {
-      case "rightClick":
-        props.updateCardIndex(name, 1);
-        break;
-      case "leftClick":
-        props.updateCardIndex(name, -1);
-        break;
-      default:
-        console.log("something went wrong! Did you change the class?");
-    }
+    const returnObj = {
+      title,
+      action: "updateSEC",
+      add: button === "rightClick" ? 1 : -1,
+    };
+    props.handleSectionChange(returnObj);
   }
 
   //delete section
   function handleXbutton(e) {
-    const name = e.target.className;
-    props.removeSection(name);
+    const title = e.target.className;
+    props.handleSectionChange({ title, action: "deleteSEC" });
+    // props.removeSection(title);
   }
 
   return (
@@ -70,9 +65,6 @@ function Sections(props) {
                 right
               </button>
             </div>
-          </div>
-          <div className="addButtonDiv">
-            <img id="addButtonImg" src={addButton} alt="arrow button" />
           </div>
         </div>
       )}

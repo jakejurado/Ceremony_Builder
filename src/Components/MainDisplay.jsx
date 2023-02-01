@@ -1,167 +1,131 @@
-import React, { Component } from "react";
+import React, { Component, useState, useEffect } from "react";
+import templateWed from "../server/files/serverDB2";
+import templateElope from "../server/files/serverDB";
+import Header from "./Header";
 import Sections from "./Sections";
-import wording from "../files/db-words";
-import CeremonyImport from "./CeremonyImport";
-import SaveBtn from "./SaveBtn";
-import cbImage from "../../public/assets/ceremonybuilder.png";
-//mongosh "mongodb+srv://codesmith.dzpwbsj.mongodb.net/scriptBuilderDatabase" --apiVersion 1 --username jakejurado
+import { DragDropContext, Droppable } from "react-beautiful-dnd";
+import { updateSectionOrder } from "../helper/dragdropFuncs";
+import AddSectionButton from "./AddSectionButton";
+import {
+  removeSection,
+  updateCardIndex,
+  addSection,
+  addSelectorSection,
+} from "../helper/sectionFuncs";
 
-class MainDisplay extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      data: null,
-      templates: {
-        Wedding: [
-          ["giving_away", "00"],
-          ["opening_remarksC", "00"],
-          ["declaration_of_intent", "00"],
-          ["vows", "00"],
-          ["pronouncement", "00"],
-        ],
-        Elopement: [
-          ["opening_remarksC", "01"],
-          ["vows", "01"],
-          ["pronouncement", "00"],
-        ],
-      },
-      saved: [],
-      load: [
-        ["giving_away", "00"],
-        ["opening_remarksC", "00"],
-        ["declaration_of_intent", "00"],
-        ["vows", "00"],
-        ["pronouncement", "00"],
-      ],
-    };
-    this.updateCardIndex = this.updateCardIndex.bind(this);
-    //this.updateCardIndex.bind(this)
-    this.handleSavedFetch = this.handleSavedFetch.bind(this);
-    this.updateCurrentScriptFromSaved =
-    this.updateCurrentScriptFromSaved.bind(this);
-    this.addToSave = this.addToSave.bind(this);
-    this.removeSection = this.removeSection.bind(this);
-  }
+function MainDisplay() {
+  //holds all of the wording
+  const [data, setData] = useState([templateWed, templateElope]);
+  //determines which template to use from data
+  const [template, setTemplate] = useState(data[0]);
+  //informs react which script to display from the template  with an array
+  const [display, setDisplay] = useState([]);
+  //informs react when the section selector has been activated
+  const [SelectorSec, setSelectorSec] = useState({
+    isVisible: false,
+    position: undefined,
+  });
 
-  componentDidMount() {
-    this.callBackendAPI()
-      .then((res) => this.setState({ data: res.express }))
-      .catch((err) => console.log(err));
-  }
+  //ORIGINAL SETUP
+  //on page load, setsDisplay is filled from data
+  useEffect(() => {
+    const newDisplay = prepDisplay(template);
+    setDisplay([...newDisplay]);
+  }, []);
 
-  callBackendAPI = async () => {
-    const response = await fetch("/express_backend");
-    const body = await response.json();
-
-    if (response.status !== 200) {
-      throw Error(body.message);
+  //fills the display state with the current template
+  function prepDisplay(data) {
+    const tempOrder = new Map();
+    for (const [key, value] of Object.entries(data)) {
+      tempOrder.set(key, value.start_pos);
     }
-    return body;
-  };
-
-  handleSavedFetch(arr) {
-    this.setState({ saved: arr });
+    return tempOrder;
   }
 
-  updateCurrentScriptFromSaved(index) {
-    this.setState({ load: this.state.saved[index] });
-  }
+  //loads the sections from the state in display.
+  let loadSections = [];
+  display.forEach((set, index) => {
+    const [varTitle, pos] = set;
+    const { title, description, _, script } = template[varTitle];
+    loadSections.push(
+      <Sections
+        key={varTitle}
+        id={index}
+        title={title}
+        cardContent={script}
+        description={description}
+        varName={varTitle}
+        cardIndex={pos}
+        handleSectionChange={handleSectionChange}
+      />
+    );
 
-  //INPUT: name of section to update 'string' & newIndex "string"
-  //OUTPUT: updated state
-  //receives the section name and the new index to update state
-  updateCardIndex(varName, newIndex) {
-    const oldLoad = [...this.state.load];
-    let findI = oldLoad.findIndex((el) => {
-      //find where in the index is varName
-      return el[0] === varName;
-    });
-    oldLoad[findI][1] = newIndex;
-    this.setState({ load: oldLoad });
-  }
-
-  addToSave(input) {
-    let passInfo;
-    if (this.state.saved.length)
-      passInfo = [...this.state.saved, this.state.load];
-    else passInfo = this.state.load;
-    console.log({ passInfo });
-
-    console.log("got here");
-    fetch("http://localhost:3000/save", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(passInfo),
-    }).then((data) => {
-      console.log("here is what we got back", data);
-    });
-
-    this.handleSavedFetch(passInfo);
-  }
-
-  removeSection(input) {
-    let replaceState = [];
-    this.state.load.forEach((el) => {
-      console.log(el[0] === input);
-      if (el[0] !== input) replaceState.push(el);
-    });
-    this.setState({ load: replaceState });
-  }
-
-  render() {
-    let loadSections = [];
-    this.state.load.forEach((item, index) => {
+    if (SelectorSec.isVisible && index === SelectorSec.position) {
+      loadSections.push(<li key="selector">Selector of Sections</li>);
+    } else {
       loadSections.push(
-        <Sections
-          key={item[0]}
-          id={item[0]}
-          title={wording[item[0]].title}
-          cardContent={wording[item[0]].words}
-          description={wording[item[0]].description}
-          varName={item[0]}
-          cardIndex={[item[1]]}
-          updateCardIndex={this.updateCardIndex}
-          removeSection={this.removeSection}
+        <AddSectionButton
+          key={`addButton-${varTitle}-${index}`}
+          aboveSection={varTitle}
+          index={index}
+          handleSectionChange={handleSectionChange}
         />
       );
-    });
-    return (
-      <div>
-        <Header />
+    }
+  });
 
-        <CeremonyImport
-          handleSavedFetch={this.handleSavedFetch}
-          savedCeremonies={this.state.saved}
-          updateCurrentScriptFromSaved={this.updateCurrentScriptFromSaved}
-        />
-        <div className="allSections">
-          {this.state.data}
-          {loadSections}
-        </div>
-        <SaveBtn addToSave={this.addToSave} />
-      </div>
+  function handleSectionChange(dataObj) {
+    switch (dataObj.action) {
+      case "deleteSEC":
+        removeSection(dataObj.title, display, setDisplay);
+        break;
+      case "addSEC":
+        addSection(dataObj.add, dataObj.title, display, setDisplay);
+        break;
+      case "updateSEC":
+        updateCardIndex(
+          dataObj.title,
+          dataObj.add,
+          display,
+          setDisplay,
+          template
+        );
+        break;
+      case "selectSEC":
+        addSelectorSection(dataObj.index, setSelectorSec);
+        break;
+      default:
+        console.log("error", dataObj);
+    }
+  }
+
+  //DRAG DROP FUNCTIONALITY
+  function dragEnd(e) {
+    updateSectionOrder(
+      e.source.index,
+      e.destination.index,
+      display,
+      setDisplay
     );
   }
-}
 
-function Header() {
   return (
-    <div className="titleS">
-      <h1>
-        <img id="h1Image" src={cbImage} />
-      </h1>
-    </div>
-  );
-}
-
-function TemplateBtn() {
-  return (
-    <div className="template">
-      Template:
-      <button>Wedding</button>
-      <button>Elopement</button>
+    <div id="mainDisplay">
+      <Header />
+      <DragDropContext onDragEnd={dragEnd}>
+        <Droppable droppableId="sectiondrop">
+          {(provided) => (
+            <div
+              id="allSections"
+              ref={provided.innerRef}
+              {...provided.droppableProps}
+            >
+              {loadSections}
+              {provided.placeholder}
+            </div>
+          )}
+        </Droppable>
+      </DragDropContext>
     </div>
   );
 }
