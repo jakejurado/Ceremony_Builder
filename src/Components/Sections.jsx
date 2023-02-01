@@ -1,9 +1,8 @@
 import React, { Component, useState } from "react";
 import WordCards from "./WordCards";
 import leftArrow from "../../public/assets/arrowLft.png";
-import addButton from "../../public/assets/add.png";
+// import addButton from "../../public/assets/add.png";
 import { Draggable } from "react-beautiful-dnd";
-
 
 function Sections(props) {
   //swaping cards
@@ -66,9 +65,6 @@ function Sections(props) {
                 right
               </button>
             </div>
-          </div>
-          <div className="addButtonDiv">
-            <img id="addButtonImg" src={addButton} alt="arrow button" />
           </div>
         </div>
       )}

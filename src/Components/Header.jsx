@@ -5,7 +5,7 @@ function Header() {
   return (
     <div className="titleS">
       <h1>
-        <img id="h1Image" src={cbImage} />
+        <img id="h1Image" src={cbImage} alt="image of words Ceremony Builder" />
       </h1>
     </div>
   );

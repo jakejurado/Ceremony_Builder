@@ -5,10 +5,12 @@ import Header from "./Header";
 import Sections from "./Sections";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import { updateSectionOrder } from "../helper/dragdropFuncs";
+import AddSectionButton from "./AddSectionButton";
 import {
   removeSection,
   updateCardIndex,
   addSection,
+  addSelectorSection,
 } from "../helper/sectionFuncs";
 
 function MainDisplay() {
@@ -18,7 +20,11 @@ function MainDisplay() {
   const [template, setTemplate] = useState(data[0]);
   //informs react which script to display from the template  with an array
   const [display, setDisplay] = useState([]);
-  
+  //informs react when the section selector has been activated
+  const [SelectorSec, setSelectorSec] = useState({
+    isVisible: false,
+    position: undefined,
+  });
 
   //ORIGINAL SETUP
   //on page load, setsDisplay is filled from data
@@ -53,6 +59,19 @@ function MainDisplay() {
         handleSectionChange={handleSectionChange}
       />
     );
+
+    if (SelectorSec.isVisible && index === SelectorSec.position) {
+      loadSections.push(<li key="selector">Selector of Sections</li>);
+    } else {
+      loadSections.push(
+        <AddSectionButton
+          key={`addButton-${varTitle}-${index}`}
+          aboveSection={varTitle}
+          index={index}
+          handleSectionChange={handleSectionChange}
+        />
+      );
+    }
   });
 
   function handleSectionChange(dataObj) {
@@ -72,8 +91,11 @@ function MainDisplay() {
           template
         );
         break;
+      case "selectSEC":
+        addSelectorSection(dataObj.index, setSelectorSec);
+        break;
       default:
-        console.log("error");
+        console.log("error", dataObj);
     }
   }
 

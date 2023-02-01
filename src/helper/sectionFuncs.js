@@ -26,4 +26,8 @@ function addSection(newTitle, placmentTitle, currState, setNewState) {
   console.log("addSection");
 }
 
-export { removeSection, updateCardIndex, addSection };
+function addSelectorSection(position, setNewState) {
+  setNewState({ isVisible: true, position: parseInt(position) });
+}
+
+export { removeSection, updateCardIndex, addSection, addSelectorSection };

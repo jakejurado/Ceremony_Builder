@@ -9,7 +9,6 @@ function openCloseSidebar(isOpen) {
   const sidebar = document.getElementById("sideBar");
   const sidebarButton = document.getElementById("sidebarButton");
   const main = document.getElementById("mainDisplay");
-  console.log(isOpen);
 
   if (!isOpen) {
     function closeSidebar() {
