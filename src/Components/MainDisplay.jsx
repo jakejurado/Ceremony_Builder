@@ -14,19 +14,19 @@ import {
 } from "../helper/sectionFuncs";
 
 function MainDisplay() {
-  //holds all of the wording
+  //holds all of the different templates in an array.
   const [data, setData] = useState([templateWed, templateElope]);
-  //determines which template to use from data
+  //holds the current template (object) that will be displayed on the page
   const [template, setTemplate] = useState(data[0]);
-  //informs react which script to display from the template  with an array
+  //orders title and card index in an array which React uses to display on the page.
   const [display, setDisplay] = useState([]);
-  //informs react when the section selector has been activated
+  //informs react when the section selector has been activated.
   const [SelectorSec, setSelectorSec] = useState({
     isVisible: false,
     position: undefined,
   });
 
-  //ORIGINAL SETUP
+  //ORIGINAL SETUP FOR PAGELOAD
   //on page load, setsDisplay is filled from data
   useEffect(() => {
     const newDisplay = prepDisplay(template);
