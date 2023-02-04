@@ -14,7 +14,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static("dist"));
-app.use(cors());
+// app.use(cors());
 
 //used to add a new section to the main page.
 app.use("/sections", sectionRouter);

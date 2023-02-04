@@ -11,7 +11,6 @@ sectionController.grabAllSectionTiles = (req, res, next) => {
   const sectionQuery = "SELECT title, varname, category FROM meta_data;";
   db.query(sectionQuery)
     .then((result) => {
-      console.log(result.rows);
       res.locals.allTitles = result.rows;
       return next();
     })
