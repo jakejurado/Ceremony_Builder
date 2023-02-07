@@ -17,14 +17,24 @@ import {
 import { fetchTitles } from "../helper/selectorBoxFuncs";
 
 function MainDisplay() {
-  //holds all of the different templates in an array.
-  const [data, setData] = useState([templateWed, templateElope]);
   //cache for all sections from templates and ones added by user during session
   const [sectionCache, setSectionCache] = useState();
+
+  //holds all of the different templates in an array.
+  const [templates, setTemplates] = useState({
+    wedding: templateWed,
+    elope: templateElope,
+  });
+
+  //determines which template to be displayed.
+  const [templateTitle, setTemplateTitle] = useState("wedding");
+
   //holds the current selected template (object) that will be displayed on the page
-  const [template, setTemplate] = useState(data[0]);
+  const [template, setTemplate] = useState(templates[templateTitle]);
+
   //orders title and card index in an array which React uses to display on the page.
   const [display, setDisplay] = useState([]);
+
   //informs react when the section selector has been activated.
   const [SelectorSec, setSelectorSec] = useState({
     isVisible: false,
@@ -32,7 +42,7 @@ function MainDisplay() {
   });
 
   //holds all titles, varnames, and category in an object for all sections
-  //RESET TO EMPTY OBJECT
+  //RESET TO EMPTY OBJECT FOR PRODUCTION
   const [selectorTitles, setSelectorTitles] = useState({
     "Basic Elements": {
       "Giving Away": "giving_away",
@@ -57,24 +67,27 @@ function MainDisplay() {
   });
 
   //ORIGINAL SETUP FOR PAGELOAD
-  //on page load, setsDisplay is filled from data
   useEffect(() => {
-    const newDisplay = prepDisplay(template);
-    setDisplay([...newDisplay]);
-    setSectionCache(addContentsToCache(data, sectionCache));
+    setSectionCache(addContentsToCache(templates, sectionCache));
   }, []);
 
-  //fills the display state with the current template
-  function prepDisplay(data) {
-    const tempOrder = new Map();
-    for (const [key, value] of Object.entries(data)) {
-      tempOrder.set(key, value.start_pos);
+  //when the template changes, update the display.
+  useEffect(() => {
+    //fills the display state with the current template
+    function prepDisplay(data) {
+      const tempOrder = [];
+      for (const [key, value] of Object.entries(data)) {
+        tempOrder.push([key, value.start_pos]);
+      }
+      return tempOrder;
     }
-    return tempOrder;
-  }
+
+    setDisplay(prepDisplay(template));
+  }, [template]);
 
   //loads the sections from the state in display.
   let loadSections = [];
+  console.log("display", display);
   display.forEach((set, index) => {
     const [varTitle, pos] = set;
     const { title, description, _, script } = template[varTitle];
@@ -122,9 +135,12 @@ function MainDisplay() {
           dataObj.index,
           display,
           setDisplay,
+          template,
+          setTemplate,
           sectionCache,
           setSectionCache
         );
+        console.log("made it");
         setSelectorSec({ isVisible: false, position: undefined });
         break;
       case "updateSEC":

@@ -1,4 +1,5 @@
 import { createCardIndexUpdater } from "../helper_closures/closure";
+import { fetchSection } from "./selectorBoxFuncs";
 
 //removes section from display
 function removeSection(name, currState, setCurrState) {
@@ -18,32 +19,61 @@ function addSection(
   index,
   currState,
   setCurrState,
+  currTemplate,
+  setCurrTemplate,
   currCache,
   setCurrCache
 ) {
-  if (!currState.hasOwnProperty(varname)) {
-    //check if template has the section.
-    if(currCache.hasOwnProperty(varname)){
-      //duplicate section
-      //add to current template
-      //update display
-    }
-    //-if not then
-    //--fetch call
-    //---update cache
-    //---update display
-    //-if so then
-    //--check if it is already in the display.
-    //---if so then
-    //----see how many other ones there are and add to cache with extra number
-    //---if not then add to cache and update state
+  const isInDisplay = currState.some((e) => e[0] === varname);
+  const isInTemplate = currTemplate.hasOwnProperty(varname);
+  console.log({ varname });
+  console.log({ index });
+  console.log({ currState });
+  console.log({ setCurrState });
+  console.log({ currTemplate });
+  console.log({ currCache });
+  console.log({ setCurrCache });
+
+  console.log("add section");
+  if (isInDisplay) {
+    console.log("its in display");
+    //duplicate section
+    const newTemplate = { ...currTemplate };
+    const num = newTemplate.hasOwnProperty("duplicates")
+      ? newTemplate.duplicates + 1
+      : 1;
+    let newVarname = varname + "-" + `${num}`;
+    newTemplate[newVarname] = { ...newTemplate[varname] };
+    newTemplate[newVarname].title += "1";
+    setCurrTemplate(newTemplate);
+    //add to template.
+  } else if (isInTemplate) {
+    console.log("its in the template");
+    insertSection(varname, index, currState, setCurrState, currTemplate);
+  } else {
+    console.log("fetch it");
+    fetchSection(
+      varname,
+      currTemplate,
+      setCurrTemplate,
+      currCache,
+      setCurrCache
+    );
   }
-
-  //function fetchSection(varname, currCache, setCurrCache){
-  //
-  // }
-
   console.log("addSection", varname, index);
+}
+
+function insertSection(varname, index, currState, setCurrState, template) {
+  const tempOrder = [];
+  const arrData = Object.values(currState);
+  for (let i = 0; i < arrData.length; i++) {
+    const [key, value] = arrData[i];
+    if (i === index) tempOrder.push([varname, template[varname].start_pos]);
+    tempOrder.push(arrData[i]);
+  }
+  console.log({ tempOrder });
+  setCurrState([...tempOrder]);
+  console.log("???");
 }
 
 function addSelectorSection(position, setNewState) {
@@ -52,7 +82,7 @@ function addSelectorSection(position, setNewState) {
 
 function addContentsToCache(arr, cache) {
   const newCache = { ...cache };
-  arr.forEach((entry) => {
+  Object.values(arr).forEach((entry) => {
     for (const [varname, object] of Object.entries(entry)) {
       if (!newCache.hasOwnProperty(varname)) newCache[varname] = object;
     }

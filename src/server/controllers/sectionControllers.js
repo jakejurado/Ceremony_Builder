@@ -4,7 +4,19 @@ const sectionController = {};
 sectionController.grabSection = (req, res, next) => {
   const request = req.body;
   console.log("here is the body", req.body);
-  return next();
+  const sectionQuery = "SELECT * FROMSELECT * from scripts where section = $1";
+  db.query(sectionQuery, [request])
+    .then((result) => {
+      res.locals.mySection = res.rows;
+      return next();
+    })
+    .catch((err) => {
+      return next({
+        log: "Express error handler caught in grabSection middleware error",
+        status: 500,
+        message: { err: "An error in grabSection" },
+      });
+    });
 };
 
 sectionController.grabAllSectionTiles = (req, res, next) => {
