@@ -10,11 +10,12 @@ import SectionSelector from "./SectionSelector";
 import {
   removeSection,
   updateCardIndex,
-  addSection,
+  addSecToDisplay,
   addSelectorSection,
   addContentsToCache,
 } from "../helper/sectionFuncs";
 import { fetchTitles } from "../helper/selectorBoxFuncs";
+import { addToTemplate } from "../helper/templateFuncs";
 
 function MainDisplay() {
   //cache for all sections from templates and ones added by user during session
@@ -83,79 +84,125 @@ function MainDisplay() {
     }
 
     setDisplay(prepDisplay(template));
-  }, [template]);
+  }, []);
 
-  //loads the sections from the state in display.
+  //loads the sections from the state in display.  Build the dom
   let loadSections = [];
-  console.log("display", display);
-  display.forEach((set, index) => {
-    const [varTitle, pos] = set;
-    const { title, description, _, script } = template[varTitle];
+
+  for (let i = 0; i < display.length; i++) {
+    let [varTitle, pos] = display[i];
+    if (!template.hasOwnProperty(varTitle)) continue;
+
+    const { title, description, script } = template[varTitle];
+
     loadSections.push(
       <Sections
         key={varTitle}
-        id={index}
+        id={i}
         title={title}
-        cardContent={script}
+        cardContent={script[pos]}
         description={description}
         varName={varTitle}
         cardIndex={pos}
+        numOfCards={script.length - 1}
         handleSectionChange={handleSectionChange}
       />
     );
 
-    if (SelectorSec.isVisible && index === SelectorSec.position) {
+    if (SelectorSec.isVisible && i === SelectorSec.position) {
       loadSections.push(
         <SectionSelector
+          key="selectorBox"
           data={selectorTitles}
-          index={index}
+          index={i}
           handleSectionChange={handleSectionChange}
         />
       );
     } else {
       loadSections.push(
         <AddSectionButton
-          key={`addButton-${varTitle}-${index}`}
+          key={`addButton-${varTitle}-${i}`}
           belowSection={varTitle}
-          index={index}
+          index={i}
           handleSectionChange={handleSectionChange}
         />
       );
     }
-  });
+  }
 
   function handleSectionChange(dataObj) {
     switch (dataObj.action) {
       case "deleteSEC":
-        removeSection(dataObj.title, display, setDisplay);
+        {
+          //update the display state, removing selected section
+          const newDisplay = removeSection(dataObj.index, display);
+          setDisplay([...newDisplay]);
+        }
         break;
       case "addSEC":
-        addSection(
-          dataObj.varname,
-          dataObj.index,
-          display,
-          setDisplay,
-          template,
-          setTemplate,
-          sectionCache,
-          setSectionCache
-        );
-        console.log("made it");
-        setSelectorSec({ isVisible: false, position: undefined });
+        {
+          //update display
+          const { varname, index } = dataObj;
+          const res = addSecToDisplay(varname, index, display, template);
+          setDisplay([...res.display]);
+
+          const isDuplicate = res.dup;
+          const notInTemplate = !template.hasOwnProperty(varname);
+          const notInCache = !sectionCache.hasOwnProperty(varname);
+
+          //update Template if needed.
+          if (isDuplicate) {
+            setTemplate({ ...res.template });
+          } else if (notInTemplate && notInCache) {
+            console.log("fetch");
+            //fectch()
+          } else if (notInTemplate) {
+            const newTemplate = addToTemplate(
+              template,
+              varname,
+              sectionCache[varname]
+            );
+            setTemplate({ newTemplate });
+          }
+
+          //remove section selector from page
+          setSelectorSec({ isVisible: false, position: undefined });
+        }
         break;
       case "updateSEC":
-        updateCardIndex(
-          dataObj.title,
-          dataObj.add,
-          display,
-          setDisplay,
-          template
-        );
+        {
+          const { add, cardIndex, numOfCards, index } = dataObj;
+          //update the display state with the new card selected
+          const updatedState = updateCardIndex(
+            display,
+            cardIndex + add,
+            numOfCards,
+            index
+          );
+          setDisplay([...updatedState]);
+        }
         break;
       case "selectSEC":
-        addSelectorSection(dataObj.index, setSelectorSec);
-        if (Object.keys(selectorTitles).length === 0)
-          fetchTitles(setSelectorTitles);
+        {
+          //update state to signify that a selector box should be inserted
+          const newState = addSelectorSection(dataObj.index);
+          setSelectorSec({ ...newState });
+          //fetch titles if not present int state.
+          if (Object.keys(selectorTitles).length === 0)
+            fetchTitles(setSelectorTitles);
+        }
+        break;
+      case "swapSEC":
+        {
+          const { sourceIndex, destIndex } = dataObj;
+          //create the new order for the display state
+          const newDisplay = updateSectionOrder(
+            sourceIndex,
+            destIndex,
+            display
+          );
+          setDisplay([...newDisplay]);
+        }
         break;
       default:
         console.log("error", dataObj);
@@ -164,12 +211,11 @@ function MainDisplay() {
 
   //DRAG DROP FUNCTIONALITY
   function dragEnd(e) {
-    updateSectionOrder(
-      e.source.index,
-      e.destination.index,
-      display,
-      setDisplay
-    );
+    handleSectionChange({
+      action: "swapSEC",
+      sourceIndex: e.source.index,
+      destIndex: e.destination.index,
+    });
   }
 
   return (

@@ -1,85 +1,80 @@
-import { createCardIndexUpdater } from "../helper_closures/closure";
-import { fetchSection } from "./selectorBoxFuncs";
-
 //removes section from display
-function removeSection(name, currState, setCurrState) {
+function removeSection(index, display) {
   const newOrder = [];
-  for (let item of currState) {
-    if (item[0] !== name) newOrder.push(item);
-  }
-  setCurrState([...newOrder]);
+  display.forEach((set, i) => {
+    if (i != index) newOrder.push(set);
+  });
+  return newOrder;
 }
 
 //receives the name of the section and the direction of the arrow and updates display state.
-const updateCardIndex = createCardIndexUpdater();
+function updateCardIndex(display, cardIndex, numOfCards, index) {
+  const displayCopy = [...display];
+  //check if cardIndex has exceeded the number of cards for this section
+  cardIndex =
+    cardIndex > numOfCards ? 0 : cardIndex < 0 ? numOfCards : cardIndex;
+  //update the card index
+  displayCopy[index][1] = cardIndex;
+  return [...displayCopy];
+}
 
 //adds section to the display
-function addSection(
-  varname,
-  index,
-  currState,
-  setCurrState,
-  currTemplate,
-  setCurrTemplate,
-  currCache,
-  setCurrCache
-) {
-  const isInDisplay = currState.some((e) => e[0] === varname);
-  const isInTemplate = currTemplate.hasOwnProperty(varname);
-  console.log({ varname });
-  console.log({ index });
-  console.log({ currState });
-  console.log({ setCurrState });
-  console.log({ currTemplate });
-  console.log({ currCache });
-  console.log({ setCurrCache });
+function addSecToDisplay(varname, index, display, template, setTemplate) {
+  const isInDisplay = display.some((e) => e[0] === varname);
 
-  console.log("add section");
+  //duplicate section if in already in display
   if (isInDisplay) {
-    console.log("its in display");
-    //duplicate section
-    const newTemplate = { ...currTemplate };
-    const num = newTemplate.hasOwnProperty("duplicates")
-      ? newTemplate.duplicates + 1
-      : 1;
-    let newVarname = varname + "-" + `${num}`;
-    newTemplate[newVarname] = { ...newTemplate[varname] };
-    newTemplate[newVarname].title += "1";
-    setCurrTemplate(newTemplate);
-    //add to template.
-  } else if (isInTemplate) {
-    console.log("its in the template");
-    insertSection(varname, index, currState, setCurrState, currTemplate);
-  } else {
-    console.log("fetch it");
-    fetchSection(
-      varname,
-      currTemplate,
-      setCurrTemplate,
-      currCache,
-      setCurrCache
-    );
+    const newVarname = duplicateVarname(varname, template);
+    const dupSection = duplicateSection(varname, newVarname, template);
+    // setTemplate({ ...dupSection });
+    const newDisplay = insertSection(newVarname, index, display);
+    return {
+      varname: newVarname,
+      display: newDisplay,
+      template: dupSection,
+      dup: isInDisplay,
+    };
   }
-  console.log("addSection", varname, index);
+  const newDisplay = insertSection(varname, index, display);
+  return {
+    varname: varname,
+    display: newDisplay,
+    template: false,
+    dup: isInDisplay,
+  };
 }
 
-function insertSection(varname, index, currState, setCurrState, template) {
-  const tempOrder = [];
-  const arrData = Object.values(currState);
-  for (let i = 0; i < arrData.length; i++) {
-    const [key, value] = arrData[i];
-    if (i === index) tempOrder.push([varname, template[varname].start_pos]);
-    tempOrder.push(arrData[i]);
-  }
-  console.log({ tempOrder });
-  setCurrState([...tempOrder]);
-  console.log("???");
+function duplicateSection(varname, newVarname, template) {
+  const templateCopy = { ...template };
+  console.log(newVarname);
+  const [_, suffix] = newVarname.split("~");
+  templateCopy[newVarname] = { ...template[varname] };
+  templateCopy[newVarname].title += ` ${suffix}`;
+  templateCopy[varname].duplicates = parseInt(suffix);
+  return templateCopy;
 }
 
-function addSelectorSection(position, setNewState) {
-  setNewState({ isVisible: true, position: parseInt(position) });
+function duplicateVarname(varname, template) {
+  const suffixNum = template[varname].duplicates || 1;
+  const newName = `${varname}~${suffixNum + 1}`;
+  return newName;
 }
 
+function insertSection(varname, index, display) {
+  const newOrder = [];
+  display.forEach((set, i) => {
+    if (i == index) newOrder.push([varname, 0]);
+    newOrder.push([...set]);
+  });
+  return newOrder;
+}
+
+//add box selector to display
+function addSelectorSection(position) {
+  return { isVisible: true, position: parseInt(position) };
+}
+
+//add contents to cache
 function addContentsToCache(arr, cache) {
   const newCache = { ...cache };
   Object.values(arr).forEach((entry) => {
@@ -93,7 +88,7 @@ function addContentsToCache(arr, cache) {
 export {
   removeSection,
   updateCardIndex,
-  addSection,
+  addSecToDisplay,
   addSelectorSection,
   addContentsToCache,
 };

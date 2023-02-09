@@ -4,9 +4,10 @@ function createToggle(style, isOn, isOff) {
   };
 }
 
+//DELETE UNUSED
 function createCardIndexUpdater() {
   const cache = {};
-  return (title, dir, currState, setCurrState, template) => {
+  return (title, dir, currState, template) => {
     //access cached data if available.
     let stateCopy = cache.hasOwnProperty(title)
       ? cache[title]
@@ -20,8 +21,9 @@ function createCardIndexUpdater() {
     //updates state
     stateCopy.set(title, pos);
     //update the cache if first time accessing this card
-    setCurrState([...stateCopy]);
     if (!cache.hasOwnProperty(title)) cache[title] = new Map(stateCopy);
+    //return the new display array.
+    return stateCopy;
   };
 }
 
