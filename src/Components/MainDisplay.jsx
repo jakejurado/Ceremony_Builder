@@ -17,6 +17,7 @@ import {
 } from "../helper/sectionFuncs";
 import { fetchTitles } from "../helper/selectorBoxFuncs";
 import { addToTemplate } from "../helper/templateFuncs";
+import { fillCacheWithNewSections } from "../helper/sectionCacheFuncs";
 
 function MainDisplay() {
   //cache for all sections from templates and ones added by user during session
@@ -68,12 +69,7 @@ function MainDisplay() {
     "Other Options": { "License Signing": "license_sign" },
   });
 
-  //ORIGINAL SETUP FOR PAGELOAD
-  useEffect(() => {
-    setSectionCache(addContentsToCache(templates, sectionCache));
-  }, []);
-
-  //when the template changes, update the display.
+  //On page load, populate display state and cache state
   useEffect(() => {
     //fills the display state with the current template
     function prepDisplay(data) {
@@ -85,7 +81,15 @@ function MainDisplay() {
     }
 
     setDisplay(prepDisplay(template));
+    setSectionCache(addContentsToCache(templates, sectionCache));
   }, []);
+
+  //ORIGINAL SETUP FOR PAGELOAD
+  useEffect(() => {
+    //update cache with new template
+    const cache = fillCacheWithNewSections(sectionCache, template, false);
+    setSectionCache(cache);
+  }, [template]);
 
   //loads the sections from the state in display.  Build the dom
   let loadSections = [];
