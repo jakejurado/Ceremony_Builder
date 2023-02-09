@@ -7,8 +7,8 @@ router.get("/titles", sectionController.grabAllSectionTiles, (req, res) => {
   return res.status(200).send(res.locals.allTitles);
 });
 
-router.get("/specific", sectionController.grabSection, (req, res) => {
-  return res.status(200).send(res.locals.characters);
+router.get("/grab", sectionController.grabSection, (req, res) => {
+  return res.status(200).send(res.locals.mySection);
 });
 
 module.exports = router;

@@ -2,12 +2,12 @@ const db = require("../databaseModels/sqlModel");
 const sectionController = {};
 
 sectionController.grabSection = (req, res, next) => {
-  const request = req.body;
-  console.log("here is the body", req.body);
-  const sectionQuery = "SELECT * FROMSELECT * from scripts where section = $1";
-  db.query(sectionQuery, [request])
+  const sectionTitle = req.query.sec;
+  const sectionQuery =
+    "SELECT scripts.script, meta_data.title, meta_data.varname, meta_data.description FROM scripts JOIN meta_data on scripts.section = $1 AND meta_data.varname = $1";
+  db.query(sectionQuery, [sectionTitle])
     .then((result) => {
-      res.locals.mySection = res.rows;
+      res.locals.mySection = result.rows;
       return next();
     })
     .catch((err) => {

@@ -19,7 +19,7 @@ function updateCardIndex(display, cardIndex, numOfCards, index) {
 }
 
 //adds section to the display
-function addSecToDisplay(varname, index, display, template, setTemplate) {
+function addSecToDisplay(varname, index, display, template) {
   const isInDisplay = display.some((e) => e[0] === varname);
 
   //duplicate section if in already in display
@@ -46,7 +46,6 @@ function addSecToDisplay(varname, index, display, template, setTemplate) {
 
 function duplicateSection(varname, newVarname, template) {
   const templateCopy = { ...template };
-  console.log(newVarname);
   const [_, suffix] = newVarname.split("~");
   templateCopy[newVarname] = { ...template[varname] };
   templateCopy[newVarname].title += ` ${suffix}`;
@@ -85,10 +84,43 @@ function addContentsToCache(arr, cache) {
   return newCache;
 }
 
+//fetch specific section
+function fetchSection(varname, currTemplate, setCurrTemplate) {
+  fetch(`/sections/grab?sec=${varname}`)
+    .then((res) => res.json())
+    .then((res) => {
+      //build the new section
+      const sec = {};
+      const scripts = res.map((obj) => obj.script);
+      sec.description = res[0].description;
+      sec.start_pos = 0;
+      sec.title = res[0].title;
+      sec.script = scripts;
+      return sec;
+    })
+    .then((sec) => {
+      //update the template state
+      const newState = { ...currTemplate };
+      newState[varname] = { ...sec };
+      setCurrTemplate({ ...newState });
+    })
+    .catch((error) => {
+      console.error("Error occured in fetchTitles:", error);
+    });
+}
+
+function createObjForState(varname, data, currState) {
+  const newState = { ...currState };
+  newState[varname] = data;
+  // setCurrState({ ...newState });
+  return newState;
+}
+
 export {
   removeSection,
   updateCardIndex,
   addSecToDisplay,
   addSelectorSection,
   addContentsToCache,
+  fetchSection,
 };

@@ -3,7 +3,7 @@ import React from "react";
 function SectionSelector({ data, index, handleSectionChange }) {
   function handleClick(e) {
     const [_, varname] = e.target.classList[1].split("-");
-    const res = { action: "addSEC", varname, index };
+    const res = { action: "addSEC", varname, index: parseInt(index) + 1 };
     handleSectionChange(res);
   }
 
@@ -19,6 +19,7 @@ function SectionSelector({ data, index, handleSectionChange }) {
                   key={title}
                   className={`sectionTitle selector-${varname}`}
                   onClick={handleClick}
+                  onKeyDown={handleClick}
                 >
                   {title}
                 </li>

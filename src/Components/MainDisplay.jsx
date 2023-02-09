@@ -13,6 +13,7 @@ import {
   addSecToDisplay,
   addSelectorSection,
   addContentsToCache,
+  fetchSection,
 } from "../helper/sectionFuncs";
 import { fetchTitles } from "../helper/selectorBoxFuncs";
 import { addToTemplate } from "../helper/templateFuncs";
@@ -146,16 +147,16 @@ function MainDisplay() {
           const res = addSecToDisplay(varname, index, display, template);
           setDisplay([...res.display]);
 
+          //update Template if needed.
           const isDuplicate = res.dup;
           const notInTemplate = !template.hasOwnProperty(varname);
           const notInCache = !sectionCache.hasOwnProperty(varname);
 
-          //update Template if needed.
           if (isDuplicate) {
             setTemplate({ ...res.template });
           } else if (notInTemplate && notInCache) {
             console.log("fetch");
-            //fectch()
+            fetchSection(varname, template, setTemplate);
           } else if (notInTemplate) {
             const newTemplate = addToTemplate(
               template,
