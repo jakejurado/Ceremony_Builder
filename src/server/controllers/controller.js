@@ -1,5 +1,5 @@
-const db = require("../server/sqlModel");
-const original_template = require("../server/files/serverDB");
+const db = require("../databaseModels/sqlModel");
+const original_template = require("../files/serverDB");
 
 const fs = require("fs");
 const path = require("path");

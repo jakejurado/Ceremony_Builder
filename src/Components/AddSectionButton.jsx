@@ -9,7 +9,7 @@ function AddSectionButton(props) {
   }
 
   return (
-    <li className={`addSectionButton ${props.aboveSection}-${props.index}`}>
+    <li className={`addSectionButton ${props.belowSection}-${props.index}`}>
       <img
         id="addButtonImg"
         src={addButton}

@@ -6,93 +6,208 @@ import Sections from "./Sections";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import { updateSectionOrder } from "../helper/dragdropFuncs";
 import AddSectionButton from "./AddSectionButton";
+import SectionSelector from "./SectionSelector";
 import {
   removeSection,
   updateCardIndex,
-  addSection,
+  addSecToDisplay,
   addSelectorSection,
+  addContentsToCache,
+  fetchSection,
 } from "../helper/sectionFuncs";
+import { fetchTitles } from "../helper/selectorBoxFuncs";
+import { addToTemplate } from "../helper/templateFuncs";
+import { fillCacheWithNewSections } from "../helper/sectionCacheFuncs";
 
 function MainDisplay() {
-  //holds all of the wording
-  const [data, setData] = useState([templateWed, templateElope]);
-  //determines which template to use from data
-  const [template, setTemplate] = useState(data[0]);
-  //informs react which script to display from the template  with an array
+  //cache for all sections from templates and ones added by user during session
+  const [sectionCache, setSectionCache] = useState();
+
+  //holds all of the different templates in an array.
+  const [templates, setTemplates] = useState({
+    wedding: templateWed,
+    elope: templateElope,
+  });
+
+  //determines which template to be displayed.
+  const [templateTitle, setTemplateTitle] = useState("wedding");
+
+  //holds the current selected template (object) that will be displayed on the page
+  const [template, setTemplate] = useState(templates[templateTitle]);
+
+  //orders title and card index in an array which React uses to display on the page.
   const [display, setDisplay] = useState([]);
-  //informs react when the section selector has been activated
+
+  //informs react when the section selector has been activated.
   const [SelectorSec, setSelectorSec] = useState({
     isVisible: false,
     position: undefined,
   });
 
-  //ORIGINAL SETUP
-  //on page load, setsDisplay is filled from data
+  //holds all titles, varnames, and category in an object for all sections
+  //RESET TO EMPTY OBJECT FOR PRODUCTION
+  const [selectorTitles, setSelectorTitles] = useState({
+    "Basic Elements": {
+      "Giving Away": "giving_away",
+      "Opening Remarks: First Words": "opening_remakrs1",
+      "Opening Remarks: Main Content": "opening_remarks2",
+      "Declaration of Intent": "declaration",
+      Charge: "charge",
+      "Transition to Vows": "vows_symbolism",
+      Vows: "vow_content",
+      "Rings Content": "ring_content",
+      "Ring Exchange": "ring_exchange",
+      Pronouncement: "pronouncement",
+      "The Kiss": "kiss",
+      Introduction: "introduction",
+    },
+    Readings: { "Reading: Traditional": "reading_traditional" },
+    Prayer: { "Prayer: Opening": "prayer_opening" },
+    Unity: { "Unity: Cocktail": "unity_cocktail" },
+    Religious: { Arras: "arras" },
+    "Including Others": { "Last Kiss": "last_kiss" },
+    "Other Options": { "License Signing": "license_sign" },
+  });
+
+  //On page load, populate display state and cache state
   useEffect(() => {
-    const newDisplay = prepDisplay(template);
-    setDisplay([...newDisplay]);
+    //fills the display state with the current template
+    function prepDisplay(data) {
+      const tempOrder = [];
+      for (const [key, value] of Object.entries(data)) {
+        tempOrder.push([key, value.start_pos]);
+      }
+      return tempOrder;
+    }
+
+    setDisplay(prepDisplay(template));
+    setSectionCache(addContentsToCache(templates, sectionCache));
   }, []);
 
-  //fills the display state with the current template
-  function prepDisplay(data) {
-    const tempOrder = new Map();
-    for (const [key, value] of Object.entries(data)) {
-      tempOrder.set(key, value.start_pos);
-    }
-    return tempOrder;
-  }
+  //ORIGINAL SETUP FOR PAGELOAD
+  useEffect(() => {
+    //update cache with new template
+    const cache = fillCacheWithNewSections(sectionCache, template, false);
+    setSectionCache(cache);
+  }, [template]);
 
-  //loads the sections from the state in display.
+  //loads the sections from the state in display.  Build the dom
   let loadSections = [];
-  display.forEach((set, index) => {
-    const [varTitle, pos] = set;
-    const { title, description, _, script } = template[varTitle];
+
+  for (let i = 0; i < display.length; i++) {
+    let [varTitle, pos] = display[i];
+    if (!template.hasOwnProperty(varTitle)) continue;
+
+    const { title, description, script } = template[varTitle];
+
     loadSections.push(
       <Sections
         key={varTitle}
-        id={index}
+        id={i}
         title={title}
-        cardContent={script}
+        cardContent={script[pos]}
         description={description}
         varName={varTitle}
         cardIndex={pos}
+        numOfCards={script.length - 1}
         handleSectionChange={handleSectionChange}
       />
     );
 
-    if (SelectorSec.isVisible && index === SelectorSec.position) {
-      loadSections.push(<li key="selector">Selector of Sections</li>);
+    if (SelectorSec.isVisible && i === SelectorSec.position) {
+      loadSections.push(
+        <SectionSelector
+          key="selectorBox"
+          data={selectorTitles}
+          index={i}
+          handleSectionChange={handleSectionChange}
+        />
+      );
     } else {
       loadSections.push(
         <AddSectionButton
-          key={`addButton-${varTitle}-${index}`}
-          aboveSection={varTitle}
-          index={index}
+          key={`addButton-${varTitle}-${i}`}
+          belowSection={varTitle}
+          index={i}
           handleSectionChange={handleSectionChange}
         />
       );
     }
-  });
+  }
 
   function handleSectionChange(dataObj) {
     switch (dataObj.action) {
       case "deleteSEC":
-        removeSection(dataObj.title, display, setDisplay);
+        {
+          //update the display state, removing selected section
+          const newDisplay = removeSection(dataObj.index, display);
+          setDisplay([...newDisplay]);
+        }
         break;
       case "addSEC":
-        addSection(dataObj.add, dataObj.title, display, setDisplay);
+        {
+          //update display
+          const { varname, index } = dataObj;
+          const res = addSecToDisplay(varname, index, display, template);
+          setDisplay([...res.display]);
+
+          //update Template if needed.
+          const isDuplicate = res.dup;
+          const notInTemplate = !template.hasOwnProperty(varname);
+          const notInCache = !sectionCache.hasOwnProperty(varname);
+
+          if (isDuplicate) {
+            setTemplate({ ...res.template });
+          } else if (notInTemplate && notInCache) {
+            console.log("fetch");
+            fetchSection(varname, template, setTemplate);
+          } else if (notInTemplate) {
+            const newTemplate = addToTemplate(
+              template,
+              varname,
+              sectionCache[varname]
+            );
+            setTemplate({ newTemplate });
+          }
+
+          //remove section selector from page
+          setSelectorSec({ isVisible: false, position: undefined });
+        }
         break;
       case "updateSEC":
-        updateCardIndex(
-          dataObj.title,
-          dataObj.add,
-          display,
-          setDisplay,
-          template
-        );
+        {
+          const { add, cardIndex, numOfCards, index } = dataObj;
+          //update the display state with the new card selected
+          const updatedState = updateCardIndex(
+            display,
+            cardIndex + add,
+            numOfCards,
+            index
+          );
+          setDisplay([...updatedState]);
+        }
         break;
       case "selectSEC":
-        addSelectorSection(dataObj.index, setSelectorSec);
+        {
+          //update state to signify that a selector box should be inserted
+          const newState = addSelectorSection(dataObj.index);
+          setSelectorSec({ ...newState });
+          //fetch titles if not present int state.
+          if (Object.keys(selectorTitles).length === 0)
+            fetchTitles(setSelectorTitles);
+        }
+        break;
+      case "swapSEC":
+        {
+          const { sourceIndex, destIndex } = dataObj;
+          //create the new order for the display state
+          const newDisplay = updateSectionOrder(
+            sourceIndex,
+            destIndex,
+            display
+          );
+          setDisplay([...newDisplay]);
+        }
         break;
       default:
         console.log("error", dataObj);
@@ -101,12 +216,11 @@ function MainDisplay() {
 
   //DRAG DROP FUNCTIONALITY
   function dragEnd(e) {
-    updateSectionOrder(
-      e.source.index,
-      e.destination.index,
-      display,
-      setDisplay
-    );
+    handleSectionChange({
+      action: "swapSEC",
+      sourceIndex: e.source.index,
+      destIndex: e.destination.index,
+    });
   }
 
   return (

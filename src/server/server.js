@@ -3,15 +3,24 @@ const app = express();
 const port = process.env.PORT || 8081;
 const path = require("path");
 const cookieParser = require("cookie-parser");
-const controller = require("./controller");
 const cors = require("cors");
 require("dotenv").config();
+
+const controller = require("./controllers/controller");
+const sectionRouter = require("./routs/sections");
+const templateRouter = require("./routs/sections");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static("dist"));
-app.use(cors());
+// app.use(cors());
+
+//used to add a new section to the main page.
+app.use("/sections", sectionRouter);
+
+//used to CRUD templates
+app.use("/templates", templateRouter);
 
 //post request to /save
 app.post("/save", controller.saveCeremonyScript, (req, res) => {
@@ -33,7 +42,6 @@ app.get("/display", controller.loadPage, (req, res) => {
 
 //serve the original page
 app.get("/", (req, res) => {
-  console.log("hi");
   return res
     .status(200)
     .res.sendFile(path.resolve(__dirname, "../dist/index.html"));
