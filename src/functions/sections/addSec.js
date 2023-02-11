@@ -1,23 +1,3 @@
-//removes section from display
-function removeSection(index, display) {
-  const newOrder = [];
-  display.forEach((set, i) => {
-    if (i != index) newOrder.push(set);
-  });
-  return newOrder;
-}
-
-//receives the name of the section and the direction of the arrow and updates display state.
-function updateCardIndex(display, cardIndex, numOfCards, index) {
-  const displayCopy = [...display];
-  //check if cardIndex has exceeded the number of cards for this section
-  cardIndex =
-    cardIndex > numOfCards ? 0 : cardIndex < 0 ? numOfCards : cardIndex;
-  //update the card index
-  displayCopy[index][1] = cardIndex;
-  return [...displayCopy];
-}
-
 //adds section to the display
 function addSecToDisplay(varname, index, display, template) {
   const isInDisplay = display.some((e) => e[0] === varname);
@@ -44,6 +24,7 @@ function addSecToDisplay(varname, index, display, template) {
   };
 }
 
+//duplcate a section
 function duplicateSection(varname, newVarname, template) {
   const templateCopy = { ...template };
   const [_, suffix] = newVarname.split("~");
@@ -53,24 +34,21 @@ function duplicateSection(varname, newVarname, template) {
   return templateCopy;
 }
 
+//duplicate a varname
 function duplicateVarname(varname, template) {
   const suffixNum = template[varname].duplicates || 1;
   const newName = `${varname}~${suffixNum + 1}`;
   return newName;
 }
 
+//insert Section into display.
 function insertSection(varname, index, display) {
   const newOrder = [];
   display.forEach((set, i) => {
-    if (i == index) newOrder.push([varname, 0]);
+    if (i === index) newOrder.push([varname, 0]);
     newOrder.push([...set]);
   });
   return newOrder;
-}
-
-//add box selector to display
-function addSelectorSection(position) {
-  return { isVisible: true, position: parseInt(position) };
 }
 
 //add contents to cache
@@ -109,18 +87,4 @@ function fetchSection(varname, currTemplate, setCurrTemplate) {
     });
 }
 
-function createObjForState(varname, data, currState) {
-  const newState = { ...currState };
-  newState[varname] = data;
-  // setCurrState({ ...newState });
-  return newState;
-}
-
-export {
-  removeSection,
-  updateCardIndex,
-  addSecToDisplay,
-  addSelectorSection,
-  addContentsToCache,
-  fetchSection,
-};
+export { addSecToDisplay, fetchSection };

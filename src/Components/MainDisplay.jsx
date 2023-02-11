@@ -4,20 +4,17 @@ import templateElope from "../server/files/serverDB";
 import Header from "./Header";
 import Sections from "./Sections";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
-import { updateSectionOrder } from "../helper/dragdropFuncs";
+import { updateSectionOrder } from "../functions/mainPage/dragdropFuncs";
 import AddSectionButton from "./AddSectionButton";
 import SectionSelector from "./SectionSelector";
-import {
-  removeSection,
-  updateCardIndex,
-  addSecToDisplay,
-  addSelectorSection,
-  addContentsToCache,
-  fetchSection,
-} from "../helper/sectionFuncs";
-import { fetchTitles } from "../helper/selectorBoxFuncs";
-import { addToTemplate } from "../helper/templateFuncs";
-import { fillCacheWithNewSections } from "../helper/sectionCacheFuncs";
+import { addContentsToCache } from "../functions/cache/cache";
+import { addSecToDisplay, fetchSection } from "../functions/sections/addSec";
+import { addSelectorSection } from "../functions/sections/selectorSec";
+import { updateCardIndex } from "../functions/sections/updateSec";
+import { removeSection } from "../functions/sections/removeSec";
+import { fetchTitles } from "../functions/sections/selectorBoxFuncs";
+import { addToTemplate } from "../functions/template/templateFuncs";
+import { fillCacheWithNewSections } from "../functions/cache/sectionCacheFuncs";
 
 function MainDisplay() {
   //cache for all sections from templates and ones added by user during session

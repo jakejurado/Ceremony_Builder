@@ -33,7 +33,7 @@ body{
   display: grid;
   grid-template-rows: 2em 1fr 2em;
   margin: 2em auto 2em auto;
-  background-image: url('../public/assets/minimal8.jpeg');
+  background-image: url('../../public/assets/minimal8.jpeg');
  
 }
 

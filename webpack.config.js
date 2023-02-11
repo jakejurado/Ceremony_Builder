@@ -9,7 +9,7 @@ module.exports = {
     clean: true,
   },
   resolve: {
-    extensions: ["", ".js", ".jsx"],
+    extensions: [".ts", ".tsx", ".jsx", ".js"],
   },
   devtool: "source-map",
   module: {
@@ -20,6 +20,11 @@ module.exports = {
         use: {
           loader: "babel-loader",
         },
+      },
+      {
+        test: /\.(ts|tsx)$/,
+        use: "ts-loader",
+        exclude: /node_modules/,
       },
       {
         test: /\.css$/i,
