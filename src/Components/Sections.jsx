@@ -23,7 +23,7 @@ function Sections(props) {
   //delete section
   function handleXbutton(e) {
     const [_, index] = e.target.classList[0].split("-");
-    props.handleSectionChange({ index, action: "deleteSEC" });
+    props.handleSectionChange({ index: parseInt(index), action: "deleteSEC" });
   }
 
   return (

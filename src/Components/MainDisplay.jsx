@@ -1,23 +1,20 @@
-import React, { Component, useState, useEffect } from "react";
+import React, { useState, useEffect, useReducer } from "react";
 import templateWed from "../server/files/serverDB2";
 import templateElope from "../server/files/serverDB";
 import Header from "./Header";
 import Sections from "./Sections";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
-import { updateSectionOrder } from "../helper/dragdropFuncs";
+import { updateSectionOrder } from "../functions/mainPage/dragdropFuncs";
 import AddSectionButton from "./AddSectionButton";
 import SectionSelector from "./SectionSelector";
-import {
-  removeSection,
-  updateCardIndex,
-  addSecToDisplay,
-  addSelectorSection,
-  addContentsToCache,
-  fetchSection,
-} from "../helper/sectionFuncs";
-import { fetchTitles } from "../helper/selectorBoxFuncs";
-import { addToTemplate } from "../helper/templateFuncs";
-import { fillCacheWithNewSections } from "../helper/sectionCacheFuncs";
+import { addContentsToCache } from "../functions/cache/cache";
+import { addSecToDisplay, fetchSection } from "../functions/sections/addSec";
+import { addSelectorSection } from "../functions/sections/selectorSec";
+import { updateCardIndex } from "../functions/sections/updateSec";
+import { removeSection } from "../functions/sections/removeSec";
+import { fetchTitles } from "../functions/sections/selectorBoxFuncs";
+import { addToTemplate } from "../functions/template/templateFuncs";
+import { fillCacheWithNewSections } from "../functions/cache/sectionCacheFuncs";
 
 function MainDisplay() {
   //cache for all sections from templates and ones added by user during session
@@ -96,6 +93,8 @@ function MainDisplay() {
 
   for (let i = 0; i < display.length; i++) {
     let [varTitle, pos] = display[i];
+
+    //This occurs when the display is updated, but the template hasn't updated from the fetch yet.  skip that section until ready.
     if (!template.hasOwnProperty(varTitle)) continue;
 
     const { title, description, script } = template[varTitle];
@@ -113,7 +112,7 @@ function MainDisplay() {
         handleSectionChange={handleSectionChange}
       />
     );
-
+    //if the selector section is true and the index is at the position it should go, add the selector box
     if (SelectorSec.isVisible && i === SelectorSec.position) {
       loadSections.push(
         <SectionSelector
@@ -123,6 +122,7 @@ function MainDisplay() {
           handleSectionChange={handleSectionChange}
         />
       );
+      //otherwise add the plus button to add a section
     } else {
       loadSections.push(
         <AddSectionButton

@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-import "./App.css";
-import MainDisplay from "./Components/MainDisplay";
-import Sidebar from "./Components/Sidebar";
-import SidebarButton from "./Components/SidebarButton";
-import { openCloseSidebar } from "./helper/sidebarFuncs";
-import cbImage from "../public/assets/ceremonybuilder.png";
+import "../styles/App.css"
+import MainDisplay from "./MainDisplay";
+import Sidebar from "./Sidebar";
+import SidebarButton from "./SidebarButton";
+import { openCloseSidebar } from "../functions/mainPage/sidebarFuncs";
+// import cbImage from "../public/assets/ceremonybuilder.png";
 
 function App() {
   //keeps track of sidebar
