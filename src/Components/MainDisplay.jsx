@@ -1,4 +1,4 @@
-import React, { Component, useState, useEffect } from "react";
+import React, { useState, useEffect, useReducer } from "react";
 import templateWed from "../server/files/serverDB2";
 import templateElope from "../server/files/serverDB";
 import Header from "./Header";
@@ -93,6 +93,8 @@ function MainDisplay() {
 
   for (let i = 0; i < display.length; i++) {
     let [varTitle, pos] = display[i];
+
+    //This occurs when the display is updated, but the template hasn't updated from the fetch yet.  skip that section until ready.
     if (!template.hasOwnProperty(varTitle)) continue;
 
     const { title, description, script } = template[varTitle];
@@ -110,7 +112,7 @@ function MainDisplay() {
         handleSectionChange={handleSectionChange}
       />
     );
-
+    //if the selector section is true and the index is at the position it should go, add the selector box
     if (SelectorSec.isVisible && i === SelectorSec.position) {
       loadSections.push(
         <SectionSelector
@@ -120,6 +122,7 @@ function MainDisplay() {
           handleSectionChange={handleSectionChange}
         />
       );
+      //otherwise add the plus button to add a section
     } else {
       loadSections.push(
         <AddSectionButton
