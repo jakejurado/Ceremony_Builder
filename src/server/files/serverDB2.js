@@ -281,7 +281,7 @@ const allSections = {
   },
 };
 
-const template = {
+const templateWed = {
   giving_away: allSections.giving_away,
   openingRemarks1: allSections.opening_remarks1,
   opening_remarks2: allSections.opening_remarks2,
@@ -296,6 +296,30 @@ const template = {
   introduction: allSections.introduction,
 };
 
-module.exports = template;
+const templateWed2 = {
+  giving_away: allSections.giving_away,
+  openingRemarks1: allSections.opening_remarks1,
+  opening_remarks2: allSections.opening_remarks2,
+  declaration: allSections.declaration,
+  charge: allSections.charge,
+  vows_symbolism: allSections.vows_intro,
+  vows_content: allSections.vows_content,
+  ring_content: allSections.ring_content,
+  ring_exchange: allSections.ring_exchange,
+  pronouncement: allSections.pronouncement,
+  kiss: allSections.kiss,
+  introduction: allSections.introduction,
+  order: [],
+};
+
+for (const [title, data] of Object.entries(templateWed2)) {
+  if (title !== "order") {
+    templateWed2.order.push([title, data.start_pos]);
+  }
+}
+
+
+
+module.exports = { templateWed, templateWed2 };
 
 // console.log(JSON.stringify(allSections));

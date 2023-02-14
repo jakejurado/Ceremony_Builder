@@ -5,7 +5,8 @@ function AddSectionButton(props) {
   function handleClick(e) {
     const [title, index] = e.target.parentNode.classList[1].split("-");
     const newObj = { title, index, action: "selectSEC" };
-    props.handleSectionChange(newObj);
+    // props.handleSectionChange(newObj);
+    props.dispatch({ type: "selectSEC", payload: { title, index } });
   }
 
   return (

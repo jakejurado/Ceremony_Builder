@@ -1,26 +1,26 @@
-//adds section to the display
-function addSecToDisplay(varname, index, display, template) {
-  const isInDisplay = display.some((e) => e[0] === varname);
+//adds section to the order
+function addSecToOrder(varname, index, order, template) {
+  const isInOrder = order.some((e) => e[0] === varname);
 
-  //duplicate section if in already in display
-  if (isInDisplay) {
+  //duplicate section if varname is already in order
+  if (isInOrder) {
     const newVarname = duplicateVarname(varname, template);
     const dupSection = duplicateSection(varname, newVarname, template);
     // setTemplate({ ...dupSection });
-    const newDisplay = insertSection(newVarname, index, display);
+    const newOrder = insertSection(newVarname, index, order);
     return {
       varname: newVarname,
-      display: newDisplay,
+      order: newOrder,
       template: dupSection,
-      dup: isInDisplay,
+      dup: isInOrder,
     };
   }
-  const newDisplay = insertSection(varname, index, display);
+  const newOrder = insertSection(varname, index, order);
   return {
     varname: varname,
-    display: newDisplay,
+    order: newOrder,
     template: false,
-    dup: isInDisplay,
+    dup: isInOrder,
   };
 }
 
@@ -41,10 +41,10 @@ function duplicateVarname(varname, template) {
   return newName;
 }
 
-//insert Section into display.
-function insertSection(varname, index, display) {
+//insert Section into the order.
+function insertSection(varname, index, order) {
   const newOrder = [];
-  display.forEach((set, i) => {
+  order.forEach((set, i) => {
     if (i === index) newOrder.push([varname, 0]);
     newOrder.push([...set]);
   });
@@ -63,7 +63,7 @@ function addContentsToCache(arr, cache) {
 }
 
 //fetch specific section
-function fetchSection(varname, currTemplate, setCurrTemplate) {
+function fetchSection(varname, order, currTemplate, setState) {
   fetch(`/sections/grab?sec=${varname}`)
     .then((res) => res.json())
     .then((res) => {
@@ -78,13 +78,13 @@ function fetchSection(varname, currTemplate, setCurrTemplate) {
     })
     .then((sec) => {
       //update the template state
-      const newState = { ...currTemplate };
-      newState[varname] = { ...sec };
-      setCurrTemplate({ ...newState });
+      const newState = { ...currTemplate, [varname]: sec, order };
+      console.log({ newState });
+      setState({ type: "loadSEC", payload: newState });
     })
     .catch((error) => {
       console.error("Error occured in fetchTitles:", error);
     });
 }
 
-export { addSecToDisplay, fetchSection };
+export { addSecToOrder, fetchSection };
