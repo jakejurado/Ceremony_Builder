@@ -63,7 +63,7 @@ function addContentsToCache(arr, cache) {
 }
 
 //fetch specific section
-function fetchSection(varname, currTemplate, setCurrTemplate) {
+function fetchSection(varname, order, currTemplate, setState) {
   fetch(`/sections/grab?sec=${varname}`)
     .then((res) => res.json())
     .then((res) => {
@@ -78,9 +78,11 @@ function fetchSection(varname, currTemplate, setCurrTemplate) {
     })
     .then((sec) => {
       //update the template state
-      const newState = { ...currTemplate };
-      newState[varname] = { ...sec };
-      setCurrTemplate({ ...newState });
+      const newState = { ...currTemplate, [varname]: sec, order };
+      // newState[varname] = { ...sec, varname: sec, order };
+      console.log({ newState });
+      // setState({ type: "fetch", payload: newState });
+      setState(newState);
     })
     .catch((error) => {
       console.error("Error occured in fetchTitles:", error);

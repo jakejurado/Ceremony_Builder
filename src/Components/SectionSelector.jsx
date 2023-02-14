@@ -1,10 +1,14 @@
 import React from "react";
 
-function SectionSelector({ data, index, handleSectionChange }) {
+function SectionSelector({ data, index, handleSectionChange, dispatch }) {
   function handleClick(e) {
     const [_, varname] = e.target.classList[1].split("-");
     const res = { action: "addSEC", varname, index: parseInt(index) + 1 };
-    handleSectionChange(res);
+    // handleSectionChange(res);
+    dispatch({
+      type: "addSEC",
+      payload: { varname, index: parseInt(index) },
+    });
   }
 
   return (

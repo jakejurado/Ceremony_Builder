@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useReducer } from "react";
-import templateWed from "../server/files/serverDB2";
+import { templateWed, templateWed2 } from "../server/files/serverDB2";
 import templateElope from "../server/files/serverDB";
 import Header from "./Header";
 import Sections from "./Sections";
@@ -29,14 +29,8 @@ function MainDisplay() {
   //determines which template to be displayed.
   const [templateTitle, setTemplateTitle] = useState("wedding");
 
-  //holds the current selected template (object) that will be displayed on the page
-  const [template, setTemplate] = useState(templates[templateTitle]);
-
-  //orders title and card index in an array which React uses to display on the page.
-  const [display, setDisplay] = useState([]);
-
   //informs react when the section selector has been activated.
-  const [SelectorSec, setSelectorSec] = useState({
+  const [selectorSec, setSelectorSec] = useState({
     isVisible: false,
     position: undefined,
   });
@@ -66,39 +60,131 @@ function MainDisplay() {
     "Other Options": { "License Signing": "license_sign" },
   });
 
+  //holds Fetch Data
+  const [holdFetch, setHoldFetch] = useState(false);
+
+  //useReducer
+  const [templated, dispatch] = useReducer(reducer, templateWed2);
+
   //On page load, populate display state and cache state
   useEffect(() => {
-    //fills the display state with the current template
-    function prepDisplay(data) {
-      const tempOrder = [];
-      for (const [key, value] of Object.entries(data)) {
-        tempOrder.push([key, value.start_pos]);
-      }
-      return tempOrder;
-    }
-
-    setDisplay(prepDisplay(template));
     setSectionCache(addContentsToCache(templates, sectionCache));
   }, []);
 
-  //ORIGINAL SETUP FOR PAGELOAD
   useEffect(() => {
-    //update cache with new template
-    const cache = fillCacheWithNewSections(sectionCache, template, false);
-    setSectionCache(cache);
-  }, [template]);
+    let obj = { type: "initialLoad", payload: templates[templateTitle] };
+    if (holdFetch) {
+      obj = { type: "loadSEC", payload: holdFetch };
+      console.log("session cache");
+      const { order, ...sections } = holdFetch;
+      const newTemplate = fillCacheWithNewSections(sectionCache, sections);
+      setSectionCache(newTemplate);
+    }
+    dispatch(obj);
+  }, [holdFetch]);
+
+  function reducer(state, action) {
+    const { order, ...sections } = state;
+    const { type, payload } = action;
+
+    switch (type) {
+      case "addSEC": {
+        console.log("addSEC");
+        //update display
+        const { varname, index } = payload;
+        const res = addSecToDisplay(varname, index, order, sections);
+        // setDisplay([...res.display]);
+
+        //update Template if needed.
+        const isDuplicate = res.dup;
+        const notInTemplate = !sections.hasOwnProperty(varname);
+        const notInCache = !sectionCache.hasOwnProperty(varname);
+
+        let newTemplate = { ...sections };
+
+        if (isDuplicate) {
+          newTemplate = { ...res.template };
+        } else if (notInTemplate && notInCache) {
+          console.log("fetch");
+          let result = fetchSection(
+            varname,
+            res.display,
+            sections,
+            setHoldFetch
+          );
+          console.log({ result });
+        } else if (notInTemplate) {
+          newTemplate[varname] = sectionCache[varname];
+        }
+
+        //remove section selector from page
+        setSelectorSec({ isVisible: false, position: undefined });
+
+        const newO = { ...newTemplate, order: res.display };
+        console.log({ newO });
+        return newO;
+      }
+      case "loadSEC": {
+        return payload;
+      }
+      case "deleteSEC": {
+        const newOrder = removeSection(payload.index, order);
+        return { ...sections, order: newOrder };
+      }
+      case "updateSEC": {
+        const newOrder = updateCardIndex(order, payload);
+        return { order: newOrder, ...sections };
+      }
+      case "swapSEC": {
+        //create the new order for the display state
+        const newOrder = updateSectionOrder(order, payload);
+        return { order: newOrder, ...sections };
+      }
+      case "selectSEC": {
+        //fetch titles if not present int state.
+        if (Object.keys(selectorTitles).length === 0)
+          fetchTitles(setSelectorTitles);
+
+        //update state to signify that a selector box should be inserted.
+        const insertSelector = addSelectorSection(payload.index);
+        setSelectorSec(insertSelector);
+        return { ...sections, order };
+      }
+      case "fetch":
+        //the payload is the new fetched section added to the current template.
+        return payload;
+      case "initialLoad":
+        //loads the current state
+        return state;
+      default:
+        console.log("default");
+        return templateWed2;
+    }
+  }
+
+  //DRAG DROP FUNCTIONALITY
+  function dragEnd(e) {
+    dispatch({
+      type: "swapSEC",
+      payload: {
+        sourceIndex: e.source.index,
+        destIndex: e.destination.index,
+      },
+    });
+  }
 
   //loads the sections from the state in display.  Build the dom
   let loadSections = [];
+  const { order, ...rest } = templated;
 
-  for (let i = 0; i < display.length; i++) {
-    let [varTitle, pos] = display[i];
+  for (let i = 0; i < order.length; i++) {
+    let [varTitle, pos] = order[i];
 
     //This occurs when the display is updated, but the template hasn't updated from the fetch yet.  skip that section until ready.
-    if (!template.hasOwnProperty(varTitle)) continue;
+    if (!rest.hasOwnProperty(varTitle)) continue;
 
-    const { title, description, script } = template[varTitle];
-
+    const { title, description, script } = rest[varTitle];
+    // console.log(title, varTitle);
     loadSections.push(
       <Sections
         key={varTitle}
@@ -109,17 +195,17 @@ function MainDisplay() {
         varName={varTitle}
         cardIndex={pos}
         numOfCards={script.length - 1}
-        handleSectionChange={handleSectionChange}
+        dispatch={dispatch}
       />
     );
     //if the selector section is true and the index is at the position it should go, add the selector box
-    if (SelectorSec.isVisible && i === SelectorSec.position) {
+    if (selectorSec.isVisible && i === selectorSec.position) {
       loadSections.push(
         <SectionSelector
           key="selectorBox"
           data={selectorTitles}
           index={i}
-          handleSectionChange={handleSectionChange}
+          dispatch={dispatch}
         />
       );
       //otherwise add the plus button to add a section
@@ -129,98 +215,10 @@ function MainDisplay() {
           key={`addButton-${varTitle}-${i}`}
           belowSection={varTitle}
           index={i}
-          handleSectionChange={handleSectionChange}
+          dispatch={dispatch}
         />
       );
     }
-  }
-
-  function handleSectionChange(dataObj) {
-    switch (dataObj.action) {
-      case "deleteSEC":
-        {
-          //update the display state, removing selected section
-          const newDisplay = removeSection(dataObj.index, display);
-          setDisplay([...newDisplay]);
-        }
-        break;
-      case "addSEC":
-        {
-          //update display
-          const { varname, index } = dataObj;
-          const res = addSecToDisplay(varname, index, display, template);
-          setDisplay([...res.display]);
-
-          //update Template if needed.
-          const isDuplicate = res.dup;
-          const notInTemplate = !template.hasOwnProperty(varname);
-          const notInCache = !sectionCache.hasOwnProperty(varname);
-
-          if (isDuplicate) {
-            setTemplate({ ...res.template });
-          } else if (notInTemplate && notInCache) {
-            console.log("fetch");
-            fetchSection(varname, template, setTemplate);
-          } else if (notInTemplate) {
-            const newTemplate = addToTemplate(
-              template,
-              varname,
-              sectionCache[varname]
-            );
-            setTemplate({ newTemplate });
-          }
-
-          //remove section selector from page
-          setSelectorSec({ isVisible: false, position: undefined });
-        }
-        break;
-      case "updateSEC":
-        {
-          const { add, cardIndex, numOfCards, index } = dataObj;
-          //update the display state with the new card selected
-          const updatedState = updateCardIndex(
-            display,
-            cardIndex + add,
-            numOfCards,
-            index
-          );
-          setDisplay([...updatedState]);
-        }
-        break;
-      case "selectSEC":
-        {
-          //update state to signify that a selector box should be inserted
-          const newState = addSelectorSection(dataObj.index);
-          setSelectorSec({ ...newState });
-          //fetch titles if not present int state.
-          if (Object.keys(selectorTitles).length === 0)
-            fetchTitles(setSelectorTitles);
-        }
-        break;
-      case "swapSEC":
-        {
-          const { sourceIndex, destIndex } = dataObj;
-          //create the new order for the display state
-          const newDisplay = updateSectionOrder(
-            sourceIndex,
-            destIndex,
-            display
-          );
-          setDisplay([...newDisplay]);
-        }
-        break;
-      default:
-        console.log("error", dataObj);
-    }
-  }
-
-  //DRAG DROP FUNCTIONALITY
-  function dragEnd(e) {
-    handleSectionChange({
-      action: "swapSEC",
-      sourceIndex: e.source.index,
-      destIndex: e.destination.index,
-    });
   }
 
   return (

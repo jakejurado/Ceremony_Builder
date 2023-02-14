@@ -3,6 +3,7 @@ import WordCards from "./WordCards";
 import leftArrow from "../../public/assets/arrowLft.png";
 // import addButton from "../../public/assets/add.png";
 import { Draggable } from "react-beautiful-dnd";
+import { updateSectionOrder } from "../functions/mainPage/dragdropFuncs";
 
 function Sections(props) {
   //swaping cards
@@ -17,13 +18,17 @@ function Sections(props) {
       cardIndex: parseInt(cardIndex),
       numOfCards: parseInt(numOfCards),
     };
-    props.handleSectionChange(returnObj);
+
+    props.dispatch({ type: "updateSEC", payload: returnObj });
   }
 
   //delete section
   function handleXbutton(e) {
     const [_, index] = e.target.classList[0].split("-");
-    props.handleSectionChange({ index: parseInt(index), action: "deleteSEC" });
+    props.dispatch({
+      type: "deleteSEC",
+      payload: { index: parseInt(index) },
+    });
   }
 
   return (
