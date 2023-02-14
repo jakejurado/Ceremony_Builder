@@ -8,13 +8,14 @@ import { updateSectionOrder } from "../functions/mainPage/dragdropFuncs";
 import AddSectionButton from "./AddSectionButton";
 import SectionSelector from "./SectionSelector";
 import { addContentsToCache } from "../functions/cache/cache";
-import { addSecToDisplay, fetchSection } from "../functions/sections/addSec";
+import { addSecToOrder, fetchSection } from "../functions/sections/addSec";
 import { addSelectorSection } from "../functions/sections/selectorSec";
 import { updateCardIndex } from "../functions/sections/updateSec";
 import { removeSection } from "../functions/sections/removeSec";
 import { fetchTitles } from "../functions/sections/selectorBoxFuncs";
 import { addToTemplate } from "../functions/template/templateFuncs";
 import { fillCacheWithNewSections } from "../functions/cache/sectionCacheFuncs";
+import { updateTemplate } from "../functions/sections/updateTemplate";
 
 function MainDisplay() {
   //cache for all sections from templates and ones added by user during session
@@ -29,7 +30,7 @@ function MainDisplay() {
   //determines which template to be displayed.
   const [templateTitle, setTemplateTitle] = useState("wedding");
 
-  //informs react when the section selector has been activated.
+  //informs react when the section selector Box has been activated.
   const [selectorSec, setSelectorSec] = useState({
     isVisible: false,
     position: undefined,
@@ -59,29 +60,23 @@ function MainDisplay() {
     "Including Others": { "Last Kiss": "last_kiss" },
     "Other Options": { "License Signing": "license_sign" },
   });
+  // const [selectorTitles, setSelectorTitles] = useState({});
 
-  //holds Fetch Data
-  const [holdFetch, setHoldFetch] = useState(false);
+  //holds data that needs to update state asynchronously
+  const [updatedData, setUpdatedData] = useState(false);
 
-  //useReducer
-  const [templated, dispatch] = useReducer(reducer, templateWed2);
+  //holds the current template, which contains the sections and the order of the sections, used to fill the page.
+  const [template, dispatch] = useReducer(reducer, templateWed2);
 
   //On page load, populate display state and cache state
   useEffect(() => {
     setSectionCache(addContentsToCache(templates, sectionCache));
   }, []);
 
+  //updates state when new data is fetched or retrieved asynchronously
   useEffect(() => {
-    let obj = { type: "initialLoad", payload: templates[templateTitle] };
-    if (holdFetch) {
-      obj = { type: "loadSEC", payload: holdFetch };
-      console.log("session cache");
-      const { order, ...sections } = holdFetch;
-      const newTemplate = fillCacheWithNewSections(sectionCache, sections);
-      setSectionCache(newTemplate);
-    }
-    dispatch(obj);
-  }, [holdFetch]);
+    dispatch(updatedData);
+  }, [updatedData]);
 
   function reducer(state, action) {
     const { order, ...sections } = state;
@@ -89,42 +84,33 @@ function MainDisplay() {
 
     switch (type) {
       case "addSEC": {
-        console.log("addSEC");
-        //update display
+        //update order
         const { varname, index } = payload;
-        const res = addSecToDisplay(varname, index, order, sections);
-        // setDisplay([...res.display]);
+        const data = addSecToOrder(varname, index, order, sections);
 
         //update Template if needed.
-        const isDuplicate = res.dup;
-        const notInTemplate = !sections.hasOwnProperty(varname);
-        const notInCache = !sectionCache.hasOwnProperty(varname);
-
-        let newTemplate = { ...sections };
-
-        if (isDuplicate) {
-          newTemplate = { ...res.template };
-        } else if (notInTemplate && notInCache) {
-          console.log("fetch");
-          let result = fetchSection(
-            varname,
-            res.display,
-            sections,
-            setHoldFetch
-          );
-          console.log({ result });
-        } else if (notInTemplate) {
-          newTemplate[varname] = sectionCache[varname];
-        }
+        let newTemplate = updateTemplate(
+          varname,
+          sections,
+          data,
+          setUpdatedData,
+          sectionCache
+        );
 
         //remove section selector from page
         setSelectorSec({ isVisible: false, position: undefined });
 
-        const newO = { ...newTemplate, order: res.display };
-        console.log({ newO });
-        return newO;
+        //update state
+        return { ...newTemplate, order: data.order };
       }
       case "loadSEC": {
+        //this case is only ran after a section is fetched from the backend.
+        //update the section cache
+        const { order, ...sections } = payload;
+        const newCache = fillCacheWithNewSections(sectionCache, sections);
+        setSectionCache(newCache);
+
+        //update the state
         return payload;
       }
       case "deleteSEC": {
@@ -132,11 +118,12 @@ function MainDisplay() {
         return { ...sections, order: newOrder };
       }
       case "updateSEC": {
+        //changes the cardIndex of a section
         const newOrder = updateCardIndex(order, payload);
         return { order: newOrder, ...sections };
       }
-      case "swapSEC": {
-        //create the new order for the display state
+      case "moveSEC": {
+        //create the new order for the display state after drag and drop
         const newOrder = updateSectionOrder(order, payload);
         return { order: newOrder, ...sections };
       }
@@ -150,22 +137,22 @@ function MainDisplay() {
         setSelectorSec(insertSelector);
         return { ...sections, order };
       }
-      case "fetch":
-        //the payload is the new fetched section added to the current template.
-        return payload;
-      case "initialLoad":
+      case "initialLoad": {
         //loads the current state
         return state;
-      default:
+      }
+      default: {
+        // returns the current state
         console.log("default");
-        return templateWed2;
+        return state;
+      }
     }
   }
 
   //DRAG DROP FUNCTIONALITY
   function dragEnd(e) {
     dispatch({
-      type: "swapSEC",
+      type: "moveSEC",
       payload: {
         sourceIndex: e.source.index,
         destIndex: e.destination.index,
@@ -175,7 +162,7 @@ function MainDisplay() {
 
   //loads the sections from the state in display.  Build the dom
   let loadSections = [];
-  const { order, ...rest } = templated;
+  const { order, ...rest } = template;
 
   for (let i = 0; i < order.length; i++) {
     let [varTitle, pos] = order[i];
@@ -184,7 +171,6 @@ function MainDisplay() {
     if (!rest.hasOwnProperty(varTitle)) continue;
 
     const { title, description, script } = rest[varTitle];
-    // console.log(title, varTitle);
     loadSections.push(
       <Sections
         key={varTitle}

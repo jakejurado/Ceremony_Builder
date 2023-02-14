@@ -8,7 +8,8 @@
     "build": "webpack --mode production",
     "test": "jest",
     "n": "nodemon ./src/server/server.js",
-    "d": "webpack serve --open"
+    "d": "webpack serve --open",
+    "nw": "nodemon weback"
   },
   "repository": {
     "type": "git",
