@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useReducer } from "react";
+import React, { useState, useEffect, useReducer, useContext } from "react";
+import { GlobalContext } from "./App";
 import { templateWed, templateWed2 } from "../server/files/serverDB2";
 import templateElope from "../server/files/serverDB";
 import Header from "./Header";
@@ -21,14 +22,7 @@ function MainDisplay() {
   //cache for all sections from templates and ones added by user during session
   const [sectionCache, setSectionCache] = useState();
 
-  //holds all of the different templates in an array.
-  const [templates, setTemplates] = useState({
-    wedding: templateWed,
-    elope: templateElope,
-  });
-
-  //determines which template to be displayed.
-  const [templateTitle, setTemplateTitle] = useState("wedding");
+  const { currTemplate } = useContext(GlobalContext);
 
   //informs react when the section selector Box has been activated.
   const [selectorSec, setSelectorSec] = useState({
@@ -66,12 +60,14 @@ function MainDisplay() {
   const [updatedData, setUpdatedData] = useState(false);
 
   //holds the current template, which contains the sections and the order of the sections, used to fill the page.
-  const [template, dispatch] = useReducer(reducer, templateWed2);
+  const [template, dispatch] = useReducer(reducer, currTemplate);
 
   //On page load, populate display state and cache state
   useEffect(() => {
-    setSectionCache(addContentsToCache(templates, sectionCache));
-  }, []);
+    console.log("in useeffect");
+    setSectionCache(addContentsToCache(currTemplate, sectionCache));
+    dispatch({ type: "loadTEMPLATE", payload: currTemplate });
+  }, [currTemplate]);
 
   //updates state when new data is fetched or retrieved asynchronously
   useEffect(() => {
@@ -140,6 +136,9 @@ function MainDisplay() {
       case "initialLoad": {
         //loads the current state
         return state;
+      }
+      case "loadTEMPLATE": {
+        return payload;
       }
       default: {
         // returns the current state

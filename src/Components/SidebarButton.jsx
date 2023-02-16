@@ -1,16 +1,17 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "../styles/sidebarButton.css";
 
-function SidebarButton({ toggleSidebar }) {
+function SidebarButton({ toggleSidebarState }) {
   function handleClick() {
-    toggleSidebar();
+    toggleSidebarState();
   }
+  useEffect(() => {
+    document
+      .getElementById("sidebarButton")
+      .addEventListener("click", handleClick, { once: true });
+  });
 
-  return (
-    <div id="sidebarButton" onClick={handleClick} onKeyDown={handleClick}>
-      =
-    </div>
-  );
+  return <div id="sidebarButton">=</div>;
 }
 
 export default SidebarButton;

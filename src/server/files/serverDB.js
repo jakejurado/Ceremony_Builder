@@ -309,7 +309,7 @@ const allSections = {
       "<p>Great and Eternal Mystery of Life, Creator of All Things, I give thanks for the beauty You put in every single one of Your creations.<br/>I am grateful that You did not fail in making every stone, plant, creature, and human being a perfect and whole part of the Sacred Hoop.<br/>I am grateful that You have allowed me to see the strength and beauty of All My Relations.<br/>My humble request is that all of the Children of Earth will learn to see the same perfection in themselves.<br/>May none of Your human children doubt or question Your wisdom, grace, and sense of wholeness in giving all of Creation a right to be living extensions of Your perfect love. <br/>-Author Unknown</p>",
       "<p><strong> by Robert Louis Stevenson</strong><br/>Lord, behold our family here assembled.<br/>We thank you for this place in which we dwell,<br/>for the love that unites us,<br/>for the peace accorded to us this day,<br/>for the hope with which we expect the morrow;<br/>for the health, the work, the food and the bright <br/>skies that make our lives delightful;<br/>for our friends in all parts of the earth. Amen.</p>",
       "<p>Write your own...</p>",
-    ]
+    ],
   },
 
   unity_cocktail: {
@@ -368,8 +368,15 @@ const templateElope = {
   ring_exchange: allSections.ring_exchange,
   pronouncement: allSections.pronouncement,
   kiss: allSections.kiss,
-  introduction: allSections.introduction,
+  // introduction: allSections.introduction,
+  order: [],
 };
+
+for (const [title, data] of Object.entries(templateElope)) {
+  if (title !== "order") {
+    templateElope.order.push([title, data.start_pos]);
+  }
+}
 
 module.exports = templateElope;
 
