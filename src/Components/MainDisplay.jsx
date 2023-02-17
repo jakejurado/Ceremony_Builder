@@ -150,6 +150,8 @@ function MainDisplay() {
 
   //DRAG DROP FUNCTIONALITY
   function dragEnd(e) {
+    toggleDragStartStop();
+
     dispatch({
       type: "moveSEC",
       payload: {
@@ -158,6 +160,28 @@ function MainDisplay() {
       },
     });
   }
+
+  function createToggleDragStartStop() {
+    const nodes = [];
+    return (e) => {
+      if (!nodes.length) {
+        const [node] = document.getElementsByClassName(e.draggableId);
+        const removeBox = node.querySelector(".removeBox");
+        const addBox =
+          node.parentElement.nextElementSibling.querySelector(".circle");
+        removeBox.style.display = "none";
+        addBox.style.display = "none";
+        nodes.push(removeBox, addBox);
+      } else {
+        while (nodes.length) {
+          let node = nodes.pop();
+          node.style.display = "flex";
+        }
+      }
+    };
+  }
+
+  const toggleDragStartStop = createToggleDragStartStop();
 
   //loads the sections from the state in display.  Build the dom
   let loadSections = [];
@@ -209,7 +233,7 @@ function MainDisplay() {
   return (
     <div id="mainDisplay">
       <Header />
-      <DragDropContext onDragEnd={dragEnd}>
+      <DragDropContext onDragEnd={dragEnd} onDragStart={toggleDragStartStop}>
         <Droppable droppableId="sectiondrop">
           {(provided) => (
             <div

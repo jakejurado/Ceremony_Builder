@@ -20,7 +20,7 @@ function createSidebarToggle() {
 
       //show the button
       setTimeout(() => {
-        setStyle(sidebarButton, "display", "block");
+        setStyle(sidebarButton, "display", "flex");
       }, fullTime);
 
       //main page opacity back to normal

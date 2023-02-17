@@ -2,8 +2,9 @@ import React, { Component, useState } from "react";
 import WordCards from "./WordCards";
 import leftArrow from "../../public/assets/arrowLft.png";
 import leftArrowF from "../../public/assets/arrowLftFull.png";
-
-import addButton from "../../public/assets/add.png";
+import boxBackground from "../files/minimal8.jpeg";
+import boxBackground2 from "../files/minimal9.png";
+import closeButton from "../../public/assets/plus-circle.svg";
 import { Draggable } from "react-beautiful-dnd";
 import "../styles/sections.css";
 
@@ -92,7 +93,7 @@ function Sections(props) {
             </div>
             <div className="removeBox">
               <img
-                src={addButton}
+                src={closeButton}
                 alt="x for closing the section box"
                 className={`${props.varName}-${props.id} remove`}
                 onClick={handleXbutton}

@@ -9,6 +9,7 @@
 /* Set Variables */
 :root {
   --mainBlack: rgb(15, 15, 15);
+  --blackLight: rgb(65, 65, 65);
   --mainPink: #FF5DC7;
   --mainYellow: #989534;
   --mainRed: #rgb(193, 93, 93);

@@ -1,6 +1,5 @@
 import React from "react";
-import addButton from "../../public/assets/add.png";
-import addButton2 from "../../public/assets/addFull.png";
+import addButton from "../../public/assets/plus-circle.svg";
 import "../styles/addSectionButton.css";
 
 function AddSectionButton(props) {
@@ -12,15 +11,17 @@ function AddSectionButton(props) {
   }
 
   return (
-    <li className={`addSectionButton ${props.belowSection}-${props.index}`}>
-      <img
-        className="addButtonImg"
-        src={addButton}
-        alt="add section button"
-        onClick={handleClick}
-        onKeyDown={handleClick}
-      />
-    </li>
+    <div className={`addSectionButton ${props.belowSection}-${props.index}`}>
+      <div className={`circle ${props.belowSection}-${props.index}`}>
+        <img
+          className="addButtonImg"
+          src={addButton}
+          alt="add section button"
+          onClick={handleClick}
+          onKeyDown={handleClick}
+        />
+      </div>
+    </div>
   );
 }
 

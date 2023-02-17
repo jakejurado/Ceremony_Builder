@@ -6,27 +6,46 @@
 
 
 .removeBox{
+  display: flex;
   width: 5vw;
   height: 5vw;
   border-radius: 50%;
-  box-shadow: 5px 10px 10px rgb(74 74 74);
+  box-shadow: 5px 10px 10px rgb(85 85 85);
 }
+
+@keyframes fadeInAnimation {
+  0% {
+      opacity: 0;
+  }
+  100% {
+      opacity: 1;
+   }
+}
+
+.fadeIn{
+  animation: fadeInAnimation ease 4s;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+}
+
+
 .remove {
   width: 100%;
   border-radius: 50%;
-  /* background-color: rgb(193, 93, 93); */
   transform: rotate(45deg);
-  -webkit-transition: transform 1s;
-  -moz-transition: transform 1s;
-  transition: transform 1s;
+  -webkit-transition: transform 2s;
+  -moz-transition: transform 2s;
+  transition: transform 2s;
 }
 
 .remove:hover{
+  background-color: rgb(193, 93, 93);
   -moz-transform: rotate(310deg);
   -webkit-transform: rotate(310deg);
   -o-transform: rotate(310deg);
   -ms-transform: rotate(310deg);
   transform: rotate(310deg);
+
 }
 
 .innerBox {
@@ -37,8 +56,6 @@
   align-self: center;
   height: 30vw;
   background-color: white;
-  background-image: url(../../public/assets/minimal8.jpeg) ;
-  background-repeat:repeat;
   margin: 2%;
   border: outset;
   box-shadow: 5px 10px 10px rgb(74, 74, 74);
