@@ -1,0 +1,28 @@
+
+.addSectionButton{
+  display: flex;
+  justify-content: center;
+  list-style-type: none;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.addButtonImg{
+  width: 5vw;
+  border-radius: 50%;
+  /* background-color:rgb(120, 238, 120); */
+  margin: 3% 0 3% 0;
+
+  -webkit-transition: transform 1s;
+  -moz-transition: transform 1s;
+  transition: transform 1s;
+}
+
+.addButtonImg:hover{
+  border-radius: 50%;
+  -moz-transform: rotate(360deg);
+  -webkit-transform: rotate(360deg);
+  -o-transform: rotate(360deg);
+  -ms-transform: rotate(360deg);
+  transform: rotate(360deg);
+}

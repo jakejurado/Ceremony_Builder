@@ -1,9 +1,11 @@
 import React, { Component, useState } from "react";
 import WordCards from "./WordCards";
 import leftArrow from "../../public/assets/arrowLft.png";
-// import addButton from "../../public/assets/add.png";
+import leftArrowF from "../../public/assets/arrowLftFull.png";
+
+import addButton from "../../public/assets/add.png";
 import { Draggable } from "react-beautiful-dnd";
-import { updateSectionOrder } from "../functions/mainPage/dragdropFuncs";
+import "../styles/sections.css";
 
 function Sections(props) {
   //swaping cards
@@ -31,6 +33,14 @@ function Sections(props) {
     });
   }
 
+  function toggleImage(e) {
+    e.target.src = e.target.src === leftArrow ? leftArrowF : leftArrow;
+  }
+
+  function toggleInsetClass(e) {
+    e.target.classList.toggle("inset");
+  }
+
   return (
     <Draggable draggableId={props.varName} index={props.id}>
       {(provided) => (
@@ -39,40 +49,55 @@ function Sections(props) {
           {...provided.dragHandleProps}
           ref={provided.innerRef}
         >
-          <div className={`${props.varName} section box_index-${props.id}`}>
-            <div className="deleteMove">
-              <button type="button">M</button>
-              <h3> {props.title}</h3>
-              <button
-                className={`${props.varName}-${props.id}`}
-                onClick={handleXbutton}
-              >
-                X
-              </button>
+          <div
+            id="section"
+            className={`${props.varName} section box_index-${props.id}`}
+          >
+            <div className="innerBox">
+              <div className="title">
+                <h3>{props.title}</h3>
+              </div>
+              <div className="middleBox">
+                <img
+                  src={leftArrow}
+                  alt="left arrow to go to previous card"
+                  className={`leftClick-${props.varName}-${props.id}-${props.cardIndex}-${props.numOfCards} lArrow`}
+                  onClick={handleLeftRightClick}
+                  onKeyDown={handleLeftRightClick}
+                  onMouseEnter={toggleImage}
+                  onMouseLeave={toggleImage}
+                  onMouseDown={toggleInsetClass}
+                  onMouseUp={toggleInsetClass}
+                />
+                <WordCards
+                  className={`${props.varName}`}
+                  key={`${props.varName}`}
+                  id={`${props.varName}`}
+                  cardContent={props.cardContent}
+                  cardIndex={props.cardIndex}
+                  class={`${props.varName}-${props.cardIndex}`}
+                />
+                <img
+                  src={leftArrow}
+                  alt="right arrow to go to next card"
+                  className={`rightClick-${props.varName}-${props.id}-${props.cardIndex}-${props.numOfCards} rArrow`}
+                  onClick={handleLeftRightClick}
+                  onKeyDown={handleLeftRightClick}
+                  onMouseEnter={toggleImage}
+                  onMouseLeave={toggleImage}
+                  onMouseDown={toggleInsetClass}
+                  onMouseUp={toggleInsetClass}
+                />
+              </div>
             </div>
-            <div className="OuterBox">
-              <button
-                id="leftClick"
-                className={`leftClick-${props.varName}-${props.id}-${props.cardIndex}-${props.numOfCards}`}
-                onClick={handleLeftRightClick}
-              >
-                left
-              </button>
-              <WordCards
-                className={`${props.varName}`}
-                key={`${props.varName}`}
-                id={`${props.varName}`}
-                cardContent={props.cardContent}
-                cardIndex={props.cardIndex}
-                class={`${props.varName}-${props.cardIndex}`}
+            <div className="removeBox">
+              <img
+                src={addButton}
+                alt="x for closing the section box"
+                className={`${props.varName}-${props.id} remove`}
+                onClick={handleXbutton}
+                onKeyDown={handleXbutton}
               />
-              <button
-                id="rightClick"
-                className={`rightClick-${props.varName}-${props.id}-${props.cardIndex}-${props.numOfCards}`}
-                onClick={handleLeftRightClick}
-              >
-                right
-              </button>
             </div>
           </div>
         </div>

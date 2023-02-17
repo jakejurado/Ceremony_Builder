@@ -17,7 +17,7 @@ import { fetchTitles } from "../functions/sections/selectorBoxFuncs";
 import { addToTemplate } from "../functions/template/templateFuncs";
 import { fillCacheWithNewSections } from "../functions/cache/sectionCacheFuncs";
 import { updateTemplate } from "../functions/sections/updateTemplate";
-
+import Section from "./Sections";
 function MainDisplay() {
   //cache for all sections from templates and ones added by user during session
   const [sectionCache, setSectionCache] = useState();
@@ -171,7 +171,7 @@ function MainDisplay() {
 
     const { title, description, script } = rest[varTitle];
     loadSections.push(
-      <Sections
+      <Section
         key={varTitle}
         id={i}
         title={title}

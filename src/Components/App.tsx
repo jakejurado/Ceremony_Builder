@@ -6,6 +6,7 @@ import SidebarButton from "./SidebarButton";
 import { toggleSidebar } from "../functions/mainPage/sidebarFuncs";
 import { templateWed, templateWed2 } from "../server/files/serverDB2";
 import templateElope from "../server/files/serverDB";
+import AccountBox from "./AccountBox";
 
 // import cbImage from "../public/assets/ceremonybuilder.png";
 
@@ -17,7 +18,7 @@ function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   //keeps track of accountBox state
-  const [isAcctBox, setAcctBox] = useState(true);
+  const [isAcctBox, setAcctBox] = useState(false);
 
   //stores the templates
   const [templates, setTemplates] = useState({
@@ -58,6 +59,7 @@ function App() {
           setTemplateTitle,
         }}
       >
+        {isAcctBox && <AccountBox />}
         <SidebarButton
           toggleSidebarState={() => setSidebarOpen(!sidebarOpen)}
         />
