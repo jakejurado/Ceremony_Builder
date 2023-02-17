@@ -56,7 +56,7 @@ function Sections(props) {
           >
             <div className="innerBox">
               <div className="title">
-                <h3>{props.title}</h3>
+                <h3 title={props.description}>{props.title}</h3>
               </div>
               <div className="middleBox">
                 <img

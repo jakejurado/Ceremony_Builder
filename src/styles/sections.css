@@ -4,15 +4,6 @@
   width: 100%;
 }
 
-
-.removeBox{
-  display: flex;
-  width: 5vw;
-  height: 5vw;
-  border-radius: 50%;
-  box-shadow: 5px 10px 10px rgb(85 85 85);
-}
-
 @keyframes fadeInAnimation {
   0% {
       opacity: 0;
@@ -28,6 +19,13 @@
   animation-fill-mode: forwards;
 }
 
+.removeBox{
+  display: flex;
+  width: 5vw;
+  height: 5vw;
+  border-radius: 50%;
+  box-shadow: 5px 10px 10px rgb(85 85 85);
+}
 
 .remove {
   width: 100%;
@@ -92,6 +90,8 @@
   border:inset;
 }
 .cards{
+  grid-column-start: 2;
+  grid-column-end: 3;
   height: 100%;
   border: solid;
   border-width: thin;
@@ -104,3 +104,23 @@
   line-height: 1.5;
 
 }
+
+
+/* SELECTOR BOX */
+.selections{
+  text-align: center;
+}
+.sectionCategory{
+  margin: 3% 0 3% 0;
+  list-style-type: none;
+}
+
+.sectionTitle{
+  margin: 1%;
+}
+.sectionTitle:hover{
+  border: solid;
+  background-color: white;
+  cursor: pointer;
+}
+
