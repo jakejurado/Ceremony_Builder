@@ -1,4 +1,6 @@
 import React from "react";
+import "../styles/sections.css";
+import backgroundImage from "../files/minimal9.png";
 
 function SectionSelector({ data, index, handleSectionChange, dispatch }) {
   function handleClick(e) {
@@ -13,25 +15,36 @@ function SectionSelector({ data, index, handleSectionChange, dispatch }) {
 
   return (
     <div className="selectorBox">
-      <ul>
-        {Object.entries(data).map(([category, obj]) => (
-          <li key={category} className={"sectionCategory selector-category"}>
-            <b>{category}</b>:
-            <ul>
-              {Object.entries(obj).map(([title, varname]) => (
-                <li
-                  key={title}
-                  className={`sectionTitle selector-${varname}`}
-                  onClick={handleClick}
-                  onKeyDown={handleClick}
-                >
-                  {title}
-                </li>
-              ))}
-            </ul>
-          </li>
-        ))}
-      </ul>
+      <div
+        className="innerBox"
+        style={{ backgroundImage: `url(${backgroundImage})` }}
+      >
+        <div className="title">
+          <h3>Section Selector</h3>
+        </div>
+        <div className="middleBox">
+          <div className="cards selections">
+            {Object.entries(data).map(([category, obj]) => (
+              <ul
+                key={category}
+                className={"sectionCategory selector-category"}
+              >
+                <h3>{category}:</h3>
+                {Object.entries(obj).map(([title, varname]) => (
+                  <li
+                    key={title}
+                    className={`sectionTitle selector-${varname}`}
+                    onClick={handleClick}
+                    onKeyDown={handleClick}
+                  >
+                    {title}
+                  </li>
+                ))}
+              </ul>
+            ))}
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

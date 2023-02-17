@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useReducer } from "react";
+import React, { useState, useEffect, useReducer, useContext } from "react";
+import { GlobalContext } from "./App";
 import { templateWed, templateWed2 } from "../server/files/serverDB2";
 import templateElope from "../server/files/serverDB";
 import Header from "./Header";
@@ -16,19 +17,12 @@ import { fetchTitles } from "../functions/sections/selectorBoxFuncs";
 import { addToTemplate } from "../functions/template/templateFuncs";
 import { fillCacheWithNewSections } from "../functions/cache/sectionCacheFuncs";
 import { updateTemplate } from "../functions/sections/updateTemplate";
-
+import Section from "./Sections";
 function MainDisplay() {
   //cache for all sections from templates and ones added by user during session
   const [sectionCache, setSectionCache] = useState();
 
-  //holds all of the different templates in an array.
-  const [templates, setTemplates] = useState({
-    wedding: templateWed,
-    elope: templateElope,
-  });
-
-  //determines which template to be displayed.
-  const [templateTitle, setTemplateTitle] = useState("wedding");
+  const { currTemplate } = useContext(GlobalContext);
 
   //informs react when the section selector Box has been activated.
   const [selectorSec, setSelectorSec] = useState({
@@ -66,12 +60,14 @@ function MainDisplay() {
   const [updatedData, setUpdatedData] = useState(false);
 
   //holds the current template, which contains the sections and the order of the sections, used to fill the page.
-  const [template, dispatch] = useReducer(reducer, templateWed2);
+  const [template, dispatch] = useReducer(reducer, currTemplate);
 
   //On page load, populate display state and cache state
   useEffect(() => {
-    setSectionCache(addContentsToCache(templates, sectionCache));
-  }, []);
+    console.log("in useeffect");
+    setSectionCache(addContentsToCache(currTemplate, sectionCache));
+    dispatch({ type: "loadTEMPLATE", payload: currTemplate });
+  }, [currTemplate]);
 
   //updates state when new data is fetched or retrieved asynchronously
   useEffect(() => {
@@ -141,6 +137,9 @@ function MainDisplay() {
         //loads the current state
         return state;
       }
+      case "loadTEMPLATE": {
+        return payload;
+      }
       default: {
         // returns the current state
         console.log("default");
@@ -151,6 +150,8 @@ function MainDisplay() {
 
   //DRAG DROP FUNCTIONALITY
   function dragEnd(e) {
+    toggleDragStartStop();
+
     dispatch({
       type: "moveSEC",
       payload: {
@@ -159,6 +160,28 @@ function MainDisplay() {
       },
     });
   }
+
+  function createToggleDragStartStop() {
+    const nodes = [];
+    return (e) => {
+      if (!nodes.length) {
+        const [node] = document.getElementsByClassName(e.draggableId);
+        const removeBox = node.querySelector(".removeBox");
+        const addBox =
+          node.parentElement.nextElementSibling.querySelector(".circle");
+        removeBox.style.display = "none";
+        addBox.style.display = "none";
+        nodes.push(removeBox, addBox);
+      } else {
+        while (nodes.length) {
+          let node = nodes.pop();
+          node.style.display = "flex";
+        }
+      }
+    };
+  }
+
+  const toggleDragStartStop = createToggleDragStartStop();
 
   //loads the sections from the state in display.  Build the dom
   let loadSections = [];
@@ -172,7 +195,7 @@ function MainDisplay() {
 
     const { title, description, script } = rest[varTitle];
     loadSections.push(
-      <Sections
+      <Section
         key={varTitle}
         id={i}
         title={title}
@@ -210,7 +233,7 @@ function MainDisplay() {
   return (
     <div id="mainDisplay">
       <Header />
-      <DragDropContext onDragEnd={dragEnd}>
+      <DragDropContext onDragEnd={dragEnd} onDragStart={toggleDragStartStop}>
         <Droppable droppableId="sectiondrop">
           {(provided) => (
             <div

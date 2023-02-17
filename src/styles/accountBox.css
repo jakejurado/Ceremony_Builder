@@ -1,0 +1,18 @@
+#accountBox{
+  position:fixed;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 50vw;
+  height: 50vh;
+  align-items:flex-end;
+  font-size: 2em;
+  margin: 0 auto 0 auto;
+  padding: .5em .75em .5em .75em;
+  background-color: var(--mainYellow);
+  z-index: 4;
+  box-shadow: .05em .05em rgb(234, 234, 234);
+}
+
+
+
