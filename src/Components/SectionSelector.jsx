@@ -1,5 +1,5 @@
 import React from "react";
-import "../styles/sections.css";
+import "../styles/sections.scss";
 import backgroundImage from "../files/minimal9.png";
 
 function SectionSelector({ data, index, handleSectionChange, dispatch }) {

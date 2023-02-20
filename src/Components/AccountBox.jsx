@@ -1,5 +1,5 @@
 import React from "react";
-import "../styles/accountBox.css";
+import "../styles/accountBox.scss";
 
 function AccountBox() {
   return (

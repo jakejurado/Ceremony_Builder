@@ -2,6 +2,7 @@
   display: grid;
   grid-template-columns: 50px 1fr 50px;
   width: 100%;
+  transition: width 2s;
 }
 
 @keyframes fadeInAnimation {
@@ -57,6 +58,7 @@
   margin: 2%;
   border: outset;
   box-shadow: 5px 10px 10px rgb(74, 74, 74);
+  transition: height 1s;
 }
 
 .title {
@@ -95,7 +97,7 @@
   height: 100%;
   border: solid;
   border-width: thin;
-  background-color: rgba(255, 221, 244, 0.7);
+  background-color: rgba(255, 221, 244, 0.9);
   color:rgb(32, 32, 32);
   border-style: inset;
   width: 100%;
@@ -107,6 +109,10 @@
 
 
 /* SELECTOR BOX */
+.selectorBox{
+  width: 60%;
+  margin: 7% auto 7% auto;
+}
 .selections{
   text-align: center;
 }

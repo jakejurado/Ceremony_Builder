@@ -1,13 +1,22 @@
 #sideBar{
   position: fixed;
-  align-self: flex-start;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   top: 0;
   width: 33%;
   height: 100%;
   /* border: thin solid black; */
   margin: 0;
-  background-color: bisque;
+  /* background-color: bisque; */
+  background-color: rgba(255, 221, 244);
   box-shadow: .15em .15em grey;
   z-index: 2;
   transition: width 2s;
 }
+
+#login{
+  font-size: 1em;
+  color: white;
+}
+

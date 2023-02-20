@@ -1,0 +1,52 @@
+/* Reset default browser styles */
+// @import url(./global.scss);
+@use "./_variables.scss" as v;
+
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+
+/* Global styles */
+body {
+  font-family: v.$blackMain;
+  color: v.$blackMain;
+  font-size: v.$fontSizeMed;
+  background-color: v.$whiteMain;
+}
+
+a {
+  color: v.$blackMain;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+  color: v.$yellowMain;
+}
+
+
+/* APP Component */
+.App {
+  width: 100%;
+  /* background-image: linear-gradient(#f4eaeb, white); */
+}
+
+
+/* MainDisplay Component */
+#mainDisplay{
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+
+
+
+
+
+

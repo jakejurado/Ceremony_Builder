@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import "../styles/sidebarButton.css";
+import "../styles/sidebarButton.scss";
 import hamburger from "../../public/assets/menu_open_FILL0_wght400_GRAD0_opsz48.svg";
 
 function SidebarButton({ toggleSidebarState }) {

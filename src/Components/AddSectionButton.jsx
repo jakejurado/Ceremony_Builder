@@ -1,6 +1,6 @@
 import React from "react";
 import addButton from "../../public/assets/plus-circle.svg";
-import "../styles/addSectionButton.css";
+import "../styles/addSectionButton.scss";
 
 function AddSectionButton(props) {
   function handleClick(e) {

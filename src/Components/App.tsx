@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext, createContext } from "react";
-import "../styles/App.css";
+import "../styles/App.scss";
 import MainDisplay from "./MainDisplay";
 import Sidebar from "./Sidebar";
 import SidebarButton from "./SidebarButton";
@@ -15,7 +15,7 @@ export const GlobalContext = createContext(null);
 
 function App() {
   //keeps track of sidebar state
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(true);
 
   //keeps track of accountBox state
   const [isAcctBox, setAcctBox] = useState(false);
