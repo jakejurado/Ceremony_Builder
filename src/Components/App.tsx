@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useContext, createContext } from "react";
-import "../styles/App.scss";
 import MainDisplay from "./MainDisplay";
 import Sidebar from "./Sidebar";
 import SidebarButton from "./SidebarButton";
@@ -7,8 +6,7 @@ import { toggleSidebar } from "../functions/mainPage/sidebarFuncs";
 import { templateWed, templateWed2 } from "../server/files/serverDB2";
 import templateElope from "../server/files/serverDB";
 import AccountBox from "./AccountBox";
-
-// import cbImage from "../public/assets/ceremonybuilder.png";
+import "../styles/main.scss";
 
 //global context
 export const GlobalContext = createContext(null);
@@ -60,6 +58,11 @@ function App() {
         }}
       >
         {isAcctBox && <AccountBox />}
+
+        {/* <div id="sidebarButton" className="buttonLg">
+          <img id="ham" src={hamburger} alt="symbole for menu" />
+        </div> */}
+
         <SidebarButton
           toggleSidebarState={() => setSidebarOpen(!sidebarOpen)}
         />

@@ -1,14 +1,13 @@
 import React, { useContext } from "react";
 import SideBarTemplate from "./SidebarTemplate";
-import "../styles/sidebar.scss";
 
 function Sidebar({ templates, templateTitle, selectTemplate }) {
   return (
     <div id="sideBar">
-      <div id="login">logIn / create account</div>
+      <div id="login">sign in | sign up</div>
       <SideBarTemplate />
-      <div>Names</div>
-      <div>Your Templates</div>
+      {/* <div>Names</div> */}
+      {/* <div>Your Templates</div> */}
       <div>Save Current</div>
     </div>
   );

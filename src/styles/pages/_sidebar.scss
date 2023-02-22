@@ -1,3 +1,5 @@
+@use "../variables" as v;
+
 #sideBar{
   position: fixed;
   display: flex;
@@ -6,17 +8,25 @@
   top: 0;
   width: 33%;
   height: 100%;
-  /* border: thin solid black; */
-  margin: 0;
+  // border: thin solid black;
   /* background-color: bisque; */
-  background-color: rgba(255, 221, 244);
+  background-color: v.$pinkMain;
   box-shadow: .15em .15em grey;
   z-index: 2;
   transition: width 2s;
 }
 
 #login{
-  font-size: 1em;
+  font-size: v.$fontSizeMedSm;
   color: white;
+  align-self: flex-end;
+  margin: 0 0 3vw 0;
+  padding: 1vw;
+}
+
+#sidebarButton{
+  position:fixed;
+  margin: 14% 0 0 1%;
+  z-index: 3;
 }
 

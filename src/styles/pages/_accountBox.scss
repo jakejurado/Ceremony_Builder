@@ -1,3 +1,5 @@
+@use '../variables' as v;
+
 #accountBox{
   position:fixed;
   display: flex;
@@ -9,7 +11,7 @@
   font-size: 2em;
   margin: 0 auto 0 auto;
   padding: .5em .75em .5em .75em;
-  background-color: var(--mainYellow);
+  background-color: v.$yellowMain;
   z-index: 4;
   box-shadow: .05em .05em rgb(234, 234, 234);
 }

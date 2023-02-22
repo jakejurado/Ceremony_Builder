@@ -4,7 +4,7 @@ import leftArrow from "../../public/assets/arrowLft.png";
 import leftArrowF from "../../public/assets/arrowLftFull.png";
 import closeButton from "../../public/assets/plus-circle.svg";
 import { Draggable } from "react-beautiful-dnd";
-import "../styles/sections.scss";
+// import "../styles/sections.scss";
 
 function Sections(props) {
   //swaping cards
@@ -43,9 +43,6 @@ function Sections(props) {
     sec.style.width = "0px";
     //END OF SHRINKS
 
-    
-
-
     const [_, index] = e.target.classList[0].split("-");
 
     setTimeout(() => {
@@ -78,7 +75,7 @@ function Sections(props) {
           >
             <div className="innerBox">
               <div className="title">
-                <h3 title={props.description}>{props.title}</h3>
+                <b title={props.description}>{props.title}</b>
               </div>
               <div className="middleBox">
                 <img
@@ -113,11 +110,11 @@ function Sections(props) {
                 />
               </div>
             </div>
-            <div className="removeBox">
+            <div className="removeButton">
               <img
                 src={closeButton}
                 alt="x for closing the section box"
-                className={`${props.varName}-${props.id} remove`}
+                className={`${props.varName}-${props.id}`}
                 onClick={handleXbutton}
                 onKeyDown={handleXbutton}
               />

@@ -1,1 +1,12 @@
-@use "./_variables.scss" as v;
+
+
+@import "./base/reset";
+@import "./components/buttons.scss";
+@import "./pages/_sidebar";
+@import "./pages/_header.scss";
+@import "./pages/_mainDisplay";
+@import "./pages/_sections";
+@import "./pages/accountBox";
+@import "./pages/addSectionButton";
+
+

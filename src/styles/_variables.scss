@@ -2,6 +2,7 @@ $blackMain: rgb(15, 15, 15);
 $blackLight: rgb(65, 65, 65);
 $pinkMain: rgb(255, 221, 244);
 $yellowMain: #989534;
+$yellowSecond: rgb(255, 248, 166);
 $redMain: rgb(193, 93, 93);
 $whiteMain: rgb(251, 251, 243);
 $fontMain: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
@@ -9,8 +10,9 @@ $fontSecond: 'Courier New', Courier, monospace;
 $fontSizeXLg: 4vw;
 $fontSizeLg: 3vw;
 $fontSizeMed: 2vw;
+$fontSizeMedSm: 1.5vw;
 $fontSizeSm: 1vw;
-$fontSizeTiny: 0.5vw;
+$fontSizeTiny: 0.75vw;
 
 
 @media screen and (min-width: 1200px) {
