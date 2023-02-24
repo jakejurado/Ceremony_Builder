@@ -1,5 +1,4 @@
 import React from "react";
-// import "../styles/header.scss";
 import cbImage from "../../public/assets/ceremonybuilder.png";
 
 function Header() {

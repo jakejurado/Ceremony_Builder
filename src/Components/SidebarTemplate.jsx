@@ -17,7 +17,7 @@ function SideBarTemplate() {
   });
 
   return (
-    <div id="sidebarTemplate">
+    <div className="sidebarTemplate sidebarElements">
       <h2>TEMPLATES</h2>
       <SelectorOptionMenu options={templateTitles} />
     </div>

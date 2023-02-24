@@ -1,13 +1,18 @@
 import React, { useState, useEffect, useReducer, useContext } from "react";
+// Global State
 import { GlobalContext } from "./App";
-import { templateWed, templateWed2 } from "../server/files/serverDB2";
-import templateElope from "../server/files/serverDB";
+
+//React Components
 import Header from "./Header";
-import Sections from "./Sections";
-import { DragDropContext, Droppable } from "react-beautiful-dnd";
-import { updateSectionOrder } from "../functions/mainPage/dragdropFuncs";
+import Section from "./Sections";
 import AddSectionButton from "./AddSectionButton";
 import SectionSelector from "./SectionSelector";
+
+//Installed Help
+import { DragDropContext, Droppable } from "react-beautiful-dnd";
+
+//Supporting Functions
+import { updateSectionOrder } from "../functions/mainPage/dragdropFuncs";
 import { addContentsToCache } from "../functions/cache/cache";
 import { addSecToOrder, fetchSection } from "../functions/sections/addSec";
 import { addSelectorSection } from "../functions/sections/selectorSec";
@@ -17,11 +22,13 @@ import { fetchTitles } from "../functions/sections/selectorBoxFuncs";
 import { addToTemplate } from "../functions/template/templateFuncs";
 import { fillCacheWithNewSections } from "../functions/cache/sectionCacheFuncs";
 import { updateTemplate } from "../functions/sections/updateTemplate";
-import Section from "./Sections";
+
+//The main display for the site
 function MainDisplay() {
   //cache for all sections from templates and ones added by user during session
   const [sectionCache, setSectionCache] = useState();
 
+  //Grabs the current template from state (App.jsx) and is an Object
   const { currTemplate } = useContext(GlobalContext);
 
   //informs react when the section selector Box has been activated.
@@ -73,6 +80,7 @@ function MainDisplay() {
     dispatch(updatedData);
   }, [updatedData]);
 
+  //The main logic and state for the sections
   function reducer(state, action) {
     const { order, ...sections } = state;
     const { type, payload } = action;

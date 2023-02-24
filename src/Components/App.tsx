@@ -2,10 +2,11 @@ import React, { useState, useEffect, useContext, createContext } from "react";
 import MainDisplay from "./MainDisplay";
 import Sidebar from "./Sidebar";
 import SidebarButton from "./SidebarButton";
+import AccountBox from "./AccountBox";
 import { toggleSidebar } from "../functions/mainPage/sidebarFuncs";
 import { templateWed, templateWed2 } from "../server/files/serverDB2";
 import templateElope from "../server/files/serverDB";
-import AccountBox from "./AccountBox";
+
 import "../styles/main.scss";
 
 //global context
@@ -27,7 +28,13 @@ function App() {
   //determines which template to be displayed.
   const [templateTitle, setTemplateTitle] = useState("wedding");
 
-  //watches fir sideBarOpen state change to open and close the sidebar
+  //holds the names of the two getting married.
+  const [names, setNames] = useState({
+    person1: undefined,
+    person2: undefined,
+  });
+
+  //watches for sideBarOpen state change to open and close the sidebar
   useEffect(() => {
     //adds the ability to close the sidebar.  The timeout allows time for transition to occur.
     if (sidebarOpen) {
@@ -55,6 +62,8 @@ function App() {
           templateTitle,
           currTemplate: templates[templateTitle],
           setTemplateTitle,
+          names,
+          setNames,
         }}
       >
         {isAcctBox && <AccountBox />}
