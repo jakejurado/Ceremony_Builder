@@ -1,5 +1,7 @@
 import React, { useContext } from "react";
+// import Select from "react-select";
 import { GlobalContext } from "./App";
+import SelectorOptionMenu from "./SelectorOptionMenu";
 
 function SideBarTemplate() {
   //brings state from App
@@ -8,15 +10,18 @@ function SideBarTemplate() {
   function handleClick(e) {
     setTemplateTitle(e.target.innerText);
   }
+
+  const templateTitles = [];
+  Object.keys(templates).forEach((template, i) => {
+    templateTitles.push({ label: template, value: template });
+  });
+
   return (
-    <div>
+    <div id="sidebarTemplate">
       <h2>TEMPLATES</h2>
-      {Object.keys(templates).map((key) => (
-        <div onClick={handleClick} onKeyDown={handleClick} key={key}>
-          {key}
-        </div>
-      ))}
+      <SelectorOptionMenu options={templateTitles} />
     </div>
   );
+  // https://www.w3schools.com/howto/howto_custom_select.asp
 }
 export default SideBarTemplate;

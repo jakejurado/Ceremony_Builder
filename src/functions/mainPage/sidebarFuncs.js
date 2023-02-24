@@ -52,7 +52,7 @@ function createSidebarToggle() {
         storage.push(...Object.values(sidebar.children));
         const intervalId = setInterval(() => {
           const curr = storage.shift();
-          setStyle(curr, "display", "block");
+          setStyle(curr, "display", "flex");
           if (!storage.length) clearInterval(intervalId);
         }, intervalTime);
       }

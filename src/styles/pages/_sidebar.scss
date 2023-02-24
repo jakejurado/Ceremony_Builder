@@ -1,6 +1,6 @@
 @use "../variables" as v;
 
-#sideBar{
+#sideBar {
   position: fixed;
   display: flex;
   flex-direction: column;
@@ -8,25 +8,56 @@
   top: 0;
   width: 33%;
   height: 100%;
+  padding: 0 2vw 0 2vw;
   // border: thin solid black;
   /* background-color: bisque; */
   background-color: v.$pinkMain;
-  box-shadow: .15em .15em grey;
+  box-shadow: 0.15em 0.15em grey;
   z-index: 2;
   transition: width 2s;
 }
 
-#login{
-  font-size: v.$fontSizeMedSm;
-  color: white;
+#login {
   align-self: flex-end;
+  color: v.$whiteMain;
+  font-size: v.$fontSizeMedSm;
   margin: 0 0 3vw 0;
-  padding: 1vw;
 }
 
-#sidebarButton{
-  position:fixed;
+#sidebarButton {
+  position: fixed;
   margin: 14% 0 0 1%;
   z-index: 3;
 }
 
+#sidebarTemplate {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  font-size: v.$fontSizeMed;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10%;
+  h2 {
+    margin-bottom: 1vw;
+  }
+}
+
+.selectDiv {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+
+  select {
+    font-family: v.$fontSecond;
+    font-size: v.$fontSizeMed;
+    background-color: v.$whiteMain;
+    width: 100%;
+    top: 20vw;
+    border-color: v.$blackMain;
+    font: v.$blackLight;
+    text-align: center;
+    justify-content: center;
+  }
+}

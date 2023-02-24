@@ -59,10 +59,6 @@ function App() {
       >
         {isAcctBox && <AccountBox />}
 
-        {/* <div id="sidebarButton" className="buttonLg">
-          <img id="ham" src={hamburger} alt="symbole for menu" />
-        </div> */}
-
         <SidebarButton
           toggleSidebarState={() => setSidebarOpen(!sidebarOpen)}
         />

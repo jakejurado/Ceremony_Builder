@@ -1,5 +1,4 @@
 import React from "react";
-// import "../styles/sections.scss";
 import backgroundImage from "../files/minimal9.png";
 
 function SectionSelector({ data, index, handleSectionChange, dispatch }) {
@@ -20,7 +19,7 @@ function SectionSelector({ data, index, handleSectionChange, dispatch }) {
         style={{ backgroundImage: `url(${backgroundImage})` }}
       >
         <div className="title">
-          <h3>Section Selector</h3>
+          <h3>SECTION SELECTOR</h3>
         </div>
         <div className="middleBox">
           <div className="cards selections">
