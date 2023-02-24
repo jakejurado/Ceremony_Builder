@@ -64,7 +64,6 @@ function MainDisplay() {
 
   //On page load, populate display state and cache state
   useEffect(() => {
-    console.log("in useeffect");
     setSectionCache(addContentsToCache(currTemplate, sectionCache));
     dispatch({ type: "loadTEMPLATE", payload: currTemplate });
   }, [currTemplate]);
@@ -166,9 +165,9 @@ function MainDisplay() {
     return (e) => {
       if (!nodes.length) {
         const [node] = document.getElementsByClassName(e.draggableId);
-        const removeBox = node.querySelector(".removeBox");
+        const removeBox = node.querySelector(".removeButton");
         const addBox =
-          node.parentElement.nextElementSibling.querySelector(".circle");
+          node.parentElement.nextElementSibling.querySelector(".addButton");
         removeBox.style.display = "none";
         addBox.style.display = "none";
         nodes.push(removeBox, addBox);

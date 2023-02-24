@@ -10,40 +10,25 @@ function SelectorOptionMenu({ options }) {
   }
 
   const colourStyles = {
-    control: (styles) => ({ ...styles, backgroundColor: "yellow" }),
-    option: (styles, { data, isDisabled, isFocused, isSelected }) => {
-      const color = chroma(data.color);
+    control: (styles) => ({ ...styles, backgroundColor: "rgb(251, 251, 243)" }),
+    option: (styles) => {
       return {
         ...styles,
-        backgroundColor: isDisabled
-          ? undefined
-          : isSelected
-          ? data.color
-          : isFocused
-          ? color.alpha(0.1).css()
-          : undefined,
-        color: isDisabled
-          ? "#ccc"
-          : isSelected
-          ? chroma.contrast(color, "white") > 2
-            ? "white"
-            : "black"
-          : data.color,
-        cursor: isDisabled ? "not-allowed" : "default",
+        backgroundColor: "rgb(251, 251, 243)",
+        color: "black",
+        textAlign: "center",
 
-        ":active": {
+        ":hover": {
           ...styles[":active"],
-          backgroundColor: !isDisabled
-            ? isSelected
-              ? data.color
-              : color.alpha(0.3).css()
-            : undefined,
+          backgroundColor: "white",
+          border: "solid",
+          borderRadius: "5px",
         },
       };
     },
     input: (styles) => ({ ...styles }),
     placeholder: (styles) => ({ ...styles }),
-    singleValue: (styles, { data }) => ({ ...styles }),
+    singleValue: (styles) => ({ ...styles }),
   };
 
   return (
@@ -59,6 +44,7 @@ function SelectorOptionMenu({ options }) {
         isSearchable={false}
         name="color"
         options={options}
+        styles={colourStyles}
         onChange={handleChange}
       />
     </>
