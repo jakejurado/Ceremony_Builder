@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import SideBarTemplate from "./SidebarTemplate";
 import SidebarNames from "./SidebarNames.jsx";
+import SidebarPrint from "./SidebarPrint";
 
 function Sidebar({ templates, templateTitle, selectTemplate }) {
   return (
@@ -8,9 +9,8 @@ function Sidebar({ templates, templateTitle, selectTemplate }) {
       <div id="login">sign in | sign up</div>
       <SideBarTemplate />
       <SidebarNames />
-      {/* <div>Names</div> */}
-      {/* <div>Your Templates</div> */}
-      <div>Save Current</div>
+      <SidebarPrint />
+      {/* <div>Save Current</div> */}
     </div>
   );
 }

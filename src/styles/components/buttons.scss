@@ -1,46 +1,59 @@
-@use '../variables' as v;
-@use '../utilities/mixins' as m;
-
+@use "../variables" as v;
+@use "../utilities/mixins" as m;
 
 @-webkit-keyframes shake {
-  0% {-webkit-transform: rotate(0deg);}
-  12% {-webkit-transform: rotate(10deg);}
-  24% { -webkit-transform: rotate(0deg);}
-  36% {-webkit-transform: rotate(-7deg);}
-  48% {-webkit-transform: rotate(0deg);}
-  60% {-webkit-transform: rotate(4deg);}
-  72% { -webkit-transform: rotate(-2deg);}
-  84% {-webkit-transform: rotate(1deg);}
-  100% {-webkit-transform: rotate(0deg);}
-}
-
-
-.buttonLg{
-  width: 10vw;
-  height: 10vw;
-  border-radius: 50%;
-  background-color: v.$yellowSecond;
-  box-shadow: 10px 5px 10px rgb(75, 75, 75);
-  justify-content: center;
-  align-items:center;
-  hover{
-    -webkit-animation: shake .4s linear;
-    animation: shake .4s linear;
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  12% {
+    -webkit-transform: rotate(10deg);
+  }
+  24% {
+    -webkit-transform: rotate(0deg);
+  }
+  36% {
+    -webkit-transform: rotate(-7deg);
+  }
+  48% {
+    -webkit-transform: rotate(0deg);
+  }
+  60% {
+    -webkit-transform: rotate(4deg);
+  }
+  72% {
+    -webkit-transform: rotate(-2deg);
+  }
+  84% {
+    -webkit-transform: rotate(1deg);
+  }
+  100% {
+    -webkit-transform: rotate(0deg);
   }
 }
 
+.buttonLg {
+  width: 10vw;
+  height: 10vw;
+  border-radius: 50%;
+  // background-color: v.$yellowMain;
+  background-color: v.$pinkMain;
+  box-shadow: 0.25em 0.07em grey;
+  // box-shadow: 10px 5px 10px rgb(75, 75, 75);
+  justify-content: center;
+  align-items: center;
+  :hover {
+    -webkit-animation: shake 0.4s linear;
+    animation: shake 0.4s linear;
+  }
+}
 
-.addButton{
+.addButton {
   @include m.buttonDiv(360deg, 1s, rgb(120, 238, 120));
 }
 
-.removeButton{
+.removeButton {
   @include m.buttonDiv(310deg, 2s, rgb(193, 93, 93));
 }
-
-
-
-
 
 // .buttonMedContainer:hover{
 //   background-color: rgb(193, 93, 93);

@@ -1,20 +1,15 @@
-@use '../variables' as v;
+@use "../variables" as v;
 
-#accountBox{
-  position:fixed;
+#accountBox {
   display: flex;
   flex-direction: row;
+  align-items: center;
   justify-content: center;
   width: 50vw;
-  height: 50vh;
-  align-items:flex-end;
+  align-items: flex-end;
   font-size: 2em;
-  margin: 0 auto 0 auto;
-  padding: .5em .75em .5em .75em;
+  padding: 0.5em 0.75em 0.5em 0.75em;
   background-color: v.$yellowMain;
   z-index: 4;
-  box-shadow: .05em .05em rgb(234, 234, 234);
+  box-shadow: 0.05em 0.05em rgb(234, 234, 234);
 }
-
-
-

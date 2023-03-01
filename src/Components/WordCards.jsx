@@ -1,18 +1,9 @@
 import React, { useContext } from "react";
 import { GlobalContext } from "./App";
+import { enterNames } from "../functions/sections/names";
 
 function WordCards(props) {
   const { names } = useContext(GlobalContext);
-
-  function enterNames(names, words) {
-    console.log("entered");
-    let string = words;
-    if (names.person1)
-      string = string.replaceAll("PERSON_1", names.person1.toUpperCase());
-    if (names.person2)
-      string = string.replaceAll("PERSON_2", names.person2.toUpperCase());
-    return string;
-  }
 
   const newDiv = document.createElement("div");
   newDiv.classList.add("cards");

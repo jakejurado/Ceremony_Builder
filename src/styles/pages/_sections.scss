@@ -4,7 +4,7 @@
   display: grid;
   grid-template-columns: 50px 1fr 50px;
   width: 100%;
-  transition: width 2s;
+  transition: width 1s;
 }
 
 @keyframes fadeInAnimation {
@@ -72,7 +72,7 @@
   margin: 2%;
   border: outset;
   box-shadow: 5px 10px 10px rgb(74, 74, 74);
-  transition: height 1s;
+  transition: height 0.5s;
 }
 
 .title {

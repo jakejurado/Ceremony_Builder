@@ -38,7 +38,7 @@ function Sections(props) {
       const text = title.innerText;
       title.innerText = text.slice(0, -1);
       if (text.length === 1) clearInterval(intID);
-    }, 40);
+    }, 15);
     innerBox.style.height = "0px";
     sec.style.width = "0px";
     //END OF SHRINKS
@@ -46,11 +46,12 @@ function Sections(props) {
     const [_, index] = e.target.classList[0].split("-");
 
     setTimeout(() => {
+      console.log("delete");
       props.dispatch({
         type: "deleteSEC",
         payload: { index: parseInt(index) },
       });
-    }, 1000);
+    }, 500);
   }
 
   function toggleImage(e) {

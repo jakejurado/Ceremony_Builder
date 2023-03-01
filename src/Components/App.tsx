@@ -3,6 +3,7 @@ import MainDisplay from "./MainDisplay";
 import Sidebar from "./Sidebar";
 import SidebarButton from "./SidebarButton";
 import AccountBox from "./AccountBox";
+import Popup from "../Components/Popup";
 import { toggleSidebar } from "../functions/mainPage/sidebarFuncs";
 import { templateWed, templateWed2 } from "../server/files/serverDB2";
 import templateElope from "../server/files/serverDB";
@@ -16,8 +17,8 @@ function App() {
   //keeps track of sidebar state
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
-  //keeps track of accountBox state
-  const [isAcctBox, setAcctBox] = useState(false);
+  //state determines if popup should be displayed
+  const [isPopup, setIsPopup] = useState(false);
 
   //stores the templates
   const [templates, setTemplates] = useState({
@@ -42,7 +43,7 @@ function App() {
         () => {
           document
             .getElementById("mainDisplay")
-            .addEventListener("click", () => setSidebarOpen(false), {
+            .addEventListener("mousedown", () => setSidebarOpen(false), {
               once: true,
             });
         },
@@ -54,6 +55,10 @@ function App() {
     toggleSidebar(sidebarOpen);
   }, [sidebarOpen]);
 
+  function runPrint() {
+    setIsPopup(true);
+  }
+
   return (
     <div className="App">
       <GlobalContext.Provider
@@ -64,9 +69,11 @@ function App() {
           setTemplateTitle,
           names,
           setNames,
+          setIsPopup,
+          runPrint,
         }}
       >
-        {isAcctBox && <AccountBox />}
+        {isPopup && <Popup />}
 
         <SidebarButton
           toggleSidebarState={() => setSidebarOpen(!sidebarOpen)}
