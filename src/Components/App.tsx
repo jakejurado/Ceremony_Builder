@@ -67,7 +67,7 @@ function App() {
       setTimeout(
         () => {
           document
-            .getElementById("mainDisplay")
+            .getElementById("cover")
             .addEventListener("mousedown", () => setSidebarOpen(false), {
               once: true,
             });

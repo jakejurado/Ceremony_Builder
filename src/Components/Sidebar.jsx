@@ -5,11 +5,14 @@ import SidebarPrint from "./SidebarPrint";
 
 function Sidebar({ templates, templateTitle, selectTemplate }) {
   return (
-    <div id="sideBar">
-      <div id="login">sign in | sign up</div>
-      <SideBarTemplate />
-      <SidebarNames />
-      <SidebarPrint />
+    <div id="panel">
+      <div id="cover" />
+      <div id="sideBar">
+        <div id="login">sign in | sign up</div>
+        <SideBarTemplate />
+        <SidebarNames />
+        <SidebarPrint />
+      </div>
       {/* <div>Save Current</div> */}
     </div>
   );

@@ -1,5 +1,14 @@
 @use "../variables" as v;
 
+#cover {
+  position: fixed;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 2;
+  background-color: white;
+  opacity: 0.9;
+}
 #sideBar {
   position: fixed;
   display: flex;
