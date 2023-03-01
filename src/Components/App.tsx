@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, createContext } from "react";
+import React, { useState, useEffect, useReducer, createContext } from "react";
 import MainDisplay from "./MainDisplay";
 import Sidebar from "./Sidebar";
 import SidebarButton from "./SidebarButton";
@@ -19,6 +19,31 @@ function App() {
 
   //state determines if popup should be displayed
   const [isPopup, setIsPopup] = useState(false);
+
+  const [popupState, popDispatch] = useReducer(reducer, {
+    display: false,
+  });
+
+  function reducer(state, action) {
+    console.log(action);
+    switch (action.type) {
+      case "print":
+        return { display: "print" };
+      case "account":
+        return { display: "account" };
+      case "signin":
+        return { display: "signin" };
+      case "signup":
+        return { display: "signup" };
+      case "initialLoad":
+        return { display: false };
+
+      case "close":
+        return { display: false };
+      default:
+        console.log("error case");
+    }
+  }
 
   //stores the templates
   const [templates, setTemplates] = useState({
@@ -71,9 +96,11 @@ function App() {
           setNames,
           setIsPopup,
           runPrint,
+          popDispatch,
+          popupState,
         }}
       >
-        {isPopup && <Popup />}
+        {popupState.display && <Popup />}
 
         <SidebarButton
           toggleSidebarState={() => setSidebarOpen(!sidebarOpen)}

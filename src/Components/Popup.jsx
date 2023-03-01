@@ -5,24 +5,19 @@ import PopupPrint from "./PopupPrint";
 import closeButton from "../../public/assets/plus-circle.svg";
 
 function Popup() {
-  const { setIsPopup } = useContext(GlobalContext);
-  const [isAccountBox, setIsAccountBox] = useState(false);
-  const [isPrint, setIsPrint] = useState(true);
+  const { popupState, popDispatch } = useContext(GlobalContext);
 
   function handleClick() {
-    setIsPopup(false);
+    popDispatch({ type: "close" });
   }
 
   return (
     <div id="popup">
       <div id="popBox">
-        <div id="closePopup" className="removeButton" onClick={handleClick}>
-          <img src={closeButton} alt="close button" />
-        </div>
         <div id="popupContent">
-          {isAccountBox && <AccountBox />}
+          {popupState.display === "account" && <AccountBox />}
 
-          {isPrint && <PopupPrint />}
+          {popupState.display === "print" && <PopupPrint />}
         </div>
         <div className="removeButton" onClick={handleClick}>
           <img src={closeButton} alt="close button" />

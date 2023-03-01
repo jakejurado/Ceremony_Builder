@@ -2,10 +2,10 @@ import React, { useContext } from "react";
 import { GlobalContext } from "./App";
 
 function SidebarPrint() {
-  const { template, runPrint } = useContext(GlobalContext);
+  const { popDispatch, runPrint } = useContext(GlobalContext);
 
   function handleClick() {
-    runPrint();
+    popDispatch({ type: "print" });
   }
 
   return (
