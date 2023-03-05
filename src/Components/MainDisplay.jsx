@@ -1,13 +1,18 @@
 import React, { useState, useEffect, useReducer, useContext } from "react";
+// Global State
 import { GlobalContext } from "./App";
-import { templateWed, templateWed2 } from "../server/files/serverDB2";
-import templateElope from "../server/files/serverDB";
+
+//React Components
 import Header from "./Header";
-import Sections from "./Sections";
-import { DragDropContext, Droppable } from "react-beautiful-dnd";
-import { updateSectionOrder } from "../functions/mainPage/dragdropFuncs";
+import Section from "./Sections";
 import AddSectionButton from "./AddSectionButton";
 import SectionSelector from "./SectionSelector";
+
+//Installed Help
+import { DragDropContext, Droppable } from "react-beautiful-dnd";
+
+//Supporting Functions
+import { updateSectionOrder } from "../functions/mainPage/dragdropFuncs";
 import { addContentsToCache } from "../functions/cache/cache";
 import { addSecToOrder, fetchSection } from "../functions/sections/addSec";
 import { addSelectorSection } from "../functions/sections/selectorSec";
@@ -17,12 +22,16 @@ import { fetchTitles } from "../functions/sections/selectorBoxFuncs";
 import { addToTemplate } from "../functions/template/templateFuncs";
 import { fillCacheWithNewSections } from "../functions/cache/sectionCacheFuncs";
 import { updateTemplate } from "../functions/sections/updateTemplate";
-import Section from "./Sections";
-function MainDisplay() {
-  //cache for all sections from templates and ones added by user during session
-  const [sectionCache, setSectionCache] = useState();
+import { addDomToTemplate } from "../functions/sections/resetCard";
 
-  const { currTemplate } = useContext(GlobalContext);
+//The main display for the site
+function MainDisplay() {
+  //Global Context comes from App.jsx
+  const { currTemplate, names, templates, templateTitle, setTemplates } =
+    useContext(GlobalContext);
+
+  //cache for all sections fr om templates and ones added by user during session
+  const [sectionCache, setSectionCache] = useState();
 
   //informs react when the section selector Box has been activated.
   const [selectorSec, setSelectorSec] = useState({
@@ -64,7 +73,6 @@ function MainDisplay() {
 
   //On page load, populate display state and cache state
   useEffect(() => {
-    console.log("in useeffect");
     setSectionCache(addContentsToCache(currTemplate, sectionCache));
     dispatch({ type: "loadTEMPLATE", payload: currTemplate });
   }, [currTemplate]);
@@ -74,6 +82,7 @@ function MainDisplay() {
     dispatch(updatedData);
   }, [updatedData]);
 
+  //The main logic and state for the sections
   function reducer(state, action) {
     const { order, ...sections } = state;
     const { type, payload } = action;
@@ -166,9 +175,9 @@ function MainDisplay() {
     return (e) => {
       if (!nodes.length) {
         const [node] = document.getElementsByClassName(e.draggableId);
-        const removeBox = node.querySelector(".removeBox");
+        const removeBox = node.querySelector(".removeButton");
         const addBox =
-          node.parentElement.nextElementSibling.querySelector(".circle");
+          node.parentElement.nextElementSibling.querySelector(".addButton");
         removeBox.style.display = "none";
         addBox.style.display = "none";
         nodes.push(removeBox, addBox);
@@ -230,6 +239,12 @@ function MainDisplay() {
     }
   }
 
+  function savey() {
+    const newTemplate = addDomToTemplate(currTemplate, names);
+    const allTemplates = { ...templates };
+    return Object.assign(allTemplates, newTemplate);
+  }
+
   return (
     <div id="mainDisplay">
       <Header />
@@ -243,6 +258,9 @@ function MainDisplay() {
             >
               {loadSections}
               {provided.placeholder}
+              <button id="saved" onClick={savey}>
+                save
+              </button>
             </div>
           )}
         </Droppable>

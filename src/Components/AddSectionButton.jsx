@@ -1,6 +1,6 @@
 import React from "react";
 import addButton from "../../public/assets/plus-circle.svg";
-import "../styles/addSectionButton.css";
+// import "../styles/addSectionButton.scss";
 
 function AddSectionButton(props) {
   function handleClick(e) {
@@ -12,9 +12,8 @@ function AddSectionButton(props) {
 
   return (
     <div className={`addSectionButton ${props.belowSection}-${props.index}`}>
-      <div className={`circle ${props.belowSection}-${props.index}`}>
+      <div className={`addButton ${props.belowSection}-${props.index}`}>
         <img
-          className="addButtonImg"
           src={addButton}
           alt="add section button"
           onClick={handleClick}

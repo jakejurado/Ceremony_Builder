@@ -2,11 +2,9 @@ import React, { Component, useState } from "react";
 import WordCards from "./WordCards";
 import leftArrow from "../../public/assets/arrowLft.png";
 import leftArrowF from "../../public/assets/arrowLftFull.png";
-import boxBackground from "../files/minimal8.jpeg";
-import boxBackground2 from "../files/minimal9.png";
 import closeButton from "../../public/assets/plus-circle.svg";
 import { Draggable } from "react-beautiful-dnd";
-import "../styles/sections.css";
+// import "../styles/sections.scss";
 
 function Sections(props) {
   //swaping cards
@@ -27,11 +25,33 @@ function Sections(props) {
 
   //delete section
   function handleXbutton(e) {
+    const sec = e.target.parentElement.parentElement;
+    const [innerBox, removeBox] = sec.children;
+    const [title, text] = innerBox.children;
+    const plus = sec.parentElement.nextElementSibling;
+
+    //Shrinks to center
+    removeBox.remove();
+    plus.style.display = "none";
+    sec.style.margin = "0 auto 0 auto";
+    const intID = setInterval(() => {
+      const text = title.innerText;
+      title.innerText = text.slice(0, -1);
+      if (text.length === 1) clearInterval(intID);
+    }, 15);
+    innerBox.style.height = "0px";
+    sec.style.width = "0px";
+    //END OF SHRINKS
+
     const [_, index] = e.target.classList[0].split("-");
-    props.dispatch({
-      type: "deleteSEC",
-      payload: { index: parseInt(index) },
-    });
+
+    setTimeout(() => {
+      console.log("delete");
+      props.dispatch({
+        type: "deleteSEC",
+        payload: { index: parseInt(index) },
+      });
+    }, 500);
   }
 
   function toggleImage(e) {
@@ -91,11 +111,11 @@ function Sections(props) {
                 />
               </div>
             </div>
-            <div className="removeBox">
+            <div className="removeButton">
               <img
                 src={closeButton}
                 alt="x for closing the section box"
-                className={`${props.varName}-${props.id} remove`}
+                className={`${props.varName}-${props.id}`}
                 onClick={handleXbutton}
                 onKeyDown={handleXbutton}
               />

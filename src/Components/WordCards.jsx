@@ -1,20 +1,33 @@
-import React from "react";
+import React, { useContext } from "react";
+import { GlobalContext } from "./App";
+import { enterNames } from "../functions/sections/names";
+import { sanatize } from "../functions/sanatize";
 
 function WordCards(props) {
-  const newDiv = document.createElement("div");
-  newDiv.classList.add("cards");
-  newDiv.classList.add(`${props.class}`);
-  newDiv.insertAdjacentHTML("beforeend", props.cardContent);
+  const { names } = useContext(GlobalContext);
 
-  const words = props.cardContent.split("<br/>");
+  //add names to props content
+  const content = enterNames(names, props.cardContent);
+  //split the string by line breaks
+  const words = content.split("\n");
 
-  return (
-    <div className={`cards ${props.class}`}>
-      {words.map((phrase, i) => (
-        <p>{phrase}</p>
-      ))}
-    </div>
-  );
+  //construct the sanatized html string
+  function createHTMLstring(phrases) {}
+  let newString = "<p>";
+  words.forEach((phrase) => {
+    newString += `${sanatize(phrase)}<br/>`;
+  });
+  newString += "</p>";
+
+  const card = React.createElement("div", {
+    className: `cards ${props.className}`,
+    contentEditable: "true",
+    dangerouslySetInnerHTML: { __html: newString },
+  });
+
+  const danger = { __html: newString };
+
+  return card;
 }
 
 export default WordCards;

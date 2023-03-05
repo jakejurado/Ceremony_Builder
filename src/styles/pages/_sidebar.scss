@@ -1,0 +1,68 @@
+@use "../variables" as v;
+
+#cover {
+  position: fixed;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 2;
+  background-color: white;
+  opacity: 0.9;
+}
+#sideBar {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  top: 0;
+  width: 33%;
+  height: 100%;
+  padding: 0 2vw 0 2vw;
+  // background-color: bisque;
+  background-color: v.$pinkMain;
+  box-shadow: 0.15em 0.15em grey;
+  z-index: 2;
+  transition: width 2s;
+}
+
+#login {
+  align-self: flex-end;
+  color: v.$whiteMain;
+  font-size: v.$fontSizeMedSm;
+  margin: 0 0 3vw 0;
+}
+
+#sidebarButton {
+  position: fixed;
+  margin: 14% 0 0 1%;
+  z-index: 3;
+}
+
+//All sidebar Elements
+.sidebarElements {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  font-size: v.$fontSizeMed;
+  padding: 3vw 0 3vw 0;
+  border-bottom: solid;
+  border-width: thin;
+  border-color: v.$whiteMain;
+  align-items: center;
+  h2 {
+    margin-bottom: 2vw;
+  }
+  p {
+    font-family: v.$fontSecond;
+    font-size: v.$fontSizeMedSm;
+    margin: 1vw 0 0 0;
+  }
+}
+
+// SIDEBAR TEMPLATES
+.sidebarTemplate {
+}
+
+// SIDEBAR NAMES
+.sidebarNames {
+}
