@@ -22,14 +22,16 @@ import { fetchTitles } from "../functions/sections/selectorBoxFuncs";
 import { addToTemplate } from "../functions/template/templateFuncs";
 import { fillCacheWithNewSections } from "../functions/cache/sectionCacheFuncs";
 import { updateTemplate } from "../functions/sections/updateTemplate";
+import { addDomToTemplate } from "../functions/sections/resetCard";
 
 //The main display for the site
 function MainDisplay() {
-  //cache for all sections from templates and ones added by user during session
-  const [sectionCache, setSectionCache] = useState();
+  //Global Context comes from App.jsx
+  const { currTemplate, names, templates, templateTitle, setTemplates } =
+    useContext(GlobalContext);
 
-  //Grabs the current template from state (App.jsx) and is an Object
-  const { currTemplate } = useContext(GlobalContext);
+  //cache for all sections fr om templates and ones added by user during session
+  const [sectionCache, setSectionCache] = useState();
 
   //informs react when the section selector Box has been activated.
   const [selectorSec, setSelectorSec] = useState({
@@ -237,6 +239,12 @@ function MainDisplay() {
     }
   }
 
+  function savey() {
+    const newTemplate = addDomToTemplate(currTemplate, names);
+    const allTemplates = { ...templates };
+    return Object.assign(allTemplates, newTemplate);
+  }
+
   return (
     <div id="mainDisplay">
       <Header />
@@ -250,6 +258,9 @@ function MainDisplay() {
             >
               {loadSections}
               {provided.placeholder}
+              <button id="saved" onClick={savey}>
+                save
+              </button>
             </div>
           )}
         </Droppable>

@@ -4,6 +4,7 @@ import { enterNames } from "../functions/sections/names";
 
 function PopupPrint() {
   const { currTemplate, names } = useContext(GlobalContext);
+  console.log({ currTemplate });
 
   return (
     <div id="popupPrint">

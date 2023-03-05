@@ -4,10 +4,10 @@ import React from "react";
 function AccountBox() {
   return (
     <div id="accountBox">
-      <div>x</div>
-      <div>signin | create account</div>
-      <div>
+      <div>signup</div>
+      <div id="secure">
         signin: <input />
+        <br />
         password: <input />
       </div>
     </div>

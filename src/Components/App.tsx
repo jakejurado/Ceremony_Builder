@@ -4,6 +4,7 @@ import Sidebar from "./Sidebar";
 import SidebarButton from "./SidebarButton";
 import AccountBox from "./AccountBox";
 import Popup from "../Components/Popup";
+import PopupPrint from "./PopupPrint";
 import { toggleSidebar } from "../functions/mainPage/sidebarFuncs";
 import { templateWed, templateWed2 } from "../server/files/serverDB2";
 import templateElope from "../server/files/serverDB";
@@ -17,20 +18,34 @@ function App() {
   //keeps track of sidebar state
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
-  //state determines if popup should be displayed
-  const [isPopup, setIsPopup] = useState(false);
+  //stores the templates
+  const [templates, setTemplates] = useState({
+    wedding: templateWed2,
+    elope: templateElope,
+  });
 
-  const [popupState, popDispatch] = useReducer(reducer, {
+  //determines which template to be displayed.
+  const [templateTitle, setTemplateTitle] = useState("wedding");
+
+  //holds the names of the two getting married.
+  const [names, setNames] = useState({
+    person1: "JACOB",
+    person2: "COURTNEY",
+  });
+
+  //Controls the state of popup for printing and account
+  const [popupState, popDispatch] = useReducer(popReducer, {
     display: false,
   });
 
-  function reducer(state, action) {
+  function popReducer(state, action) {
     console.log(action);
     switch (action.type) {
       case "print":
-        return { display: "print" };
+        console.log(templates[templateTitle].order);
+        return { display: <PopupPrint /> };
       case "account":
-        return { display: "account" };
+        return { display: <AccountBox /> };
       case "signin":
         return { display: "signin" };
       case "signup":
@@ -45,57 +60,45 @@ function App() {
     }
   }
 
-  //stores the templates
-  const [templates, setTemplates] = useState({
-    wedding: templateWed2,
-    elope: templateElope,
-  });
-
-  //determines which template to be displayed.
-  const [templateTitle, setTemplateTitle] = useState("wedding");
-
-  //holds the names of the two getting married.
-  const [names, setNames] = useState({
-    person1: undefined,
-    person2: undefined,
-  });
-
   //watches for sideBarOpen state change to open and close the sidebar
   useEffect(() => {
     //adds the ability to close the sidebar.  The timeout allows time for transition to occur.
     if (sidebarOpen) {
+      console.log("here???");
       setTimeout(
         () => {
-          document
-            .getElementById("cover")
-            .addEventListener("mousedown", () => setSidebarOpen(false), {
+          document.getElementById("cover").addEventListener(
+            "mousedown",
+            () => {
+              console.log("pre");
+              setSidebarOpen(false);
+              console.log("post");
+            },
+            {
               once: true,
-            });
+            }
+          );
         },
-        3000,
+        2500,
         { once: true }
       );
     }
 
     toggleSidebar(sidebarOpen);
+    console.log("aftertoggle");
   }, [sidebarOpen]);
-
-  function runPrint() {
-    setIsPopup(true);
-  }
 
   return (
     <div className="App">
       <GlobalContext.Provider
         value={{
           templates,
+          setTemplates,
           templateTitle,
           currTemplate: templates[templateTitle],
           setTemplateTitle,
           names,
           setNames,
-          setIsPopup,
-          runPrint,
           popDispatch,
           popupState,
         }}
@@ -105,7 +108,6 @@ function App() {
         <SidebarButton
           toggleSidebarState={() => setSidebarOpen(!sidebarOpen)}
         />
-
         <Sidebar />
         <MainDisplay />
       </GlobalContext.Provider>

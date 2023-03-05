@@ -4,8 +4,10 @@ import hamburger from "../../public/assets/menu_open_FILL0_wght400_GRAD0_opsz48.
 
 function SidebarButton({ toggleSidebarState }) {
   function handleClick() {
+    console.log("entered handleClick");
     toggleSidebarState();
   }
+
   useEffect(() => {
     document
       .getElementById("sidebarButton")

@@ -1,7 +1,5 @@
 import React, { useState, useContext } from "react";
-import AccountBox from "./AccountBox";
 import { GlobalContext } from "./App";
-import PopupPrint from "./PopupPrint";
 import closeButton from "../../public/assets/plus-circle.svg";
 
 function Popup() {
@@ -14,12 +12,12 @@ function Popup() {
   return (
     <div id="popup">
       <div id="popBox">
-        <div id="popupContent">
-          {popupState.display === "account" && <AccountBox />}
-
-          {popupState.display === "print" && <PopupPrint />}
-        </div>
-        <div className="removeButton" onClick={handleClick}>
+        <div id="popupContent">{popupState.display}</div>
+        <div
+          className="removeButton"
+          onKeyDown={handleClick}
+          onClick={handleClick}
+        >
           <img src={closeButton} alt="close button" />
         </div>
       </div>
