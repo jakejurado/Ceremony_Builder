@@ -41,12 +41,12 @@ function Sections(props) {
     }, 15);
     innerBox.style.height = "0px";
     sec.style.width = "0px";
+    // setTimeout(() => (sec.style.display = "none"), 750);
     //END OF SHRINKS
 
     const [_, index] = e.target.classList[0].split("-");
 
     setTimeout(() => {
-      console.log("delete");
       props.dispatch({
         type: "deleteSEC",
         payload: { index: parseInt(index) },

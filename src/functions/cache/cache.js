@@ -1,9 +1,10 @@
-//add contents to cache
-function addContentsToCache(arr, cache) {
+//add contents of array to cache
+function addContentsToCache(templates, cache) {
   const newCache = { ...cache };
-  Object.values(arr).forEach((entry) => {
-    for (const [varname, object] of Object.entries(entry)) {
-      if (!newCache.hasOwnProperty(varname)) newCache[varname] = object;
+  Object.values(templates).forEach((template) => {
+    for (const [varname, data] of Object.entries(template)) {
+      if (varname === "order") continue;
+      if (!newCache.hasOwnProperty(varname)) newCache[varname] = data;
     }
   });
   return newCache;
