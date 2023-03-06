@@ -3,7 +3,7 @@ import SideBarTemplate from "./SidebarTemplate";
 import SidebarNames from "./SidebarNames.jsx";
 import SidebarPrint from "./SidebarPrint";
 
-function Sidebar({ templates, templateTitle, selectTemplate }) {
+function Sidebar() {
   return (
     <div id="panel">
       <div id="cover" />
