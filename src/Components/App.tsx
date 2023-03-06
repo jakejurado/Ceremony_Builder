@@ -94,7 +94,7 @@ function App() {
 
   //On page load, populate display state and cache state
   useEffect(() => {
-    setSectionCache(addContentsToCache(templates[templateTitle], sectionCache));
+    setSectionCache(addContentsToCache(templates, sectionCache));
     dispatch({ type: "loadTEMPLATE", payload: templates[templateTitle] });
   }, [templates[templateTitle]]);
 
@@ -139,7 +139,6 @@ function App() {
         return { display: "signup" };
       case "initialLoad":
         return { display: false };
-
       case "close":
         return { display: false };
       default:
