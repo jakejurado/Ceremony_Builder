@@ -1,18 +1,36 @@
 @use "../variables" as v;
 
 @-webkit-keyframes shake {
-  0% {-webkit-transform: rotate(0deg);}
-  12% {-webkit-transform: rotate(10deg);}
-  24% { -webkit-transform: rotate(0deg);}
-  36% {-webkit-transform: rotate(-7deg);}
-  48% {-webkit-transform: rotate(0deg);}
-  60% {-webkit-transform: rotate(4deg);}
-  72% { -webkit-transform: rotate(-2deg);}
-  84% {-webkit-transform: rotate(1deg);}
-  100% {-webkit-transform: rotate(0deg);}
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  12% {
+    -webkit-transform: rotate(10deg);
+  }
+  24% {
+    -webkit-transform: rotate(0deg);
+  }
+  36% {
+    -webkit-transform: rotate(-7deg);
+  }
+  48% {
+    -webkit-transform: rotate(0deg);
+  }
+  60% {
+    -webkit-transform: rotate(4deg);
+  }
+  72% {
+    -webkit-transform: rotate(-2deg);
+  }
+  84% {
+    -webkit-transform: rotate(1deg);
+  }
+  100% {
+    -webkit-transform: rotate(0deg);
+  }
 }
 
-@mixin rotateMe($rotate){
+@mixin rotateMe($rotate) {
   -moz-transform: rotate($rotate);
   -webkit-transform: rotate($rotate);
   -o-transform: rotate($rotate);
@@ -20,19 +38,19 @@
   transform: rotate($rotate);
 }
 
-
-@mixin buttonDiv($deg, $sec, $color){
+@mixin buttonDiv($deg, $deg2, $sec, $color) {
   display: flex;
   width: 5vw;
   height: 5vw;
   border-radius: 50%;
   box-shadow: 4px 8px 10px v.$blackLight;
-  :hover{  
+  @include rotateMe($deg2);
+  :hover {
     border-radius: 50%;
     background-color: $color;
     @include rotateMe($deg);
   }
-  img{
+  img {
     width: 100%;
     -webkit-transition: transform $sec;
     -moz-transition: transform $sec;
@@ -40,15 +58,29 @@
   }
 }
 
-@mixin buttonHover($deg){
+@mixin buttonHover($deg) {
   border-radius: 50%;
-    background-color: $color;
-    @include rotateMe($deg);
+  background-color: $color;
+  @include rotateMe($deg);
 }
 
+@mixin createBoxButton {
+  width: 10vw;
+  height: 4vw;
+  font-family: v.$fontSecond;
+  font-size: v.$fontSizeMed;
+  background-color: v.$whiteMain;
+  color: v.$blackMain;
+  border: solid;
+  border-width: thin;
+  border-radius: 4px;
+  border-color: v.$grayMain;
 
-
-
-
-
-
+  &:hover {
+    background-color: white;
+  }
+  &:active {
+    background-color: v.$yellowMain;
+    color: white;
+  }
+}

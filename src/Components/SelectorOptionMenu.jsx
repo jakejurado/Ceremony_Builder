@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useContext } from "react";
 import Select, { StylesConfig } from "react-select";
 import { GlobalContext } from "./App";
 
@@ -10,19 +10,32 @@ function SelectorOptionMenu({ options }) {
   }
 
   const colourStyles = {
-    control: (styles) => ({ ...styles, backgroundColor: "rgb(251, 251, 243)" }),
+    control: (styles) => ({
+      ...styles,
+      backgroundColor: "rgb(251, 251, 243)",
+      color: "rgb(65, 65, 65)",
+      fontFamily: "Courier New",
+      ":hover": {
+        backgroundColor: "white",
+      },
+      ":active": {
+        backgroundColor: "#989534",
+        color: "rgb(251, 251, 243)",
+      },
+    }),
     option: (styles) => {
       return {
         ...styles,
         backgroundColor: "rgb(251, 251, 243)",
-        color: "black",
+        color: "rgb(65, 65, 65)",
+        fontFamily: "Courier New",
         textAlign: "center",
 
         ":hover": {
           ...styles[":active"],
-          backgroundColor: "white",
           border: "solid",
-          borderRadius: "5px",
+          backgroundColor: "white",
+          borderRadius: "4px",
         },
       };
     },

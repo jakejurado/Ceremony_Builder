@@ -14,11 +14,11 @@ function Popup() {
       <div id="popBox">
         <div id="popupContent">{popupState.display}</div>
         <div
-          className="removeButton"
+          className="boxButton printClose"
           onKeyDown={handleClick}
           onClick={handleClick}
         >
-          <img src={closeButton} alt="close button" />
+          Close
         </div>
       </div>
     </div>

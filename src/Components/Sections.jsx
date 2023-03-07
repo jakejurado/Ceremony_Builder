@@ -4,6 +4,7 @@ import leftArrow from "../../public/assets/arrowLft.png";
 import leftArrowF from "../../public/assets/arrowLftFull.png";
 import closeButton from "../../public/assets/plus-circle.svg";
 import { Draggable } from "react-beautiful-dnd";
+import AddSectionButton from "./AddSectionButton";
 // import "../styles/sections.scss";
 
 function Sections(props) {
@@ -120,6 +121,12 @@ function Sections(props) {
                 onKeyDown={handleXbutton}
               />
             </div>
+            <AddSectionButton
+            // key={`addButton-${varTitle}-${i}`}
+            // belowSection={varTitle}
+            // index={i}
+            // dispatch={dispatch}
+            />
           </div>
         </div>
       )}

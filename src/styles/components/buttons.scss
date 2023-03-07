@@ -48,18 +48,15 @@
 }
 
 .addButton {
-  @include m.buttonDiv(360deg, 1s, rgb(120, 238, 120));
+  @include m.buttonDiv(180deg, 360deg, 1s, rgb(120, 238, 120));
 }
 
 .removeButton {
-  @include m.buttonDiv(310deg, 2s, rgb(193, 93, 93));
+  @include m.buttonDiv(270deg, 45deg, 2s, rgb(193, 93, 93));
 }
 
-// .buttonMedContainer:hover{
-//   background-color: rgb(193, 93, 93);
-//   -moz-transform: rotate(310deg);
-//   -webkit-transform: rotate(310deg);
-//   -o-transform: rotate(310deg);
-//   -ms-transform: rotate(310deg);
-//   transform: rotate(310deg);
-// }
+.boxButton {
+  @include m.createBoxButton();
+  text-align: center;
+  margin: 1vw auto 1vw auto;
+}

@@ -22,7 +22,8 @@ import { removeSection } from "../functions/sections/removeSec";
 import { fetchTitles } from "../functions/sections/selectorBoxFuncs";
 import { fillCacheWithNewSections } from "../functions/cache/sectionCacheFuncs";
 import { updateTemplate } from "../functions/sections/updateTemplate";
-import { addDomToTemplate } from "../functions/sections/resetCard";
+import { saveToTemplate } from "../functions/sections/resetCard";
+// import { addDomToTemplate } from "../functions/sections/resetCard";
 
 //Style import
 import "../styles/main.scss";
@@ -45,8 +46,8 @@ function App() {
 
   //holds the names of the two getting married.
   const [names, setNames] = useState({
-    person1: "JACOB",
-    person2: "COURTNEY",
+    person1: undefined,
+    person2: undefined,
   });
 
   //holds data that needs to update state asynchronously
@@ -80,6 +81,7 @@ function App() {
 
   //Controls the state of popup for printing, signin, and signup
   const [popupState, popDispatch] = useReducer(popReducer, {
+    // display: <PopupPrint />,
     display: false,
   });
 
@@ -127,9 +129,16 @@ function App() {
     toggleSidebar(sidebarOpen);
   }, [sidebarOpen]);
 
+  // function saveToTemplate() {
+  //   const newTemplate = addDomToTemplate(templates[templateTitle], names);
+  //   const allTemplates = { ...templates };
+  //   return Object.assign(allTemplates, newTemplate);
+  // }
+
   function popReducer(state, action) {
     switch (action.type) {
       case "print":
+        saveToTemplate(templates, templateTitle, names);
         return { display: <PopupPrint /> };
       case "account":
         return { display: <AccountBox /> };
@@ -224,12 +233,6 @@ function App() {
     }
   }
 
-  function savey() {
-    const newTemplate = addDomToTemplate(template[templateTitle], names);
-    const allTemplates = { ...templates };
-    return Object.assign(allTemplates, newTemplate);
-  }
-
   return (
     <div className="App">
       <GlobalContext.Provider
@@ -237,7 +240,6 @@ function App() {
           template,
           dispatch,
           selectorSec,
-          savey,
           selectorTitles,
           names,
           setNames,
@@ -245,10 +247,6 @@ function App() {
           setTemplateTitle,
           templates,
           popupState,
-          // setTemplates,
-          // templateTitle,
-          // currTemplate: templates[templateTitle],
-          // setSelectorSec,
         }}
       >
         {popupState.display && <Popup />}

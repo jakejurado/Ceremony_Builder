@@ -10,8 +10,8 @@ function SidebarPrint() {
 
   return (
     <div className="sidebarElements">
-      <h2>Print</h2>
-      <button className="print" onClick={handleClick}>
+      <h2>PRINT</h2>
+      <button className="boxButton" onClick={handleClick}>
         Print
       </button>
     </div>

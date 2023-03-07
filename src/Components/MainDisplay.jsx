@@ -16,7 +16,7 @@ function MainDisplay() {
   //Global Context comes from App.jsx
   const { selectorTitles, template, dispatch, selectorSec, savey } =
     useContext(GlobalContext);
-  
+
   //loads the sections from the state in display.  Build the dom
   let loadSections = [];
   const { order, ...rest } = template;
@@ -112,9 +112,6 @@ function MainDisplay() {
             >
               {loadSections}
               {provided.placeholder}
-              <button id="saved" onClick={savey}>
-                save
-              </button>
             </div>
           )}
         </Droppable>
