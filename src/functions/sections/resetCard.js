@@ -1,13 +1,45 @@
-// const input =
-//   "Will you, COURTNEY, take this (woman/man) to be your wedded wife?\n\n-COURTNEY: I will.\n\nWill you, JACOB, take this (man/woman) to be your wedded husband?\n\n-JACOB: I will.";
-// const persons = { person1: "Jacob", person2: "Courtney" };
-
-function saveToTemplate(templates, templateTitle, persons) {
-  const newTemplate = addDomToTemplate(templates[templateTitle], persons);
-  const allTemplates = { ...templates };
-  return Object.assign(allTemplates, newTemplate);
+//This function adds the contents from the dom into the templates state
+function saveDomToTemplates(
+  template,
+  domArr,
+  persons,
+  templates,
+  templateTitle
+) {
+  const allTemplates = JSON.parse(JSON.stringify(templates));
+  //puts the current dom into the current template.
+  const updatedTemplate = putDomInTemplate(template, domArr, persons);
+  //adds the updatedTemplate to the copied templates state
+  const newTemplates = Object.assign(allTemplates, {
+    [templateTitle]: updatedTemplate,
+  });
+  return newTemplates;
 }
 
+//This function puts the current dom into the current template
+function putDomInTemplate(template, dom, persons) {
+  const templateCopy = JSON.parse(JSON.stringify(template));
+
+  //grab the list of sections from useRef
+  const myDom = dom.current.children[0].children;
+
+  //iterate over the dom elements and update the template copy
+  for (const el of myDom) {
+    const classes = el.children[0].classList;
+    const title = classes[0]; //grab title from dom class
+    const [_, indexNum] = classes[2].split("-"); //grab index from dom class
+    const script = el.children[0].children[0].children[1].innerText; //grab script from dom
+
+    // update template
+    templateCopy[title].script[parseInt(indexNum)] = replaceWords(
+      script,
+      persons
+    );
+  }
+  return templateCopy;
+}
+
+//This function replaces the words
 function replaceWords(input, persons) {
   let newText = input;
   if (persons.person1)
@@ -18,49 +50,4 @@ function replaceWords(input, persons) {
   return splitText.join("<br/>");
 }
 
-function addDomToTemplate(template, persons) {
-  console.log({ template });
-  // copies the object
-  const newTemplate = { ...template };
-  // Grabs all the cards on the page
-  const cards = document.querySelectorAll(".cards");
-  //updates the new object with the cards on the page.
-  newTemplate.order.forEach((pair, i) => {
-    const [varName, index] = pair;
-    console.log({ pair });
-    if (varName === "giving_away") {
-      console.log(template[varName].script[index]);
-      console.log(cards[i].innerText);
-      template[varName].script[index] = replaceWords(
-        cards[i].innerText,
-        persons
-      );
-    }
-  });
-
-  console.log(newTemplate);
-  return newTemplate;
-}
-
-function addDomToTemplate2(template, persons) {
-  // copies the object
-  const newTemplate = {};
-  // Grabs all the cards on the page
-  const cards = document.querySelectorAll(".cards");
-  cards.forEach((card) => {});
-  //updates the new object with the cards on the page.
-  newTemplate.order.forEach((pair, i) => {
-    const [varName, index] = pair;
-    console.log({ pair });
-    if (varName === "giving_away") {
-      console.log(template[varName].script[index]);
-      console.log(cards[i].innerText);
-      template[varName].script[index] = cards[i].innerText;
-    }
-  });
-
-  console.log(newTemplate);
-  return newTemplate;
-}
-
-export { saveToTemplate };
+export { saveDomToTemplates };

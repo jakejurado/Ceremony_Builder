@@ -5,6 +5,7 @@ function SidebarPrint() {
   const { popDispatch } = useContext(GlobalContext);
 
   function handleClick() {
+    console.log("entered handleClick");
     popDispatch({ type: "print" });
   }
 

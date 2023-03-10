@@ -1,32 +1,37 @@
-import React, { useState, useEffect, useReducer, useContext } from "react";
-// Global State
+import React, { useRef, useContext } from "react";
 import { GlobalContext } from "./App";
-
-//React Components
 import Header from "./Header";
 import Section from "./Sections";
-import AddSectionButton from "./AddSectionButton";
 import SectionSelector from "./SectionSelector";
-
-//Installed Help
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 
 //The main display for the site
 function MainDisplay() {
   //Global Context comes from App.jsx
-  const { selectorTitles, template, dispatch, selectorSec, savey } =
+  const { selectorTitles, template, dispatch, selectorSec, domRef } =
     useContext(GlobalContext);
 
   //loads the sections from the state in display.  Build the dom
   let loadSections = [];
+  // console.log({ template });
   const { order, ...rest } = template;
-
   for (let i = 0; i < order.length; i++) {
     let [varTitle, pos] = order[i];
 
     //This occurs when the display is updated, but the template hasn't updated from the fetch yet.  skip that section until ready.
     if (!rest.hasOwnProperty(varTitle)) continue;
 
+    //if the selector section is true and the index is at the position it should go, add the selector box
+    if (selectorSec.isVisible && i === selectorSec.position) {
+      loadSections.push(
+        <SectionSelector
+          key="selectorBox"
+          data={selectorTitles}
+          index={i}
+          dispatch={dispatch}
+        />
+      );
+    }
     const { title, description, script } = rest[varTitle];
     loadSections.push(
       <Section
@@ -41,27 +46,6 @@ function MainDisplay() {
         dispatch={dispatch}
       />
     );
-    //if the selector section is true and the index is at the position it should go, add the selector box
-    if (selectorSec.isVisible && i === selectorSec.position) {
-      loadSections.push(
-        <SectionSelector
-          key="selectorBox"
-          data={selectorTitles}
-          index={i}
-          dispatch={dispatch}
-        />
-      );
-      //otherwise add the plus button to add a section
-    } else {
-      loadSections.push(
-        <AddSectionButton
-          key={`addButton-${varTitle}-${i}`}
-          belowSection={varTitle}
-          index={i}
-          dispatch={dispatch}
-        />
-      );
-    }
   }
 
   //DRAG DROP FUNCTIONALITY
@@ -100,8 +84,7 @@ function MainDisplay() {
   const toggleDragStartStop = createToggleDragStartStop();
 
   return (
-    <div id="mainDisplay">
-      <Header />
+    <div id="mainDisplay" ref={domRef}>
       <DragDropContext onDragEnd={dragEnd} onDragStart={toggleDragStartStop}>
         <Droppable droppableId="sectiondrop">
           {(provided) => (

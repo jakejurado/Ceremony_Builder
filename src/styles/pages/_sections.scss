@@ -2,9 +2,10 @@
 
 .section {
   display: grid;
-  grid-template-columns: 50px 1fr 50px;
+  grid-template-columns: 5vw 1fr 5vw;
   width: 100%;
   transition: width 1s;
+  margin: 3vw auto 3vw auto;
 }
 
 @keyframes fadeInAnimation {
@@ -21,45 +22,6 @@
   animation-iteration-count: 1;
   animation-fill-mode: forwards;
 }
-
-// .removeBox{
-
-//   display: flex;
-//   width: 5vw;
-//   height: 5vw;
-//   border-radius: 50%;
-//   box-shadow: 5px 10px 10px rgb(85 85 85);
-// }
-
-// .remove {
-//   width: 100%;
-
-//   transform: rotate(45deg);
-//   -webkit-transition: transform 2s;
-//   -moz-transition: transform 2s;
-//   transition: transform 2s;
-// }
-
-// .remove:hover{
-//   -moz-transform: rotate(310deg);
-//   -webkit-transform: rotate(310deg);
-//   -o-transform: rotate(310deg);
-//   -ms-transform: rotate(310deg);
-//   transform: rotate(310deg);
-// }
-
-// .removeBox:hover{
-//   background-color: rgb(193, 93, 93);
-//   box-shadow:
-//   inset 0 6px 0 rgb(177, 83, 83), /* Top */
-//   inset -6px 0 0 rgb(177, 83, 83), /* Right */
-//   inset 0 -6px 0 rgb(177, 83, 83), /* Bottom */
-//   inset 6px 0 0 rgb(177, 83, 83), /* Left */
-//   inset -4.5px 4.5px 0 rgb(177, 83, 83), /* Top Right */
-//   inset -4.5px -4.5px 0 rgb(177, 83, 83), /* Bottom Right */
-//   inset 4.5px -4.5px 0 rgb(177, 83, 83), /* Bottom Left */
-//   inset 4.5px 4.5px 0 rgb(177, 83, 83) /* Top Left */
-// }
 
 .innerBox {
   display: flex;
@@ -116,6 +78,16 @@
   p {
     padding: 2%;
   }
+}
+
+.secButtons {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  padding: 2vw 0 2vw 0;
+  margin-left: auto;
+  width: 70%;
 }
 
 /* SELECTOR BOX */

@@ -48,11 +48,19 @@
 }
 
 .addButton {
-  @include m.buttonDiv(180deg, 360deg, 1s, rgb(120, 238, 120));
+  @include m.buttonDiv(0deg, 180deg, 1s, v.$greenMain);
+}
+
+.upArrow {
+  @include m.buttonDiv(0deg, 360deg, 1s, v.$yellowMain);
+}
+
+.dnArrow {
+  @include m.buttonDiv(180deg, 360deg, 1s, v.$yellowMain);
 }
 
 .removeButton {
-  @include m.buttonDiv(270deg, 45deg, 2s, rgb(193, 93, 93));
+  @include m.buttonDiv(45deg, 360deg, 2s, v.$redMain);
 }
 
 .boxButton {
