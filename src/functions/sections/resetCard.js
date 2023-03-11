@@ -29,6 +29,7 @@ function putDomInTemplate(template, dom, persons) {
     const title = classes[0]; //grab title from dom class
     const [_, indexNum] = classes[2].split("-"); //grab index from dom class
     const script = el.children[0].children[0].children[1].innerText; //grab script from dom
+    console.log({ indexNum });
 
     // update template
     templateCopy[title].script[parseInt(indexNum)] = replaceWords(

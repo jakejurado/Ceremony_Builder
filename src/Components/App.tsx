@@ -212,20 +212,17 @@ function App() {
 
   //On page load, populate display state and cache state
   useEffect(() => {
-    console.log("useEffect TemplateTitle");
     setSectionCache(addContentsToCache(templates, sectionCache));
     dispatch({ type: "loadTEMPLATE", payload: templates[templateTitle] });
   }, [templateTitle]); //removed templates 8:35 tue mar 7
 
   //updates state when new data is fetched or retrieved asynchronously
   useEffect(() => {
-    console.log("fetched data useEffect");
     dispatch(updatedData);
   }, [updatedData]);
 
   //watches for sideBarOpen state change to open and close the sidebar
   useEffect(() => {
-    console.log("sidebarUseEffect");
     //adds the ability to close the sidebar.  The timeout allows time for transition to occur.
     if (sidebarOpen) {
       setTimeout(
@@ -247,11 +244,6 @@ function App() {
 
     toggleSidebar(sidebarOpen);
   }, [sidebarOpen]);
-
-  //for testing purpose
-  useEffect(() => {
-    console.log("TEMPLATE CHANGES");
-  }, [template]);
 
   return (
     <div className="App">

@@ -2,11 +2,7 @@ import React, { useContext } from "react";
 import WordCards from "./WordCards";
 import AddSectionButton from "./AddSectionButton";
 import { GlobalContext } from "./App";
-
-//installed functions
 import { Draggable } from "react-beautiful-dnd";
-
-//assets
 import leftArrow from "../../public/assets/arrowLft.png";
 import leftArrowF from "../../public/assets/arrowLftFull.png";
 import arrow from "../../public/assets/arrow-up-circle.svg";
@@ -31,10 +27,9 @@ function Sections(props) {
     props.dispatch({ type: "updateSEC", payload: returnObj });
   }
 
-  //delete section: shrinks the section and then sends a dispatch
+  //delete section: shrinks the section and then sends a dispatch to remove sec from order
   function handleXbutton(e) {
     const sec = e.target.parentElement.parentElement.parentElement;
-    console.log({ sec });
     const [innerBox, removeBox] = sec.children;
     const [title, text] = innerBox.children;
 
@@ -70,12 +65,12 @@ function Sections(props) {
     e.target.classList.toggle("inset");
   }
 
+  //handles the up and down arrows of a section, changing the section order.
   function handleArrowClick(e) {
     let [dir, index] = e.target.classList[0].split("-");
     index = parseInt(index);
     const numOfSec = template.order.length - 1;
 
-    console.log(numOfSec);
     let sourceIndex;
     let destIndex;
 
@@ -106,7 +101,7 @@ function Sections(props) {
         >
           <div
             id="section"
-            className={`${props.varName} section box_index-${props.id}`}
+            className={`${props.varName} section box_index-${props.cardIndex}`}
           >
             <div className="innerBox">
               <div className="title">
