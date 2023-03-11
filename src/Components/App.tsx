@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useReducer, createContext } from "react";
+import React, {
+  useState,
+  useEffect,
+  useReducer,
+  createContext,
+  useRef,
+} from "react";
 //React Components
 import MainDisplay from "./MainDisplay";
 import Sidebar from "./Sidebar";
@@ -7,6 +13,7 @@ import AccountBox from "./AccountBox";
 import Popup from "../Components/Popup";
 import PopupPrint from "./PopupPrint";
 import { toggleSidebar } from "../functions/mainPage/sidebarFuncs";
+import Header from "./Header";
 
 //Temparary Data
 import { templateWed, templateWed2 } from "../server/files/serverDB2";
@@ -15,14 +22,14 @@ import templateElope from "../server/files/serverDB";
 //helperFunctions
 import { updateSectionOrder } from "../functions/mainPage/dragdropFuncs";
 import { addContentsToCache } from "../functions/cache/cache";
-import { addSecToOrder, fetchSection } from "../functions/sections/addSec";
+import { addSecToOrder, addSecToTemplate } from "../functions/sections/addSec";
 import { addSelectorSection } from "../functions/sections/selectorSec";
 import { updateCardIndex } from "../functions/sections/updateSec";
 import { removeSection } from "../functions/sections/removeSec";
 import { fetchTitles } from "../functions/sections/selectorBoxFuncs";
 import { fillCacheWithNewSections } from "../functions/cache/sectionCacheFuncs";
 import { updateTemplate } from "../functions/sections/updateTemplate";
-import { saveToTemplate } from "../functions/sections/resetCard";
+import { saveDomToTemplates } from "../functions/sections/resetCard";
 // import { addDomToTemplate } from "../functions/sections/resetCard";
 
 //Style import
@@ -38,11 +45,13 @@ function App() {
     elope: templateElope,
   });
 
+  const domRef = useRef(null);
+
   //determines which template to be displayed.
   const [templateTitle, setTemplateTitle] = useState("wedding");
 
   //keeps track of sidebar state
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   //holds the names of the two getting married.
   const [names, setNames] = useState({
@@ -79,12 +88,6 @@ function App() {
   });
   // const [selectorTitles, setSelectorTitles] = useState({});
 
-  //Controls the state of popup for printing, signin, and signup
-  const [popupState, popDispatch] = useReducer(popReducer, {
-    // display: <PopupPrint />,
-    display: false,
-  });
-
   //informs react when the section selector Box has been activated.
   const [selectorSec, setSelectorSec] = useState({
     isVisible: false,
@@ -93,67 +96,6 @@ function App() {
 
   //cache for all sections from templates and ones added by user during session
   const [sectionCache, setSectionCache] = useState();
-
-  //On page load, populate display state and cache state
-  useEffect(() => {
-    setSectionCache(addContentsToCache(templates, sectionCache));
-    dispatch({ type: "loadTEMPLATE", payload: templates[templateTitle] });
-  }, [templates[templateTitle]]);
-
-  //updates state when new data is fetched or retrieved asynchronously
-  useEffect(() => {
-    dispatch(updatedData);
-  }, [updatedData]);
-
-  //watches for sideBarOpen state change to open and close the sidebar
-  useEffect(() => {
-    //adds the ability to close the sidebar.  The timeout allows time for transition to occur.
-    if (sidebarOpen) {
-      setTimeout(
-        () => {
-          document.getElementById("cover").addEventListener(
-            "mousedown",
-            () => {
-              setSidebarOpen(false);
-            },
-            {
-              once: true,
-            }
-          );
-        },
-        2500,
-        { once: true }
-      );
-    }
-
-    toggleSidebar(sidebarOpen);
-  }, [sidebarOpen]);
-
-  // function saveToTemplate() {
-  //   const newTemplate = addDomToTemplate(templates[templateTitle], names);
-  //   const allTemplates = { ...templates };
-  //   return Object.assign(allTemplates, newTemplate);
-  // }
-
-  function popReducer(state, action) {
-    switch (action.type) {
-      case "print":
-        saveToTemplate(templates, templateTitle, names);
-        return { display: <PopupPrint /> };
-      case "account":
-        return { display: <AccountBox /> };
-      case "signin":
-        return { display: "signin" };
-      case "signup":
-        return { display: "signup" };
-      case "initialLoad":
-        return { display: false };
-      case "close":
-        return { display: false };
-      default:
-        console.log("error case");
-    }
-  }
 
   //holds the current template, which contains the sections and the order of the sections, used to fill the page.
   const [template, dispatch] = useReducer(reducer, templates[templateTitle]);
@@ -167,22 +109,21 @@ function App() {
       case "addSEC": {
         //update order
         const { varname, index } = payload;
-        const data = addSecToOrder(varname, index, order, sections);
-
-        //update Template if needed.
-        let newTemplate = updateTemplate(
+        //create a new updated template with the added section
+        let newTemplate = addSecToTemplate(
           varname,
-          sections,
-          data,
-          setUpdatedData,
-          sectionCache
+          index,
+          order,
+          state,
+          sectionCache,
+          setUpdatedData
         );
 
         //remove section selector from page
         setSelectorSec({ isVisible: false, position: undefined });
 
         //update state
-        return { ...newTemplate, order: data.order };
+        return { ...newTemplate };
       }
       case "loadSEC": {
         //this case is only ran after a section is fetched from the backend.
@@ -219,8 +160,10 @@ function App() {
         return { ...sections, order };
       }
       case "initialLoad": {
+        console.log("initialLoad");
         //loads the current state
-        return state;
+        const newTemp = templates[templateTitle];
+        return newTemp;
       }
       case "loadTEMPLATE": {
         return payload;
@@ -232,6 +175,75 @@ function App() {
       }
     }
   }
+
+  //Controls the state of popup for printing, signin, and signup
+  const [popupState, popDispatch] = useReducer(popReducer, {
+    // display: <PopupPrint />,
+    display: false,
+  });
+
+  function popReducer(state, action) {
+    switch (action.type) {
+      case "print":
+        const newTemplates = saveDomToTemplates(
+          template,
+          domRef,
+          names,
+          templates,
+          templateTitle
+        );
+        setTemplates(newTemplates);
+        dispatch({ type: "initialLoad" });
+        return { display: <PopupPrint /> };
+      case "account":
+        return { display: <AccountBox /> };
+      case "signin":
+        return { display: "signin" };
+      case "signup":
+        return { display: "signup" };
+      case "initialLoad":
+        return { display: false };
+      case "close":
+        return { display: false };
+      default:
+        console.log("error case");
+    }
+  }
+
+  //On page load, populate display state and cache state
+  useEffect(() => {
+    setSectionCache(addContentsToCache(templates, sectionCache));
+    dispatch({ type: "loadTEMPLATE", payload: templates[templateTitle] });
+  }, [templateTitle]); //removed templates 8:35 tue mar 7
+
+  //updates state when new data is fetched or retrieved asynchronously
+  useEffect(() => {
+    dispatch(updatedData);
+  }, [updatedData]);
+
+  //watches for sideBarOpen state change to open and close the sidebar
+  useEffect(() => {
+    //adds the ability to close the sidebar.  The timeout allows time for transition to occur.
+    if (sidebarOpen) {
+      setTimeout(
+        () => {
+          document.getElementById("cover").addEventListener(
+            "mousedown",
+            () => {
+              setSidebarOpen(false);
+            },
+            {
+              once: true,
+            }
+          );
+        },
+        2500,
+        { once: true }
+      );
+    }
+
+    toggleSidebar(sidebarOpen);
+  }, [sidebarOpen]);
 
   return (
     <div className="App">
@@ -247,8 +259,10 @@ function App() {
           setTemplateTitle,
           templates,
           popupState,
+          domRef,
         }}
       >
+        <Header />
         {popupState.display && <Popup />}
 
         <SidebarButton

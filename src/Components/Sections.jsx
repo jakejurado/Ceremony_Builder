@@ -1,13 +1,16 @@
-import React, { Component, useState } from "react";
+import React, { useContext } from "react";
 import WordCards from "./WordCards";
+import AddSectionButton from "./AddSectionButton";
+import { GlobalContext } from "./App";
+import { Draggable } from "react-beautiful-dnd";
 import leftArrow from "../../public/assets/arrowLft.png";
 import leftArrowF from "../../public/assets/arrowLftFull.png";
-import closeButton from "../../public/assets/plus-circle.svg";
-import { Draggable } from "react-beautiful-dnd";
-import AddSectionButton from "./AddSectionButton";
-// import "../styles/sections.scss";
+import arrow from "../../public/assets/arrow-up-circle.svg";
+import plus from "../../public/assets/plus-circle.svg";
 
 function Sections(props) {
+  //global context
+  const { dispatch, template } = useContext(GlobalContext);
   //swaping cards
   function handleLeftRightClick(e) {
     const [button, varname, index, cardIndex, numOfCards] =
@@ -24,16 +27,14 @@ function Sections(props) {
     props.dispatch({ type: "updateSEC", payload: returnObj });
   }
 
-  //delete section
+  //delete section: shrinks the section and then sends a dispatch to remove sec from order
   function handleXbutton(e) {
-    const sec = e.target.parentElement.parentElement;
+    const sec = e.target.parentElement.parentElement.parentElement;
     const [innerBox, removeBox] = sec.children;
     const [title, text] = innerBox.children;
-    const plus = sec.parentElement.nextElementSibling;
 
-    //Shrinks to center
+    //Shrinks the section to center
     removeBox.remove();
-    plus.style.display = "none";
     sec.style.margin = "0 auto 0 auto";
     const intID = setInterval(() => {
       const text = title.innerText;
@@ -42,12 +43,12 @@ function Sections(props) {
     }, 15);
     innerBox.style.height = "0px";
     sec.style.width = "0px";
-    // setTimeout(() => (sec.style.display = "none"), 750);
     //END OF SHRINKS
 
     const [_, index] = e.target.classList[0].split("-");
 
     setTimeout(() => {
+      //delayed dispatch in order to see section shrink
       props.dispatch({
         type: "deleteSEC",
         payload: { index: parseInt(index) },
@@ -55,12 +56,39 @@ function Sections(props) {
     }, 500);
   }
 
+  //styling for left and right arrows
   function toggleImage(e) {
     e.target.src = e.target.src === leftArrow ? leftArrowF : leftArrow;
   }
-
+  //styling for left & right arrows
   function toggleInsetClass(e) {
     e.target.classList.toggle("inset");
+  }
+
+  //handles the up and down arrows of a section, changing the section order.
+  function handleArrowClick(e) {
+    let [dir, index] = e.target.classList[0].split("-");
+    index = parseInt(index);
+    const numOfSec = template.order.length - 1;
+
+    let sourceIndex;
+    let destIndex;
+
+    if (dir === "up") {
+      sourceIndex = index - 1 < 0 ? 0 : index - 1;
+      destIndex = index;
+    } else {
+      sourceIndex = index;
+      destIndex = index + 1 > numOfSec ? numOfSec : index + 1;
+    }
+
+    dispatch({
+      type: "moveSEC",
+      payload: {
+        sourceIndex,
+        destIndex,
+      },
+    });
   }
 
   return (
@@ -73,7 +101,7 @@ function Sections(props) {
         >
           <div
             id="section"
-            className={`${props.varName} section box_index-${props.id}`}
+            className={`${props.varName} section box_index-${props.cardIndex}`}
           >
             <div className="innerBox">
               <div className="title">
@@ -112,21 +140,41 @@ function Sections(props) {
                 />
               </div>
             </div>
-            <div className="removeButton">
-              <img
-                src={closeButton}
-                alt="x for closing the section box"
-                className={`${props.varName}-${props.id}`}
-                onClick={handleXbutton}
-                onKeyDown={handleXbutton}
+            <div className="secButtons">
+              <div className="removeButton">
+                <img
+                  src={plus}
+                  alt="x for closing the section box"
+                  className={`${props.varName}-${props.id}`}
+                  onClick={handleXbutton}
+                  onKeyDown={handleXbutton}
+                />
+              </div>
+              <AddSectionButton
+                key={`addButton-${props.varName}-${props.id}`}
+                belowSection={props.varName}
+                index={props.id}
+                dispatch={props.dispatch}
               />
+              <div className="upArrow">
+                <img
+                  className={`up-${props.id}`}
+                  onClick={handleArrowClick}
+                  // onKeyDown={{ handleArrowClick }}
+                  alt="arrow pointing up"
+                  src={arrow}
+                />
+              </div>
+              <div className="dnArrow">
+                <img
+                  src={arrow}
+                  className={`dn-${props.id}`}
+                  onClick={handleArrowClick}
+                  // onKeyDown={{ handleArrowClick }}
+                  alt="arrow pointing down"
+                />
+              </div>
             </div>
-            <AddSectionButton
-            // key={`addButton-${varTitle}-${i}`}
-            // belowSection={varTitle}
-            // index={i}
-            // dispatch={dispatch}
-            />
           </div>
         </div>
       )}
