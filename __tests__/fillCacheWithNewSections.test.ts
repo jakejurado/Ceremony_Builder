@@ -1,5 +1,5 @@
-import { describe, expect, test } from "@jest/globals";
-import { fillCacheWithNewSections } from "../src/functions/sectionCacheFuncs";
+// import { describe, expect, test } from "@jest/globals";
+import { fillCacheWithNewSections } from "../src/functions/cache/sectionCacheFuncs";
 
 describe("Fill Cache With New Sections", () => {
   let cache = {};

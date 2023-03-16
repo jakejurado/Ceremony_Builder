@@ -1,3 +1,5 @@
+import { order, Template, Cache, Section } from "../../types/types";
+
 //This function takes a varname of a section and adds the section to the template.
 function addSecToTemplate(
   varname,
@@ -5,7 +7,7 @@ function addSecToTemplate(
   order,
   template,
   cache,
-  setUpdatedData
+  setUpdatedData //: React.Dispatch<React.SetStateAction<boolean>>
 ) {
   let newTemplate = JSON.parse(JSON.stringify(template)); //copy the template
   let orderCopy = [...order]; //copy order
@@ -15,10 +17,10 @@ function addSecToTemplate(
   if (!cache.hasOwnProperty(varname)) {
     orderCopy = insertSection(varname, index, orderCopy);
     fetchSection(varname, orderCopy, template, setUpdatedData);
-    return { ...newTemplate, order: orderCopy };
+    return { ...newTemplate, order };
     //if new sec is not in template order then insert it from the cache
   } else if (!isInOrder) {
-    newTemplate.order = insertSection(varname, index, orderCopy);
+    newTemplate["order"] = insertSection(varname, index, orderCopy);
     newTemplate[varname] = JSON.parse(JSON.stringify(cache[varname]));
     return newTemplate;
     //if the section is already in the template order then duplicate it
@@ -38,35 +40,8 @@ function addSecToTemplate(
   }
 }
 
-//This function adds the array containing the section varname and starting Index to the passed in order
-function addSecToOrder(varname, index, order, template) {
-  const isInOrder = order.some((e) => e[0] === varname); //checks if already in order
-
-  //duplicate section if varname is already in order
-  if (isInOrder) {
-    const newVarname = duplicateVarname(varname, template);
-    const dupSection = duplicateSection(varname, newVarname, template);
-    // setTemplate({ ...dupSection });
-    const newOrder = insertSection(newVarname, index, order);
-    return {
-      varname: newVarname,
-      order: newOrder,
-      template: dupSection,
-      dup: isInOrder,
-    };
-  }
-  //return when section is not in order
-  const newOrder = insertSection(varname, index, order);
-  return {
-    varname: varname,
-    order: newOrder,
-    template: false,
-    dup: isInOrder,
-  };
-}
-
 //This function duplicates a section, updating the important properties with the new suffix.
-function duplicateSection(varname, newVarname, template, cache) {
+function duplicateSection(varname, newVarname, template, cache): Template {
   const templateCopy = { ...template };
   const [_, suffix] = newVarname.split("~");
   templateCopy[newVarname] = JSON.parse(JSON.stringify(cache[varname]));
@@ -83,8 +58,8 @@ function duplicateVarname(varname, template) {
 }
 
 //This function inserts a Section into the order.
-function insertSection(varname, index, order) {
-  const newOrder = [];
+function insertSection(varname: string, index: number, order: order): order {
+  const newOrder: order = [];
   order.forEach((set, i) => {
     if (i === index) newOrder.push([varname, 0]);
     newOrder.push([...set]);
@@ -93,17 +68,24 @@ function insertSection(varname, index, order) {
 }
 
 //This function fetches a section from the backend and then updates state
-function fetchSection(varname, order, currTemplate, setState) {
+
+function fetchSection(
+  varname: string,
+  order: order,
+  currTemplate: Template,
+  setState
+) {
   fetch(`/sections/grab?sec=${varname}`)
     .then((res) => res.json())
     .then((res) => {
       //build the new section
-      const sec = {};
       const scripts = res.map((obj) => obj.script);
-      sec.description = res[0].description;
-      sec.start_pos = 0;
-      sec.title = res[0].title;
-      sec.script = scripts;
+      const sec: Section = {
+        description: res[0].description,
+        start_pos: 0,
+        title: res[0].title,
+        script: scripts,
+      };
       return sec;
     })
     .then((sec) => {
@@ -116,4 +98,4 @@ function fetchSection(varname, order, currTemplate, setState) {
     });
 }
 
-export { addSecToOrder, fetchSection, addSecToTemplate };
+export { fetchSection, addSecToTemplate };

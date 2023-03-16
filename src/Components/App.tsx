@@ -14,6 +14,7 @@ import Popup from "../Components/Popup";
 import PopupPrint from "./PopupPrint";
 import { toggleSidebar } from "../functions/mainPage/sidebarFuncs";
 import Header from "./Header";
+import ErrorBoundary from "./ErrorBoundary";
 
 //Temparary Data
 import { templateWed, templateWed2 } from "../server/files/serverDB2";
@@ -22,7 +23,7 @@ import templateElope from "../server/files/serverDB";
 //helperFunctions
 import { updateSectionOrder } from "../functions/mainPage/dragdropFuncs";
 import { addContentsToCache } from "../functions/cache/cache";
-import { addSecToOrder, addSecToTemplate } from "../functions/sections/addSec";
+import { addSecToTemplate } from "../functions/sections/addSec";
 import { addSelectorSection } from "../functions/sections/selectorSec";
 import { updateCardIndex } from "../functions/sections/updateSec";
 import { removeSection } from "../functions/sections/removeSec";
@@ -31,6 +32,16 @@ import { fillCacheWithNewSections } from "../functions/cache/sectionCacheFuncs";
 import { updateTemplate } from "../functions/sections/updateTemplate";
 import { saveDomToTemplates } from "../functions/sections/resetCard";
 // import { addDomToTemplate } from "../functions/sections/resetCard";
+
+//Typescript
+import {
+  Cache,
+  Templates,
+  Template,
+  TemplateSansOrder,
+  personState,
+  selectorSec,
+} from "../types/types";
 
 //Style import
 import "../styles/main.scss";
@@ -95,7 +106,9 @@ function App() {
   });
 
   //cache for all sections from templates and ones added by user during session
-  const [sectionCache, setSectionCache] = useState();
+  const [sectionCache, setSectionCache] = useState(
+    addContentsToCache(templates, {})
+  );
 
   //holds the current template, which contains the sections and the order of the sections, used to fill the page.
   const [template, dispatch] = useReducer(reducer, templates[templateTitle]);
@@ -129,7 +142,10 @@ function App() {
         //this case is only ran after a section is fetched from the backend.
         //update the section cache
         const { order, ...sections } = payload;
-        const newCache = fillCacheWithNewSections(sectionCache, sections);
+        const newCache: Cache = fillCacheWithNewSections(
+          sectionCache,
+          sections
+        );
         setSectionCache(newCache);
 
         //update the state
@@ -210,12 +226,6 @@ function App() {
     }
   }
 
-  //On page load, populate display state and cache state
-  useEffect(() => {
-    setSectionCache(addContentsToCache(templates, sectionCache));
-    dispatch({ type: "loadTEMPLATE", payload: templates[templateTitle] });
-  }, [templateTitle]); //removed templates 8:35 tue mar 7
-
   //updates state when new data is fetched or retrieved asynchronously
   useEffect(() => {
     dispatch(updatedData);
@@ -245,33 +255,39 @@ function App() {
     toggleSidebar(sidebarOpen);
   }, [sidebarOpen]);
 
-  return (
-    <div className="App">
-      <GlobalContext.Provider
-        value={{
-          template,
-          dispatch,
-          selectorSec,
-          selectorTitles,
-          names,
-          setNames,
-          popDispatch,
-          setTemplateTitle,
-          templates,
-          popupState,
-          domRef,
-        }}
-      >
-        <Header />
-        {popupState.display && <Popup />}
+  useEffect(() => {
+    dispatch({ type: "loadTEMPLATE", payload: templates[templateTitle] });
+  }, [templateTitle]);
 
-        <SidebarButton
-          toggleSidebarState={() => setSidebarOpen(!sidebarOpen)}
-        />
-        <Sidebar />
-        <MainDisplay />
-      </GlobalContext.Provider>
-    </div>
+  return (
+    <ErrorBoundary>
+      <div className="App">
+        <GlobalContext.Provider
+          value={{
+            template,
+            dispatch,
+            selectorSec,
+            selectorTitles,
+            names,
+            setNames,
+            popDispatch,
+            setTemplateTitle,
+            templates,
+            popupState,
+            domRef,
+          }}
+        >
+          <Header />
+          {popupState.display && <Popup />}
+
+          <SidebarButton
+            toggleSidebarState={() => setSidebarOpen(!sidebarOpen)}
+          />
+          <Sidebar />
+          <MainDisplay />
+        </GlobalContext.Provider>
+      </div>
+    </ErrorBoundary>
   );
 }
 

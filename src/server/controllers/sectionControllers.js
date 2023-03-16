@@ -8,6 +8,7 @@ sectionController.grabSection = (req, res, next) => {
   db.query(sectionQuery, [sectionTitle])
     .then((result) => {
       res.locals.mySection = result.rows;
+      console.log("rows", result.rows);
       return next();
     })
     .catch((err) => {
@@ -35,23 +36,5 @@ sectionController.grabAllSectionTiles = (req, res, next) => {
     });
 };
 
-// sectionController.getCompanies = (req, res, next) => {
-//   const companyQuery =
-//     'SELECT * FROM "company" WHERE user_id = (SELECT _id from users WHERE name = $1)';
-//   const userId = [res.locals.name];
-//   db.query(companyQuery, userId)
-//     .then((result) => {
-//       console.log(result.rows);
-//       res.locals.jobs = result.rows;
-//       return next();
-//     })
-//     .catch((err) => {
-//       return next({
-//         log: "Express error handler caught in getJobs middleware error",
-//         status: 500,
-//         message: { err: "An error in getJobs" },
-//       });
-//     });
-// };
 
 module.exports = sectionController;
