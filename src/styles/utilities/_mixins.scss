@@ -1,0 +1,89 @@
+@use "../variables" as v;
+
+@-webkit-keyframes shake {
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  12% {
+    -webkit-transform: rotate(10deg);
+  }
+  24% {
+    -webkit-transform: rotate(0deg);
+  }
+  36% {
+    -webkit-transform: rotate(-7deg);
+  }
+  48% {
+    -webkit-transform: rotate(0deg);
+  }
+  60% {
+    -webkit-transform: rotate(4deg);
+  }
+  72% {
+    -webkit-transform: rotate(-2deg);
+  }
+  84% {
+    -webkit-transform: rotate(1deg);
+  }
+  100% {
+    -webkit-transform: rotate(0deg);
+  }
+}
+
+@mixin rotateMe($rotate) {
+  -moz-transform: rotate($rotate);
+  -webkit-transform: rotate($rotate);
+  -o-transform: rotate($rotate);
+  -ms-transform: rotate($rotate);
+  transform: rotate($rotate);
+}
+
+@mixin buttonDiv($degStart, $degEnd, $sec, $color) {
+  display: flex;
+  flex-direction: column;
+  border-radius: 50%;
+  width: 100%;
+  transform: rotate($degStart);
+  color: black;
+  img {
+    border-radius: 50%;
+    -webkit-transition: transform $sec;
+    -moz-transition: transform $sec;
+    transition: transform $sec;
+    :hover {
+      box-shadow: 0px 0px 5px black;
+    }
+  }
+  :hover {
+    background-color: $color;
+    transform: rotate($degEnd);
+    box-shadow: 0px 0px 5px black;
+  }
+}
+
+@mixin buttonHover($deg) {
+  border-radius: 50%;
+  background-color: $color;
+  @include rotateMe($deg);
+}
+
+@mixin createBoxButton {
+  width: 10vw;
+  height: 4vw;
+  font-family: v.$fontSecond;
+  font-size: v.$fontSizeMed;
+  background-color: v.$whiteMain;
+  color: v.$blackMain;
+  border: solid;
+  border-width: thin;
+  border-radius: 4px;
+  border-color: v.$grayMain;
+
+  &:hover {
+    background-color: white;
+  }
+  &:active {
+    background-color: v.$yellowMain;
+    color: white;
+  }
+}

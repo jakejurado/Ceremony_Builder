@@ -1,7 +1,7 @@
 CREATE TABLE public.users (
   _id SERIAL PRIMARY KEY NOT NULL,
   user_email VARCHAR NOT NULL UNIQUE,
-  user_password INT NOT NULL
+  user_password VARCHAR(50) NOT NULL CHECK (LENGTH(my_column) >= 8)
   )
 
 CREATE TABLE public.templates (

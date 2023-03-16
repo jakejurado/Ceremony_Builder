@@ -1,0 +1,40 @@
+@use "../variables" as v;
+
+
+//Reset the default styles
+html,
+body,
+ul,
+ol {
+  margin: 0;
+  padding: 0;
+  display:flex;
+  box-sizing: border-box;
+  font-family: v.$fontMain;
+  color: v.$blackMain;
+  font-size: v.$fontSizeMed;
+  background-color: v.$whiteMain;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  margin: 0;
+}
+
+
+/* Global styles */
+a {
+  color: v.$blackMain;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+  color: v.$yellowMain;
+}
+
+ul{
+  list-style-type: none;
+}

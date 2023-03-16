@@ -1,12 +1,19 @@
-import React from "react";
-import "../styles/sidebar.css";
+import React, { useContext } from "react";
+import SideBarTemplate from "./SidebarTemplate";
+import SidebarNames from "./SidebarNames.jsx";
+import SidebarPrint from "./SidebarPrint";
 
 function Sidebar() {
   return (
-    <div id="sideBar">
-      <div>Templates</div>
-      <div>Your Templates</div>
-      <div>Save Current</div>
+    <div id="panel">
+      <div id="cover" />
+      <div id="sideBar">
+        <div id="login">sign in | sign up</div>
+        <SideBarTemplate />
+        <SidebarNames />
+        <SidebarPrint />
+      </div>
+      {/* <div>Save Current</div> */}
     </div>
   );
 }

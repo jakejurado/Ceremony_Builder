@@ -1,23 +1,24 @@
-import React from "react";
-import addButton from "../../public/assets/add.png";
+import React, { useContext } from "react";
+import plusBtn from "../../public/assets/plus-circle.svg";
 
 function AddSectionButton(props) {
+  //when add button is clicked, a dispatch is sent to add the selector box to the page
   function handleClick(e) {
     const [title, index] = e.target.parentNode.classList[1].split("-");
-    const newObj = { title, index, action: "selectSEC" };
-    props.handleSectionChange(newObj);
+    props.dispatch({ type: "selectSEC", payload: { title, index } });
   }
 
   return (
-    <li className={`addSectionButton ${props.belowSection}-${props.index}`}>
+    <div
+      className={`addSectionButton ${props.belowSection}-${props.index} ${props.belowSection}-${props.index} addButton  `}
+    >
       <img
-        id="addButtonImg"
-        src={addButton}
+        src={plusBtn}
         alt="add section button"
         onClick={handleClick}
         onKeyDown={handleClick}
       />
-    </li>
+    </div>
   );
 }
 

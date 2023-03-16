@@ -1,14 +1,16 @@
-import { display } from "../../types/types";
+import { order, updateSecPayload } from "../../types/types";
 
-//receives the name of the section and the direction of the arrow and updates display state.
-function updateCardIndex(display: display, cardIndex: number, numOfCards: number, index: number): display {
-  const displayCopy: display = [...display];
-  //check if cardIndex has exceeded the number of cards for this section
-  cardIndex =
-    cardIndex > numOfCards ? 0 : cardIndex < 0 ? numOfCards : cardIndex;
-  //update the card index
-  displayCopy[index][1] = cardIndex;
-  return [...displayCopy];
+function updateCardIndex(order: order, payload: updateSecPayload): order {
+  let { cardIndex, numOfCards, index, add } = payload;
+  const orderCopy: order = [...order];
+  let updatedCardIndex: number = cardIndex + add;
+  orderCopy[index][1] =
+    updatedCardIndex > numOfCards
+      ? 0
+      : updatedCardIndex < 0
+      ? numOfCards
+      : updatedCardIndex;
+  return orderCopy;
 }
 
-export {updateCardIndex}
+export { updateCardIndex };

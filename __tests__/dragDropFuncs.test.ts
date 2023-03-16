@@ -1,34 +1,47 @@
-import { updateSectionOrder } from "../src/functions/dragdropFuncs";
-import { display } from "../src/types/types";
+import { updateSectionOrder } from "../src/functions/mainPage/dragdropFuncs";
+import { order, moveSecPayload } from "../src/types/types";
 
-describe('Drag Drop Section Order', () =>{
-  const currState: display = [['first', 1], ['second', 2], ['third', 3]]
-  const destIndex: number = 0
-  const sourceIndex: number = 1
+describe("Drag Drop Section Order", () => {
+  const currState: order = [
+    ["first", 1],
+    ["second", 2],
+    ["third", 3],
+  ];
+  const payload: moveSecPayload = {
+    destIndex: 0,
+    sourceIndex: 1,
+  };
 
-  beforeEach(()=>{
+  beforeEach(() => {
     currState;
-    destIndex;
-    sourceIndex;
-  })
+    payload;
+  });
 
-  it('returns undefined if destination and source index are equal', ()=>{
-    const res = updateSectionOrder(2, 2, currState);
-    expect(res).toBe(undefined);
-  })
+  it("returns same order of destination and source then index are equal", () => {
+    const res = updateSectionOrder(currState, { sourceIndex: 1, destIndex: 1 });
+    expect(res).toEqual(currState);
+  });
 
-  it('returns the correct order when source is less than destination', ()=>{
-    const res = updateSectionOrder(0, 1, currState);
-    expect(res).toEqual([['second', 2], ['first', 1], ['third', 3]])
-  })
+  it("returns the correct order when source is less than destination", () => {
+    const res = updateSectionOrder(currState, payload);
+    expect(res).toEqual([
+      ["second", 2],
+      ["first", 1],
+      ["third", 3],
+    ]);
+  });
 
-  it('returns the correct order when source is more than destination', ()=>{
-    const res = updateSectionOrder(1, 0, currState);
-    expect(res).toEqual([['second', 2], ['first', 1], ['third', 3]])
-  })
+  it("returns the correct order when source is more than destination", () => {
+    const res = updateSectionOrder(currState, payload);
+    expect(res).toEqual([
+      ["second", 2],
+      ["first", 1],
+      ["third", 3],
+    ]);
+  });
 
-  it('returns an array of the same length', () => {
-    const res = updateSectionOrder(1, 0, currState);
+  it("returns an array of the same length", () => {
+    const res = updateSectionOrder(currState, payload);
     expect(res?.length).toBe(3);
-  })
-})
+  });
+});

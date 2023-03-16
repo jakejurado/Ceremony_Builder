@@ -1,0 +1,30 @@
+@use "../variables" as v;
+
+#popup {
+  top: 0;
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  background-color: v.$pinkMain;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  z-index: 4;
+}
+
+#popBox {
+  display: flex;
+  flex-direction: column;
+  overflow-y: scroll;
+}
+#closePopup {
+  align-self: flex-end;
+}
+#popupContent {
+  margin: 0 3vw 0 3vw;
+  padding: 1vw;
+  background-color: v.$whiteMain;
+  border: solid thick v.$blackMain;
+}
+
+
