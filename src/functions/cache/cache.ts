@@ -1,4 +1,6 @@
 //add contents of array to cache
+import { Templates, Cache } from "../../types/types";
+
 function addContentsToCache(templates, cache) {
   const newCache = { ...cache };
   Object.values(templates).forEach((template) => {

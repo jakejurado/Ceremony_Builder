@@ -1,7 +1,6 @@
 const express = require("express");
-
-const sectionController = require("../controllers/sectionControllers");
 const router = express.Router();
+const sectionController = require("../controllers/sectionControllers");
 
 router.get("/titles", sectionController.grabAllSectionTiles, (req, res) => {
   return res.status(200).send(res.locals.allTitles);

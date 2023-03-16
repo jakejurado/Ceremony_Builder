@@ -8,7 +8,7 @@ require("dotenv").config();
 
 const controller = require("./controllers/controller");
 const sectionRouter = require("./routs/sections");
-const templateRouter = require("./routs/sections");
+const userRouter = require("./routs/user");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -19,8 +19,8 @@ app.use(express.static("dist"));
 //used to add a new section to the main page.
 app.use("/sections", sectionRouter);
 
-//used to CRUD templates
-app.use("/templates", templateRouter);
+
+app.use("/user", userRouter);
 
 //post request to /save
 app.post("/save", controller.saveCeremonyScript, (req, res) => {

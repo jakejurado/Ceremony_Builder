@@ -1,9 +1,9 @@
-import { display, displaySet } from "../../types/types";
+import { order } from "../../types/types";
 
-//Removes the section from the display
-function removeSection(index: number, display: display): display {
-  const newOrder: display = [];
-  display.forEach((set, i) => {
+//Removes the section from the order
+function removeSection(index: number, order: order): order {
+  const newOrder: order = [];
+  order.forEach((set, i) => {
     if (i !== index) newOrder.push(set);
   });
   return newOrder;
