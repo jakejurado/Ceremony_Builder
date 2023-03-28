@@ -81,12 +81,13 @@ userController.verifyPassword = async (req, res, next) => {
   console.log("entered verifyPassword");
   const { email, password } = req.query;
 
-  const sqlPassword = "SELECT user_password FROM users WHERE user_email = $1";
+  const sqlPassword = "SELECT * FROM users WHERE user_email = $1";
 
   try {
     const { rows } = await db.query(sqlPassword, [email]);
     const verified = await bcrypt.compare(password, rows[0].user_password);
     req.email = email;
+    req.userInfo = rows[0];
     if (verified) return next();
     else throw error;
   } catch (err) {
@@ -103,7 +104,7 @@ userController.verifyPassword = async (req, res, next) => {
 //OUTPUT:
 userController.createToken = async (req, res, next) => {
   try {
-    const email = req.email;
+    const email = req.userInfo.user_email;
 
     // Create a JWT token with a payload containing the user's email
     const token = await new Promise((resolve, reject) => {

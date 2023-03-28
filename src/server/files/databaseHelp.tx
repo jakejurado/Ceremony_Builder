@@ -13,6 +13,13 @@ CREATE TABLE public.templates (
   REFERENCES users(_id)
   )
 
+CREATE TABLE templates (
+    _id SERIAL PRIMARY KEY NOT NULL,
+    creator INTEGER NOT NULL REFERENCES users(_id),
+    template TEXT NOT NULL
+);
+
+
 CREATE TABLE public.meta_data (
   _id SERIAL PRIMARY KEY NOT NULL,
   title VARCHAR NOT NULL,

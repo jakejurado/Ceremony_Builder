@@ -195,7 +195,8 @@ function App() {
   //Controls the state of popup for printing, signin, and signup
   const [popupState, popDispatch] = useReducer(popReducer, {
     // display: <PopupPrint />,
-    display: false,
+    display: <AccountBox />,
+    // display: false,
   });
 
   function popReducer(state, action) {
