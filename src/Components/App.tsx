@@ -15,6 +15,7 @@ import PopupPrint from "./PopupPrint";
 import { toggleSidebar } from "../functions/mainPage/sidebarFuncs";
 import Header from "./Header";
 import ErrorBoundary from "./ErrorBoundary";
+import PopupAccount from "./PopupAccount";
 
 //Temparary Data
 import { templateWed, templateWed2 } from "../server/files/serverDB2";
@@ -192,6 +193,10 @@ function App() {
     }
   }
 
+  //NEW POPUP CONTROLLS
+  const [popup, setPopup] = useState('signup')
+
+
   //Controls the state of popup for printing, signin, and signup
   const [popupState, popDispatch] = useReducer(popReducer, {
     // display: <PopupPrint />,
@@ -274,11 +279,14 @@ function App() {
             setTemplateTitle,
             templates,
             popupState,
+            popup,
+            setPopup,
             domRef,
           }}
         >
           <Header />
           {popupState.display && <Popup />}
+          {popup && <PopupAccount curr={popup}/>}
 
           <SidebarButton
             toggleSidebarState={() => setSidebarOpen(!sidebarOpen)}
