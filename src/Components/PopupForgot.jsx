@@ -10,23 +10,23 @@ function PopupForgot(){
   }
 
   return(
-    <div class="mainInput" ref={inputDom}>
+    <div className="mainInput" ref={inputDom}>
 
-      <div class='lineInstructions'>
+      <div className='lineInstructions'>
         Enter your email associated with your account and then submit.  You will be provided a code to change your password.
       </div>
       
       
-      <div class='line'>
-        <div class="desc">
+      <div className='line'>
+        <div className="desc">
           e-mail: 
         </div>
-        <div class="inputDiv">
-          <input class='inputContent' />
+        <div className="inputDiv">
+          <input className='inputContent' />
         </div>
       </div>
       
-      <div class="lefty" onClick={handleClick}>I have the code</div>
+      <div className="lefty" onClick={handleClick}>I have the code</div>
     </div>
   )
 }

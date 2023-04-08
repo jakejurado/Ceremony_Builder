@@ -12,7 +12,7 @@ function PopupVerify(){
   return(
     <div class="mainInput" ref={inputDom}>
 
-      <div class = 'line'>
+      <div className= 'line'>
         <div class="desc">
           email: 
         </div>
@@ -21,7 +21,7 @@ function PopupVerify(){
         </div>
       </div>
 
-      <div class = 'line'>
+      <div className= 'line'>
         <div class="desc">
           verification code: 
         </div>
@@ -30,7 +30,7 @@ function PopupVerify(){
         </div>
       </div>
       
-      <div class = 'line'>
+      <div className= 'line'>
         <div class="desc">
           new password: 
         </div>
@@ -40,7 +40,7 @@ function PopupVerify(){
       </div>
 
 
-      <div class = 'line depth'>
+      <div className= 'line depth'>
         <div class="desc">
           new password: 
         </div>

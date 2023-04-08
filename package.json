@@ -19,6 +19,9 @@
     "wedding",
     "ceremony"
   ],
+  "_moduleAliases": {
+    "@modules": "./node_modules"
+  },
   "author": "Jacob Jurado",
   "license": "UNLICENSED",
   "dependencies": {
@@ -30,6 +33,7 @@
     "cookie-session": "^2.0.0",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
+    "email-addresses": "^5.0.0",
     "express": "^4.18.1",
     "mongoose": "^6.5.2",
     "pg": "^8.8.0",
