@@ -188,7 +188,6 @@ function App() {
       }
       default: {
         // returns the current state
-        console.log("default");
         return state;
       }
     }

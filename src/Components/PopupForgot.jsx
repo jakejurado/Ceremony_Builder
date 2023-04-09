@@ -1,16 +1,17 @@
-import React, {useContext} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import { PopupContext } from './PopupAccount';
 
 function PopupForgot(){
-  const {dispatch, inputDom} = useContext(PopupContext);
+  const {dispatch, userEmailDom, handleEmailInputChange} = useContext(PopupContext);
 
+  //changes popup to verify popup.
   function handleClick(){
     console.log(dispatch)
     dispatch({type:'verify'})
   }
 
   return(
-    <div className="mainInput" ref={inputDom}>
+    <div className="mainInput">
 
       <div className='lineInstructions'>
         Enter your email associated with your account and then submit.  You will be provided a code to change your password.
@@ -22,7 +23,7 @@ function PopupForgot(){
           e-mail: 
         </div>
         <div className="inputDiv">
-          <input className='inputContent' />
+          <input className='inputContent' ref={userEmailDom} onChange={handleEmailInputChange}/>
         </div>
       </div>
       

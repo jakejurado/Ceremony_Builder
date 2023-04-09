@@ -1,36 +1,38 @@
-import React, {useContext} from 'react';
+import React, {useContext, useState, useEffect} from 'react';
 import { PopupContext } from "./PopupAccount";
 
 
 function PopupLogin(){
-  const {dispatch, inputDom} = useContext(PopupContext);
+  const {dispatch, setSubmitReady, userEmailDom, userPassDom, handleEmailInputChange, handlePasswordInputChange1, handlePasswordInputChange2, handleCodeInputChange} = useContext(PopupContext)
 
   function handleClick(){
+    console.log(dispatch)
     dispatch({type:'forgot'})
   }
+ 
 
   return(
-    <div class="mainInput" ref={inputDom}>
+    <div className="mainInput">
 
-      <div class = 'line'>
-        <div class="desc">
+      <div className = 'line'>
+        <div className="desc">
           e-mail: 
         </div>
-        <div class="inputDiv">
-          <input class='inputContent' />
+        <div className="inputDiv">
+          <input className='inputContent' ref={userEmailDom} onChange={handleEmailInputChange} />
         </div>
       </div>
       
-      <div class = 'line'>
-        <div class="desc">
+      <div className = 'line'>
+        <div className="desc">
           password: 
         </div>
-        <div class="inputDiv">
-          <input class='inputContent' />
+        <div className="inputDiv">
+          <input className='inputContent' ref={userPassDom} onChange={handlePasswordInputChange1} />
         </div>
       </div>
       
-      <div class='lefty' onClick={handleClick}>forgot password? </div>
+      <div className='lefty' onClick={handleClick}>forgot password? </div>
     </div>
   )
 }

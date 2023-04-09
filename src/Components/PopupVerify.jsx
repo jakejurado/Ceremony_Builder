@@ -1,55 +1,56 @@
-import React, {useContext} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import { PopupContext } from "./PopupAccount";
+import { passwordCriteria, validateEmail } from '../functions/account/password';
 
 function PopupVerify(){
-  const {dispatch, inputDom} = useContext(PopupContext);
+  const {dispatch, userCodeDom, userEmailDom, userNewPassDom, userPassDom, handleEmailInputChange, handlePasswordInputChange1, handlePasswordInputChange2, handleCodeInputChange} = useContext(PopupContext);
 
+  //changes popup to forgot popup
   function handleClick(){
     dispatch({type:'forgot'})
   }
 
-
   return(
-    <div class="mainInput" ref={inputDom}>
+    <div className="mainInput">
 
       <div className= 'line'>
-        <div class="desc">
+        <div className="desc">
           email: 
         </div>
-        <div class="inputDiv">
-          <input class='inputContent' />
+        <div className="inputDiv">
+          <input className='inputContent' ref={userEmailDom} onChange={handleEmailInputChange} />
         </div>
       </div>
 
       <div className= 'line'>
-        <div class="desc">
+        <div className="desc">
           verification code: 
         </div>
-        <div class="inputDiv">
-          <input class='inputContent' />
+        <div className="inputDiv">
+          <input className='inputContent' ref={userCodeDom} onChange={handleCodeInputChange} />
         </div>
       </div>
       
       <div className= 'line'>
-        <div class="desc">
+        <div className="desc">
           new password: 
         </div>
-        <div class="inputDiv">
-          <input class='inputContent' />
+        <div className="inputDiv">
+          <input className='inputContent' ref={userPassDom} onChange={handlePasswordInputChange2} />
         </div>
       </div>
 
 
       <div className= 'line depth'>
-        <div class="desc">
+        <div className="desc">
           new password: 
         </div>
-        <div class="inputDiv">
-          <input class='inputContent'/>
+        <div className="inputDiv">
+          <input className='inputContent' ref={userNewPassDom} onChange={handlePasswordInputChange2} />
         </div>
       </div>
 
-      <div class="lefty" onClick={handleClick}>
+      <div className="lefty" onClick={handleClick}>
         go back
       </div>
       

@@ -1,35 +1,44 @@
-import React, {useContext, createContext, useRef, useReducer, useEffect, useState} from 'react'
+import React, {useContext, createContext, useRef, useReducer, useEffect, useMemo, useState} from 'react'
 import PopupForgot from './PopupForgot';
 import PopupLogin from './PopupLogin';
 import PopupSignup from './PopupSignup';
 import PopupVerify from './PopupVerify';
 import { GlobalContext} from "./App";
+import { checkSubmitButtonCriteria } from '../functions/account/password';
+import {createDomToggle} from "../functions/account/domToggle";
 
 //holds the context for the login/signup state
 export const PopupContext = createContext(null);
 
 function PopupAccount({curr}){
+  
+  //CONTEXT: global state
   const {setPopup} = useContext(GlobalContext)
-  //keeps track of submit button should be active or not. 
-  const [submitReady, setSubmitReady] = useState(false)
-  //references
-  const inputDom = useRef(null);
-  const buttonDom = useRef(null);
-  const handleSubmitClickRef = useRef(null);
 
-  //user info
+  //REFs
+  const buttonDom = useRef(null); //submit button
+  const handleSubmitClickRef = useRef(null); //submit click function
+
+  //input boxes for user inputs
   const userEmailDom = useRef(null);
   const userPassDom = useRef(null);
   const userCodeDom = useRef(null);
   const userNewPassDom = useRef(null);
 
-  //keeps track of which pop up box should be displayed.
+  //TOGGLE
+  //creates the submit button toggle
+  const submitToggle = new createDomToggle(buttonDom.current, handleSubmitClickRef.current, 'buttonActive' )
+
+  //REDUCER
+  //keeps track of which pop up box should be displayed
   const [popupBox, dispatch] = useReducer(reducer, {title: 'login', display: <PopupLogin />});
 
-  //logic for the popupBox
+  //logic for the popupBox reducer
   function reducer(state, action){
-    console.log('entered reducer')
     const { type } = action;
+
+    //removes any event listeners that had been added.
+    submitToggle.deactivate();
 
     switch (type) {
       case "signup": 
@@ -41,62 +50,83 @@ function PopupAccount({curr}){
       case 'verify':
         return {title: 'verify', display: <PopupVerify />}
       case 'initialLoad':
-        console.log('entered initialLoad')
         return {title: 'login', display: <PopupLogin />}
       case 'close':
         return null
       default:
-        console.log('default')
         return {title: 'login', display: PopupLogin}
     }
   }
 
+  //PAGE INIT
   //on load, sets the state for the current popup box
   useEffect(()=>{
-    dispatch({type: curr})
+    dispatch({type: curr}) //sets the popup from props
+    handleSubmitClickRef.current = handleSubmitClick;
   }, [])
 
-  //depending on the 'submitReady' the submit button becomes activated or dectivated
-  useEffect(() => {
-    //adds and removes style for the submit button
-    buttonDom.current.classList.toggle('buttonVoid');
 
-    //saves the reference to the onclick function
-    handleSubmitClickRef.current = handleSubmitClick;
-    
-    if(submitReady){
-      buttonDom.current.addEventListener("click", handleSubmitClickRef.current);
-    } else{
-      console.log('entered else')
-      buttonDom.current.removeEventListener("click", handleSubmitClickRef.current);
-    }
+  //toggles the submit button between inactive to active
+  function togleButtonActive(bool){
+    if(bool) submitToggle.activate(); 
+    else submitToggle.deactivate();
+  }
 
-    //remove event listener
-    return ()=>{
-      buttonDom.current.removeEventListener("click", handleSubmitClickRef.current);
-    }
-  }, [submitReady])
+  //checks email input value to determine if submit button should be active
+  function handleEmailInputChange(e){
+    const userInfo = grabUserData()
+    console.log({userInfo})
+    const res = checkSubmitButtonCriteria(userInfo);
+    console.log({res})
+    togleButtonActive(res);
+  }
 
+  //checks password input value to determine if submit button should be active
+  function handlePasswordInputChange1(e){
+    const userInfo = grabUserData()
+    const res = checkSubmitButtonCriteria(userInfo);
+    togleButtonActive(res);
+  }
 
-  //connects with state that displays the popup and removes it.
+  //checks password2 input value to determine if submit button should be active
+  function handlePasswordInputChange2(e){
+    const userInfo = grabUserData()
+    const res = checkSubmitButtonCriteria(userInfo);
+    togleButtonActive(res);
+  }
+
+  //checks code input value to determine if submit button should be active
+  function handleCodeInputChange(e){
+    const userInfo = grabUserData()
+    const res = checkSubmitButtonCriteria(userInfo);
+    togleButtonActive(res);
+  }
+  
+  //connects with parent state that displays the popup and removes it.
   function handleBackgroundClick(){
     setPopup(null);
   }
 
   //grabs the data from the input and places in object.
-  function handleSubmitClick(){
+  function grabUserData(){
     const userInfo={};
     userInfo.title = popupBox.title;
     userInfo.email = userEmailDom.current.value;
-    userInfo.password = userPassDom?.current.value;
-    userInfo.code = userCodeDom.current?.value;
-    userInfo.userNewPassDom = userCodeDom.current?.value;
+    userInfo.pass1 = userPassDom.current?.value;
+    userInfo.pass2 = userNewPassDom.current?.value;
+    userInfo.code1 = userCodeDom.current?.value;
+    
+    return userInfo
+  }
 
+  //grbs user data
+  function handleSubmitClick(){
+    const userInfo = grabUserData();
     console.log(userInfo)
   }
 
   return(
-    <PopupContext.Provider value={{dispatch, inputDom, setSubmitReady, userCodeDom, userEmailDom, userNewPassDom, userPassDom}}>
+    <PopupContext.Provider value={{dispatch, userCodeDom, userEmailDom, userNewPassDom, userPassDom, handleEmailInputChange, handlePasswordInputChange1, handlePasswordInputChange2, handleCodeInputChange}}>
       <div id='popupContainer'>
         <div id='popupBackground' onClick={handleBackgroundClick}></div>
         <div className = 'acctPopup'>
@@ -105,7 +135,7 @@ function PopupAccount({curr}){
             <div className='eachTab' onClick={()=>dispatch({type: 'signup'})}>signup</div>
             {popupBox.display}
             <div className="bottomBox">
-              <div class='submitButton' ref={buttonDom}>
+              <div className='submitButton' ref={buttonDom}>
                 Submit
               </div>
             </div>
