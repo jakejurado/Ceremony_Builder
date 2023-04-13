@@ -18,6 +18,8 @@ function PopupAccount({curr}){
   //REFs
   const buttonDom = useRef(null); //submit button
   const handleSubmitClickRef = useRef(null); //submit click function
+  const loginTab = useRef(null)
+  const signupTab = useRef(null)
 
   //input boxes for user inputs
   const userEmailDom = useRef(null);
@@ -65,7 +67,6 @@ function PopupAccount({curr}){
     handleSubmitClickRef.current = handleSubmitClick;
   }, [])
 
-
   //toggles the submit button between inactive to active
   function togleButtonActive(bool){
     if(bool) submitToggle.activate(); 
@@ -75,9 +76,7 @@ function PopupAccount({curr}){
   //checks email input value to determine if submit button should be active
   function handleEmailInputChange(e){
     const userInfo = grabUserData()
-    console.log({userInfo})
     const res = checkSubmitButtonCriteria(userInfo);
-    console.log({res})
     togleButtonActive(res);
   }
 
@@ -122,7 +121,7 @@ function PopupAccount({curr}){
   //grbs user data
   function handleSubmitClick(){
     const userInfo = grabUserData();
-    console.log(userInfo)
+    console.log({userInfo})
   }
 
   return(
@@ -131,8 +130,8 @@ function PopupAccount({curr}){
         <div id='popupBackground' onClick={handleBackgroundClick}></div>
         <div className = 'acctPopup'>
           <div className="entireBox" >
-            <div className='eachTab' onClick={()=>dispatch({type: 'login'})}>login</div>
-            <div className='eachTab' onClick={()=>dispatch({type: 'signup'})}>signup</div>
+            <div id='loginTab' ref={loginTab} className={`eachTab ${popupBox.title === 'login' ? "selectedTab" : "undefined"}`} onClick={()=>dispatch({type: 'login'})}>login</div>
+            <div id='signupTab' ref={signupTab} className={`eachTab ${popupBox.title === 'signup' ? "selectedTab" : "undefined"}`} onClick={()=>dispatch({type: 'signup'})}>signup</div>
             {popupBox.display}
             <div className="bottomBox">
               <div className='submitButton' ref={buttonDom}>

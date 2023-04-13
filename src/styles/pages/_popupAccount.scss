@@ -41,6 +41,7 @@
 .eachTab{
   position: relative; 
   background-color: v.$whiteMain;
+  color: grey;
   flex-basis: 15%;
   text-align: center;
   padding: .5vw;
@@ -53,6 +54,10 @@
   box-shadow: 5px 5px 10px grey;
 }
 
+.selectedTab{
+  background-color: v.$yellowMain;
+  color: white;
+}
 
 .mainInput{
   position:relative;
@@ -98,6 +103,7 @@
   text-align: right;
   flex-basis:25%;
   padding-right: 1vw;
+  padding: 3% 3% 3% 0;
 
 }
 
@@ -110,6 +116,10 @@
 
 .inputDiv input{
   width: 100%;
+  padding: 3% 3% 3% 3%;
+  border: solid thin grey;
+  border-radius: 10px;
+  font-size: v.$fontSizeMed;
   // border-radius: 5px;
   // border-color: v.$whiteMain;
 }

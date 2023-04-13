@@ -47,7 +47,6 @@ function checkSubmitButtonCriteria(userInfo: userInfoType): boolean{
       console.log('error in checkSubmitButtonCriteria');
   }
 
-  console.log({res})
   return res;
 }
 

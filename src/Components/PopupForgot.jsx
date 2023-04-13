@@ -23,7 +23,7 @@ function PopupForgot(){
           e-mail: 
         </div>
         <div className="inputDiv">
-          <input className='inputContent' ref={userEmailDom} onChange={handleEmailInputChange}/>
+          <input className='inputContent' ref={userEmailDom} onChange={handleEmailInputChange} placeholder='e-mail' />
         </div>
       </div>
       

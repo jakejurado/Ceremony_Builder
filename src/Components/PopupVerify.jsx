@@ -18,7 +18,7 @@ function PopupVerify(){
           email: 
         </div>
         <div className="inputDiv">
-          <input className='inputContent' ref={userEmailDom} onChange={handleEmailInputChange} />
+          <input className='inputContent' ref={userEmailDom} onChange={handleEmailInputChange} placeholder='e-mail'/>
         </div>
       </div>
 
@@ -27,7 +27,7 @@ function PopupVerify(){
           verification code: 
         </div>
         <div className="inputDiv">
-          <input className='inputContent' ref={userCodeDom} onChange={handleCodeInputChange} />
+          <input className='inputContent' ref={userCodeDom} onChange={handleCodeInputChange} placeholder='verification code' />
         </div>
       </div>
       
@@ -36,7 +36,7 @@ function PopupVerify(){
           new password: 
         </div>
         <div className="inputDiv">
-          <input className='inputContent' ref={userPassDom} onChange={handlePasswordInputChange2} />
+          <input className='inputContent' type='password' ref={userPassDom} onChange={handlePasswordInputChange2} placeholder='password' />
         </div>
       </div>
 
@@ -46,7 +46,7 @@ function PopupVerify(){
           new password: 
         </div>
         <div className="inputDiv">
-          <input className='inputContent' ref={userNewPassDom} onChange={handlePasswordInputChange2} />
+          <input className='inputContent' type='password' ref={userNewPassDom} onChange={handlePasswordInputChange2} placeholder='password' />
         </div>
       </div>
 

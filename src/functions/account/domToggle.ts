@@ -7,7 +7,6 @@ function createDomToggle(dom: HTMLElement, func: Function, clss: string){
 }
 
 createDomToggle.prototype.activate = function(): void{
-  console.log('activate')
   //adds event listener
   this.dom.addEventListener("click", this.func);
   //adds style
@@ -15,7 +14,6 @@ createDomToggle.prototype.activate = function(): void{
 }
 
 createDomToggle.prototype.deactivate = function(): void{
-  console.log('deactivate')
   //removes event listener
   this.dom.removeEventListener("click", this.func);
   //removes style

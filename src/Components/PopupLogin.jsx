@@ -19,7 +19,7 @@ function PopupLogin(){
           e-mail: 
         </div>
         <div className="inputDiv">
-          <input className='inputContent' ref={userEmailDom} onChange={handleEmailInputChange} />
+          <input className='inputContent' ref={userEmailDom} onChange={handleEmailInputChange} placeholder='email'/>
         </div>
       </div>
       
@@ -28,8 +28,13 @@ function PopupLogin(){
           password: 
         </div>
         <div className="inputDiv">
-          <input className='inputContent' ref={userPassDom} onChange={handlePasswordInputChange1} />
+          <input type='password' className='inputContent' ref={userPassDom} onChange={handlePasswordInputChange1} placeholder='password'/>
         </div>
+      </div>
+
+      <div id='incompleteNotifications'>
+        <div id='incompleteEmailNotification' className='incomplete'>incomplete email address</div>
+        <div id='incompletePasswordNotification' className='incomplete'>password is too short</div>
       </div>
       
       <div className='lefty' onClick={handleClick}>forgot password? </div>

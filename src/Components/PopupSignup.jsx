@@ -14,7 +14,7 @@ function PopupSignup(){
           e-mail: 
         </div>
         <div className="inputDiv">
-          <input ref={userEmailDom} className='inputContent' onChange={handleEmailInputChange} />
+          <input ref={userEmailDom} className='inputContent' onChange={handleEmailInputChange} placeholder='email'/>
         </div>
       </div>
       
@@ -23,7 +23,7 @@ function PopupSignup(){
           password: 
         </div>
         <div className="inputDiv">
-          <input ref={userPassDom} className='inputContent' onChange={handlePasswordInputChange1} />
+          <input type='password' ref={userPassDom} className='inputContent' onChange={handlePasswordInputChange1} placeholder='password'/>
         </div>
       </div>
 
@@ -32,9 +32,10 @@ function PopupSignup(){
           password: 
         </div>
         <div className="inputDiv">
-          <input ref={userNewPassDom} className='inputContent' onChange={handlePasswordInputChange2} />
+          <input type='password' ref={userNewPassDom} className='inputContent' onChange={handlePasswordInputChange2} placeholder='password'/>
         </div>
       </div>
+
 
     </div>
   )
