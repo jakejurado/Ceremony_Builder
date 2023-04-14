@@ -6,7 +6,6 @@ function PopupForgot(){
 
   //changes popup to verify popup.
   function handleClick(){
-    console.log(dispatch)
     dispatch({type:'verify'})
   }
 
