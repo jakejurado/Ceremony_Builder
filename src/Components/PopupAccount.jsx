@@ -4,7 +4,7 @@ import PopupLogin from './PopupLogin';
 import PopupSignup from './PopupSignup';
 import PopupVerify from './PopupVerify';
 import { GlobalContext} from "./App";
-import { checkSubmitButtonCriteria } from '../functions/account/password';
+import { checkSubmitButtonCriteria, passwordMatch, passwordLength, validateEmail } from '../functions/account/password';
 import {createDomToggle} from "../functions/account/domToggle";
 
 //holds the context for the login/signup state
@@ -26,6 +26,12 @@ function PopupAccount({curr}){
   const userPassDom = useRef(null);
   const userCodeDom = useRef(null);
   const userNewPassDom = useRef(null);
+
+  //STATE
+  //red text to help explain why submit button isn't active
+  const [passwordCriteria, setPasswordCriteria] = useState({match: true, len: true});
+  const [emailCriteria, setEmailCriteria] = useState(true);
+  const [codeCriteria, setCodeCriteria] = useState(true);
 
   //TOGGLE
   //creates the submit button toggle
@@ -68,7 +74,7 @@ function PopupAccount({curr}){
   }, [])
 
   //toggles the submit button between inactive to active
-  function togleButtonActive(bool){
+  function toggleButtonActive(bool){
     if(bool) submitToggle.activate(); 
     else submitToggle.deactivate();
   }
@@ -76,29 +82,44 @@ function PopupAccount({curr}){
   //checks email input value to determine if submit button should be active
   function handleEmailInputChange(e){
     const userInfo = grabUserData()
+    const validEmail = validateEmail(userInfo.email);
+    setEmailCriteria(validEmail);
     const res = checkSubmitButtonCriteria(userInfo);
-    togleButtonActive(res);
+
+    // const res = validEmail && validPasswordLen && validPasswordMatch;
+    toggleButtonActive(res);
   }
 
   //checks password input value to determine if submit button should be active
   function handlePasswordInputChange1(e){
     const userInfo = grabUserData()
+    const validPasswordLen = passwordLength(userInfo.pass1);
+    const validPasswordMatch = passwordMatch(userInfo.pass1, userInfo.pass2);
+    setPasswordCriteria({match: validPasswordMatch, len: validPasswordLen})
+
     const res = checkSubmitButtonCriteria(userInfo);
-    togleButtonActive(res);
+    toggleButtonActive(res);
   }
 
   //checks password2 input value to determine if submit button should be active
   function handlePasswordInputChange2(e){
     const userInfo = grabUserData()
+
+    const validPasswordLen = passwordLength(userInfo.pass1);
+    const validPasswordMatch = passwordMatch(userInfo.pass1, userInfo.pass2);
+    setPasswordCriteria({match: validPasswordMatch, len: validPasswordLen})
+
     const res = checkSubmitButtonCriteria(userInfo);
-    togleButtonActive(res);
+    toggleButtonActive(res);
   }
 
   //checks code input value to determine if submit button should be active
   function handleCodeInputChange(e){
     const userInfo = grabUserData()
+    
+    setCodeCriteria(userInfo.code1)
     const res = checkSubmitButtonCriteria(userInfo);
-    togleButtonActive(res);
+    toggleButtonActive(res);
   }
   
   //connects with parent state that displays the popup and removes it.
@@ -125,7 +146,7 @@ function PopupAccount({curr}){
   }
 
   return(
-    <PopupContext.Provider value={{dispatch, userCodeDom, userEmailDom, userNewPassDom, userPassDom, handleEmailInputChange, handlePasswordInputChange1, handlePasswordInputChange2, handleCodeInputChange}}>
+    <PopupContext.Provider value={{dispatch, userCodeDom, userEmailDom, userNewPassDom, userPassDom, handleEmailInputChange, handlePasswordInputChange1, handlePasswordInputChange2, handleCodeInputChange, passwordCriteria, emailCriteria, codeCriteria}}>
       <div id='popupContainer'>
         <div id='popupBackground' onClick={handleBackgroundClick}></div>
         <div className = 'acctPopup'>

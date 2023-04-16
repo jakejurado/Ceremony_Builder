@@ -2,7 +2,7 @@ import React, {useContext, useEffect, useState} from 'react';
 import { PopupContext } from './PopupAccount';
 
 function PopupForgot(){
-  const {dispatch, userEmailDom, handleEmailInputChange} = useContext(PopupContext);
+  const {dispatch, userEmailDom, handleEmailInputChange, emailCriteria} = useContext(PopupContext);
 
   //changes popup to verify popup.
   function handleClick(){
@@ -25,6 +25,10 @@ function PopupForgot(){
           <input className='inputContent' ref={userEmailDom} onChange={handleEmailInputChange} placeholder='e-mail' />
         </div>
       </div>
+
+      <ul id='incompleteNotifications'>
+        {!emailCriteria && <li id='incompleteEmailNotification' className='incomplete'>incomplete email address</li> }
+      </ul>
       
       <div className="lefty" onClick={handleClick}>I have the code</div>
     </div>

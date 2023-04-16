@@ -3,7 +3,7 @@ import { PopupContext } from "./PopupAccount";
 import { passwordCriteria, validateEmail } from '../functions/account/password';
 
 function PopupVerify(){
-  const {dispatch, userCodeDom, userEmailDom, userNewPassDom, userPassDom, handleEmailInputChange, handlePasswordInputChange1, handlePasswordInputChange2, handleCodeInputChange} = useContext(PopupContext);
+  const {dispatch, userCodeDom, userEmailDom, userNewPassDom, userPassDom, handleEmailInputChange, handlePasswordInputChange1, handlePasswordInputChange2, handleCodeInputChange, emailCriteria, passwordCriteria, codeCriteria} = useContext(PopupContext);
 
   //changes popup to forgot popup
   function handleClick(){
@@ -36,7 +36,7 @@ function PopupVerify(){
           new password: 
         </div>
         <div className="inputDiv">
-          <input className='inputContent' type='password' ref={userPassDom} onChange={handlePasswordInputChange2} placeholder='password' />
+          <input className='inputContent' type='password' ref={userPassDom} onChange={handlePasswordInputChange1} placeholder='password' />
         </div>
       </div>
 
@@ -53,6 +53,13 @@ function PopupVerify(){
       <div className="lefty" onClick={handleClick}>
         go back
       </div>
+
+      <ul id='incompleteNotifications'>
+        {!emailCriteria && <li id='incompleteEmailNotification' className='incomplete'>incomplete email address</li> }
+        {!passwordCriteria.len && <li id='incompletePasswordNotification' className='incomplete'>password is too short</li> }
+        {!passwordCriteria.match && <li id='noMatchPasswordNotification' className='incomplete'>passwords do not match</li> }
+        {!codeCriteria && <li id='noMatchPasswordNotification' className='incomplete'>passwords do not match</li> }
+      </ul>
       
     </div>
   )

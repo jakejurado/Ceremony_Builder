@@ -159,3 +159,13 @@
 .moreMargin {
   margin-bottom: 2vw;
 }
+
+
+#incompleteNotifications{
+  display: flex;
+  flex-direction: column;
+  margin: 3vw 0 4vw 0;
+  color: red;
+  list-style-type: circle;
+  font-style: italic;
+}

@@ -2,9 +2,7 @@ import React, {useContext, useRef, useEffect, useState} from 'react';
 import { PopupContext } from './PopupAccount';
 
 function PopupSignup(){
-  const {userEmailDom, userPassDom, userNewPassDom, handleEmailInputChange, handlePasswordInputChange1, handlePasswordInputChange2} = useContext(PopupContext)
-
-
+  const {userEmailDom, userPassDom, userNewPassDom, handleEmailInputChange, handlePasswordInputChange1, handlePasswordInputChange2, passwordCriteria, emailCriteria} = useContext(PopupContext)
 
   return(
     <div className="mainInput">
@@ -35,6 +33,12 @@ function PopupSignup(){
           <input type='password' ref={userNewPassDom} className='inputContent' onChange={handlePasswordInputChange2} placeholder='password'/>
         </div>
       </div>
+
+      <ul id='incompleteNotifications'>
+        {!emailCriteria && <li id='incompleteEmailNotification' className='incomplete'>incomplete email address</li> }
+        {!passwordCriteria.len && <li id='incompletePasswordNotification' className='incomplete'>password is too short</li> }
+        {!passwordCriteria.match && <li id='noMatchPasswordNotification' className='incomplete'>passwords do not match</li> }
+      </ul>
 
 
     </div>

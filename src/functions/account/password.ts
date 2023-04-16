@@ -15,6 +15,15 @@ function passwordCriteria(pass1: string | undefined, pass2: string | undefined):
   const passLengh: boolean = pass1?.length > 5 ? true : false;
   return samePass && passLengh
 }
+
+function passwordLength(pass1: string | undefined): boolean {
+  return pass1.length > 5 ? true : false;
+}
+
+function passwordMatch(pass1: string | undefined, pass2: string | undefined): boolean {
+  return pass1 === pass2
+}
+
 interface userInfoType {
   title: string,
   email: string,
@@ -50,4 +59,4 @@ function checkSubmitButtonCriteria(userInfo: userInfoType): boolean{
   return res;
 }
 
-export {validateEmail, passwordCriteria, checkSubmitButtonCriteria}
+export {validateEmail, passwordCriteria, checkSubmitButtonCriteria, passwordMatch, passwordLength}
