@@ -34,6 +34,7 @@ import { fillCacheWithNewSections } from "../functions/cache/sectionCacheFuncs";
 import { updateTemplate } from "../functions/sections/updateTemplate";
 import { saveDomToTemplates } from "../functions/sections/resetCard";
 // import { addDomToTemplate } from "../functions/sections/resetCard";
+import {createSidebarToggle} from '../functions/mainPage/sidebarClass';
 
 //Typescript
 import {
@@ -59,6 +60,9 @@ function App() {
   });
 
   const domRef = useRef(null);
+  const domSidebar = useRef(null);
+  const domCover = useRef(null);
+  const domSidebarButton = useRef(null);
 
   //determines which template to be displayed.
   const [templateTitle, setTemplateTitle] = useState("wedding");
@@ -194,7 +198,8 @@ function App() {
   }
 
   //NEW POPUP CONTROLLS
-  const [popup, setPopup] = useState('signup')
+  // const [popup, setPopup] = useState('signup')
+  const [popup, setPopup] = useState(null)
 
 
   //Controls the state of popup for printing, signin, and signup
@@ -237,32 +242,39 @@ function App() {
   }, [updatedData]);
 
   //watches for sideBarOpen state change to open and close the sidebar
-  useEffect(() => {
-    //adds the ability to close the sidebar.  The timeout allows time for transition to occur.
-    if (sidebarOpen) {
-      setTimeout(
-        () => {
-          document.getElementById("cover").addEventListener(
-            "mousedown",
-            () => {
-              setSidebarOpen(false);
-            },
-            {
-              once: true,
-            }
-          );
-        },
-        2500,
-        { once: true }
-      );
-    }
+  // useEffect(() => {
+  //   //adds the ability to close the sidebar.  The timeout allows time for transition to occur.
+  //   if (sidebarOpen) {
+  //     setTimeout(
+  //       () => {
+  //         domCover.current.addEventListener(
+  //           "mousedown",
+  //           () => {
+  //             setSidebarOpen(false);
+  //           },
+  //           {
+  //             once: true,
+  //           }
+  //         );
+  //       },
+  //       2500
+  //     );
+  //   }
 
-    toggleSidebar(sidebarOpen);
-  }, [sidebarOpen]);
+  //   toggleSidebar(sidebarOpen);
+  // }, [sidebarOpen]);
 
   useEffect(() => {
     dispatch({ type: "loadTEMPLATE", payload: templates[templateTitle] });
   }, [templateTitle]);
+
+
+  let theSidebar;
+
+  useEffect(()=>{
+    theSidebar = new createSidebarToggle(domSidebar, domCover, domSidebarButton)
+    theSidebar.toggle();  
+  }, [])
 
   return (
     <ErrorBoundary>
@@ -282,6 +294,8 @@ function App() {
             popup,
             setPopup,
             domRef,
+            domSidebar,
+            domCover,
           }}
         >
           <Header />
@@ -289,6 +303,8 @@ function App() {
           {popup && <PopupAccount curr={popup}/>}
 
           <SidebarButton
+            domSidebarButton = {domSidebarButton}
+            theSidebar = {theSidebar}
             toggleSidebarState={() => setSidebarOpen(!sidebarOpen)}
           />
           <Sidebar />
