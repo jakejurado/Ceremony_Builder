@@ -1,21 +1,16 @@
-import React, { useEffect } from "react";
-// import "../styles/sidebarButton.scss";
+import React, { useEffect, useContext } from "react";
+import { GlobalContext } from "./App";
 import hamburger from "../../public/assets/menu_open_FILL0_wght400_GRAD0_opsz48.svg";
 
-function SidebarButton({ toggleSidebarState, domSidebarButton, theSidebar }) {
+function SidebarButton() {
+  const {theSidebar} = useContext(GlobalContext);
+
   function handleClick() {
-    console.log({theSidebar})
     theSidebar.toggle();
   }
 
-  // useEffect(() => {
-  //   document
-  //     .getElementById("sidebarButton")
-  //     .addEventListener("click", handleClick, { once: true });
-  // });
-
   return (
-    <div id="sidebarButton" className="buttonLg" ref={domSidebarButton} onClick={handleClick}>
+    <div id="sidebarButton" className="buttonLg" onClick={handleClick}>
       <img id="ham" src={hamburger} alt="symbole for menu" />
     </div>
   );

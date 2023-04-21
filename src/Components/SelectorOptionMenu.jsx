@@ -3,10 +3,11 @@ import Select, { StylesConfig } from "react-select";
 import { GlobalContext } from "./App";
 
 function SelectorOptionMenu({ options }) {
-  const { setTemplateTitle } = useContext(GlobalContext);
+  const { setTemplateTitle, dispatch, templates } = useContext(GlobalContext);
 
   function handleChange(e) {
     setTemplateTitle(e.label);
+    dispatch({ type: "loadTEMPLATE", payload: templates[e.label] });
   }
 
   const colourStyles = {

@@ -60,15 +60,9 @@ function App() {
   });
 
   const domRef = useRef(null);
-  const domSidebar = useRef(null);
-  const domCover = useRef(null);
-  const domSidebarButton = useRef(null);
 
   //determines which template to be displayed.
   const [templateTitle, setTemplateTitle] = useState("wedding");
-
-  //keeps track of sidebar state
-  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   //holds the names of the two getting married.
   const [names, setNames] = useState({
@@ -241,40 +235,14 @@ function App() {
     dispatch(updatedData);
   }, [updatedData]);
 
-  //watches for sideBarOpen state change to open and close the sidebar
-  // useEffect(() => {
-  //   //adds the ability to close the sidebar.  The timeout allows time for transition to occur.
-  //   if (sidebarOpen) {
-  //     setTimeout(
-  //       () => {
-  //         domCover.current.addEventListener(
-  //           "mousedown",
-  //           () => {
-  //             setSidebarOpen(false);
-  //           },
-  //           {
-  //             once: true,
-  //           }
-  //         );
-  //       },
-  //       2500
-  //     );
-  //   }
 
-  //   toggleSidebar(sidebarOpen);
-  // }, [sidebarOpen]);
-
-  useEffect(() => {
-    dispatch({ type: "loadTEMPLATE", payload: templates[templateTitle] });
-  }, [templateTitle]);
-
-
-  let theSidebar;
-
+  //initial load
+  const theSidebar = new createSidebarToggle();
   useEffect(()=>{
-    theSidebar = new createSidebarToggle(domSidebar, domCover, domSidebarButton)
     theSidebar.toggle();  
   }, [])
+
+
 
   return (
     <ErrorBoundary>
@@ -293,20 +261,14 @@ function App() {
             popupState,
             popup,
             setPopup,
-            domRef,
-            domSidebar,
-            domCover,
+            theSidebar,
           }}
         >
           <Header />
           {popupState.display && <Popup />}
           {popup && <PopupAccount curr={popup}/>}
 
-          <SidebarButton
-            domSidebarButton = {domSidebarButton}
-            theSidebar = {theSidebar}
-            toggleSidebarState={() => setSidebarOpen(!sidebarOpen)}
-          />
+          <SidebarButton />
           <Sidebar />
           <MainDisplay />
         </GlobalContext.Provider>
