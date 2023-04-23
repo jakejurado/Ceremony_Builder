@@ -268,7 +268,6 @@ function App() {
           {popupState.display && <Popup />}
           {popup && <PopupAccount curr={popup}/>}
 
-          <SidebarButton />
           <Sidebar />
           <MainDisplay />
         </GlobalContext.Provider>

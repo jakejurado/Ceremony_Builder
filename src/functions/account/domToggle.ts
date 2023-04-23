@@ -1,5 +1,4 @@
 
-
 function createDomToggle(dom: HTMLElement, func: Function, clss: string){
   this.dom = dom;
   this.func = func;

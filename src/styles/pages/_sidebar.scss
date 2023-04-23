@@ -24,6 +24,9 @@
   box-shadow: 0.15em 0.15em grey;
   z-index: 2;
   transition: width 2s;
+    &:hover{
+      // background-color: gold;
+    }
 }
 
 #login {

@@ -2,9 +2,8 @@ import { setStyle } from "./styleFuncs";
 
 function createSidebarToggle(){
   this.sidebar = undefined
-  this.sidebarButton = undefined;
+  // this.sidebarButton = undefined;
   this.cover = undefined;
-
   this.display = true;
   this.storage = [];
   this.time = {
@@ -41,7 +40,7 @@ createSidebarToggle.prototype.activate = function(){
   if(!this.sidebar) this.sidebar = document.getElementById('sidebar');
 
   //make sidebarButton dissapear.
-  setStyle(this.sidebarButton, "display", "none");
+  // setStyle(this.sidebarButton, "display", "none");
 
   //main page opacity decrease
   setStyle(cover, "display", "block");
@@ -71,7 +70,7 @@ createSidebarToggle.prototype.deactivate = function(){
   
   //show the button
   setTimeout(() => {
-    setStyle(sidebarButton, "display", "flex");
+    // setStyle(sidebarButton, "display", "flex");
   }, this.time.full);
 
   //main page opacity back to normal
@@ -80,12 +79,17 @@ createSidebarToggle.prototype.deactivate = function(){
   //remove sidebar content one at a time
   this.depopulate();
 
+  //add event handler to open sidebar if clicked
+  setTimeout(()=>{
+    this.attachListenerSidebar();
+  }, this.time.full);
+
   this.display = false
 }
 
 createSidebarToggle.prototype.toggle = function(){
   if(!this.sidebar) this.sidebar = document.getElementById('sideBar');
-  if(!this.sidebarButton) this.sidebarButton = document.getElementById('sidebarButton');
+  // if(!this.sidebarButton) this.sidebarButton = document.getElementById('sidebarButton');
   if(!this.cover) this.cover = document.getElementById('cover')
 
   if(this.display === false){
@@ -100,6 +104,17 @@ createSidebarToggle.prototype.attachListener = function(){
   this.cover.addEventListener(
     "mousedown", () => {
       this.toggle();
+    },
+    {
+      once: true,
+    }
+  );
+}
+
+createSidebarToggle.prototype.attachListenerSidebar = function(){
+    this.sidebar.addEventListener(
+    "mousedown", () => {
+      this.toggle()
     },
     {
       once: true,
