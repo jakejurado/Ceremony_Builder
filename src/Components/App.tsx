@@ -34,6 +34,7 @@ import { fillCacheWithNewSections } from "../functions/cache/sectionCacheFuncs";
 import { updateTemplate } from "../functions/sections/updateTemplate";
 import { saveDomToTemplates } from "../functions/sections/resetCard";
 // import { addDomToTemplate } from "../functions/sections/resetCard";
+import {createSidebarToggle} from '../functions/mainPage/sidebarClass';
 
 //Typescript
 import {
@@ -62,9 +63,6 @@ function App() {
 
   //determines which template to be displayed.
   const [templateTitle, setTemplateTitle] = useState("wedding");
-
-  //keeps track of sidebar state
-  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   //holds the names of the two getting married.
   const [names, setNames] = useState({
@@ -194,7 +192,8 @@ function App() {
   }
 
   //NEW POPUP CONTROLLS
-  const [popup, setPopup] = useState('signup')
+  // const [popup, setPopup] = useState('signup')
+  const [popup, setPopup] = useState(null)
 
 
   //Controls the state of popup for printing, signin, and signup
@@ -236,33 +235,14 @@ function App() {
     dispatch(updatedData);
   }, [updatedData]);
 
-  //watches for sideBarOpen state change to open and close the sidebar
-  useEffect(() => {
-    //adds the ability to close the sidebar.  The timeout allows time for transition to occur.
-    if (sidebarOpen) {
-      setTimeout(
-        () => {
-          document.getElementById("cover").addEventListener(
-            "mousedown",
-            () => {
-              setSidebarOpen(false);
-            },
-            {
-              once: true,
-            }
-          );
-        },
-        2500,
-        { once: true }
-      );
-    }
 
-    toggleSidebar(sidebarOpen);
-  }, [sidebarOpen]);
+  //initial load
+  const theSidebar = new createSidebarToggle();
+  useEffect(()=>{
+    theSidebar.toggle();  
+  }, [])
 
-  useEffect(() => {
-    dispatch({ type: "loadTEMPLATE", payload: templates[templateTitle] });
-  }, [templateTitle]);
+
 
   return (
     <ErrorBoundary>
@@ -281,16 +261,14 @@ function App() {
             popupState,
             popup,
             setPopup,
-            domRef,
+            theSidebar,
           }}
         >
           <Header />
           {popupState.display && <Popup />}
           {popup && <PopupAccount curr={popup}/>}
 
-          <SidebarButton
-            toggleSidebarState={() => setSidebarOpen(!sidebarOpen)}
-          />
+          <SidebarButton />
           <Sidebar />
           <MainDisplay />
         </GlobalContext.Provider>

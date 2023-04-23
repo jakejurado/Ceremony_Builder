@@ -5,11 +5,7 @@ import SelectorOptionMenu from "./SelectorOptionMenu";
 
 function SideBarTemplate() {
   //brings state from App
-  const { templates, setTemplateTitle } = useContext(GlobalContext);
-
-  function handleClick(e) {
-    setTemplateTitle(e.target.innerText);
-  }
+  const { templates } = useContext(GlobalContext);
 
   const templateTitles = [];
   Object.keys(templates).forEach((template, i) => {
