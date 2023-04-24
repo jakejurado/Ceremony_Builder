@@ -59,7 +59,7 @@ function App() {
     elope: templateElope,
   });
 
-  const domRef = useRef(null);
+  const domRef = useRef();
 
   //determines which template to be displayed.
   const [templateTitle, setTemplateTitle] = useState("wedding");
@@ -205,6 +205,7 @@ function App() {
   function popReducer(state, action) {
     switch (action.type) {
       case "print":
+        console.log({domRef})
         const newTemplates = saveDomToTemplates(
           template,
           domRef,
@@ -262,6 +263,7 @@ function App() {
             popup,
             setPopup,
             theSidebar,
+            domRef,
           }}
         >
           <Header />

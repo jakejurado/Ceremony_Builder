@@ -22,6 +22,7 @@ function putDomInTemplate(template, dom, persons) {
   const templateCopy = JSON.parse(JSON.stringify(template));
 
   //grab the list of sections from useRef
+  console.log({dom})
   const myDom = dom.current.children[0].children;
 
   //iterate over the dom elements and update the template copy
