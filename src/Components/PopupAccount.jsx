@@ -143,6 +143,7 @@ function PopupAccount({curr}){
   function handleSubmitClick(){
     const userInfo = grabUserData();
     console.log({userInfo})
+    
   }
 
   return(

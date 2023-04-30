@@ -6,7 +6,6 @@ const cookieParser = require("cookie-parser");
 const cors = require("cors");
 require("dotenv").config();
 
-const controller = require("./controllers/controller");
 const sectionRouter = require("./routs/sections");
 const userRouter = require("./routs/user");
 
@@ -18,27 +17,8 @@ app.use(express.static("dist"));
 
 //used to add a new section to the main page.
 app.use("/sections", sectionRouter);
-
-
 app.use("/user", userRouter);
 
-//post request to /save
-app.post("/save", controller.saveCeremonyScript, (req, res) => {
-  console.log("fileSaved");
-  return res.status(200).json(res.locals.mySave);
-});
-
-//get request to /save
-app.get("/save", controller.getCeremonyScripts, (req, res) => {
-  console.log("from the server the json", typeof res.locals.myScripts);
-  return res.status(200).json(res.locals.myScripts);
-});
-
-//populate the original page after loading
-app.get("/display", controller.loadPage, (req, res) => {
-  console.log("from the server the json", typeof res.locals.myTemplates);
-  return res.status(200).json(res.locals.myTemplates);
-});
 
 //serve the original page
 app.get("/", (req, res) => {

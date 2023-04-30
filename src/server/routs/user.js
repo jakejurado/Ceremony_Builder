@@ -3,11 +3,15 @@ const router = express.Router();
 const userController = require("../controllers/userControllers");
 
 router.post("/create", userController.createUser, (req, res) => {
-  return res.status(200).send(res.locals.________);
+  return res.status(200).send(res.locals.userCreated);
 });
 
-router.get("/access", userController._______, (req, res) => {
-  return res.status(200).send(res.locals._____________);
+router.get("/verify", userController.authenticateUser, userController.createToken,  (req, res) => {
+  return res.status(200).send(res.locals.userAuthenticated);
+})
+
+router.post("/access", userController.checkForToken, userController.verifyToken, (req, res) => {
+  return res.status(200).send(res.locals.foundtoken);
 });
 
 module.exports = router;
