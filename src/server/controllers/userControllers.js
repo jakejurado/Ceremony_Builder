@@ -8,7 +8,7 @@ const userController = {};
 
 //creates a user in the database
 userController.createUser = async ( req, res, next) => {
-  let {email, password } = req.query;
+  let {email, password } = req.body;
 
   //check that all fields are not empty
   if(!email || !password){
@@ -26,7 +26,7 @@ userController.createUser = async ( req, res, next) => {
     //signup user
     const sql_userInsert =  "INSERT INTO users (user_email, user_password) VALUES ($1, $2)";
     await db.query(sql_userInsert, [email, hashedPassword]);
-    res.locals.userCreated = "user has been created";
+    res.locals.userCreated = { authenticated: true };
     return next();
 
   } catch (err) {
@@ -62,7 +62,7 @@ userController.authenticateUser = async (req, res, next) => {
 
     //password
     if(passwordsMatch){
-      res.locals.userAuthenticated = 'user is authenticated'
+      res.locals.userAuthenticated = { authenticated: true };;
       return next();
     } else{
       return next({

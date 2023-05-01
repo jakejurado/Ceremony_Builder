@@ -3,9 +3,12 @@ function createDomToggle(dom: HTMLElement, func: Function, clss: string){
   this.dom = dom;
   this.func = func;
   this.clss = clss;
+  this.isAttached = false
 }
 
-createDomToggle.prototype.activate = function(): void{
+createDomToggle.prototype.activate = function(newFunc): void{
+  this.deactivate();
+  this.func = newFunc
   //adds event listener
   this.dom.addEventListener("click", this.func);
   //adds style

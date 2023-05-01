@@ -32,6 +32,8 @@ function PopupAccount({curr}){
   const [passwordCriteria, setPasswordCriteria] = useState({match: true, len: true});
   const [emailCriteria, setEmailCriteria] = useState(true);
   const [codeCriteria, setCodeCriteria] = useState(true);
+  const [credentialsFail, setCredentialsFail ] = useState(false);
+  const [authFail, setAuthFail] = useState(false);
 
   //TOGGLE
   //creates the submit button toggle
@@ -58,16 +60,16 @@ function PopupAccount({curr}){
       case 'verify':
         return {title: 'verify', display: <PopupVerify />}
       case 'initialLoad':
-        return {title: 'login', display: <PopupLogin />}
+        return {title: 'login2', display: <PopupLogin />}
       case 'close':
         return null
       default:
-        return {title: 'login', display: PopupLogin}
+        return {title: 'loginn', display: PopupLogin}
     }
   }
 
   //PAGE INIT
-  //on load, sets the state for the current popup box
+  //on load, sets the state for the current popup box and create handleSubmitClick
   useEffect(()=>{
     dispatch({type: curr}) //sets the popup from props
     handleSubmitClickRef.current = handleSubmitClick;
@@ -75,8 +77,12 @@ function PopupAccount({curr}){
 
   //toggles the submit button between inactive to active
   function toggleButtonActive(bool){
-    if(bool) submitToggle.activate(); 
-    else submitToggle.deactivate();
+    if(bool) {
+      handleSubmitClickRef.current = handleSubmitClick;
+      submitToggle.activate(handleSubmitClickRef.current);
+    } else {
+      submitToggle.deactivate();
+    }
   }
 
   //checks email input value to determine if submit button should be active
@@ -140,11 +146,53 @@ function PopupAccount({curr}){
   }
 
   //grbs user data
-  function handleSubmitClick(){
+  async function handleSubmitClick(){
     const userInfo = grabUserData();
-    console.log({userInfo})
-    
+
+    let url;
+    let options = { method: ''};
+    let body = {};
+
+    switch (userInfo.title){
+      case ('login'): {
+        url = `user/login/?email=${userInfo.email}&password=${userInfo.pass1}`;
+        options.method = 'GET'
+        break;
+      }
+      case ('signup'): {
+        url = 'user/signup';
+        options.method = 'POST'
+        body.email = userInfo.email;
+        body.password = userInfo.pass1
+        options.body = JSON.stringify(body);
+        options.headers = {
+          'Content-Type': 'application/json'
+        };
+        break;
+      }
+      default:
+        console.log(error)
+    }
+
+    try{
+      const response = await fetch(url, options);
+      //handle bad response
+      if (!response.ok) {
+        throw new Error({
+          message :'Network response was not ok',
+          authentication: false,
+        })
+      }
+      //receive the data
+      const data = await response.json();
+      console.log({data});
+
+    } catch (error) {
+      // clear password and email fields
+      // display password or email may be incorrect
+    }
   }
+
 
   return(
     <PopupContext.Provider value={{dispatch, userCodeDom, userEmailDom, userNewPassDom, userPassDom, handleEmailInputChange, handlePasswordInputChange1, handlePasswordInputChange2, handleCodeInputChange, passwordCriteria, emailCriteria, codeCriteria}}>
