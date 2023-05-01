@@ -3,7 +3,7 @@ import { PopupContext } from "./PopupAccount";
 
 
 function PopupLogin(){
-  const {dispatch, userEmailDom, userPassDom, handleEmailInputChange, handlePasswordInputChange1, passwordCriteria, emailCriteria} = useContext(PopupContext)
+  const {dispatch, userEmailDom, userPassDom, handleEmailInputChange, handlePasswordInputChange1, passwordCriteria, emailCriteria, loginFail} = useContext(PopupContext)
 
   function handleClick(){
     console.log(dispatch)
@@ -34,6 +34,7 @@ function PopupLogin(){
       <ul id='incompleteNotifications'>
         {!emailCriteria && <li id='incompleteEmailNotification' className='incomplete'>incomplete email address</li> }
         {!passwordCriteria.len && <li id='incompletePasswordNotification' className='incomplete'>password is too short</li> }
+        {loginFail && <li id='loginfail' className='incomplete'>incorrect email or password</li>}
       </ul>
       
       <div className='lefty' onClick={handleClick}>forgot password? </div>

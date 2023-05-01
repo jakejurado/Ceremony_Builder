@@ -32,8 +32,8 @@ function PopupAccount({curr}){
   const [passwordCriteria, setPasswordCriteria] = useState({match: true, len: true});
   const [emailCriteria, setEmailCriteria] = useState(true);
   const [codeCriteria, setCodeCriteria] = useState(true);
-  const [credentialsFail, setCredentialsFail ] = useState(false);
-  const [authFail, setAuthFail] = useState(false);
+  const [loginFail, setLoginFail ] = useState(false);
+  const [signupFail, setSignupFail] = useState(false);
 
   //TOGGLE
   //creates the submit button toggle
@@ -90,7 +90,9 @@ function PopupAccount({curr}){
     const userInfo = grabUserData()
     const validEmail = validateEmail(userInfo.email);
     setEmailCriteria(validEmail);
+    setLoginFail(false)
     const res = checkSubmitButtonCriteria(userInfo);
+    
 
     // const res = validEmail && validPasswordLen && validPasswordMatch;
     toggleButtonActive(res);
@@ -102,6 +104,7 @@ function PopupAccount({curr}){
     const validPasswordLen = passwordLength(userInfo.pass1);
     const validPasswordMatch = passwordMatch(userInfo.pass1, userInfo.pass2);
     setPasswordCriteria({match: validPasswordMatch, len: validPasswordLen})
+    setLoginFail(false)
 
     const res = checkSubmitButtonCriteria(userInfo);
     toggleButtonActive(res);
@@ -176,6 +179,7 @@ function PopupAccount({curr}){
 
     try{
       const response = await fetch(url, options);
+
       //handle bad response
       if (!response.ok) {
         throw new Error({
@@ -189,13 +193,19 @@ function PopupAccount({curr}){
 
     } catch (error) {
       // clear password and email fields
-      // display password or email may be incorrect
+      userEmailDom.current.value = '';
+      userPassDom.current.value = '';
+      if(popupBox.title === 'signup') userNewPassDom.current.value = '';
+
+      
+      if(popupBox.title === 'login') setLoginFail(true);
+      if(popupBox.title === 'signup') setSignupFail(true);
     }
   }
 
 
   return(
-    <PopupContext.Provider value={{dispatch, userCodeDom, userEmailDom, userNewPassDom, userPassDom, handleEmailInputChange, handlePasswordInputChange1, handlePasswordInputChange2, handleCodeInputChange, passwordCriteria, emailCriteria, codeCriteria}}>
+    <PopupContext.Provider value={{dispatch, userCodeDom, userEmailDom, userNewPassDom, userPassDom, handleEmailInputChange, handlePasswordInputChange1, handlePasswordInputChange2, handleCodeInputChange, passwordCriteria, emailCriteria, codeCriteria, loginFail, signupFail}}>
       <div id='popupContainer'>
         <div id='popupBackground' onClick={handleBackgroundClick}></div>
         <div className = 'acctPopup'>
