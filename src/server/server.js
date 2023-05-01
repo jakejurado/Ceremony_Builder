@@ -3,12 +3,13 @@ const app = express();
 const port = process.env.PORT || 8081;
 const path = require("path");
 const cookieParser = require("cookie-parser");
-const cors = require("cors");
+// const cors = require("cors");
 require("dotenv").config();
 
-const controller = require("./controllers/controller");
+// const controller = require("./controllers/controller");
 const sectionRouter = require("./routs/sections");
-const userRouter = require("./routs/user");
+const userRouter = require("./routs/users");
+const templateController = require("./routs/templates");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -16,29 +17,14 @@ app.use(cookieParser());
 app.use(express.static("dist"));
 // app.use(cors());
 
-//used to add a new section to the main page.
+//used to add a new section or all section titles to the main page.
 app.use("/sections", sectionRouter);
 
-
+//used to authorize and authenticate users
 app.use("/user", userRouter);
 
-//post request to /save
-app.post("/save", controller.saveCeremonyScript, (req, res) => {
-  console.log("fileSaved");
-  return res.status(200).json(res.locals.mySave);
-});
-
-//get request to /save
-app.get("/save", controller.getCeremonyScripts, (req, res) => {
-  console.log("from the server the json", typeof res.locals.myScripts);
-  return res.status(200).json(res.locals.myScripts);
-});
-
-//populate the original page after loading
-app.get("/display", controller.loadPage, (req, res) => {
-  console.log("from the server the json", typeof res.locals.myTemplates);
-  return res.status(200).json(res.locals.myTemplates);
-});
+//used for templates.
+app.use("/templates", templateController);
 
 //serve the original page
 app.get("/", (req, res) => {
