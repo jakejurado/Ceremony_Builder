@@ -6,25 +6,23 @@ const cookieParser = require("cookie-parser");
 // const cors = require("cors");
 require("dotenv").config();
 
-// const controller = require("./controllers/controller");
+console.log('begin')
+
 const sectionRouter = require("./routs/sections");
-const userRouter = require("./routs/users");
-const templateController = require("./routs/templates");
+const userRouter = require("./routs/user");
+console.log('2')
+// const templateController = require("./routs/templates");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static("dist"));
 // app.use(cors());
-
+console.log('3')
 //used to add a new section or all section titles to the main page.
 app.use("/sections", sectionRouter);
-
-//used to authorize and authenticate users
 app.use("/user", userRouter);
 
-//used for templates.
-app.use("/templates", templateController);
 
 //serve the original page
 app.get("/", (req, res) => {
