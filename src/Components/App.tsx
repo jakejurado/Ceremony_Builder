@@ -8,11 +8,9 @@ import React, {
 //React Components
 import MainDisplay from "./MainDisplay";
 import Sidebar from "./Sidebar";
-import SidebarButton from "./SidebarButton";
 import AccountBox from "./AccountBox";
 import Popup from "../Components/Popup";
 import PopupPrint from "./PopupPrint";
-import { toggleSidebar } from "../functions/mainPage/sidebarFuncs";
 import Header from "./Header";
 import ErrorBoundary from "./ErrorBoundary";
 import PopupAccount from "./PopupAccount";
@@ -33,7 +31,6 @@ import { fetchTitles } from "../functions/sections/selectorBoxFuncs";
 import { fillCacheWithNewSections } from "../functions/cache/sectionCacheFuncs";
 import { updateTemplate } from "../functions/sections/updateTemplate";
 import { saveDomToTemplates } from "../functions/sections/resetCard";
-// import { addDomToTemplate } from "../functions/sections/resetCard";
 import {createSidebarToggle} from '../functions/mainPage/sidebarClass';
 
 //Typescript
@@ -59,21 +56,25 @@ function App() {
     elope: templateElope,
   });
 
-  const domRef = useRef();
+  //cache for all sections from templates and ones added by user during session
+  const [sectionCache, setSectionCache] = useState(
+    addContentsToCache(templates, {})
+  );
 
   //determines which template to be displayed.
   const [templateTitle, setTemplateTitle] = useState("wedding");
 
   //holds the names of the two getting married.
   const [names, setNames] = useState({
-    person1: undefined,
-    person2: undefined,
-  });
+  person1: undefined,
+  person2: undefined,
+});
 
-  //holds data that needs to update state asynchronously
-  const [updatedData, setUpdatedData] = useState(false);
+//holds data that needs to update state asynchronously
+const [fetchedData, setFetchedData] = useState(null);
 
-  //holds all titles, varnames, and category in an object for all sections
+
+//holds all titles, varnames, and category in an object for all sections
   //RESET TO EMPTY OBJECT FOR PRODUCTION
   const [selectorTitles, setSelectorTitles] = useState({
     "Basic Elements": {
@@ -99,16 +100,14 @@ function App() {
   });
   // const [selectorTitles, setSelectorTitles] = useState({});
 
+  //ref the content of the site
+  const domRef = useRef();
+
   //informs react when the section selector Box has been activated.
   const [selectorSec, setSelectorSec] = useState({
     isVisible: false,
     position: undefined,
   });
-
-  //cache for all sections from templates and ones added by user during session
-  const [sectionCache, setSectionCache] = useState(
-    addContentsToCache(templates, {})
-  );
 
   //holds the current template, which contains the sections and the order of the sections, used to fill the page.
   const [template, dispatch] = useReducer(reducer, templates[templateTitle]);
@@ -129,14 +128,14 @@ function App() {
           order,
           state,
           sectionCache,
-          setUpdatedData
+          setFetchedData,
         );
 
         //remove section selector from page
         setSelectorSec({ isVisible: false, position: undefined });
 
         //update state
-        return { ...newTemplate };
+        return Object.keys(newTemplate) ? newTemplate : state ;
       }
       case "loadSEC": {
         //this case is only ran after a section is fetched from the backend.
@@ -150,6 +149,9 @@ function App() {
 
         //update the state
         return payload;
+      }
+      case 'loadFetch':{
+        return payload
       }
       case "deleteSEC": {
         const newOrder = removeSection(payload.index, order);
@@ -176,10 +178,8 @@ function App() {
         return { ...sections, order };
       }
       case "initialLoad": {
-        console.log("initialLoad");
         //loads the current state
-        const newTemp = templates[templateTitle];
-        return newTemp;
+        return templates[templateTitle];
       }
       case "loadTEMPLATE": {
         return payload;
@@ -189,6 +189,11 @@ function App() {
         return state;
       }
     }
+  }
+
+  if(fetchedData){
+    dispatch({type: 'loadFetch', payload: fetchedData.payload})
+    setFetchedData(null);
   }
 
   //NEW POPUP CONTROLLS
@@ -202,10 +207,17 @@ function App() {
     display: false,
   });
 
+  const [print, setPrint] = useState(false);
+  
+  if(print){
+    const newTemplates = saveDomToTemplates( template, domRef, names, templates, templateTitle);
+    setTemplates(newTemplates);
+    setPrint(false);
+  }
+
   function popReducer(state, action) {
     switch (action.type) {
       case "print":
-        console.log({domRef})
         const newTemplates = saveDomToTemplates(
           template,
           domRef,
@@ -231,18 +243,11 @@ function App() {
     }
   }
 
-  //updates state when new data is fetched or retrieved asynchronously
-  useEffect(() => {
-    dispatch(updatedData);
-  }, [updatedData]);
-
-
   //initial load
   const theSidebar = new createSidebarToggle();
   useEffect(()=>{
     theSidebar.toggle();  
   }, [])
-
 
 
   return (

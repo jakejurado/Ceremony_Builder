@@ -7,22 +7,24 @@ function addSecToTemplate(
   order,
   template,
   cache,
-  setUpdatedData //: React.Dispatch<React.SetStateAction<boolean>>
-) {
+  setFetchedData,
+  ) {
   let newTemplate = JSON.parse(JSON.stringify(template)); //copy the template
   let orderCopy = [...order]; //copy order
   const isInOrder = order.some((e) => e[0] === varname); //is new sec in the order?
 
   //if the new section is not in the cache
   if (!cache.hasOwnProperty(varname)) {
-    orderCopy = insertSection(varname, index, orderCopy);
-    fetchSection(varname, orderCopy, template, setUpdatedData);
-    return { ...newTemplate, order };
-    //if new sec is not in template order then insert it from the cache
+    newTemplate['order'] = insertSection(varname, index, orderCopy);
+    fetchingData(varname, newTemplate, setFetchedData);
+    console.log('part of fetch', {template})
+    return template;
+    
   } else if (!isInOrder) {
     newTemplate["order"] = insertSection(varname, index, orderCopy);
     newTemplate[varname] = JSON.parse(JSON.stringify(cache[varname]));
     return newTemplate;
+
     //if the section is already in the template order then duplicate it
   } else {
     const newVarname = duplicateVarname(varname, template); //create new varname
@@ -34,10 +36,31 @@ function addSecToTemplate(
       template,
       cache
     );
-
     //add duplicate to template from cache
     return { ...updatedTemplate, order: orderCopy };
   }
+}
+
+async function fetchingData(varname, template, setState){
+  try{
+    const response = await fetch(`/sections/grab?sec=${varname}`);
+    const data = await response.json();
+    const scripts = await data.map((obj) => obj.script);
+    const sec = await {
+      description: data[0].description,
+      start_pos: 0,
+      title: data[0].title,
+      script: scripts,
+    }
+    template[varname] = sec
+    console.log('after fetch', {template})
+    console.log({setState})
+    setState({type: 'loadFetch', payload: template})
+  }catch (error){
+    console.log(error);
+    setState({type: 'initialLoad'})
+  }
+
 }
 
 //This function duplicates a section, updating the important properties with the new suffix.
@@ -98,4 +121,4 @@ function fetchSection(
     });
 }
 
-export { fetchSection, addSecToTemplate };
+export {addSecToTemplate };
