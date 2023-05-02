@@ -70,10 +70,8 @@ function MainDisplay() {
         allBtns.style.display = "none";
         nodes.push(allBtns);
       } else {
-        while (nodes.length) {
-          let node = nodes.pop();
-          node.style.display = "flex";
-        }
+        let node = nodes.pop();
+        node.style.display = "flex";
       }
     };
   }

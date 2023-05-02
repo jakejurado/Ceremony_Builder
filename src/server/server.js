@@ -3,11 +3,12 @@ const app = express();
 const port = process.env.PORT || 8081;
 const path = require("path");
 const cookieParser = require("cookie-parser");
-const cors = require("cors");
+// const cors = require("cors");
 require("dotenv").config();
 
 const sectionRouter = require("./routs/sections");
-const userRouter = require("./routs/user");
+const userRouter = require("./routs/users");
+const templateController = require("./routs/templates");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -15,7 +16,7 @@ app.use(cookieParser());
 app.use(express.static("dist"));
 // app.use(cors());
 
-//used to add a new section to the main page.
+//used to add a new section or all section titles to the main page.
 app.use("/sections", sectionRouter);
 app.use("/user", userRouter);
 
