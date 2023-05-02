@@ -66,12 +66,9 @@ function MainDisplay() {
     return (e) => {
       if (!nodes.length) {
         const [node] = document.getElementsByClassName(e.draggableId);
-        const removeBox = node.querySelector(".removeButton");
-        const addBox =
-          node.parentElement.nextElementSibling.querySelector(".addButton");
-        removeBox.style.display = "none";
-        addBox.style.display = "none";
-        nodes.push(removeBox, addBox);
+        const allBtns = node.querySelector(".secButtons");
+        allBtns.style.display = "none";
+        nodes.push(allBtns);
       } else {
         while (nodes.length) {
           let node = nodes.pop();
