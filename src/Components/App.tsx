@@ -17,7 +17,7 @@ import PopupAccount from "./PopupAccount";
 
 
 //Temparary Data
-import { templateWed, templateWed2 } from "../server/files/serverDB2";
+import { templateWed, templateWed2, templateSaved } from "../server/files/serverDB2";
 import templateElope from "../server/files/serverDB";
 
 //helperFunctions
@@ -56,13 +56,36 @@ function App() {
     elope: templateElope,
   });
 
+ 
+
   //cache for all sections from templates and ones added by user during session
   const [sectionCache, setSectionCache] = useState(
     addContentsToCache(templates, {})
   );
 
+  
   //determines which template to be displayed.
   const [templateTitle, setTemplateTitle] = useState("wedding");
+
+  //stores the current users ID
+  const [currUser, setCurrUser] = useState(null);
+
+  async function fetchUserTemplates(url){
+    const response = await fetch(url);
+    const [data] = await response.json();
+    setTemplates({...templates, [data.title] : JSON.parse(data.template)})
+    // console.log({...templates, [data.title] : JSON.parse(data.template)})
+  }
+
+  useEffect(() => {
+    const url = `templates/all?userId=${currUser}`;
+    fetchUserTemplates(url);
+  }, [currUser])
+
+  
+  
+
+  
 
   //holds the names of the two getting married.
   const [names, setNames] = useState({
@@ -204,8 +227,8 @@ const [fetchedData, setFetchedData] = useState(null);
   //Controls the state of popup for printing, signin, and signup
   const [popupState, popDispatch] = useReducer(popReducer, {
     // display: <PopupPrint />,
-    display: <AccountBox />,
-    // display: false,
+    // display: <AccountBox />,
+    display: false,
   });
 
   const [print, setPrint] = useState(false);
@@ -229,6 +252,15 @@ const [fetchedData, setFetchedData] = useState(null);
         setTemplates(newTemplates);
         dispatch({ type: "initialLoad" });
         return { display: <PopupPrint /> };
+      case "save":{
+        const newTemplates = saveDomToTemplates(template, domRef, names, templates, templateTitle);
+        setTemplates(newTemplates);
+        console.log({newTemplates})
+        
+        return {display: false}
+
+        
+      }
       case "account":
         return { display: <AccountBox /> };
       case "signin":
@@ -248,6 +280,17 @@ const [fetchedData, setFetchedData] = useState(null);
   const theSidebar = new createSidebarToggle();
   useEffect(()=>{
     theSidebar.toggle();  
+
+
+    fetch('/user/access')
+      .then((data) => data.json())
+      .then((data) => {
+        console.log({data})
+        if(data.authorized){
+          setCurrUser(data.userId)
+        }
+      }).catch((err) => {console.log('error in the building', err)})
+    
   }, [])
 
 
