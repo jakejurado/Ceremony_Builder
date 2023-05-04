@@ -252,6 +252,15 @@ const [fetchedData, setFetchedData] = useState(null);
         setTemplates(newTemplates);
         dispatch({ type: "initialLoad" });
         return { display: <PopupPrint /> };
+      case "save":{
+        const newTemplates = saveDomToTemplates(template, domRef, names, templates, templateTitle);
+        setTemplates(newTemplates);
+        console.log({newTemplates})
+        
+        return {display: false}
+
+        
+      }
       case "account":
         return { display: <AccountBox /> };
       case "signin":
