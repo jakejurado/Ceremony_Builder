@@ -4,25 +4,25 @@ const templateController = {};
 templateController.grabAllUserTemplates = async (req, res, next) => {
   try {
     const { userId } = req.query;
-    const sql_queryAll = "SELECT * from templates where _id = $1";
-    const { rows } = db.query(sql_query, [userId]);
+    const sql_queryAll = "SELECT * from templates WHERE creator = $1";
+    const { rows } = await db.query(sql_queryAll, [userId]);
     res.locals.myTemplates = rows;
     return next();
   } catch (err) {
     return next({
       log: "Express Error handler caught in grabAllUserTemplates err",
       status: 500,
-      message: { err: "No able to grab templates" },
+      message: { err: "Not able to grab templates" },
     });
   }
 };
 
 
-templateController.addTemplate = async (req, res, next) => {
+templateController.addUserTemplate = async (req, res, next) => {
   try {
-    const { userId, template } = req.query;
-    const sql_query_add = "INSERT INTO templates(creator, template) VALUES($1, $2)";
-    db.query(sql_query_add, [userId, template]);
+    const { email, title, template } = req.query;
+    const sql_query_add = "INSERT INTO templates(creator, template) VALUES($1, $2, $3)";
+    db.query(sql_query_add, [email, title, template]);
     next();
   } catch(err){
     return next({

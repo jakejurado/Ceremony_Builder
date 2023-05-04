@@ -312,12 +312,27 @@ const templateWed2 = {
   order: [],
 };
 
+const templateSaved = {
+  kiss: allSections.kiss,
+  introduction: allSections.introduction,
+  order: [ ['kiss', 1], ['introduction', 0 ]]
+}
+
 for (const [title, data] of Object.entries(templateWed2)) {
   if (title !== "order") {
     templateWed2.order.push([title, data.start_pos]);
   }
 }
 
-module.exports = { templateWed, templateWed2 };
+module.exports = { templateWed, templateWed2, templateSaved };
 
 // console.log(JSON.stringify(allSections));
+
+
+// console.log(templateSaved)
+
+const body = {
+  template: templateSaved
+}
+
+console.log(JSON.stringify(templateSaved))

@@ -53,16 +53,17 @@ userController.authenticateUser = async (req, res, next) => {
 
   try{
     //grab stored password
-    const sql_verifyUser = "SELECT user_password FROM users where user_email = ($1)";
+    const sql_verifyUser = "SELECT user_password, _id FROM users where user_email = ($1)";
     const storedPasswordResult = await db.query(sql_verifyUser, [email]);
     const storedPassword = storedPasswordResult.rows[0].user_password;
+    const userId = storedPasswordResult.rows[0]._id;
 
     //check if passwords match
     const passwordsMatch = await bcrypt.compare(password, storedPassword);
 
     //password
     if(passwordsMatch){
-      res.locals.userAuthenticated = { authenticated: true };;
+      res.locals.userAuthenticated = { authenticated: true, userId };;
       return next();
     } else{
       return next({
@@ -88,7 +89,7 @@ userController.createToken = async (req, res, next) => {
   try {
     const token = await new Promise((resolve, reject) => {
       jwt.sign(
-        { email },
+        { email, userId : res.locals.userAuthenticated.userId },
         process.env.JWT_SECRET,
         { expiresIn: "72h" },
         (err, token) => {
@@ -118,13 +119,11 @@ userController.createToken = async (req, res, next) => {
 //OUTPUT
 //confirms that user has a token.
 userController.checkForToken = (req, res, next) => {
-
-  const {email} = req.body
   const token = req.cookies.authorization;
 
   if (typeof token !== "undefined") {
     req.token = token;
-    res.locals.foundtoken = 'found the token';
+    // res.locals.foundtoken = {email: email, authorized: false}
     return next();
   } else {
     return next({
@@ -139,13 +138,14 @@ userController.checkForToken = (req, res, next) => {
 //OUTPUT
 //verifies current user matches token user.
 userController.verifyToken = async (req, res, next) => {
-  const {email} = req.query;
+  // const {email} = req.query;
   //verify the JWT token generated for the user
 
   try {
     const decoded = await jwt.verify(req.token, process.env.JWT_SECRET)
-    if(decoded.email === email){
-      res.locals.userToken = 'permission granted';
+    if(decoded){
+      res.locals.foundtoken = {authorized: true, email: decoded.email, userId: decoded.userId}
+      console.log(res.locals.foundtoken)
       return next();
     } else{
       return next({
@@ -163,6 +163,27 @@ userController.verifyToken = async (req, res, next) => {
     });
   }
 };
+
+//verifies current user matches token user.
+userController.verifyTokenEmail = async (req, res, next) => {
+  const {email} = req.query;
+  //verify the JWT token generated for the user
+
+  if(res.locals.foundtoken.email !== email){
+    return next(new Error('Something went wrong!'));
+  } else{
+    console.log('user email has been verified')
+    next();
+  }
+};
+
+
+
+// userController.gatherMyData = (req, res, next) => {
+//   req.body.email = req.query.email
+
+//   return next();
+// }
 
 
 

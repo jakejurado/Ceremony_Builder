@@ -14,4 +14,8 @@ router.post("/access", userController.checkForToken, userController.verifyToken,
   return res.status(200).send(res.locals.foundtoken);
 });
 
+router.get("/access", userController.checkForToken, userController.verifyToken,  (req, res) => {
+  return res.status(200).send(res.locals.foundtoken);
+});
+
 module.exports = router;

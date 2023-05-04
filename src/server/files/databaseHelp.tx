@@ -8,17 +8,9 @@ CREATE TABLE public.templates (
   _id SERIAL PRIMARY KEY NOT NULL,
   creator INT NOT NULL,
   template VARCHAR NOT NULL,
-  CONSTRAINT usersID
-  FOREIGN KEY (creator)
-  REFERENCES users(_id)
-  )
-
-CREATE TABLE templates (
-    _id SERIAL PRIMARY KEY NOT NULL,
-    creator INTEGER NOT NULL REFERENCES users(_id),
-    template TEXT NOT NULL
+  title VARCHAR NOT NULL,
+  CONSTRAINT usersID FOREIGN KEY (creator) REFERENCES users(_id)
 );
-
 
 CREATE TABLE public.meta_data (
   _id SERIAL PRIMARY KEY NOT NULL,
