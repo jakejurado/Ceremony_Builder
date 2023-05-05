@@ -23,6 +23,7 @@ function addSecToTemplate(
   } else if (!isInOrder) {
     newTemplate["order"] = insertSection(varname, index, orderCopy);
     newTemplate[varname] = JSON.parse(JSON.stringify(cache[varname]));
+    console.log('in addSec', newTemplate)
     return newTemplate;
 
     //if the section is already in the template order then duplicate it
@@ -82,11 +83,14 @@ function duplicateVarname(varname, template) {
 
 //This function inserts a Section into the order.
 function insertSection(varname: string, index: number, order: order): order {
+  console.log('insertSection');
   const newOrder: order = [];
+  if(!order.length) newOrder.push([varname, 0])
   order.forEach((set, i) => {
     if (i === index) newOrder.push([varname, 0]);
     newOrder.push([...set]);
   });
+  
   return newOrder;
 }
 
