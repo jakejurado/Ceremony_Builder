@@ -11,27 +11,25 @@ function MainDisplay() {
   const { selectorTitles, template, dispatch, selectorSec, domRef } =
     useContext(GlobalContext);
 
-  //loads the sections from the state in display.  Build the dom
+  //loads the sections from the state in display to build the dom
   let loadSections = [];
-  // console.log({ template });
+  console.log('before', {template})
   const { order, ...rest } = template;
   for (let i = 0; i < order.length; i++) {
     let [varTitle, pos] = order[i];
 
-    //This occurs when the display is updated, but the template hasn't updated from the fetch yet.  skip that section until ready.
-    if (!rest.hasOwnProperty(varTitle)) continue;
-
-    //if the selector section is true and the index is at the position it should go, add the selector box
+    //if the selector section is true and the index is at the position it should add the selector box
     if (selectorSec.isVisible && i === selectorSec.position) {
       loadSections.push(
-        <SectionSelector
-          key="selectorBox"
-          data={selectorTitles}
-          index={i}
+        <SectionSelector 
+          key="selectorBox" 
+          data={selectorTitles} 
+          index={i} 
           dispatch={dispatch}
-        />
-      );
+       />);
     }
+
+    //load each section into the array to be displayed.
     const { title, description, script } = rest[varTitle];
     loadSections.push(
       <Section
@@ -47,6 +45,18 @@ function MainDisplay() {
       />
     );
   }
+  
+  //shows the selector if the template.order is empty
+  if(!loadSections.length){
+    loadSections.push(
+      <SectionSelector
+        key="selectorBox"
+        data={selectorTitles}
+        index={0}
+        dispatch={dispatch}
+      />
+    )
+  }
 
   //DRAG DROP FUNCTIONALITY
   function dragEnd(e) {
@@ -61,6 +71,7 @@ function MainDisplay() {
     });
   }
 
+  //hides all the buttons for the section that is being dragged and drops
   function createToggleDragStartStop() {
     const nodes = [];
     return (e) => {

@@ -123,7 +123,7 @@ const [fetchedData, setFetchedData] = useState(null);
   });
   // const [selectorTitles, setSelectorTitles] = useState({});
 
-  //ref the content of the site
+  //ref the content of the etite
   const domRef = useRef();
 
   //informs react when the section selector Box has been activated.
@@ -144,6 +144,7 @@ const [fetchedData, setFetchedData] = useState(null);
       case "addSEC": {
         //update order
         const { varname, index } = payload;
+        console.log('addSec', varname, index)
         //create a new updated template with the added section
         let newTemplate = addSecToTemplate(
           varname,
@@ -196,8 +197,12 @@ const [fetchedData, setFetchedData] = useState(null);
           fetchTitles(setSelectorTitles);
 
         //update state to signify that a selector box should be inserted.
+        console.log('selectSEC');
+        console.log({action})
         const insertSelector = addSelectorSection(payload.index);
+        console.log(insertSelector)
         setSelectorSec(insertSelector);
+        console.log('in selectSEC', sections, order)
         return { ...sections, order };
       }
       case "initialLoad": {
@@ -205,7 +210,16 @@ const [fetchedData, setFetchedData] = useState(null);
         return templates[templateTitle];
       }
       case "loadTEMPLATE": {
-        return payload;
+        const {key, value} = payload
+        setTemplateTitle(key)
+        return templates[key];
+      }
+      case "addTEMPLATE":{
+        const {key, value} = payload
+        setTemplates({...templates, [key]: value});
+        setTemplateTitle(key);
+        return value
+        // dispatch({type: 'leadTEMPLATE', payload: key})
       }
       default: {
         // returns the current state
@@ -306,8 +320,10 @@ const [fetchedData, setFetchedData] = useState(null);
             names,
             setNames,
             popDispatch,
+            templateTitle,
             setTemplateTitle,
             templates,
+            setTemplates,
             popupState,
             popup,
             setPopup,

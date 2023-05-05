@@ -68,6 +68,22 @@
   }
 }
 
+.h2line{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items:flex-start;
+  // border: solid;
+}
+
+.icons{
+  // border: thin solid black;
+  padding: .5vw;
+  margin: 1vw;
+
+  border-radius: 50%;
+}
+
 // SIDEBAR TEMPLATES
 .sidebarTemplate {
 }
