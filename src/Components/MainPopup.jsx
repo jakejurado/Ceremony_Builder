@@ -1,11 +1,5 @@
 import React, {useContext, createContext, useRef, useReducer, useEffect, useMemo, useState} from 'react'
-import PopupForgot from './PopupForgot';
-import PopupLogin from './PopupLogin';
-import PopupSignup from './PopupSignup';
-import PopupVerify from './PopupVerify';
 import { GlobalContext} from "./App";
-import { checkSubmitButtonCriteria, passwordMatch, passwordLength, validateEmail } from '../functions/account/password';
-import {createDomToggle} from "../functions/account/domToggle";
 import MainAuth from './MainAuth';
 import MainPrint from './MainPrint';
 

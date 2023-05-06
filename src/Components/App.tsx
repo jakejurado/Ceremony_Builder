@@ -8,12 +8,8 @@ import React, {
 //React Components
 import MainDisplay from "./MainDisplay";
 import Sidebar from "./Sidebar";
-import AccountBox from "./AccountBox";
-import Popup from "../Components/Popup";
-import PopupPrint from "./PopupPrint";
 import Header from "./Header";
 import ErrorBoundary from "./ErrorBoundary";
-import PopupAccount from "./PopupAccount";
 import MainPopup from './MainPopup';
 
 
@@ -257,63 +253,6 @@ const [fetchedData, setFetchedData] = useState(null);
   }
 
 
-  //NEW POPUP CONTROLLS
-  // const [popup, setPopup] = useState('signup')
-  const [popup, setPopup] = useState(null)
-
-
-  //Controls the state of popup for printing, signin, and signup
-  const [popupState, popDispatch] = useReducer(popReducer, {
-    // display: <PopupPrint />,
-    // display: <AccountBox />,
-    display: false,
-  });
-
-  const [print, setPrint] = useState(false);
-  
-  if(print){
-    const newTemplates = saveDomToTemplates( template, domRef, names, templates, templateTitle);
-    setTemplates(newTemplates);
-    setPrint(false);
-  }
-
-  function popReducer(state, action) {
-    switch (action.type) {
-      case "print":
-        const newTemplates = saveDomToTemplates(
-          template,
-          domRef,
-          names,
-          templates,
-          templateTitle
-        );
-        setTemplates(newTemplates);
-        dispatch({ type: "initialLoad" });
-        return { display: <PopupPrint /> };
-      case "save":{
-        const newTemplates = saveDomToTemplates(template, domRef, names, templates, templateTitle);
-        setTemplates(newTemplates);
-        console.log({newTemplates})
-        
-        return {display: false}
-
-        
-      }
-      case "account":
-        return { display: <AccountBox /> };
-      case "signin":
-        return { display: "signin" };
-      case "signup":
-        return { display: "signup" };
-      case "initialLoad":
-        return { display: false };
-      case "close":
-        return { display: false };
-      default:
-        console.log("error case");
-    }
-  }
-
   //initial load
   const theSidebar = new createSidebarToggle();
   useEffect(()=>{
@@ -343,14 +282,10 @@ const [fetchedData, setFetchedData] = useState(null);
             selectorTitles,
             names,
             setNames,
-            popDispatch,
             templateTitle,
             setTemplateTitle,
             templates,
             setTemplates,
-            popupState,
-            popup,
-            setPopup,
             theSidebar,
             domRef,
             popupDispatch,
@@ -359,8 +294,6 @@ const [fetchedData, setFetchedData] = useState(null);
           }}
         >
           <Header />
-          {popupState.display && <Popup />}
-          {popup && <PopupAccount curr={popup}/>}
           {thePopup.box &&  <MainPopup box={thePopup.box} subAct={thePopup.subAct}/> }
 
           <Sidebar />
