@@ -14,6 +14,7 @@ import PopupPrint from "./PopupPrint";
 import Header from "./Header";
 import ErrorBoundary from "./ErrorBoundary";
 import PopupAccount from "./PopupAccount";
+import MainPopup from './MainPopup';
 
 
 //Temparary Data
@@ -56,14 +57,11 @@ function App() {
     elope: templateElope,
   });
 
- 
-
   //cache for all sections from templates and ones added by user during session
   const [sectionCache, setSectionCache] = useState(
     addContentsToCache(templates, {})
   );
 
-  
   //determines which template to be displayed.
   const [templateTitle, setTemplateTitle] = useState("wedding");
 
@@ -233,6 +231,32 @@ const [fetchedData, setFetchedData] = useState(null);
     setFetchedData(null);
   }
 
+
+  //NEW NEW Popup Controls
+  const [thePopup, popupDispatch] = useReducer(popupReducer, {box: 'myAuth', subAct: 'login'});
+
+  function popupReducer(state, action){
+    const {type, subAct} = action
+    
+    switch (action.type){
+      case 'myAccount':
+        return {box: 'myAccount', subAct}
+        break;
+      case 'myAuth':
+        return {box: 'myAuth', subAct}
+        break;
+      case 'myTemplates':
+        return {box: 'myTemplates', subAct}
+        break;
+      case 'myPrint':
+        return {box: 'myPrint', subAct}
+        break;
+      default:
+        return {box: null, subAct: null}
+    }
+  }
+
+
   //NEW POPUP CONTROLLS
   // const [popup, setPopup] = useState('signup')
   const [popup, setPopup] = useState(null)
@@ -329,11 +353,15 @@ const [fetchedData, setFetchedData] = useState(null);
             setPopup,
             theSidebar,
             domRef,
+            popupDispatch,
+            box: thePopup.box,
+            subAct: thePopup.subAct
           }}
         >
           <Header />
           {popupState.display && <Popup />}
           {popup && <PopupAccount curr={popup}/>}
+          {thePopup.box &&  <MainPopup box={thePopup.box} subAct={thePopup.subAct}/> }
 
           <Sidebar />
           <MainDisplay />
