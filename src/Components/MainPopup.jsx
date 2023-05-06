@@ -7,6 +7,7 @@ import { GlobalContext} from "./App";
 import { checkSubmitButtonCriteria, passwordMatch, passwordLength, validateEmail } from '../functions/account/password';
 import {createDomToggle} from "../functions/account/domToggle";
 import MainAuth from './MainAuth';
+import MainPrint from './MainPrint';
 
 
 function MainPopup({box, subAct}){
@@ -22,8 +23,9 @@ function MainPopup({box, subAct}){
   
   return(
       <div id='popupContainer'>
-      <div id='popupBackground' onClick={handleBackgroundClick}></div>
+        <div id='popupBackground' onClick={handleBackgroundClick}></div>
         {box === 'myAuth' && <MainAuth subAct={subAct}/> }
+        {box === 'myPrint' && <MainPrint />}
         
       </div>
   )

@@ -6,16 +6,18 @@ import SidebarSave from "./SidebarSave";
 import { GlobalContext } from "./App";
 
 function Sidebar() {
-  const {setPopup} = useContext(GlobalContext);
+  const {setPopup, popupDispatch} = useContext(GlobalContext);
 
   const domSidebar = useRef(null);
 
   function handleLoginClick(){
-    setPopup('login')
+    // setPopup('login')
+    popupDispatch({type: 'myAuth', subAct: 'login'})
   }
 
   function handleSigninClick(){
-    setPopup('signup')
+    // setPopup('signup')
+    popupDispatch({type: 'myAuth', subAct: 'login'})
   }
 
   function handleSidebarHover(){
