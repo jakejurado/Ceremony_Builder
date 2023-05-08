@@ -2,11 +2,10 @@ import React, { useContext } from "react";
 import { GlobalContext } from "./App";
 
 function SidebarPrint() {
-  const { popDispatch, popupDispatch } = useContext(GlobalContext);
+  const { popupDispatch, dispatch } = useContext(GlobalContext);
 
   function handleClick() {
-    console.log("entered handleClick");
-    // popDispatch({ type: "print" });
+    dispatch({type: 'saveTEMPLATE'})
     popupDispatch({type: 'myPrint', subAct: null})
   }
 

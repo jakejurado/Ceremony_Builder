@@ -2,6 +2,7 @@ import React, {useContext, createContext, useRef, useReducer, useEffect, useMemo
 import { GlobalContext} from "./App";
 import MainAuth from './MainAuth';
 import MainPrint from './MainPrint';
+import MainTemplate from './MainTemplate';
 
 
 function MainPopup({box, subAct}){
@@ -17,9 +18,10 @@ function MainPopup({box, subAct}){
   
   return(
       <div id='popupContainer'>
-        <div id='popupBackground' onClick={handleBackgroundClick}></div>
+        <div id='popupWhiteBackground' onClick={handleBackgroundClick}></div>
         {box === 'myAuth' && <MainAuth subAct={subAct}/> }
         {box === 'myPrint' && <MainPrint />}
+        {box === 'myTemplates' && <MainTemplate />}
         
       </div>
   )

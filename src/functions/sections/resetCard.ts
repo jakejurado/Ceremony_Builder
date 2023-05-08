@@ -7,23 +7,29 @@ function saveDomToTemplates(
   templates,
   templateTitle
 ) {
-  const allTemplates = JSON.parse(JSON.stringify(templates));
+  console.log('here are templates', templates)
+  const allTemplates = Object.assign({}, templates) //JSON.parse(JSON.stringify(templates));
+  
   //puts the current dom into the current template.
   const updatedTemplate = putDomInTemplate(template, domArr, persons);
+  
   //adds the updatedTemplate to the copied templates state
   const newTemplates = Object.assign(allTemplates, {
     [templateTitle]: updatedTemplate,
   });
+
   return newTemplates;
 }
 
 //This function puts the current dom into the current template
 function putDomInTemplate(template, dom, persons) {
-  const templateCopy = JSON.parse(JSON.stringify(template));
-
+  const templateCopy = {} 
+ 
   //grab the list of sections from useRef
-  console.log({dom})
   const myDom = dom.current.children[0].children;
+
+  //inset order into newTemplate
+  templateCopy['order'] = [];
 
   //iterate over the dom elements and update the template copy
   for (const el of myDom) {
@@ -32,12 +38,20 @@ function putDomInTemplate(template, dom, persons) {
     const [_, indexNum] = classes[2].split("-"); //grab index from dom class
     const script = el.children[0].children[0].children[1].innerText; //grab script from dom
 
+    //move entire section into templateCopy
+    templateCopy[title] = {};
+    Object.assign(templateCopy[title], template[title])
+
+    //update order
+    templateCopy['order'].push([title, indexNum])
+
     // update template
     templateCopy[title].script[parseInt(indexNum)] = replaceWords(
       script,
       persons
     );
   }
+  
   return templateCopy;
 }
 

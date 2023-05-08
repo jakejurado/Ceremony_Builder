@@ -30,6 +30,13 @@
 
 
 
+#popupWhiteBackground{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: white;
+  opacity: .9;
+}
 
 #mainPopup {
   top: 0;
@@ -65,4 +72,25 @@
   z-index: 4;
 }
 
+#templateBox{
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 6vw;
+  background-color: v.$pinkMain;
+  border: thin solid black;
+}
+
+#templateBoxUL{
+  display: flex;
+  flex-direction: column;
+  background-color: v.$pinkMain;
+}
+
+.titleDiv {
+  display: flex;
+  flex-direction: row;
+}
 

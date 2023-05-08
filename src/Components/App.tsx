@@ -48,10 +48,8 @@ export const GlobalContext = createContext(null);
 
 function App() {
   //stores the templates
-  const [templates, setTemplates] = useState({
-    wedding: templateWed2,
-    elope: templateElope,
-  });
+  const allT = {wedding: templateWed2, elope: templateElope }
+  const [templates, setTemplates] = useState(allT);
 
   //cache for all sections from templates and ones added by user during session
   const [sectionCache, setSectionCache] = useState(
@@ -203,6 +201,12 @@ const [fetchedData, setFetchedData] = useState(null);
         //loads the current state
         return templates[templateTitle];
       }
+      case "saveTEMPLATE": {
+        //copies dom into templates
+        const newTemplates = saveDomToTemplates( templates[templateTitle], domRef, names, templates, templateTitle);
+        setTemplates(newTemplates)
+        return newTemplates[templateTitle]
+      }
       case "loadTEMPLATE": {
         const {key, value} = payload
         setTemplateTitle(key)
@@ -213,7 +217,19 @@ const [fetchedData, setFetchedData] = useState(null);
         setTemplates({...templates, [key]: value});
         setTemplateTitle(key);
         return value
-        // dispatch({type: 'leadTEMPLATE', payload: key})
+      }
+      case "renameTEMPLATE":{
+        const {oldName, newName} = payload;
+
+        const newTemplates = {};
+        Object.entries(templates).forEach((entry) => {
+          console.log({entry})
+          if(entry[0] === oldName) newTemplates[newName] = entry[1];
+          else newTemplates[entry[0]] = entry[1];
+        })
+        console.log(newTemplates)
+        // setTemplates({newTemplates})
+        // setTemplates({...newTemplates})
       }
       default: {
         // returns the current state
@@ -229,7 +245,7 @@ const [fetchedData, setFetchedData] = useState(null);
 
 
   //NEW NEW Popup Controls
-  const [thePopup, popupDispatch] = useReducer(popupReducer, {box: 'myAuth', subAct: 'login'});
+  const [thePopup, popupDispatch] = useReducer(popupReducer, {box: 'myTemplates', subAct: 'login'});
 
   function popupReducer(state, action){
     const {type, subAct} = action
@@ -247,6 +263,10 @@ const [fetchedData, setFetchedData] = useState(null);
       case 'myPrint':
         return {box: 'myPrint', subAct}
         break;
+      case 'mySave':
+        const newTemplates = saveDomToTemplates( template, domRef, names, templates, templateTitle);
+        setTemplates(newTemplates)
+        return {box: null, subAct: null}
       default:
         return {box: null, subAct: null}
     }
