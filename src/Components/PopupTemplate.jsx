@@ -3,6 +3,7 @@ import { GlobalContext } from './App';
 import pencil from '../../public/assets/pencil_grey.svg';
 import close from '../../public/assets/close.png';
 import check from '../../public/assets/check2.svg'
+import { nameValidator } from '../functions/template/nameTemplate';
 
 
 function PopupTemplate(){
@@ -36,7 +37,8 @@ function PopupTemplate(){
 
   const handleSaveButton = (e) => { //check button
     // save the edited title
-    dispatch({type: 'renameTEMPLATE', payload: {oldName: editableTitle, newName: editedTitle, currTemplate: templateTitle === editableTitle}})
+    const name = nameValidator(Object.keys(templates), editedTitle);
+    dispatch({type: 'renameTEMPLATE', payload: {oldName: editableTitle, newName: name, currTemplate: templateTitle === editableTitle}})
     setEditableTitle(null);
     setEditableTitle(null);
   };
