@@ -5,40 +5,49 @@ import close from '../../public/assets/close.png';
 import check from '../../public/assets/check2.svg'
 
 
-function MainTemplate(){
+function PopupTemplate(){
   const {templates, dispatch} = useContext(GlobalContext);
-  const [editableTitle, setEditableTitle] = useState(null);
+  console.log('start of', {templates})
 
-  function handleCloseButton(e){
+  //keeps track of which title is being edited.
+  const [editableTitle, setEditableTitle] = useState(null);
+  
+  //test
+  const [editedTitle, setEditedTitle] = useState(null);
+
+  //deletes a template from templates
+  function handleCloseButton(e){ //x button
     const currTitle = e.currentTarget.dataset.templatetitle;
-    console.log(currTitle)
+    console.log({currTitle})
     //delete Title from database
     //delete title from Templates using dispatch
   }
 
-  function handleEditButton(e){
+  //saves the template and then makes title editable
+  function handleEditButton(e){ //pencil button
+    dispatch({type: 'saveTEMPLATE'})
     const currTitle = e.currentTarget.dataset.templatetitle;
-    console.log(currTitle)
-    setEditableTitle(currTitle);
-    
+    console.log({currTitle})
+    setEditableTitle(currTitle); 
+    setEditedTitle(currTitle);
   }
 
+  const handleInputChange = (e) => { //input
+    setEditedTitle(e.target.value);
+    console.log(editedTitle, e.target.value)
+  };
+
+  const handleSaveButton = (e) => { //check button
+    // save the edited title
+    dispatch({type: 'renameTEMPLATE', payload: {oldName: editableTitle, newName: editedTitle}})
+    console.log(templates)
+    setEditableTitle(null);
+    setEditableTitle(null);
+  };
+
   const allTemplateTitles = Object.keys(templates).map((el, index) => {
-    const [editedTitle, setEditedTitle] = useState(el);
-
-    const handleInputChange = (e) => {
-      setEditedTitle(e.target.value);
-    };
-
-    const handleSaveButton = (e) => {
-      // save the edited title
-      console.log(`Save title: ${editedTitle}`);
-      console.log(editableTitle)
-      dispatch({type: 'renameTEMPLATE', payload: {oldName: editableTitle, newName: editedTitle}})
-
-      setEditableTitle(null);
-    };
-
+   
+    console.log({editedTitle, editableTitle})
     return (
       <li
         className='titleList'
@@ -55,7 +64,6 @@ function MainTemplate(){
                 onChange={handleInputChange}
               />
               <img src={check} onClick={handleSaveButton} />
-              {/* <button onClick={handleSaveButton}>Save</button> */}
             </>
           ) : (
             <>
@@ -78,9 +86,7 @@ function MainTemplate(){
     );
   });
 
-  
-  console.log({allTemplateTitles})
-
+  console.log({editableTitle})
   return (
       <div id='templateBox'>
         <h3>Your Templates</h3>
@@ -92,4 +98,4 @@ function MainTemplate(){
 
 }
 
-export default MainTemplate
+export default PopupTemplate

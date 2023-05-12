@@ -12,9 +12,7 @@ function SideBarTemplate() {
 
   function handlePlusClick(){
     setTemplates({...templates, myTemplate: {order:[]}});
-    // console.log('templates.myTemplate', templates.myTemplate)
     dispatch({ type: "addTEMPLATE", payload: {key: 'myTemplate', value: {order:[]}}});
-    // setTemplateTitle('myTemplate');
   }
 
   function handleEditClick(){

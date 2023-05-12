@@ -1,7 +1,7 @@
 import React, {useContext, useEffect, useState} from 'react';
-import { PopupContext } from './MainAuth';
+import { PopupContext } from './PopupAuth';
 
-function MainAuthForgot(){
+function PopupAuthForgot(){
   const {popupBoxDispatch, userEmailDom, handleEmailInputChange, emailCriteria} = useContext(PopupContext);
 
   //changes popup to verify popup.
@@ -35,4 +35,4 @@ function MainAuthForgot(){
   )
 }
 
-export default MainAuthForgot
+export default PopupAuthForgot

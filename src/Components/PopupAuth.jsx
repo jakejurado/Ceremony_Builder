@@ -1,8 +1,8 @@
 import React, {useContext, createContext, useRef, useReducer, useEffect, useMemo, useState} from 'react'
-import MainAuthLogin from './MainAuthLogin';
-import MainAuthSignup from './MainAuthSignup';
-import MainAuthForgot from './MainAuthForgot';
-import MainAuthVerify from './MainAuthVerify';
+import PopupAuthLogin from './PopupAuthLogin';
+import PopupAuthSignup from './PopupAuthSignup';
+import PopupAuthForgot from './PopupAuthForgot';
+import PopupAuthVerify from './PopupAuthVerify';
 import { GlobalContext} from "./App";
 import { checkSubmitButtonCriteria, passwordMatch, passwordLength, validateEmail } from '../functions/account/password';
 import {createDomToggle} from "../functions/account/domToggle";
@@ -10,8 +10,8 @@ import {createDomToggle} from "../functions/account/domToggle";
 //holds the context for the login/signup state
 export const PopupContext = createContext(null);
 
-function MainAuth({subAct}){
-  console.log('enter MainAuth')
+function PopupAuth({subAct}){
+  console.log('enter PopupAuth')
   
   //CONTEXT: global state
   const {setPopup} = useContext(GlobalContext)
@@ -42,7 +42,7 @@ function MainAuth({subAct}){
 
   //REDUCER
   //keeps track of which pop up box should be displayed
-  const [popupBox, popupBoxDispatch] = useReducer(reducer, {title: 'login', display: <MainAuthLogin />});
+  const [popupBox, popupBoxDispatch] = useReducer(reducer, {title: 'login', display: <PopupAuthLogin />});
 
   //logic for the popupBox reducer
   function reducer(state, action){
@@ -53,19 +53,19 @@ function MainAuth({subAct}){
 
     switch (type) {
       case "signup": 
-        return {title: 'signup', display: <MainAuthSignup />}
+        return {title: 'signup', display: <PopupAuthSignup />}
       case "login":
-        return {title: 'login', display: <MainAuthLogin />}
+        return {title: 'login', display: <PopupAuthLogin />}
       case 'forgot':
-        return {title: 'forgot', display: <MainAuthForgot />}
+        return {title: 'forgot', display: <PopupAuthForgot />}
       case 'verify':
-        return {title: 'verify', display: <MainAuthVerify />}
+        return {title: 'verify', display: <PopupAuthVerify />}
       case 'initialLoad':
-        return {title: 'login2', display: <MainAuthLogin />}
+        return {title: 'login2', display: <PopupAuthLogin />}
       case 'close':
         return null
       default:
-        return {title: 'loginn', display: MainAuthLogin}
+        return {title: 'loginn', display: PopupAuthLogin}
     }
   }
 
@@ -232,4 +232,4 @@ function MainAuth({subAct}){
 }
 
 
-export default MainAuth;
+export default PopupAuth;

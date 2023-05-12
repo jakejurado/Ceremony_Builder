@@ -1,4 +1,4 @@
-import { Template, Templates, personState } from "../../types/types";
+
 //This function adds the contents from the dom into the templates state
 function saveDomToTemplates(
   template,
@@ -7,12 +7,12 @@ function saveDomToTemplates(
   templates,
   templateTitle
 ) {
-  console.log('here are templates', templates)
-  const allTemplates = Object.assign({}, templates) //JSON.parse(JSON.stringify(templates));
-  
+  const allTemplates =  JSON.parse(JSON.stringify(templates)) //Object.assign({}, templates)
+  console.log('should copy all templates', templates);
   //puts the current dom into the current template.
   const updatedTemplate = putDomInTemplate(template, domArr, persons);
   
+  console.log({updatedTemplate})
   //adds the updatedTemplate to the copied templates state
   const newTemplates = Object.assign(allTemplates, {
     [templateTitle]: updatedTemplate,
@@ -23,13 +23,11 @@ function saveDomToTemplates(
 
 //This function puts the current dom into the current template
 function putDomInTemplate(template, dom, persons) {
-  const templateCopy = {} 
- 
-  //grab the list of sections from useRef
-  const myDom = dom.current.children[0].children;
+  const templateCopy = JSON.parse(JSON.stringify(template));
 
-  //inset order into newTemplate
-  templateCopy['order'] = [];
+  //grab the list of sections from useRef
+  console.log({dom})
+  const myDom = dom.current.children[0].children;
 
   //iterate over the dom elements and update the template copy
   for (const el of myDom) {
@@ -38,20 +36,12 @@ function putDomInTemplate(template, dom, persons) {
     const [_, indexNum] = classes[2].split("-"); //grab index from dom class
     const script = el.children[0].children[0].children[1].innerText; //grab script from dom
 
-    //move entire section into templateCopy
-    templateCopy[title] = {};
-    Object.assign(templateCopy[title], template[title])
-
-    //update order
-    templateCopy['order'].push([title, indexNum])
-
     // update template
     templateCopy[title].script[parseInt(indexNum)] = replaceWords(
       script,
       persons
     );
   }
-  
   return templateCopy;
 }
 

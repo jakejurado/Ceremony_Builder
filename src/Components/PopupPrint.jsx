@@ -3,7 +3,7 @@ import { GlobalContext } from "./App";
 import { enterNames } from "../functions/sections/names";
 import printJs from "print-js";
 
-function MainPrint() {
+function PopupPrint() {
   const { template, names } = useContext(GlobalContext);
 
   setTimeout(() => {
@@ -51,4 +51,4 @@ function MainPrint() {
   );
 }
 
-export default MainPrint;
+export default PopupPrint;

@@ -5,13 +5,13 @@ import React, {
   createContext,
   useRef,
 } from "react";
+
 //React Components
 import MainDisplay from "./MainDisplay";
 import Sidebar from "./Sidebar";
 import Header from "./Header";
 import ErrorBoundary from "./ErrorBoundary";
-import MainPopup from './MainPopup';
-
+import Popup from './Popup';
 
 //Temparary Data
 import { templateWed, templateWed2, templateSaved } from "../server/files/serverDB2";
@@ -48,13 +48,16 @@ export const GlobalContext = createContext(null);
 
 function App() {
   //stores the templates
-  const allT = {wedding: templateWed2, elope: templateElope }
-  const [templates, setTemplates] = useState(allT);
 
+  interface TemplateState {
+    [key: string]: any; // This allows any key with any value type
+  }
+  const allT = {wedding: templateWed2, elope: templateElope }
+  const [templates, setTemplates] = useState<TemplateState | undefined>(allT);
+
+  console.log('about to enter addContentsToCache')
   //cache for all sections from templates and ones added by user during session
-  const [sectionCache, setSectionCache] = useState(
-    addContentsToCache(templates, {})
-  );
+  const [sectionCache, setSectionCache] = useState(null);
 
   //determines which template to be displayed.
   const [templateTitle, setTemplateTitle] = useState("wedding");
@@ -66,7 +69,6 @@ function App() {
     const response = await fetch(url);
     const [data] = await response.json();
     setTemplates({...templates, [data.title] : JSON.parse(data.template)})
-    // console.log({...templates, [data.title] : JSON.parse(data.template)})
   }
 
   useEffect(() => {
@@ -124,11 +126,13 @@ const [fetchedData, setFetchedData] = useState(null);
     position: undefined,
   });
 
+
   //holds the current template, which contains the sections and the order of the sections, used to fill the page.
   const [template, dispatch] = useReducer(reducer, templates[templateTitle]);
 
   //The main logic and state for the sections
   function reducer(state, action) {
+    console.log('enter reducer', action.type)
     const { order, ...sections } = state;
     const { type, payload } = action;
 
@@ -136,7 +140,6 @@ const [fetchedData, setFetchedData] = useState(null);
       case "addSEC": {
         //update order
         const { varname, index } = payload;
-        console.log('addSec', varname, index)
         //create a new updated template with the added section
         let newTemplate = addSecToTemplate(
           varname,
@@ -150,17 +153,19 @@ const [fetchedData, setFetchedData] = useState(null);
         //remove section selector from page
         setSelectorSec({ isVisible: false, position: undefined });
 
-        //update state
+        //update state.  If fetch occured then returns current state.
         return Object.keys(newTemplate) ? newTemplate : state ;
       }
       case "loadSEC": {
         //this case is only ran after a section is fetched from the backend.
         //update the section cache
+        console.log('********************ENTERED LOADSEC**************')
         const { order, ...sections } = payload;
         const newCache: Cache = fillCacheWithNewSections(
           sectionCache,
           sections
         );
+        console.log('saved to cashe')
         setSectionCache(newCache);
 
         //update the state
@@ -170,6 +175,7 @@ const [fetchedData, setFetchedData] = useState(null);
         return payload
       }
       case "deleteSEC": {
+        //removes section from current template
         const newOrder = removeSection(payload.index, order);
         return { ...sections, order: newOrder };
       }
@@ -184,29 +190,35 @@ const [fetchedData, setFetchedData] = useState(null);
         return { order: newOrder, ...sections };
       }
       case "selectSEC": {
-        //fetch titles if not present int state.
+        //fetch titles if not present in state.
         if (Object.keys(selectorTitles).length === 0)
           fetchTitles(setSelectorTitles);
 
         //update state to signify that a selector box should be inserted.
-        console.log('selectSEC');
-        console.log({action})
         const insertSelector = addSelectorSection(payload.index);
-        console.log(insertSelector)
         setSelectorSec(insertSelector);
-        console.log('in selectSEC', sections, order)
         return { ...sections, order };
       }
       case "initialLoad": {
+        console.log('initial', state)
         //loads the current state
         return templates[templateTitle];
       }
-      case "saveTEMPLATE": {
-        //copies dom into templates
-        const newTemplates = saveDomToTemplates( templates[templateTitle], domRef, names, templates, templateTitle);
+      case "saveTemplate": {
+        console.log('saveTEMPLATE')
+        const {template, domRef} = payload;
+        console.log({template})
+        // console.log('pre', sectionCache.giving_away.script[0])
+        const newTemplates = saveDomToTemplates( template, domRef, names, templates, templateTitle);
+        // console.log('post', sectionCache.giving_away.script[0])
         setTemplates(newTemplates)
         return newTemplates[templateTitle]
       }
+      // case 'saveTemplateFromSaveButton' :
+      //   const {template, dom} = payload;
+      //   const newTemplates = saveDomToTemplates( template, dom, names, templates, templateTitle);
+      //   setTemplates(newTemplates)
+      //   return newTemplates[templateTitle]
       case "loadTEMPLATE": {
         const {key, value} = payload
         setTemplateTitle(key)
@@ -219,17 +231,19 @@ const [fetchedData, setFetchedData] = useState(null);
         return value
       }
       case "renameTEMPLATE":{
+        console.log("ENTER RENAME TEMPLATE")
         const {oldName, newName} = payload;
-
+        console.log({oldName, newName})
         const newTemplates = {};
         Object.entries(templates).forEach((entry) => {
-          console.log({entry})
           if(entry[0] === oldName) newTemplates[newName] = entry[1];
           else newTemplates[entry[0]] = entry[1];
         })
-        console.log(newTemplates)
-        // setTemplates({newTemplates})
-        // setTemplates({...newTemplates})
+        setTemplates({...newTemplates})
+        console.log({newTemplates})
+        console.log("LEAVE RENAME TEMPLATE")
+        setTemplateTitle(templateTitle === oldName ? newName : oldName);
+        return templates[templateTitle]
       }
       default: {
         // returns the current state
@@ -237,6 +251,7 @@ const [fetchedData, setFetchedData] = useState(null);
       }
     }
   }
+
 
   if(fetchedData){
     dispatch({type: 'loadFetch', payload: fetchedData.payload})
@@ -263,10 +278,6 @@ const [fetchedData, setFetchedData] = useState(null);
       case 'myPrint':
         return {box: 'myPrint', subAct}
         break;
-      case 'mySave':
-        const newTemplates = saveDomToTemplates( template, domRef, names, templates, templateTitle);
-        setTemplates(newTemplates)
-        return {box: null, subAct: null}
       default:
         return {box: null, subAct: null}
     }
@@ -277,6 +288,8 @@ const [fetchedData, setFetchedData] = useState(null);
   const theSidebar = new createSidebarToggle();
   useEffect(()=>{
     theSidebar.toggle();  
+
+    setSectionCache(addContentsToCache(templates, {}));
 
 
     fetch('/user/access')
@@ -314,7 +327,7 @@ const [fetchedData, setFetchedData] = useState(null);
           }}
         >
           <Header />
-          {thePopup.box &&  <MainPopup box={thePopup.box} subAct={thePopup.subAct}/> }
+          {thePopup.box &&  <Popup box={thePopup.box} subAct={thePopup.subAct}/> }
 
           <Sidebar />
           <MainDisplay />
