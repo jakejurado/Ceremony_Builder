@@ -55,7 +55,6 @@ function App() {
   const allT = {wedding: templateWed2, elope: templateElope }
   const [templates, setTemplates] = useState<TemplateState | undefined>(allT);
 
-  console.log('about to enter addContentsToCache')
   //cache for all sections from templates and ones added by user during session
   const [sectionCache, setSectionCache] = useState(null);
 
@@ -159,13 +158,11 @@ const [fetchedData, setFetchedData] = useState(null);
       case "loadSEC": {
         //this case is only ran after a section is fetched from the backend.
         //update the section cache
-        console.log('********************ENTERED LOADSEC**************')
         const { order, ...sections } = payload;
         const newCache: Cache = fillCacheWithNewSections(
           sectionCache,
           sections
         );
-        console.log('saved to cashe')
         setSectionCache(newCache);
 
         //update the state
@@ -205,20 +202,11 @@ const [fetchedData, setFetchedData] = useState(null);
         return templates[templateTitle];
       }
       case "saveTemplate": {
-        console.log('saveTEMPLATE')
         const {template, domRef} = payload;
-        console.log({template})
-        // console.log('pre', sectionCache.giving_away.script[0])
         const newTemplates = saveDomToTemplates( template, domRef, names, templates, templateTitle);
-        // console.log('post', sectionCache.giving_away.script[0])
         setTemplates(newTemplates)
         return newTemplates[templateTitle]
       }
-      // case 'saveTemplateFromSaveButton' :
-      //   const {template, dom} = payload;
-      //   const newTemplates = saveDomToTemplates( template, dom, names, templates, templateTitle);
-      //   setTemplates(newTemplates)
-      //   return newTemplates[templateTitle]
       case "loadTEMPLATE": {
         const {key, value} = payload
         setTemplateTitle(key)
@@ -231,18 +219,17 @@ const [fetchedData, setFetchedData] = useState(null);
         return value
       }
       case "renameTEMPLATE":{
-        console.log("ENTER RENAME TEMPLATE")
-        const {oldName, newName} = payload;
-        console.log({oldName, newName})
+        const {oldName, newName, currTemplate} = payload;
         const newTemplates = {};
         Object.entries(templates).forEach((entry) => {
           if(entry[0] === oldName) newTemplates[newName] = entry[1];
           else newTemplates[entry[0]] = entry[1];
         })
         setTemplates({...newTemplates})
-        console.log({newTemplates})
-        console.log("LEAVE RENAME TEMPLATE")
-        setTemplateTitle(templateTitle === oldName ? newName : oldName);
+
+        //update the templateTitle if that was the template name changed
+        if(currTemplate) setTemplateTitle(newName);
+
         return templates[templateTitle]
       }
       default: {

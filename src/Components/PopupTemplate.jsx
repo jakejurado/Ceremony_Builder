@@ -6,8 +6,7 @@ import check from '../../public/assets/check2.svg'
 
 
 function PopupTemplate(){
-  const {templates, dispatch} = useContext(GlobalContext);
-  console.log('start of', {templates})
+  const {templates, dispatch, templateTitle} = useContext(GlobalContext);
 
   //keeps track of which title is being edited.
   const [editableTitle, setEditableTitle] = useState(null);
@@ -27,27 +26,23 @@ function PopupTemplate(){
   function handleEditButton(e){ //pencil button
     dispatch({type: 'saveTEMPLATE'})
     const currTitle = e.currentTarget.dataset.templatetitle;
-    console.log({currTitle})
     setEditableTitle(currTitle); 
     setEditedTitle(currTitle);
   }
 
   const handleInputChange = (e) => { //input
     setEditedTitle(e.target.value);
-    console.log(editedTitle, e.target.value)
   };
 
   const handleSaveButton = (e) => { //check button
     // save the edited title
-    dispatch({type: 'renameTEMPLATE', payload: {oldName: editableTitle, newName: editedTitle}})
-    console.log(templates)
+    dispatch({type: 'renameTEMPLATE', payload: {oldName: editableTitle, newName: editedTitle, currTemplate: templateTitle === editableTitle}})
     setEditableTitle(null);
     setEditableTitle(null);
   };
 
   const allTemplateTitles = Object.keys(templates).map((el, index) => {
    
-    console.log({editedTitle, editableTitle})
     return (
       <li
         className='titleList'
@@ -86,7 +81,6 @@ function PopupTemplate(){
     );
   });
 
-  console.log({editableTitle})
   return (
       <div id='templateBox'>
         <h3>Your Templates</h3>

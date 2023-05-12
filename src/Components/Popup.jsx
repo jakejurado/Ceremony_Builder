@@ -6,7 +6,6 @@ import PopupTemplate from './PopupTemplate';
 
 
 function Popup({box, subAct}){
-  console.log('enter Popup')
   const {popupDispatch} = useContext(GlobalContext)
 
   //connects with parent state that displays the popup and removes it.
@@ -14,7 +13,6 @@ function Popup({box, subAct}){
     popupDispatch({type: null, box: null});
   }
 
-  console.log({box, subAct})
   
   return(
       <div id='popupContainer'>
