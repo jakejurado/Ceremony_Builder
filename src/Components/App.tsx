@@ -63,15 +63,28 @@ function App() {
 
   //stores the current users ID
   const [currUser, setCurrUser] = useState(null);
+  console.log({currUser})
 
   async function fetchUserTemplates(url){
-    const response = await fetch(url);
-    const [data] = await response.json();
-    setTemplates({...templates, [data.title] : JSON.parse(data.template)})
+    console.log('fetching');
+    const response = await fetch( url);
+    const data = await response.json();
+
+    console.log('*****', {data});
+    const myTemplates = {};
+    data.forEach(temp => {
+      myTemplates[temp.title] = JSON.parse(temp.template);
+    })
+    
+    // Any of current templates with the same name as saved ones are overwritten by ones from the database
+    const templatesCopy = JSON.parse(JSON.stringify(templates));
+    setTemplates(Object.assign(templatesCopy, myTemplates))
+    // setTemplates({...templates, ...myTemplates})
   }
 
   useEffect(() => {
     const url = `templates/all?userId=${currUser}`;
+    console.log('enter currUser', {currUser});
     fetchUserTemplates(url);
   }, [currUser])
 
@@ -310,7 +323,8 @@ const [fetchedData, setFetchedData] = useState(null);
             domRef,
             popupDispatch,
             box: thePopup.box,
-            subAct: thePopup.subAct
+            subAct: thePopup.subAct,
+            setCurrUser
           }}
         >
           <Header />

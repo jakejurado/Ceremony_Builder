@@ -14,7 +14,7 @@ function PopupAuth({subAct}){
   console.log('enter PopupAuth')
   
   //CONTEXT: global state
-  const {setPopup} = useContext(GlobalContext)
+  const {setPopup, setCurrUser} = useContext(GlobalContext)
 
   //REFs
   const buttonDom = useRef(null); //submit button
@@ -193,6 +193,7 @@ function PopupAuth({subAct}){
       //receive the data
       const data = await response.json();
       console.log({data});
+      if(data.userId) setCurrUser(data.userId);
 
     } catch (error) {
       // clear password and email fields
