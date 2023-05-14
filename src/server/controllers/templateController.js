@@ -21,8 +21,8 @@ templateController.grabAllUserTemplates = async (req, res, next) => {
 templateController.addUserTemplate = async (req, res, next) => {
   try {
     const { email, title, template } = req.query;
-    const sql_query_add = "INSERT INTO templates(creator, template) VALUES($1, $2, $3)";
-    db.query(sql_query_add, [email, title, template]);
+    const sql_query_add = "INSERT INTO templates(creator, template, title) VALUES($1, $2, $3)";
+    db.query(sql_query_add, [email, template, title]);
     next();
   } catch(err){
     return next({
@@ -34,6 +34,22 @@ templateController.addUserTemplate = async (req, res, next) => {
 };
 
 templateController.updateTemplate = async (req, res, next) => {
+  try {
+    const { template, templateId, creatorId } = req.body;
+    const sql_query_add = "UPDATE templates SET template = $1 WHERE _id = $2 AND creator = $3;";
+    db.query(sql_query_add, [template, templateId, creatorId]);
+    next();
+  } catch(err){
+    return next({
+      log: "Express Error handler caught in addTemplate err",
+      status: 500,
+      message: { err: "No able to add Template" },
+    });
+  }
+};
+
+
+templateController.renameTemplate = async (req, res, next) => {
   try {
     const { template, templateId, creatorId } = req.body;
     const sql_query_add = "UPDATE templates SET template = $1 WHERE _id = $2 AND creator = $3;";

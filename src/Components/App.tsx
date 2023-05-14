@@ -76,7 +76,7 @@ function App() {
       myTemplates[temp.title] = JSON.parse(temp.template);
     })
     
-    // Any of current templates with the same name as saved ones are overwritten by ones from the database
+    // Any of current templates with the same name as saved ones are overwritten by ones from the database 
     const templatesCopy = JSON.parse(JSON.stringify(templates));
     setTemplates(Object.assign(templatesCopy, myTemplates))
     // setTemplates({...templates, ...myTemplates})
@@ -220,6 +220,14 @@ const [fetchedData, setFetchedData] = useState(null);
         setTemplates(newTemplates)
         return newTemplates[templateTitle]
       }
+      case "saveTemplateToDatabase": {
+        const {templateName} = payload;
+        const options = {
+          METHOD: 'POST'
+        }
+        // fetch()
+        return state
+      }
       case "loadTEMPLATE": {
         const {key, value} = payload
         setTemplateTitle(key)
@@ -260,7 +268,7 @@ const [fetchedData, setFetchedData] = useState(null);
 
 
   //NEW NEW Popup Controls
-  const [thePopup, popupDispatch] = useReducer(popupReducer, {box: 'myTemplates', subAct: 'login'});
+  const [thePopup, popupDispatch] = useReducer(popupReducer, {box: null, subAct: null});
 
   function popupReducer(state, action){
     const {type, subAct} = action
