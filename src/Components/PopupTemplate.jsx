@@ -25,7 +25,6 @@ function PopupTemplate(){
 
   //saves the template and then makes title editable
   function handleEditButton(e){ //pencil button
-    dispatch({type: 'saveTEMPLATE'})
     const currTitle = e.currentTarget.dataset.templatetitle;
     setEditableTitle(currTitle); 
     setEditedTitle(currTitle);

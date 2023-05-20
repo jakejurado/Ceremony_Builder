@@ -8,7 +8,7 @@ require("dotenv").config();
 
 const sectionRouter = require("./routs/sections");
 const userRouter = require("./routs/user");
-const templateRouter = require("./routs/templates");
+const templateRouter = require("./routs/templates")
 
 
 app.use(express.json());
@@ -17,11 +17,12 @@ app.use(cookieParser());
 app.use(express.static("dist"));
 // app.use(cors());
 
-//used to add a new section or all section titles to the main page.
+//routers
 app.use("/sections", sectionRouter);
 app.use("/user", userRouter);
 app.use("/templates", templateRouter);
 
+app.get('/milk', () => console.log('milk'))
 
 //serve the original page
 app.get("/", (req, res) => {

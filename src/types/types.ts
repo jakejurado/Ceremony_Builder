@@ -83,6 +83,10 @@ type dataObj = {
 
 type dataArray = Array<dataObj>;
 
+interface TemplateState {
+  [key: string]: any; // This allows any key with any value type
+}
+
 export {
   order,
   Section,
@@ -100,4 +104,5 @@ export {
   section,
   dataObj,
   dataArray,
+  TemplateState
 };

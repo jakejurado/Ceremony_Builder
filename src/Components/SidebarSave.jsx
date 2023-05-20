@@ -2,12 +2,10 @@ import React, { useContext } from "react";
 import { GlobalContext } from "./App";
 
 function SidebarSave() {
-  const { dispatch, template, domRef } = useContext(GlobalContext);
+  const { dispatch } = useContext(GlobalContext);
 
   function handleClick() {
-    const domSections = document.getElementById('mainDisplay');
-    console.log({domRef})
-    dispatch({type: 'saveTemplate', payload: { template, domRef }} )
+    dispatch({type: 'saveTemplateToDatabase', payload: null} )
   }
 
   return (
