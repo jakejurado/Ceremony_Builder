@@ -8,10 +8,10 @@ import plus from "../../public/assets/plus-circle.svg";
 
 function SideBarTemplate() {
   //brings state from App
-  const { templates, setTemplates, setTemplateTitle, dispatch, popupDispatch} = useContext(GlobalContext);
+  const { templates, setTemplates, dispatch, popupDispatch} = useContext(GlobalContext);
 
   function handlePlusClick(){
-    setTemplates({...templates, myTemplate: {order:[]}});
+    // setTemplates({...templates, myTemplate: {order:[]}});
     dispatch({ type: "addTEMPLATE", payload: {key: 'myTemplate', value: {order:[]}}});
   }
 

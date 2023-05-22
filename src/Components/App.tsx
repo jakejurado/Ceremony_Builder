@@ -50,15 +50,12 @@ export const GlobalContext = createContext(null);
 //Here's the full course: https://www.youtube.com/playlist?list=PL1w1q3fL4pmj9k1FrJ3Pe91EPub2_h4jF
 function App() {
 
-const [metaData, setMetaData] = useState<Map<string, { title: string, number: number }> | null>(
-  new Map()
-);
+  const [metaData, setMetaData] = useState<Map<string, { title: string, number: number }> | null>(
+    new Map()
+  );
 
-
-  //templates to start
+  //templates to start the program
   const allT = {wedding: templateWed2, elope: templateElope }
-
-  
 
   //cache for all sections from templates and ones added by user during session
   const [sectionCache, setSectionCache] = useState(null);
@@ -67,7 +64,7 @@ const [metaData, setMetaData] = useState<Map<string, { title: string, number: nu
   const [currUser, setCurrUser] = useState(null);
 
   async function fetchUserTemplates(url){
-    console.log('fetching');
+    console.log('fetching user Templates');
     const response = await fetch(url);
     const data = await response.json();
 
@@ -87,9 +84,6 @@ const [metaData, setMetaData] = useState<Map<string, { title: string, number: nu
       fetchUserTemplates(url);
     }
   }, [currUser])
-
-  
-  
 
   
 
@@ -273,43 +267,37 @@ const [fetchedData, setFetchedData] = useState(null);
       case "saveTemplateToDatabase": {
         console.log('saveTemplateToDatabase')
         //iterate through metaData and save to database
-        metaData.forEach((set) => {
-          console.log({set})
+        metaData.forEach((set, theTitle) => {
           const url = 'templates/userTemplate'
           const userId = currUser
-          const templateTitle = set.title
-          const userTemplate = JSON.stringify(state[set.title])
+          const userTemplate = JSON.stringify(state[theTitle])
           const templateId = set.number
           const options = {
             method: "POST",
+            body: JSON.stringify({userId, templateTitle:theTitle, userTemplate, templateId}),
             headers: {
               'Content-Type': 'application/json'
             },
-            body: JSON.stringify({userId, templateTitle, userTemplate, templateId})
           };
 
           if(!templateId){
-            console.log('set.number', {templateId})
-            // console.log(options.body)
-            // //fetch put update
-            // fetch(url, options )
-            //   .then((res) =>{
-            //     console.log('res', res)
-            //     console.log('res.body', res.body)
-            //   })
-            //   .catch((error) =>{
-            //     console.log('error in fetch for add', error)
-            //   })
+            fetch(url, options )
+              .then(res => res.json())
+              .then((res) =>{
+                const metaDataCopy = new Map(metaData);
+                metaDataCopy.set(res.title, {number: res._id, title: res.title})
+                setMetaData(metaDataCopy)
+              })
+              .catch((error) =>{
+                console.log('error in fetch for add', error)
+              })
           } else{
             options.method = "PUT"
-            console.log('void', 'put')
             fetch(url, options )
               .then((res) =>{
-                console.log({res})
               }).catch((error) =>{
                 console.log('error in fetch for put', error)
               })
-            console.log('entered else with ', templateTitle, templateId)
           }
         });
 
@@ -335,6 +323,12 @@ const [fetchedData, setFetchedData] = useState(null);
         const templatesCopy = state;
         templatesCopy[key] = value;
         setTemplateTitle(key);
+
+        //update metaData
+        const metaDataCopy = new Map(metaData);
+        metaDataCopy.set(key, {number: null, title: key})
+        setMetaData(metaDataCopy);
+
         return templatesCopy
       }
       case "renameTEMPLATE":{
@@ -352,6 +346,7 @@ const [fetchedData, setFetchedData] = useState(null);
         const metaDataCopy = new Map(metaData);
         const dataCopy = metaDataCopy.get(oldName);
         metaDataCopy.set(newName, dataCopy);
+        metaDataCopy.delete(oldName)
         setMetaData(new Map(metaDataCopy))
 
 
@@ -359,6 +354,39 @@ const [fetchedData, setFetchedData] = useState(null);
         if(currTemplate) setTemplateTitle(newName);
 
         return templatesCopy
+      }
+      case "deleteTEMPLATE": {
+        const {currTitle} = payload
+        //delete from database
+        const templateId = metaData.get(currTitle).number
+        if(templateId){
+          const url = `templates/userTemplate/?templateId=${templateId}&userId=${currUser}`
+          const options = {
+            method: 'DELETE',
+            headers: {'Content-Type': 'application/json'},
+          }
+          fetch(url, options)
+            .then(res => {
+              if(res.ok) console.log('template has been deleted')
+            })
+        } 
+
+        //remove from metaData
+        const metaDataCopy = new Map(metaData);
+        metaDataCopy.delete(currTitle)
+        setMetaData(metaDataCopy);
+
+        //remove from local templates
+        const templatesCopy = state;
+        delete templatesCopy[currTitle];
+
+        //change templateTitle if it is current.
+        if(templateTitle === currTitle){
+          console.log(Object.keys(state)[0])
+          setTemplateTitle(Object.keys(state)[0])
+        }
+
+        return templatesCopy;
       }
       default: {
         // returns the current state
@@ -449,6 +477,7 @@ const [fetchedData, setFetchedData] = useState(null);
             popupDispatch,
             box: thePopup.box,
             subAct: thePopup.subAct,
+            currUser,
             setCurrUser
           }}
         >

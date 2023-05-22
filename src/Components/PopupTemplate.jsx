@@ -19,8 +19,8 @@ function PopupTemplate(){
   function handleCloseButton(e){ //x button
     const currTitle = e.currentTarget.dataset.templatetitle;
     console.log({currTitle})
-    //delete Title from database
-    //delete title from Templates using dispatch
+
+    dispatch({type: 'deleteTEMPLATE', payload: {currTitle}})
   }
 
   //saves the template and then makes title editable

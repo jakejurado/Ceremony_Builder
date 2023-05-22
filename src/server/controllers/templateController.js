@@ -42,6 +42,7 @@ templateController.addUserTemplate = async (req, res, next) => {
 templateController.updateUserTemplate = async (req, res, next) => {
   const { userId, templateTitle, userTemplate, templateId } = req.body;
   console.log('entered update with ', templateTitle, {templateId})
+  console.log(req.body)
   try {
     const sql_query_add = "UPDATE public.templates SET title = $1, template = $2 WHERE _id = $3 AND creator = $4;";
     const results = await db.query(sql_query_add, [templateTitle, userTemplate, templateId, userId]);

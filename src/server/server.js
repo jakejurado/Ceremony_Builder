@@ -3,24 +3,31 @@ const app = express();
 const port = process.env.PORT || 8081;
 const path = require("path");
 const cookieParser = require("cookie-parser");
+const bodyParser = require('body-parser');
 // const cors = require("cors");
 require("dotenv").config();
+
 
 const sectionRouter = require("./routs/sections");
 const userRouter = require("./routs/user");
 const templateRouter = require("./routs/templates")
 
-
+// Parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }));
+// Parse application/json
+app.use(bodyParser.json({ limit: '500kb' }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static("dist"));
 // app.use(cors());
 
+
 //routers
 app.use("/sections", sectionRouter);
 app.use("/user", userRouter);
 app.use("/templates", templateRouter);
+
 
 app.get('/milk', () => console.log('milk'))
 
