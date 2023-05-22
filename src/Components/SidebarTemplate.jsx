@@ -8,14 +8,15 @@ import plus from "../../public/assets/plus-circle.svg";
 
 function SideBarTemplate() {
   //brings state from App
-  const { templates, setTemplates, setTemplateTitle, dispatch} = useContext(GlobalContext);
+  const { templates, setTemplates, dispatch, popupDispatch} = useContext(GlobalContext);
 
   function handlePlusClick(){
-    setTemplates({...templates, myTemplate: {order:[]}});
-    // console.log('templates.myTemplate', templates.myTemplate)
+    // setTemplates({...templates, myTemplate: {order:[]}});
     dispatch({ type: "addTEMPLATE", payload: {key: 'myTemplate', value: {order:[]}}});
-    // setTemplateTitle('myTemplate');
+  }
 
+  function handleEditClick(){
+    popupDispatch({type: 'myTemplates', subAct: null})
   }
 
   const templateTitles = [];
@@ -27,7 +28,7 @@ function SideBarTemplate() {
     <div className="sidebarTemplate sidebarElements">
       <h2>TEMPLATES</h2>
       <div className = 'h2line'>
-        <img src={pencil} id='pencilIcon' className='icons' />
+        <img src={pencil} id='pencilIcon' className='icons' onClick={handleEditClick}/>
         <SelectorOptionMenu options={templateTitles} />
         <img src={plus} className='icons'onClick={handlePlusClick} />
       </div>

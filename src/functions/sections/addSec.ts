@@ -4,29 +4,31 @@ import { order, Template, Cache, Section } from "../../types/types";
 function addSecToTemplate(
   varname,
   index,
-  order,
   template,
   cache,
   setFetchedData,
   ) {
-  let newTemplate = JSON.parse(JSON.stringify(template)); //copy the template
+  const {order} = template 
+  let newTemplate = Object.assign({}, template) //JSON.parse(JSON.stringify(template)); //copy the template
   let orderCopy = [...order]; //copy order
   const isInOrder = order.some((e) => e[0] === varname); //is new sec in the order?
 
-  //if the new section is not in the cache
+  console.log('+++++++++ENTERED ADDSECTOTEMPLATE+++++++')
+
+  //if the new section is not in the cache then fetch it
   if (!cache.hasOwnProperty(varname)) {
+    console.log('entered cache')
     newTemplate['order'] = insertSection(varname, index, orderCopy);
-    fetchingData(varname, newTemplate, setFetchedData);
-    console.log('part of fetch', {template})
+    fetchingData(varname, newTemplate['order'], setFetchedData);
     return template;
     
+  //if it's not in the current template then it is in the cache, so we add it from there to the current template
   } else if (!isInOrder) {
     newTemplate["order"] = insertSection(varname, index, orderCopy);
     newTemplate[varname] = JSON.parse(JSON.stringify(cache[varname]));
-    console.log('in addSec', newTemplate)
     return newTemplate;
 
-    //if the section is already in the template order then duplicate it
+    //if the section is already in the template order then duplicate it and rename it
   } else {
     const newVarname = duplicateVarname(varname, template); //create new varname
     orderCopy = insertSection(newVarname, index, orderCopy); //insert varname into the order
@@ -42,7 +44,8 @@ function addSecToTemplate(
   }
 }
 
-async function fetchingData(varname, template, setState){
+//fetches data from the backend and then signals it is ready to load.
+async function fetchingData(varname, order, setState){
   try{
     const response = await fetch(`/sections/grab?sec=${varname}`);
     const data = await response.json();
@@ -53,10 +56,8 @@ async function fetchingData(varname, template, setState){
       title: data[0].title,
       script: scripts,
     }
-    template[varname] = sec
-    console.log('after fetch', {template})
-    console.log({setState})
-    setState({type: 'loadFetch', payload: template})
+    setState({type: 'loadFetch', payload: {sec, varname, newOrder: order}})
+
   }catch (error){
     console.log(error);
     setState({type: 'initialLoad'})
@@ -83,7 +84,6 @@ function duplicateVarname(varname, template) {
 
 //This function inserts a Section into the order.
 function insertSection(varname: string, index: number, order: order): order {
-  console.log('insertSection');
   const newOrder: order = [];
   if(!order.length) newOrder.push([varname, 0])
   order.forEach((set, i) => {
@@ -92,37 +92,6 @@ function insertSection(varname: string, index: number, order: order): order {
   });
   
   return newOrder;
-}
-
-//This function fetches a section from the backend and then updates state
-
-function fetchSection(
-  varname: string,
-  order: order,
-  currTemplate: Template,
-  setState
-) {
-  fetch(`/sections/grab?sec=${varname}`)
-    .then((res) => res.json())
-    .then((res) => {
-      //build the new section
-      const scripts = res.map((obj) => obj.script);
-      const sec: Section = {
-        description: res[0].description,
-        start_pos: 0,
-        title: res[0].title,
-        script: scripts,
-      };
-      return sec;
-    })
-    .then((sec) => {
-      //update the template state
-      const newState = { ...currTemplate, [varname]: sec, order };
-      setState({ type: "loadSEC", payload: newState });
-    })
-    .catch((error) => {
-      console.error("Error occured in fetchTitles:", error);
-    });
 }
 
 export {addSecToTemplate };

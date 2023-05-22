@@ -1,28 +1,29 @@
-import React, { useState, useContext } from "react";
-import { GlobalContext } from "./App";
-import closeButton from "../../public/assets/plus-circle.svg";
+import React, {useContext, createContext, useRef, useReducer, useEffect, useMemo, useState} from 'react'
+import { GlobalContext} from "./App";
+import PopupAuth from './PopupAuth';
+import PopupPrint from './PopupPrint';
+import PopupTemplate from './PopupTemplate';
 
-function Popup() {
-  const { popupState, popDispatch } = useContext(GlobalContext);
 
-  function handleClick() {
-    popDispatch({ type: "close" });
+function Popup({box, subAct}){
+  const {popupDispatch} = useContext(GlobalContext)
+
+  //connects with parent state that displays the popup and removes it.
+  function handleBackgroundClick(){
+    popupDispatch({type: null, box: null});
   }
 
-  return (
-    <div id="popup">
-      <div id="popBox">
-        <div id="popupContent">{popupState.display}</div>
-        <div
-          className="boxButton printClose"
-          onKeyDown={handleClick}
-          onClick={handleClick}
-        >
-          Close
-        </div>
+  
+  return(
+      <div id='popupContainer'>
+        <div id='popupWhiteBackground' onClick={handleBackgroundClick}></div>
+        {box === 'myAuth' && <PopupAuth subAct={subAct}/> }
+        {box === 'myPrint' && <PopupPrint />}
+        {box === 'myTemplates' && <PopupTemplate />}
+        
       </div>
-    </div>
-  );
+  )
 }
+
 
 export default Popup;

@@ -91,3 +91,24 @@
 // SIDEBAR NAMES
 .sidebarNames {
 }
+
+
+.sidebar-login {
+  display: flex;
+  flex-direction: row-reverse;
+  width: 100%;
+  background-color: v.$pinkMain;
+
+  ul {
+    background-color: v.$pinkMain;
+
+    li {
+      margin-left: 1vw;
+      color: v.$whiteMain;
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
+}

@@ -1,13 +1,13 @@
 import React, {useContext, useEffect, useState} from 'react';
-import { PopupContext } from "./PopupAccount";
+import { PopupContext } from './PopupAuth';
 import { passwordCriteria, validateEmail } from '../functions/account/password';
 
-function PopupVerify(){
-  const {dispatch, userCodeDom, userEmailDom, userNewPassDom, userPassDom, handleEmailInputChange, handlePasswordInputChange1, handlePasswordInputChange2, handleCodeInputChange, emailCriteria, passwordCriteria, codeCriteria} = useContext(PopupContext);
+function PopupAuthVerify(){
+  const {popupBoxDispatch, userCodeDom, userEmailDom, userNewPassDom, userPassDom, handleEmailInputChange, handlePasswordInputChange1, handlePasswordInputChange2, handleCodeInputChange, emailCriteria, passwordCriteria, codeCriteria} = useContext(PopupContext);
 
   //changes popup to forgot popup
   function handleClick(){
-    dispatch({type:'forgot'})
+    popupBoxDispatch({type:'forgot'})
   }
 
   return(
@@ -65,4 +65,4 @@ function PopupVerify(){
   )
 }
 
-export default PopupVerify
+export default PopupAuthVerify

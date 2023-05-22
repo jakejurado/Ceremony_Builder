@@ -1,12 +1,12 @@
 import React, {useContext, useEffect, useState} from 'react';
-import { PopupContext } from './PopupAccount';
+import { PopupContext } from './PopupAuth';
 
-function PopupForgot(){
-  const {dispatch, userEmailDom, handleEmailInputChange, emailCriteria} = useContext(PopupContext);
+function PopupAuthForgot(){
+  const {popupBoxDispatch, userEmailDom, handleEmailInputChange, emailCriteria} = useContext(PopupContext);
 
   //changes popup to verify popup.
   function handleClick(){
-    dispatch({type:'verify'})
+    popupBoxDispatch({type:'verify'})
   }
 
   return(
@@ -35,4 +35,4 @@ function PopupForgot(){
   )
 }
 
-export default PopupForgot
+export default PopupAuthForgot

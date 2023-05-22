@@ -8,13 +8,13 @@ import { DragDropContext, Droppable } from "react-beautiful-dnd";
 //The main display for the site
 function MainDisplay() {
   //Global Context comes from App.jsx
-  const { selectorTitles, template, dispatch, selectorSec, domRef } =
+  const { selectorTitles, currTemplate, dispatch, selectorSec, domRef, templates, templateTitle } =
     useContext(GlobalContext);
 
   //loads the sections from the state in display to build the dom
   let loadSections = [];
-  console.log('before', {template})
-  const { order, ...rest } = template;
+  console.log({currTemplate})
+  const { order, ...rest } = currTemplate;
   for (let i = 0; i < order.length; i++) {
     let [varTitle, pos] = order[i];
 

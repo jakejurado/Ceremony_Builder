@@ -1,13 +1,12 @@
 import React, {useContext, useState, useEffect} from 'react';
-import { PopupContext } from "./PopupAccount";
+import { PopupContext } from './PopupAuth';
 
 
-function PopupLogin(){
-  const {dispatch, userEmailDom, userPassDom, handleEmailInputChange, handlePasswordInputChange1, passwordCriteria, emailCriteria, loginFail} = useContext(PopupContext)
+function PopupAuthLogin(){
+  const {popupBoxDispatch, userEmailDom, userPassDom, handleEmailInputChange, handlePasswordInputChange1, passwordCriteria, emailCriteria, loginFail} = useContext(PopupContext)
 
   function handleClick(){
-    console.log(dispatch)
-    dispatch({type:'forgot'})
+    popupBoxDispatch({type:'forgot'})
   }
 
   return(
@@ -42,4 +41,4 @@ function PopupLogin(){
   )
 }
 
-export default PopupLogin
+export default PopupAuthLogin

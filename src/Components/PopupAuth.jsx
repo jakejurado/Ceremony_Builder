@@ -1,8 +1,8 @@
 import React, {useContext, createContext, useRef, useReducer, useEffect, useMemo, useState} from 'react'
-import PopupForgot from './PopupForgot';
-import PopupLogin from './PopupLogin';
-import PopupSignup from './PopupSignup';
-import PopupVerify from './PopupVerify';
+import PopupAuthLogin from './PopupAuthLogin';
+import PopupAuthSignup from './PopupAuthSignup';
+import PopupAuthForgot from './PopupAuthForgot';
+import PopupAuthVerify from './PopupAuthVerify';
 import { GlobalContext} from "./App";
 import { checkSubmitButtonCriteria, passwordMatch, passwordLength, validateEmail } from '../functions/account/password';
 import {createDomToggle} from "../functions/account/domToggle";
@@ -10,10 +10,11 @@ import {createDomToggle} from "../functions/account/domToggle";
 //holds the context for the login/signup state
 export const PopupContext = createContext(null);
 
-function PopupAccount({curr}){
+function PopupAuth({subAct}){
+  console.log('enter PopupAuth')
   
   //CONTEXT: global state
-  const {setPopup} = useContext(GlobalContext)
+  const {setPopup, setCurrUser} = useContext(GlobalContext)
 
   //REFs
   const buttonDom = useRef(null); //submit button
@@ -41,7 +42,7 @@ function PopupAccount({curr}){
 
   //REDUCER
   //keeps track of which pop up box should be displayed
-  const [popupBox, dispatch] = useReducer(reducer, {title: 'login', display: <PopupLogin />});
+  const [popupBox, popupBoxDispatch] = useReducer(reducer, {title: 'login', display: <PopupAuthLogin />});
 
   //logic for the popupBox reducer
   function reducer(state, action){
@@ -52,26 +53,28 @@ function PopupAccount({curr}){
 
     switch (type) {
       case "signup": 
-        return {title: 'signup', display: <PopupSignup />}
+        return {title: 'signup', display: <PopupAuthSignup />}
       case "login":
-        return {title: 'login', display: <PopupLogin />}
+        return {title: 'login', display: <PopupAuthLogin />}
       case 'forgot':
-        return {title: 'forgot', display: <PopupForgot />}
+        return {title: 'forgot', display: <PopupAuthForgot />}
       case 'verify':
-        return {title: 'verify', display: <PopupVerify />}
+        return {title: 'verify', display: <PopupAuthVerify />}
       case 'initialLoad':
-        return {title: 'login2', display: <PopupLogin />}
+        return {title: 'login2', display: <PopupAuthLogin />}
       case 'close':
         return null
       default:
-        return {title: 'loginn', display: PopupLogin}
+        return {title: 'loginn', display: PopupAuthLogin}
     }
   }
+
+
 
   //PAGE INIT
   //on load, sets the state for the current popup box and create handleSubmitClick
   useEffect(()=>{
-    dispatch({type: curr}) //sets the popup from props
+    popupBoxDispatch({type: subAct}) //sets the popup from props
     handleSubmitClickRef.current = handleSubmitClick;
   }, [])
 
@@ -190,6 +193,7 @@ function PopupAccount({curr}){
       //receive the data
       const data = await response.json();
       console.log({data});
+      if(data.userId) setCurrUser(data.userId);
 
     } catch (error) {
       // clear password and email fields
@@ -205,13 +209,13 @@ function PopupAccount({curr}){
 
 
   return(
-    <PopupContext.Provider value={{dispatch, userCodeDom, userEmailDom, userNewPassDom, userPassDom, handleEmailInputChange, handlePasswordInputChange1, handlePasswordInputChange2, handleCodeInputChange, passwordCriteria, emailCriteria, codeCriteria, loginFail, signupFail}}>
-      <div id='popupContainer'>
-        <div id='popupBackground' onClick={handleBackgroundClick}></div>
+    <PopupContext.Provider value={{popupBoxDispatch, userCodeDom, userEmailDom, userNewPassDom, userPassDom, handleEmailInputChange, handlePasswordInputChange1, handlePasswordInputChange2, handleCodeInputChange, passwordCriteria, emailCriteria, codeCriteria, loginFail, signupFail}}>
+      {/* <div id='popupContainer'> */}
+        {/* <div id='popupBackground' onClick={handleBackgroundClick}></div> */}
         <div className = 'acctPopup'>
           <div className="entireBox" >
-            <div id='loginTab' ref={loginTab} className={`eachTab ${popupBox.title === 'login' ? "selectedTab" : "undefined"}`} onClick={()=>dispatch({type: 'login'})}>login</div>
-            <div id='signupTab' ref={signupTab} className={`eachTab ${popupBox.title === 'signup' ? "selectedTab" : "undefined"}`} onClick={()=>dispatch({type: 'signup'})}>signup</div>
+            <div id='loginTab' ref={loginTab} className={`eachTab ${popupBox.title === 'login' ? "selectedTab" : "undefined"}`} onClick={()=>popupBoxDispatch({type: 'login'})}>login</div>
+            <div id='signupTab' ref={signupTab} className={`eachTab ${popupBox.title === 'signup' ? "selectedTab" : "undefined"}`} onClick={()=>popupBoxDispatch({type: 'signup'})}>signup</div>
             {popupBox.display}
             <div className="bottomBox">
               <div className='submitButton' ref={buttonDom}>
@@ -223,10 +227,10 @@ function PopupAccount({curr}){
           </div>
 
         </div>
-      </div>
+      {/* </div> */}
     </PopupContext.Provider>
   )
 }
 
 
-export default PopupAccount;
+export default PopupAuth;

@@ -1,4 +1,4 @@
-import { Template, Templates, personState } from "../../types/types";
+
 //This function adds the contents from the dom into the templates state
 function saveDomToTemplates(
   template,
@@ -7,13 +7,17 @@ function saveDomToTemplates(
   templates,
   templateTitle
 ) {
-  const allTemplates = JSON.parse(JSON.stringify(templates));
+  const allTemplates =  JSON.parse(JSON.stringify(templates)) //Object.assign({}, templates)
+  console.log('should copy all templates', templates);
   //puts the current dom into the current template.
   const updatedTemplate = putDomInTemplate(template, domArr, persons);
+  
+  console.log({updatedTemplate})
   //adds the updatedTemplate to the copied templates state
   const newTemplates = Object.assign(allTemplates, {
     [templateTitle]: updatedTemplate,
   });
+
   return newTemplates;
 }
 

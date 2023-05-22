@@ -1,7 +1,7 @@
 import React, {useContext, useRef, useEffect, useState} from 'react';
-import { PopupContext } from './PopupAccount';
+import { PopupContext } from './PopupAuth';
 
-function PopupSignup(){
+function PopupAuthSignup(){
   const {userEmailDom, userPassDom, userNewPassDom, handleEmailInputChange, handlePasswordInputChange1, handlePasswordInputChange2, passwordCriteria, emailCriteria, signupFail} = useContext(PopupContext)
 
   return(
@@ -46,4 +46,4 @@ function PopupSignup(){
   )
 }
 
-export default PopupSignup
+export default PopupAuthSignup
