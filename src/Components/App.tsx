@@ -61,7 +61,7 @@ function App() {
   const [sectionCache, setSectionCache] = useState(null);
 
   //stores the current users ID
-  const [currUser, setCurrUser] = useState(null);
+  const [currUser, setCurrUser] = useState(26);
 
   async function fetchUserTemplates(url){
     console.log('fetching user Templates');
@@ -78,12 +78,12 @@ function App() {
     dispatch({type: 'loadUserTemplates', payload: {userTemplates, setTitle: null}})
   }
 
-  useEffect(() => {
-    if(currUser){
-      const url = `templates/all?userId=${currUser}`;
-      fetchUserTemplates(url);
-    }
-  }, [currUser])
+  // useEffect(() => {
+  //   if(currUser){
+  //     const url = `templates/all?userId=${currUser}`;
+  //     fetchUserTemplates(url);
+  //   }
+  // }, [currUser])
 
   
 
@@ -404,7 +404,7 @@ const [fetchedData, setFetchedData] = useState(null);
 
 
   //NEW NEW Popup Controls
-  const [thePopup, popupDispatch] = useReducer(popupReducer, {box: null, subAct: null});
+  const [thePopup, popupDispatch] = useReducer(popupReducer, {box: 'myAuth', subAct: 'signout'});
 
   function popupReducer(state, action){
     const {type, subAct} = action

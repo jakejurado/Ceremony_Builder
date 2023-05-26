@@ -22,19 +22,20 @@
 }
 
 .acctPopup{
-  width: 50%;
+  width: 100%;
   margin-left: auto;
   margin-right: auto;
+  
 }
 
 .entireBox{
-  width: 100%;
+  width: 50%;
   display:flex;
   flex-wrap: wrap;
   background: transparent;
   margin-left: auto;
   margin-right: auto;
-
+  // border: solid;
   position: relative;
 }
 
@@ -76,9 +77,6 @@
 
   box-shadow: 5px 5px 10px grey;
 }
-
-
-
 
 
 .line{
@@ -129,7 +127,6 @@
   text-align: right;
   font-size: smaller;
   padding-right: 2vw;
-
 }
 
 .bottomBox{
@@ -168,5 +165,43 @@
   color: red;
   list-style-type: circle;
   font-style: italic;
+}
+
+
+
+
+
+.signoutBox{
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  // margin-bottom: 3vw;
+  h2 {
+    padding: 1vw;
+    margin-bottom: 2vw;
+  }
+  
+}
+
+.acctButton{
+  margin-bottom: 2vw;
+  color: white;
+  background-color: rgb(46, 45, 45);
+}
+
+.submitButtonDelete {
+  border: solid thin grey;
+  border-radius: 5px;
+  padding: 1vw;
+  text-align: center;
+  background-color: v.$whiteMain;
+  color: grey;
+  box-shadow: 5px 5px 10px grey;
+    &:hover{
+      background-color: red;
+    }
 }
 

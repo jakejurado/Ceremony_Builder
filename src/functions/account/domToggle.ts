@@ -16,6 +16,7 @@ createDomToggle.prototype.activate = function(newFunc): void{
 }
 
 createDomToggle.prototype.deactivate = function(): void{
+  if(!this.dom) return
   //removes event listener
   this.dom.removeEventListener("click", this.func);
   //removes style

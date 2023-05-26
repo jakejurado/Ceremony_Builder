@@ -38,6 +38,39 @@ userController.createUser = async ( req, res, next) => {
   }
 }
 
+
+//creates a user in the database
+userController.deleteUser = async ( req, res, next) => {
+  let {userId, userEmail, userPassword } = req.body;
+
+  //check that all fields are not empty
+  if(!userEmail || !userPassword || !userId){
+    return next({
+      log: "Express Error handler caught in deleteUser err",
+      status: 500,
+      message: { err: "field is empty" },
+    });
+  }
+
+  try {
+     //hash password
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+    //signup user
+    const sql_userInsert =  "INSERT INTO users (user_email, user_password) VALUES ($1, $2)";
+    await db.query(sql_userInsert, [email, hashedPassword]);
+    res.locals.userCreated = { authenticated: true };
+    return next();
+
+  } catch (err) {
+    return next({
+      log: "Express Error handler caught in createUser err",
+      status: 500,
+      message: { err: "user already exists" },
+    });
+  }
+}
+
 //Confirms that user and password are correct
 userController.authenticateUser = async (req, res, next) => {
   const {email, password} = req.query;
