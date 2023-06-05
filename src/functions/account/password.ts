@@ -27,35 +27,52 @@ function passwordMatch(pass1: string | undefined, pass2: string | undefined): bo
 interface userInfoType {
   title: string,
   email: string,
-  pass1: string | undefined,
-  pass2: string | undefined,
-  code1: string | undefined,
+  passCurr: string | undefined,
+  passNew1: string | undefined,
+  passNew2: string | undefined
+  code: string | undefined,
+
+
 
 }
 
 function checkSubmitButtonCriteria(userInfo: userInfoType): boolean{
   let validEmail: boolean = validateEmail(userInfo.email)
-  let validPassword: boolean = passwordCriteria(userInfo.pass1, userInfo.pass2)
-  let validCode: boolean = userInfo.code1 ? true: false;
-  
+  let validNewPassword: boolean = passwordCriteria(userInfo.passNew1, userInfo.passNew2)
+  let validCurrPassword: boolean = passwordCriteria(userInfo.passCurr, userInfo.passCurr)
+  let validCode: boolean = userInfo.code ? true: false;
+  let validPasswordLength: boolean = parseInt(userInfo.passCurr) > 4;
+
   let res = false;
   switch(userInfo.title){
     case 'signup':
-      if(validEmail && validPassword) res = true;
+      if(validEmail && validNewPassword) res = true;
       break;
     case 'login':
-      if(validEmail && userInfo.pass1) res = true;
+      console.log(validEmail, userInfo.passCurr.length > 4)
+      if(validEmail && userInfo.passCurr.length > 4) res = true;
       break;
     case 'forgot':
       if(validEmail) res = true;
       break;
     case 'verify':
-      if(validEmail && validPassword && validCode) res = true;
+      if(validEmail && validNewPassword && validCode) res = true;
+      break;
+    case 'reset':
+      console.log(validEmail && validCurrPassword && validCode)
+      if(validEmail && validCurrPassword && validNewPassword) res = true;
+      break;
+    case 'delete':
+      if(validEmail && validCurrPassword) res = true
+      break;
+    case 'signout':
+      res = true;
       break;
     default:
       console.log('error in checkSubmitButtonCriteria');
   }
-
+  
+  console.log({res})
   return res;
 }
 

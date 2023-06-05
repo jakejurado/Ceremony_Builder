@@ -22,19 +22,20 @@
 }
 
 .acctPopup{
-  width: 50%;
+  width: 100%;
   margin-left: auto;
   margin-right: auto;
+  
 }
 
 .entireBox{
-  width: 100%;
+  width: 50%;
   display:flex;
   flex-wrap: wrap;
   background: transparent;
   margin-left: auto;
   margin-right: auto;
-
+  // border: solid;
   position: relative;
 }
 
@@ -57,6 +58,9 @@
 .selectedTab{
   background-color: v.$yellowMain;
   color: white;
+  &:hover{
+    background-color: v.$pinkMain;
+  }
 }
 
 .mainInput{
@@ -76,9 +80,6 @@
 
   box-shadow: 5px 5px 10px grey;
 }
-
-
-
 
 
 .line{
@@ -129,7 +130,6 @@
   text-align: right;
   font-size: smaller;
   padding-right: 2vw;
-
 }
 
 .bottomBox{
@@ -146,9 +146,9 @@
   background-color: v.$whiteMain;
   color: grey;
   box-shadow: 5px 5px 10px grey;
-    &:hover{
-      background-color: v.$pinkMain;
-    }
+    // &:hover{
+    //   background-color: v.$pinkMain;
+    // }
 }
 
 .buttonActive{
@@ -169,4 +169,34 @@
   list-style-type: circle;
   font-style: italic;
 }
+
+.complete{
+  color: green;
+}
+
+
+
+
+
+.signoutBox{
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  // margin-bottom: 3vw;
+  h2 {
+    padding: 1vw;
+    margin-bottom: 2vw;
+  }
+  
+}
+
+.acctButton{
+  margin-bottom: 2vw;
+  color: white;
+  background-color: rgb(46, 45, 45);
+}
+
 

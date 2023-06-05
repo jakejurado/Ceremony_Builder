@@ -1,8 +1,11 @@
-import React, {useContext, createContext, useRef, useReducer, useEffect, useMemo, useState} from 'react'
+import React, {useContext, createContext, useRef, useEffect, useState} from 'react'
 import PopupAuthLogin from './PopupAuthLogin';
 import PopupAuthSignup from './PopupAuthSignup';
 import PopupAuthForgot from './PopupAuthForgot';
 import PopupAuthVerify from './PopupAuthVerify';
+import PopupAuthReset from './PopupAuthReset';
+import PopupAuthSignout from './PopupAuthSignout';
+import PopupAuthDelete from './PopupAuthDelete';
 import { GlobalContext} from "./App";
 import { checkSubmitButtonCriteria, passwordMatch, passwordLength, validateEmail } from '../functions/account/password';
 import {createDomToggle} from "../functions/account/domToggle";
@@ -10,145 +13,151 @@ import {createDomToggle} from "../functions/account/domToggle";
 //holds the context for the login/signup state
 export const PopupContext = createContext(null);
 
+  //description: depending on currentPopup state, a specific popup (login, signup, reset password) is displayed.  Those components functionality all come from this component.
 function PopupAuth({subAct}){
-  console.log('enter PopupAuth')
-  
   //CONTEXT: global state
-  const {setPopup, setCurrUser} = useContext(GlobalContext)
+  const {setCurrUser, currUser, popupDispatch} = useContext(GlobalContext)
 
   //REFs
-  const buttonDom = useRef(null); //submit button
-  const handleSubmitClickRef = useRef(null); //submit click function
-  const loginTab = useRef(null)
-  const signupTab = useRef(null)
-
-  //input boxes for user inputs
+  const buttonDom = useRef(null); //submit button in child component
+  const handleSubmitClickRef = useRef(null); //submit click function in child component
+    //input boxes for user inputs
   const userEmailDom = useRef(null);
-  const userPassDom = useRef(null);
+  const userCurrPassDom = useRef(null);
   const userCodeDom = useRef(null);
-  const userNewPassDom = useRef(null);
+  const userNewPassDom1 = useRef(null);
+  const userNewPassDom2 = useRef(null)
 
   //STATE
-  //red text to help explain why submit button isn't active
+    //red text to help explain why submit button isn't active
   const [passwordCriteria, setPasswordCriteria] = useState({match: true, len: true});
   const [emailCriteria, setEmailCriteria] = useState(true);
   const [codeCriteria, setCodeCriteria] = useState(true);
   const [loginFail, setLoginFail ] = useState(false);
   const [signupFail, setSignupFail] = useState(false);
+  const [success, setSuccess] = useState(false);
 
-  //TOGGLE
-  //creates the submit button toggle
-  const submitToggle = new createDomToggle(buttonDom.current, handleSubmitClickRef.current, 'buttonActive' )
+    //true if above criteria is met for user to submit button
+  const [isButtonActive, setIsButtonActive] = useState(false);
 
-  //REDUCER
-  //keeps track of which pop up box should be displayed
-  const [popupBox, popupBoxDispatch] = useReducer(reducer, {title: 'login', display: <PopupAuthLogin />});
+    //Loads popup corresponding with the subAct of popup state.
+  let currentPopup;
 
-  //logic for the popupBox reducer
-  function reducer(state, action){
-    const { type } = action;
-
-    //removes any event listeners that had been added.
-    submitToggle.deactivate();
-
-    switch (type) {
-      case "signup": 
-        return {title: 'signup', display: <PopupAuthSignup />}
-      case "login":
-        return {title: 'login', display: <PopupAuthLogin />}
-      case 'forgot':
-        return {title: 'forgot', display: <PopupAuthForgot />}
-      case 'verify':
-        return {title: 'verify', display: <PopupAuthVerify />}
-      case 'initialLoad':
-        return {title: 'login2', display: <PopupAuthLogin />}
-      case 'close':
-        return null
-      default:
-        return {title: 'loginn', display: PopupAuthLogin}
-    }
+  switch (subAct) {
+    case "signup": 
+      currentPopup = <PopupAuthSignup />;
+      break;
+    case "login":
+      currentPopup = <PopupAuthLogin />;
+      break;
+    case 'forgot':
+      currentPopup = <PopupAuthForgot />;
+      break;
+    case 'verify':
+      currentPopup = <PopupAuthVerify />
+      break;
+    case 'signout':
+      currentPopup = <PopupAuthSignout />;
+      break;
+    case 'delete':
+      currentPopup = <PopupAuthDelete />;
+      break
+    case 'reset':
+      console.log('reset')
+      currentPopup = <PopupAuthReset />;
+      break;
+    case 'close':
+      return null
+    default:
+      console.log('error')
   }
-
-
-
-  //PAGE INIT
-  //on load, sets the state for the current popup box and create handleSubmitClick
+    //grabs the submit button and the handleSubmitClick button in the child component and creates a class instance that activates/deactivates button functionality.
   useEffect(()=>{
-    popupBoxDispatch({type: subAct}) //sets the popup from props
-    handleSubmitClickRef.current = handleSubmitClick;
-  }, [])
-
-  //toggles the submit button between inactive to active
-  function toggleButtonActive(bool){
-    if(bool) {
-      handleSubmitClickRef.current = handleSubmitClick;
-      submitToggle.activate(handleSubmitClickRef.current);
-    } else {
-      submitToggle.deactivate();
-    }
-  }
+      //methods for adding/removing event listeners and styles to dom.
+    const buttonFunctionality = new createDomToggle(
+      buttonDom.current,
+      handleSubmitClickRef.current,
+      'buttonActive'
+      );
+      //check to add or remove button functionality
+    buttonFunctionality.toggle(isButtonActive);
+    
+      //remove event listener when component dismounts
+    return () => {
+      buttonFunctionality.deactivate();
+      }
+  }, [isButtonActive, handleSubmitClickRef.current, buttonDom.current])
 
   //checks email input value to determine if submit button should be active
   function handleEmailInputChange(e){
+      //update the emailCriteria state if email criteria is met
     const userInfo = grabUserData()
-    const validEmail = validateEmail(userInfo.email);
+    const validEmail = validateEmail(grabUserData().email);
     setEmailCriteria(validEmail);
-    setLoginFail(false)
+      //update the isButtonActive state if all conditions are met
     const res = checkSubmitButtonCriteria(userInfo);
-    
-
-    // const res = validEmail && validPasswordLen && validPasswordMatch;
-    toggleButtonActive(res);
+    setIsButtonActive(res)
+      //reset login state
+    setLoginFail(false)
+    setSuccess(false)
   }
 
-  //checks password input value to determine if submit button should be active
-  function handlePasswordInputChange1(e){
+    //checks password input value to determine if submit button should be active
+  function handleCurrPasswordInputChange(e){
+      //update passwordCriteria state if password criteria is met
     const userInfo = grabUserData()
-    const validPasswordLen = passwordLength(userInfo.pass1);
-    const validPasswordMatch = passwordMatch(userInfo.pass1, userInfo.pass2);
-    setPasswordCriteria({match: validPasswordMatch, len: validPasswordLen})
-    setLoginFail(false)
-
+    const validPasswordLen = passwordLength(userInfo.passCurr);
+    setPasswordCriteria({match: true, len: validPasswordLen})
+      //update the isButtonActive state if all conditions are met
     const res = checkSubmitButtonCriteria(userInfo);
-    toggleButtonActive(res);
+    setIsButtonActive(res)
+      //reset login state
+    setLoginFail(false)
   }
 
   //checks password2 input value to determine if submit button should be active
-  function handlePasswordInputChange2(e){
+  function handleNewPasswordInputChange1(e){
+      //update newPasswordCriteria state if password criteria is met
     const userInfo = grabUserData()
-
-    const validPasswordLen = passwordLength(userInfo.pass1);
-    const validPasswordMatch = passwordMatch(userInfo.pass1, userInfo.pass2);
+    const validPasswordLen = passwordLength(userInfo.passNew1);
+    const validPasswordMatch = passwordMatch(userInfo.passNew1, userInfo.passNew2);
     setPasswordCriteria({match: validPasswordMatch, len: validPasswordLen})
-
+      //update the isButtonActive state if all conditions are met
     const res = checkSubmitButtonCriteria(userInfo);
-    toggleButtonActive(res);
+    setIsButtonActive(res)
+  }
+
+  function handleNewPasswordInputChange2(e){
+      //update newPasswordCriteria2 state if password criteria is met
+    const userInfo = grabUserData()
+    const validPasswordLen = passwordLength(userInfo.passNew2);
+    const validPasswordMatch = passwordMatch(userInfo.passNew1, userInfo.passNew2);
+    setPasswordCriteria({match: validPasswordMatch, len: validPasswordLen})
+      //update the isButtonActive state if all conditions are met
+    const res = checkSubmitButtonCriteria(userInfo);
+    setIsButtonActive(res)
   }
 
   //checks code input value to determine if submit button should be active
   function handleCodeInputChange(e){
+      //update codeCriteria state if password criteria is met
     const userInfo = grabUserData()
-    
-    setCodeCriteria(userInfo.code1)
+    setCodeCriteria(userInfo.code)
+      //update the isButtonActive state if all conditions are met
     const res = checkSubmitButtonCriteria(userInfo);
-    toggleButtonActive(res);
-  }
-  
-  //connects with parent state that displays the popup and removes it.
-  function handleBackgroundClick(){
-    setPopup(null);
+    setIsButtonActive(res)
   }
 
   //grabs the data from the input and places in object.
   function grabUserData(){
-    const userInfo={};
-    userInfo.title = popupBox.title;
-    userInfo.email = userEmailDom.current.value;
-    userInfo.pass1 = userPassDom.current?.value;
-    userInfo.pass2 = userNewPassDom.current?.value;
-    userInfo.code1 = userCodeDom.current?.value;
-    
-    return userInfo
+    return{
+      title : subAct,
+      email : userEmailDom.current.value,
+      passCurr : userCurrPassDom.current?.value,
+      passNew1 : userNewPassDom1.current?.value,
+      passNew2 : userNewPassDom2.current?.value,
+      code : userCodeDom.current?.value,
+    }
   }
 
   //grbs user data
@@ -159,75 +168,40 @@ function PopupAuth({subAct}){
     let options = { method: ''};
     let body = {};
 
-    switch (userInfo.title){
-      case ('login'): {
-        url = `user/login/?email=${userInfo.email}&password=${userInfo.pass1}`;
-        options.method = 'GET'
-        break;
-      }
-      case ('signup'): {
-        url = 'user/signup';
-        options.method = 'POST'
-        body.email = userInfo.email;
-        body.password = userInfo.pass1
-        options.body = JSON.stringify(body);
-        options.headers = {
-          'Content-Type': 'application/json'
-        };
-        break;
-      }
-      default:
-        console.log(error)
-    }
-
-    try{
-      const response = await fetch(url, options);
-
-      //handle bad response
-      if (!response.ok) {
-        throw new Error({
-          message :'Network response was not ok',
-          authentication: false,
-        })
-      }
-      //receive the data
-      const data = await response.json();
-      console.log({data});
-      if(data.userId) setCurrUser(data.userId);
-
-    } catch (error) {
-      // clear password and email fields
-      userEmailDom.current.value = '';
-      userPassDom.current.value = '';
-      if(popupBox.title === 'signup') userNewPassDom.current.value = '';
-
-      
-      if(popupBox.title === 'login') setLoginFail(true);
-      if(popupBox.title === 'signup') setSignupFail(true);
-    }
+    
+  function handleSignupTabClick(){
+    popupDispatch({type: 'myAuth', subAct: 'signup'})
   }
 
+  function handleLoginTabClick(){
+    popupDispatch({type: 'myAuth', subAct: 'login'})
+  }
+
+  function handleForgotClick(){
+    popupDispatch({type:'myAuth', subAct:'forgot'})
+  }
+
+  function handleVerifyClick(){
+    popupDispatch({type:'myAuth', subAct:'verify'})
+  }
+
+  function handleDeleteClick(){
+    popupDispatch({type: 'myAuth', subAct: 'delete'})
+  }
+
+  function handleResetClick(){
+    popupDispatch({type: 'myAuth', subAct: 'reset'})
+  }
+
+  function handleSignoffClick(){
+    popupDispatch({type:'myAuth', subAct: 'signout'})
+  }
 
   return(
-    <PopupContext.Provider value={{popupBoxDispatch, userCodeDom, userEmailDom, userNewPassDom, userPassDom, handleEmailInputChange, handlePasswordInputChange1, handlePasswordInputChange2, handleCodeInputChange, passwordCriteria, emailCriteria, codeCriteria, loginFail, signupFail}}>
-      {/* <div id='popupContainer'> */}
-        {/* <div id='popupBackground' onClick={handleBackgroundClick}></div> */}
+    <PopupContext.Provider value={{userCodeDom, userEmailDom, userNewPassDom1, userCurrPassDom, userNewPassDom2, handleEmailInputChange, handleCurrPasswordInputChange, handleNewPasswordInputChange1, handleNewPasswordInputChange2, handleCodeInputChange, passwordCriteria, emailCriteria, codeCriteria, loginFail, signupFail, setSignupFail, buttonDom, popupDispatch, handleLoginTabClick, handleSignupTabClick, handleForgotClick, handleVerifyClick, setCurrUser, currUser, setLoginFail, isButtonActive, handleSubmitClickRef, buttonDom, success, setSuccess, handleDeleteClick, handleResetClick, handleSignoffClick}}>
         <div className = 'acctPopup'>
-          <div className="entireBox" >
-            <div id='loginTab' ref={loginTab} className={`eachTab ${popupBox.title === 'login' ? "selectedTab" : "undefined"}`} onClick={()=>popupBoxDispatch({type: 'login'})}>login</div>
-            <div id='signupTab' ref={signupTab} className={`eachTab ${popupBox.title === 'signup' ? "selectedTab" : "undefined"}`} onClick={()=>popupBoxDispatch({type: 'signup'})}>signup</div>
-            {popupBox.display}
-            <div className="bottomBox">
-              <div className='submitButton' ref={buttonDom}>
-                Submit
-              </div>
-            </div>
-
-          
-          </div>
-
+          {currentPopup}
         </div>
-      {/* </div> */}
     </PopupContext.Provider>
   )
 }

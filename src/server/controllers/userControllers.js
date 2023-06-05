@@ -8,6 +8,7 @@ const userController = {};
 
 //creates a user in the database
 userController.createUser = async ( req, res, next) => {
+  console.log('entered createUser')
   let {email, password } = req.body;
 
   //check that all fields are not empty
@@ -37,6 +38,77 @@ userController.createUser = async ( req, res, next) => {
     });
   }
 }
+
+
+//creates a user in the database
+userController.deleteUser = async (req, res, next) => {
+  console.log('enter delete user');
+  console.log(req.query);
+  const { userId, email, password } = req.query;
+
+  // Check that all fields are not empty
+  if (!email || !password || !userId) {
+    return next({
+      log: 'Express Error handler caught in deleteUser err',
+      status: 500,
+      message: { err: 'field is empty' },
+    });
+  }
+
+  try {
+    await db.query('BEGIN'); // Begin transaction
+
+    const deleteTemplatesQuery = 'DELETE FROM public.templates WHERE creator = $1';
+    await db.query(deleteTemplatesQuery, [userId]);
+
+    const deleteUserQuery = 'DELETE FROM public.users WHERE _id = $1';
+    await db.query(deleteUserQuery, [userId]);
+
+    await db.query('COMMIT'); // Commit the transaction
+
+    res.locals.userDeleted = {userDeleted : true};
+    return next();
+  } catch (err) {
+    await db.query('ROLLBACK'); // Rollback the transaction in case of an error
+    return next({
+      log: 'Express Error handler caught in deleteUser err',
+      status: 500,
+      message: { err: 'unable to delete user' },
+    });
+  }
+};
+
+
+//resets a users password
+userController.resetUserPassword = async ( req, res, next) => {
+  console.log('entered reset')
+  let {email, password, newPassword, userId } = req.body
+
+  console.log('reqbod', req.body)
+
+  console.log('reqquery', req.query)
+
+  try {
+     //hash password
+     const hashedPassword = await bcrypt.hash(newPassword, saltRounds);
+     console.log({hashedPassword})
+
+    //signup user
+    const changePasswordQuery = 'UPDATE users SET user_password = $1 WHERE _id = $2';
+    await db.query(changePasswordQuery, [hashedPassword, userId]);
+    res.locals.resetPassword = {isPasswordReset : true};
+    console.log('success in reset')
+    return next();
+
+  } catch (err) {
+    return next({
+      log: "Express Error handler caught in resetUserPass err",
+      status: 500,
+      message: { err: "unable to change password" },
+    });
+  }
+}
+
 
 //Confirms that user and password are correct
 userController.authenticateUser = async (req, res, next) => {
