@@ -1,26 +1,34 @@
-
-function createDomToggle(dom: HTMLElement, func: Function, clss: string){
+  //class to toggle style and event listener to dom.
+function createDomToggle(dom, func, clss) {
   this.dom = dom;
   this.func = func;
   this.clss = clss;
-  this.isAttached = false
 }
 
-createDomToggle.prototype.activate = function(newFunc): void{
+  //class to toggle style and event listener to dom.
+createDomToggle.prototype.activate = function() {
   this.deactivate();
-  this.func = newFunc
-  //adds event listener
   this.dom.addEventListener("click", this.func);
-  //adds style
-  this.dom.classList.add('buttonActive')
-}
+  this.dom.classList.add('buttonActive');
+};
 
-createDomToggle.prototype.deactivate = function(): void{
-  if(!this.dom) return
-  //removes event listener
+  //removes style and event listener from dom
+createDomToggle.prototype.deactivate = function() {
+  if (!this.dom) return;
   this.dom.removeEventListener("click", this.func);
-  //removes style
-  this.dom.classList.remove('buttonActive')
-}
+  this.dom.classList.remove('buttonActive');
+};
+
+  //toggles style and event listener depending on boolean
+createDomToggle.prototype.toggle = function(bool) {
+  if (bool) {
+    this.activate();
+  } else {
+    this.deactivate();
+  }
+};
+
+
+
 
 export {createDomToggle}

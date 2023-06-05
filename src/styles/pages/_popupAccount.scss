@@ -58,6 +58,9 @@
 .selectedTab{
   background-color: v.$yellowMain;
   color: white;
+  &:hover{
+    background-color: v.$pinkMain;
+  }
 }
 
 .mainInput{
@@ -143,9 +146,9 @@
   background-color: v.$whiteMain;
   color: grey;
   box-shadow: 5px 5px 10px grey;
-    &:hover{
-      background-color: v.$pinkMain;
-    }
+    // &:hover{
+    //   background-color: v.$pinkMain;
+    // }
 }
 
 .buttonActive{
@@ -165,6 +168,10 @@
   color: red;
   list-style-type: circle;
   font-style: italic;
+}
+
+.complete{
+  color: green;
 }
 
 
@@ -192,16 +199,4 @@
   background-color: rgb(46, 45, 45);
 }
 
-.submitButtonDelete {
-  border: solid thin grey;
-  border-radius: 5px;
-  padding: 1vw;
-  text-align: center;
-  background-color: v.$whiteMain;
-  color: grey;
-  box-shadow: 5px 5px 10px grey;
-    &:hover{
-      background-color: red;
-    }
-}
 

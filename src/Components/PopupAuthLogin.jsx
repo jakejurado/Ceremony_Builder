@@ -1,12 +1,40 @@
-import React, {useContext, useState, useEffect} from 'react';
+import React, {useContext} from 'react';
 import { PopupContext } from './PopupAuth';
-
+import { fetchCall } from '../functions/api';
 
 function PopupAuthLogin(){
-  const {userEmailDom, userCurrPassDom, handleEmailInputChange, handleCurrPasswordInputChange, passwordCriteria, emailCriteria, loginFail, buttonDom, handleForgotClick, handleSignupTabClick} = useContext(PopupContext)
+  const {
+    userEmailDom, 
+    userCurrPassDom, 
+    handleEmailInputChange, 
+    handleCurrPasswordInputChange, 
+    passwordCriteria, 
+    emailCriteria, 
+    loginFail, 
+    success,
+    handleForgotClick, 
+    handleSignupTabClick, 
+    setLoginFail, 
+    setCurrUser, 
+    popupDispatch, 
+    buttonDom,
+    handleSubmitClickRef,
+  } = useContext(PopupContext)
 
+  async function handleSubmitClick(){
+    const email = userEmailDom.current.value;
+    const password = userCurrPassDom.current.value;
+    const response = await fetchCall.get('login', { email, password });
+    if (response.authenticated) {
+      setCurrUser(response.userId); // updates user
+      popupDispatch({ type: null, act: null }); // removes popup
+    } else {
+      setLoginFail(true); //updates loginFail
+    }
+  }
+    
+  handleSubmitClickRef.current = handleSubmitClick;
   
-
   return(
     <div className="entireBox" >
       <div id='loginTab' className="eachTab selectedTab">Login</div>
@@ -34,12 +62,14 @@ function PopupAuthLogin(){
           {!emailCriteria && <li id='incompleteEmailNotification' className='incomplete'>incomplete email address</li> }
           {!passwordCriteria.len && <li id='incompletePasswordNotification' className='incomplete'>password is too short</li> }
           {loginFail && <li id='loginfail' className='incomplete'>incorrect email or password</li>}
+          {success && <li id='success' className='complete'>success</li>}
         </ul>
+
         
         <div className='lefty' onClick={handleForgotClick}>forgot password? </div>
       </div>
       <div className="bottomBox">
-        <div className='submitButton' ref={buttonDom}>
+        <div className='submitButton' id='authLoginsubmitButton' ref={buttonDom}>
           Submit
         </div>
       </div>

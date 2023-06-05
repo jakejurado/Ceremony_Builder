@@ -1,24 +1,13 @@
 import React, {useContext, useState} from 'react';
 import { PopupContext } from './PopupAuth'; 
-import { GlobalContext } from './App';
 
 
 function PopupAuthSignout(){
-  const {popupDispatch, setCurrUser} = useContext(PopupContext)
-
-  console.log({setCurrUser})
+  const {popupDispatch, setCurrUser, handleDeleteClick, handleResetClick} = useContext(PopupContext)
   
   function handleSubmitClick(){
     setCurrUser(null);
     popupDispatch({box: null, subAct: null})
-  }
-
-  function handleDeleteClick(){
-    popupDispatch({type: 'myAuth', subAct: 'delete'})
-  }
-
-  function handleResetClick(){
-    popupDispatch({type: 'myAuth', subAct: 'reset'})
   }
 
   return(

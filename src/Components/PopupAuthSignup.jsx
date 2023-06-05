@@ -1,8 +1,38 @@
-import React, {useContext, useRef, useEffect, useState} from 'react';
+import React, {useContext} from 'react';
+import PopupNotifications from './PopupNotifications';
 import { PopupContext } from './PopupAuth';
+import { fetchCall } from '../functions/api';
 
 function PopupAuthSignup(){
-  const {userEmailDom, userNewPassDom1, userNewPassDom2, handleEmailInputChange, handleNewPasswordInputChange1, handleNewPasswordInputChange2, passwordCriteria, emailCriteria, signupFail, buttonDom, popupDispatch, handleLoginTabClick} = useContext(PopupContext)
+  const {userEmailDom, 
+    userNewPassDom1, 
+    userNewPassDom2, 
+    handleEmailInputChange, 
+    handleNewPasswordInputChange1, 
+    handleNewPasswordInputChange2, 
+    popupDispatch, 
+    handleLoginTabClick,
+    setSuccess,
+    handleSubmitClickRef,
+    buttonDom,
+    setLoginFail
+  } = useContext(PopupContext)
+
+    //fetch request to signup
+  async function handleSubmitClick(){
+    const email = userEmailDom.current.value;
+    const password = userNewPassDom1.current.value;
+    const password2 = userNewPassDom2.current.value
+    const response = await fetchCall.post('signup', { email, password });
+    if (response.authenticated) {
+      popupDispatch({type: 'myAuth', subAct: 'login'}); // 
+      setSuccess(true);
+    } else {
+      setLoginFail(true);
+    }
+  }
+
+  handleSubmitClickRef.current = handleSubmitClick;
 
   return(
     <div className="entireBox" >
@@ -37,12 +67,7 @@ function PopupAuthSignup(){
           </div>
         </div>
 
-        <ul id='incompleteNotifications'>
-          {!emailCriteria && <li id='incompleteEmailNotification' className='incomplete'>incomplete email address</li> }
-          {!passwordCriteria.len && <li id='incompletePasswordNotification' className='incomplete'>password is too short</li> }
-          {!passwordCriteria.match && <li id='noMatchPasswordNotification' className='incomplete'>passwords do not match</li> }
-          {signupFail && <li id='signupFail' className='incomplete'>signup failed</li>}
-        </ul>
+        {<PopupNotifications />}
       </div>
 
       <div className="bottomBox">
@@ -51,9 +76,6 @@ function PopupAuthSignup(){
         </div>
       </div>
     </div>
-
-
-    
   )
 }
 

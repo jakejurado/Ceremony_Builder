@@ -7,7 +7,11 @@ router.post("/signup", userController.createUser, (req, res) => {
 });
 
 router.delete("/signup", userController.deleteUser, (req, res) => {
-  return res.status(200).send(res.locals.userCreated);
+  return res.status(200).send(res.locals.userDeleted);
+});
+
+router.put("/signup", userController.resetUserPassword, (req, res) => {
+  return res.status(200).send(res.locals.resetPassword);
 });
 
 router.get("/login", userController.authenticateUser, userController.createToken,  (req, res) => {

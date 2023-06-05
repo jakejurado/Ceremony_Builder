@@ -29,6 +29,7 @@ import { fillCacheWithNewSections } from "../functions/cache/sectionCacheFuncs";
 import { updateTemplate } from "../functions/sections/updateTemplate";
 import { saveDomToTemplates } from "../functions/sections/resetCard";
 import {createSidebarToggle} from '../functions/mainPage/sidebarClass';
+import {fetchCall} from '../functions/api.js';
 
 //Typescript
 import {
@@ -61,7 +62,7 @@ function App() {
   const [sectionCache, setSectionCache] = useState(null);
 
   //stores the current users ID
-  const [currUser, setCurrUser] = useState(26);
+  const [currUser, setCurrUser] = useState(57);
 
   async function fetchUserTemplates(url){
     console.log('fetching user Templates');
@@ -78,12 +79,12 @@ function App() {
     dispatch({type: 'loadUserTemplates', payload: {userTemplates, setTitle: null}})
   }
 
-  // useEffect(() => {
-  //   if(currUser){
-  //     const url = `templates/all?userId=${currUser}`;
-  //     fetchUserTemplates(url);
-  //   }
-  // }, [currUser])
+  useEffect(() => {
+    if(currUser){
+      const url = `templates/all?userId=${currUser}`;
+      fetchUserTemplates(url);
+    }
+  }, [currUser])
 
   
 
@@ -404,7 +405,7 @@ const [fetchedData, setFetchedData] = useState(null);
 
 
   //NEW NEW Popup Controls
-  const [thePopup, popupDispatch] = useReducer(popupReducer, {box: 'myAuth', subAct: 'signout'});
+  const [thePopup, popupDispatch] = useReducer(popupReducer, {box: 'myAuth', subAct: 'login'});
 
   function popupReducer(state, action){
     const {type, subAct} = action

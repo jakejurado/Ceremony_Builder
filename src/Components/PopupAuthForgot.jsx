@@ -1,9 +1,33 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useEffect, useRef} from 'react';
 import { PopupContext } from './PopupAuth';
+import { fetchCall } from '../functions/api';
 
 function PopupAuthForgot(){
-  const {popupBoxDispatch, userEmailDom, handleEmailInputChange, emailCriteria, buttonDom, handleLoginTabClick, handleSignupTabClick, handleVerifyClick} = useContext(PopupContext);
+  const {
+    userEmailDom, 
+    handleEmailInputChange, 
+    emailCriteria, 
+    buttonDom,
+    handleSubmitClickRef,
+    handleLoginTabClick, 
+    handleSignupTabClick, 
+    handleVerifyClick,
+    setLoginFail,
+    setSuccess,
+  } = useContext(PopupContext);
 
+  async function handleSubmitClick(){
+    const email = userEmailDom.current.value;
+    const response = await fetchCall.get('forgot', { email });
+    if (response.authenticated) {
+      popupDispatch({ type: 'myAuth', act: 'verify' }); 
+      setSuccess(true);
+    } else {
+      setLoginFail(true);
+    }
+  }
+
+  handleSubmitClickRef.current = handleSubmitClick;
 
   return(
     <div className="entireBox" >

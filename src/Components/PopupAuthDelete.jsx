@@ -1,20 +1,41 @@
 import React, {useContext} from 'react';
+import PopupNotifications from './PopupNotifications';
 import { PopupContext } from './PopupAuth';
-
+import { fetchCall } from '../functions/api';
 
 function PopupAuthDelete(){
-  const {userCurrPassDom, userEmailDom, handleEmailInputChange, handleCurrPasswordInputChange, emailCriteria, passwordCriteria, codeCriteria, buttonDom, popupDispatch} = useContext(PopupContext);
+  const {
+    currUser,
+    setCurrUser,
+    userCurrPassDom, 
+    userEmailDom, 
+    handleEmailInputChange, 
+    handleCurrPasswordInputChange, 
+    popupDispatch,
+    setLoginFail,
+    handleSignoffClick,
+    handleResetClick,
+    handleSubmitClickRef,
+    buttonDom,
+  } = useContext(PopupContext);
 
-  function handleSignoffClick() {
-    popupDispatch({type:'myAuth', subAct: 'signout'})
+    //fetch request to signup
+  async function handleSubmitClick(){
+    const email = userEmailDom.current.value;
+    const password = userCurrPassDom.current.value;
+    const userId = currUser
+    console.log({userId, currUser})
+    const response = await fetchCall.delete('delete', { email, password, userId });
+    if (response.userDeleted) {
+      popupDispatch({ type: null, act: null }); // removes popup
+      setCurrUser(null); //removes current user
+      //send a dispatch to reset templates  //resents template
+    } else {
+      setLoginFail(true);
+    }
   }
 
-  function handleResetClick(){
-    popupDispatch({type: 'myAuth', subAct: 'reset'})
-  }
-
-  <div id='passwordTab' className="eachTab" onClick={handleResetClick} >Password</div>
-
+  handleSubmitClickRef.current = handleSubmitClick;
 
   return(
     <div className="entireBox" >
@@ -43,15 +64,7 @@ function PopupAuthDelete(){
               <input className='inputContent' ref={userCurrPassDom} onChange={handleCurrPasswordInputChange} placeholder='verification code' />
             </div>
           </div>
-
-          <ul id='incompleteNotifications'>
-            {!emailCriteria && <li id='incompleteEmailNotification' className='incomplete'>incomplete email address</li> }
-            {!passwordCriteria.len && <li id='incompletePasswordNotification' className='incomplete'>password is too short</li> }
-            {!passwordCriteria.match && <li id='noMatchPasswordNotification' className='incomplete'>passwords do not match</li> }
-            {!codeCriteria && <li id='noMatchPasswordNotification' className='incomplete'>passwords do not match</li> }
-          </ul>
-
-          
+          {<PopupNotifications />}
         </div>
       </div>
 
@@ -62,7 +75,6 @@ function PopupAuthDelete(){
       </div>
     </div>
   )
-
 }
 
 export default PopupAuthDelete

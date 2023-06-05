@@ -1,17 +1,49 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext} from 'react';
 import { PopupContext } from './PopupAuth';
-import { passwordCriteria, validateEmail } from '../functions/account/password';
+import { fetchCall } from '../functions/api';
 
 function PopupAuthVerify(){
-  const {userCodeDom, userEmailDom, userNewPassDom1, userNewPassDom2, handleEmailInputChange, handleCodeInputChange, handleNewPasswordInputChange1, handleNewPasswordInputChange2, emailCriteria, passwordCriteria, codeCriteria, buttonDom, handleLoginTabClick, handleSignupTabClick, handleForgotClick} = useContext(PopupContext);
+  const {
+    userCodeDom, 
+    userEmailDom, 
+    userNewPassDom1, 
+    userNewPassDom2, 
+    handleEmailInputChange, 
+    handleCodeInputChange, 
+    handleNewPasswordInputChange1, 
+    handleNewPasswordInputChange2, 
+    emailCriteria, 
+    passwordCriteria, 
+    codeCriteria, 
+    buttonDom, 
+    handleSubmitClickRef,
+    handleLoginTabClick, 
+    handleSignupTabClick, 
+    handleForgotClick, 
+    setSuccess,
+    success,
+  } = useContext(PopupContext);
 
+  async function handleSubmitClick(){
+    const email = userEmailDom.current.value;
+    const code = userCodeDom.current.value;
+    const password = userNewPassDom1.current.value;
+    const password2 = userNewPassDom2.current.value
+    const response = await fetchCall.get('verify', { email, password, code });
+    if (response.authenticated) {
+      popupDispatch({ type: 'myAuth', act: 'login' }); 
+      setSuccess(true);
+    } else {
+      setLoginFail(true);
+    }
+  }
+
+  handleSubmitClickRef.current = handleSubmitClick;
 
   return(
     <div className="entireBox" >
       <div id='loginTab' className="eachTab" onClick={handleLoginTabClick}>Login</div>
       <div id='signupTab' className="eachTab" onClick={handleSignupTabClick}>signup</div>
-
-      
 
       <div className="mainInput">
 
@@ -42,7 +74,6 @@ function PopupAuthVerify(){
           </div>
         </div>
 
-
         <div className= 'line depth'>
           <div className="desc">
             new password: 
@@ -61,13 +92,11 @@ function PopupAuthVerify(){
           {!passwordCriteria.len && <li id='incompletePasswordNotification' className='incomplete'>password is too short</li> }
           {!passwordCriteria.match && <li id='noMatchPasswordNotification' className='incomplete'>passwords do not match</li> }
           {!codeCriteria && <li id='noMatchPasswordNotification' className='incomplete'>passwords do not match</li> }
+          {success && <li id='success' className='complete'>success</li>}
         </ul>
         
       </div>
 
-
-
-      
       <div className="bottomBox">
         <div className='submitButton' ref={buttonDom}>
           Submit

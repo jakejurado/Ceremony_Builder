@@ -1,17 +1,44 @@
-import React, {useContext} from 'react';
+import React, {useContext, useRef, useEffect} from 'react';
+import PopupNotifications from './PopupNotifications';
 import { PopupContext } from './PopupAuth';
+import { fetchCall } from '../functions/api';
 
 
 function PopupAuthReset(){
-  const {userCurrPassDom, userEmailDom, userNewPassDom1, userNewPassDom2, handleEmailInputChange, handleCurrPasswordInputChange, handleNewPasswordInputChange1, handleNewPasswordInputChange2, emailCriteria, passwordCriteria, codeCriteria, buttonDom, popupDispatch} = useContext(PopupContext);
+  const {
+    currUser,
+    userCurrPassDom, 
+    userEmailDom, 
+    userNewPassDom1, 
+    userNewPassDom2, 
+    handleEmailInputChange, 
+    handleCurrPasswordInputChange, 
+    handleNewPasswordInputChange1, 
+    handleNewPasswordInputChange2, 
+    setSuccess,
+    setLoginFail,
+    handleDeleteClick,
+    handleSignoffClick,
+    handleSubmitClickRef,
+    buttonDom,
+  } = useContext(PopupContext);
 
-  function handleDeleteClick(){
-    popupDispatch({type: 'myAuth', subAct: 'delete'})
+  async function handleSubmitClick(){
+    const userId = currUser
+    const email = userEmailDom.current.value;
+    const password = userCurrPassDom.current.value;
+    const newPassword = userNewPassDom1.current.value;
+    const newPassword2 = userNewPassDom2.current.value
+    const response = await fetchCall.put('reset', { email, password, newPassword, userId});
+    console.log({response})
+    if (response.isPasswordReset) {
+      setSuccess(true)
+    } else {
+      setLoginFail(true);
+    }
   }
 
-  function handleSignoffClick(){
-    popupDispatch({type:'myAuth', subAct: 'signout'})
-  }
+  handleSubmitClickRef.current = handleSubmitClick;
 
   return(
     <div className="entireBox" >
@@ -60,14 +87,8 @@ function PopupAuthReset(){
             </div>
           </div>
 
-          <ul id='incompleteNotifications'>
-            {!emailCriteria && <li id='incompleteEmailNotification' className='incomplete'>incomplete email address</li> }
-            {!passwordCriteria.len && <li id='incompletePasswordNotification' className='incomplete'>password is too short</li> }
-            {!passwordCriteria.match && <li id='noMatchPasswordNotification' className='incomplete'>passwords do not match</li> }
-            {!codeCriteria && <li id='noMatchPasswordNotification' className='incomplete'>passwords do not match</li> }
-          </ul>
+          {<PopupNotifications />}
 
-          
         </div>
       </div>
 
