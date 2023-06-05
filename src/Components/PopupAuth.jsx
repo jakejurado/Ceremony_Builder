@@ -16,7 +16,7 @@ export const PopupContext = createContext(null);
   //description: depending on currentPopup state, a specific popup (login, signup, reset password) is displayed.  Those components functionality all come from this component.
 function PopupAuth({subAct}){
   //CONTEXT: global state
-  const {setCurrUser, currUser, popupDispatch} = useContext(GlobalContext)
+  const {setCurrUser, currUser, dispatch, popupDispatch} = useContext(GlobalContext)
 
   //REFs
   const buttonDom = useRef(null); //submit button in child component
@@ -160,15 +160,6 @@ function PopupAuth({subAct}){
     }
   }
 
-  //grbs user data
-  async function handleSubmitClick(){
-    const userInfo = grabUserData();
-
-    let url;
-    let options = { method: ''};
-    let body = {};
-
-    
   function handleSignupTabClick(){
     popupDispatch({type: 'myAuth', subAct: 'signup'})
   }
@@ -198,7 +189,7 @@ function PopupAuth({subAct}){
   }
 
   return(
-    <PopupContext.Provider value={{userCodeDom, userEmailDom, userNewPassDom1, userCurrPassDom, userNewPassDom2, handleEmailInputChange, handleCurrPasswordInputChange, handleNewPasswordInputChange1, handleNewPasswordInputChange2, handleCodeInputChange, passwordCriteria, emailCriteria, codeCriteria, loginFail, signupFail, setSignupFail, buttonDom, popupDispatch, handleLoginTabClick, handleSignupTabClick, handleForgotClick, handleVerifyClick, setCurrUser, currUser, setLoginFail, isButtonActive, handleSubmitClickRef, buttonDom, success, setSuccess, handleDeleteClick, handleResetClick, handleSignoffClick}}>
+    <PopupContext.Provider value={{userCodeDom, userEmailDom, userNewPassDom1, userCurrPassDom, userNewPassDom2, handleEmailInputChange, handleCurrPasswordInputChange, handleNewPasswordInputChange1, handleNewPasswordInputChange2, handleCodeInputChange, passwordCriteria, emailCriteria, codeCriteria, loginFail, signupFail, setSignupFail, buttonDom, popupDispatch, dispatch, handleLoginTabClick, handleSignupTabClick, handleForgotClick, handleVerifyClick, setCurrUser, currUser, setLoginFail, isButtonActive, handleSubmitClickRef, buttonDom, success, setSuccess, handleDeleteClick, handleResetClick, handleSignoffClick}}>
         <div className = 'acctPopup'>
           {currentPopup}
         </div>

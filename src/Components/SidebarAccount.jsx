@@ -2,7 +2,7 @@ import React, {useContext} from 'react';
 import { GlobalContext } from './App';
 
 function SidebarAccount(){
-  const {popupDispatch, currUser} = useContext(GlobalContext);
+  const {popupDispatch, dispatch, setTemplateTitle, setCurrUser, currUser} = useContext(GlobalContext);
 
   function handleLoginClick(){
     // setPopup('login')
@@ -18,6 +18,11 @@ function SidebarAccount(){
     popupDispatch({type: 'myAuth', subAct: 'signout'});
   }
 
+  function handleSignoutClick(){
+    setCurrUser(null);
+    dispatch({type: 'reset', payload: null})
+  }
+
   return(
     <div className='sidebar-login'>
       {!currUser && 
@@ -31,6 +36,8 @@ function SidebarAccount(){
       {currUser && 
         <ul>
           <li onClick={handleAcctClick}>account</li>
+          <li>/</li>
+          <li onClick={handleSignoutClick}>signout</li>
         </ul>
       }
 
