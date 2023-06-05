@@ -5,6 +5,7 @@ import { fetchCall } from '../functions/api';
 
 function PopupAuthDelete(){
   const {
+    dispatch,
     currUser,
     setCurrUser,
     userCurrPassDom, 
@@ -29,7 +30,7 @@ function PopupAuthDelete(){
     if (response.userDeleted) {
       popupDispatch({ type: null, act: null }); // removes popup
       setCurrUser(null); //removes current user
-      //send a dispatch to reset templates  //resents template
+      dispatch({type: 'reset', payload: null})
     } else {
       setLoginFail(true);
     }

@@ -3,11 +3,12 @@ import { PopupContext } from './PopupAuth';
 
 
 function PopupAuthSignout(){
-  const {popupDispatch, setCurrUser, handleDeleteClick, handleResetClick} = useContext(PopupContext)
+  const {dispatch, popupDispatch, setCurrUser, handleDeleteClick, handleResetClick} = useContext(PopupContext)
   
   function handleSubmitClick(){
     setCurrUser(null);
     popupDispatch({box: null, subAct: null})
+    dispatch({type: 'reset', payload: null})
   }
 
   return(

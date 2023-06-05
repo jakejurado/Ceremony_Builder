@@ -62,7 +62,7 @@ function App() {
   const [sectionCache, setSectionCache] = useState(null);
 
   //stores the current users ID
-  const [currUser, setCurrUser] = useState(57);
+  const [currUser, setCurrUser] = useState(null);
 
   async function fetchUserTemplates(url){
     console.log('fetching user Templates');
@@ -135,8 +135,6 @@ const [fetchedData, setFetchedData] = useState(null);
 
   //determines which template to be displayed.
   const [templateTitle, setTemplateTitle] = useState("wedding");
-
-  const [myOrder, setMyOrder] = useState();
 
   //holds the current template, which contains the sections and the order of the sections, used to fill the page.
   const [templates, dispatch] = useReducer(reducer, allT);
@@ -388,6 +386,10 @@ const [fetchedData, setFetchedData] = useState(null);
         }
 
         return templatesCopy;
+      }
+      case 'reset':{
+        setTemplateTitle('wedding');
+        return allT
       }
       default: {
         // returns the current state
