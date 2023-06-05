@@ -168,75 +168,7 @@ function PopupAuth({subAct}){
     let options = { method: ''};
     let body = {};
 
-    switch (userInfo.title){
-      case ('login'): {
-        url = `user/login/?email=${userInfo.email}&password=${userInfo.passCurr}`;
-        options.method = 'GET'
-        break;
-      }
-      case ('signup'): {
-        url = 'user/signup';
-        options.method = 'POST'
-        body.email = userInfo.email;
-        body.password = userInfo.passNew1
-        options.body = JSON.stringify(body);
-        options.headers = {
-          'Content-Type': 'application/json'
-        };
-        break;
-      }
-      case ('delete'): {
-        url = `user/signup?userId=${currUser}&userEmail=${userInfo.email}&userPassword=${userInfo.passCurr}`;
-        options.method = 'DELETE';
-        options.headers = {
-          'Content-Type': 'application/json'
-        };
-        break;
-      }
-      case('reset'):{
-        console.log('reset')
-        // url = "user/signup"
-        url = `user/signup?userId=${currUser}&userEmail=${userInfo.email}&password=${userInfo.passCurr}&newPassword=${userInfo.passNew1}`
-        options.method = 'PUT';
-        body.userId = currUser;
-        body.email = userInfo.email;
-        body.password = userInfo.passCurr
-        body.newPassword = userInfo.passNew1;
-        options.body = JSON.stringify(body);
-        break;
-      }
-      default:
-        console.log(error)
-    }
-
-    try{
-      const response = await fetch(url, options);
-
-      //handle bad response
-      if (!response.ok) {
-        throw new Error({
-          message :'Network response was not ok',
-          authentication: false,
-        })
-      }
-      //receive the data
-      const data = await response.json();
-      console.log({data});
-      if(data.userId) setCurrUser(data.userId);
-
-    } catch (error) {
-      // clear password and email fields
-      userEmailDom.current.value = '';
-      userCurrPassDom.current.value = '';
-      if(subAct === 'signup') userNewPassDom1.current.value = '';
-
-      
-      if(subAct === 'login') setLoginFail(true);
-      if(subAct === 'signup') setSignupFail(true);
-    }
-  }
-
-  //
+    
   function handleSignupTabClick(){
     popupDispatch({type: 'myAuth', subAct: 'signup'})
   }
