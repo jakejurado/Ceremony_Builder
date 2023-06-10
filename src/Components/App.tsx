@@ -20,16 +20,20 @@ import templateElope from "../server/files/serverDB";
 //helperFunctions
 import { updateSectionOrder } from "../functions/mainPage/dragdropFuncs";
 import { addContentsToCache } from "../functions/cache/cache";
-import { addSecToTemplate } from "../functions/sections/addSec";
 import { addSelectorSection } from "../functions/sections/selectorSec";
 import { updateCardIndex } from "../functions/sections/updateSec";
 import { removeSection } from "../functions/sections/removeSec";
-import { fetchTitles } from "../functions/sections/selectorBoxFuncs";
-import { fillCacheWithNewSections } from "../functions/cache/sectionCacheFuncs";
-import { updateTemplate } from "../functions/sections/updateTemplate";
-import { saveDomToTemplates } from "../functions/sections/resetCard";
+import { fetchTitles, organizeDataByCategory } from "../functions/sections/selectorBoxFuncs";
+// import { saveDomToTemplates } from "../functions/sections/resetCard";
 import {createSidebarToggle} from '../functions/mainPage/sidebarClass';
-import {fetchCall} from '../functions/api.js';
+import {fetchCall} from '../functions/fetches/api.js';
+import { addSectionToTemplates} from "../functions/sections/addSectionToTemplates.js";
+import { fetchSectionFromDatabase} from "../functions/fetches/fetchSectionFromDatabase.js";
+import { saveTemplateToDatabase } from "../functions/template/saveTemplateToDatabase.js";
+import { determineTemplateTitle } from "../functions/template/determineTemplateTitle";
+import { fetchUserTemplates } from "../functions/fetches/fetchUserTemplates.js";
+import { checkCookieForAccess } from "../functions/fetches/checkUserAccess.js"
+import { createMetaDataFromStartingTemplates } from "../functions/metaData/createMetaDataFromStartingTemplates"
 
 //Typescript
 import {
@@ -42,59 +46,43 @@ import {
   TemplateState
 } from "../types/types";
 
-//Style import
+  //Style import
 import "../styles/main.scss";
 
-//global context
+  //global context
 export const GlobalContext = createContext(null);
 
-//Here's the full course: https://www.youtube.com/playlist?list=PL1w1q3fL4pmj9k1FrJ3Pe91EPub2_h4jF
-function App() {
 
-  const [metaData, setMetaData] = useState<Map<string, { title: string, number: number }> | null>(
+function App() {
+    //meta data for the templates to help sync with database.
+  const [metaData, setMetaData] = 
+    useState<Map<string, { title: string, number: number }> | null>(
     new Map()
   );
 
-  //templates to start the program
+    //templates to start the program
   const allT = {wedding: templateWed2, elope: templateElope }
 
-  //cache for all sections from templates and ones added by user during session
+    //cache for all sections from templates and ones added by user during session
   const [sectionCache, setSectionCache] = useState(null);
 
-  //stores the current users ID
+    //stores the current users ID
   const [currUser, setCurrUser] = useState(null);
 
-  async function fetchUserTemplates(url){
-    console.log('fetching user Templates');
-    const response = await fetch(url);
-    const data = await response.json();
-
-    const metaDataCopy = new Map(metaData)
-    const userTemplates = {};
-    data.forEach(temp => {
-      userTemplates[temp.title] = JSON.parse(temp.template);
-      metaDataCopy.set(temp.title, {title: temp.title, number: temp._id} )
-    })
-    setMetaData(new Map(metaDataCopy))
-    dispatch({type: 'loadUserTemplates', payload: {userTemplates, setTitle: null}})
-  }
-
+  //fetch templates after user signs in.
   useEffect(() => {
     if(currUser){
-      const url = `templates/all?userId=${currUser}`;
-      fetchUserTemplates(url);
+      fetchUserTemplates(currUser, metaData, setMetaData, dispatch);
     }
   }, [currUser])
 
-  
-
-  //holds the names of the two getting married.
+    //holds the names of the two getting married.
   const [names, setNames] = useState({
   person1: undefined,
   person2: undefined,
 });
 
-//holds data that needs to update state asynchronously
+  //holds data that needs to update state asynchronously
 const [fetchedData, setFetchedData] = useState(null);
 
 
@@ -124,262 +112,179 @@ const [fetchedData, setFetchedData] = useState(null);
   });
   // const [selectorTitles, setSelectorTitles] = useState({});
 
-  //ref the content of the etite
+    //ref the content of the etite
   const domRef = useRef();
 
-  //informs react when the section selector Box has been activated.
+    //informs react when the section selector Box has been activated.
   const [selectorSec, setSelectorSec] = useState({
     isVisible: false,
     position: undefined,
   });
 
-  //determines which template to be displayed.
+    //determines which template to be displayed.
   const [templateTitle, setTemplateTitle] = useState("wedding");
 
-  //holds the current template, which contains the sections and the order of the sections, used to fill the page.
+    //holds the current template, which contains the sections and the order of the sections, used to fill the page.
   const [templates, dispatch] = useReducer(reducer, allT);
 
-  //The main logic and state for the sections
+    //The main logic and state for the sections
   function reducer(state, action) {
     const { order, ...sections } = state[templateTitle];
     const { type, payload } = action;
 
     switch (type) {
-      case "addSEC": {
-        console.log('addSEC')
+
         //adds a section to the current displayed template
-
+      case 'addSEC':{
         const { varname, index } = payload;
-
-        //create a new updated template with the added section
-        let updatedTemplate = addSecToTemplate(
-          varname,
-          index,
-          state[templateTitle],
-          sectionCache,
-          setFetchedData,
-        );
-
-        //remove section selector from page
+          //remove section selector
         setSelectorSec({ isVisible: false, position: undefined });
-
-        //copy state and insert into it the template that has the new section
-          const templatesCopy = state;
-          templatesCopy[templateTitle] = updatedTemplate;
-
-        //update state.  If fetch occured then returns current state.
-        return Object.keys(updatedTemplate) ? templatesCopy : state ;
-      }
-      //
-      case "initialLoad": {
-        return state;
-      }
-
-      case 'loadFetch':{ 
-        console.log('loadFetch')
-        //after fetch is complete, we insert section into the template and order
-        const {varname, sec, newOrder} = payload;
-        console.log({payload})
-
-        //update cache
-        const cacheCopy = {...sectionCache}
-        cacheCopy[varname] = sec;
-        setSectionCache(cacheCopy);
-
-        //update state
-        const templatesCopy = JSON.parse(JSON.stringify(state));
-        templatesCopy[templateTitle][varname] = sec
-        if(newOrder) {
-          console.log('we get here')
-          templatesCopy[templateTitle]['order'] = newOrder
+          //either update state or fetch section
+        if(sectionCache.hasOwnProperty(varname)){
+          return addSectionToTemplates(state, templateTitle, varname, index, sectionCache)
+        } else {
+          fetchSectionFromDatabase(varname, index, setFetchedData);
+          return state;
         }
+      }  
 
-        console.log(templatesCopy)
-        return templatesCopy
+        //loads a section that was fetched from 'addSEC' case.
+      case 'loadFetch':{
+        const {varname, sec, index} = payload;
+          //update sectionCache
+        const newCache = {...sectionCache}
+        newCache[varname] = sec;
+        setSectionCache(newCache);
+          //add section to the template and update state
+        return addSectionToTemplates(state, templateTitle, varname, index, newCache);
       }
 
-      
-      case "deleteSEC": {
         //removes section from current template
+      case "deleteSEC": {
+        const {index} = payload;
+        const title = order[index][0]
+          //remove section from order
         const newOrder = removeSection(payload.index, order);
-
-        //copy state and insert into it the template that has the new section
+          //copy state and insert newOrder into the template that has the new section
         const templatesCopy = JSON.parse(JSON.stringify(state));
         templatesCopy[templateTitle].order = newOrder;
-        
-        //remove deleted section from template (not just from the order)
-
+          //remove deleted section from template
+        delete templatesCopy[templateTitle][title]  
         return templatesCopy;
       }
-
+        //changes which card is displayed in that section
       case "updateSEC": {
-        //updates with 'order' which card in the section is being displayed
+          //updates with 'order' which card in the section is being displayed
         const newOrder = updateCardIndex(order, payload);
-
-        //copy state and insert into it the template that has the new section
+          //copy state and insert into it the template that has the new section
         const templatesCopy = JSON.parse(JSON.stringify(state));
         templatesCopy[templateTitle] = {order: newOrder, ...sections};
-
         return templatesCopy
       }
 
+        //updates state with the user inputed content
       case "updateWords":{
-        //updates the template with the user inputs
+          //updates the template with the user inputs
         const {textContent, sectionName, cardIndex} = payload;
         const templatesCopy = JSON.parse(JSON.stringify(state));
         templatesCopy[templateTitle][sectionName].script[cardIndex] = textContent;
         return templatesCopy;
       }
 
+        //changes section order by updating the order array within the template
       case "moveSEC": {
-        //create the new order for the display state after drag and drop
+          //create the new order for the display state after drag and drop
         const newOrder = updateSectionOrder(order, payload);
-
-        //copy state and insert newOrder into the template that has the new section
+          //copy state and insert newOrder into the template that has the new section
         const templatesCopy = JSON.parse(JSON.stringify(state));
         templatesCopy[templateTitle] = {order: newOrder, ...sections};
-  
         return templatesCopy
       }
 
-      
-      case "selectSEC": {
         //inserts the section selector in the display
-
+      case "selectSEC": {
         //fetch titles if not present in state.
-        if (Object.keys(selectorTitles).length === 0)
-          fetchTitles(setSelectorTitles);
-
-        //update state to signify that a selector box should be inserted.
+        if (Object.keys(selectorTitles).length === 0) fetchTitles(setSelectorTitles);
+          //update state to signify that a selector box should be inserted.
         const insertSelector = addSelectorSection(payload.index);
         setSelectorSec(insertSelector);
         return state
       }
-    
-      case "saveTemplate": {
-        console.log('saveTemplate')
-        const {template, domRef} = payload;
-        const newTemplates = saveDomToTemplates( template, domRef, names, state, templateTitle);
-        return newTemplates
-      }
 
+        //saves user templates to database
       case "saveTemplateToDatabase": {
-        console.log('saveTemplateToDatabase')
-        //iterate through metaData and save to database
-        metaData.forEach((set, theTitle) => {
-          const url = 'templates/userTemplate'
-          const userId = currUser
-          const userTemplate = JSON.stringify(state[theTitle])
-          const templateId = set.number
-          const options = {
-            method: "POST",
-            body: JSON.stringify({userId, templateTitle:theTitle, userTemplate, templateId}),
-            headers: {
-              'Content-Type': 'application/json'
-            },
-          };
-
-          if(!templateId){
-            fetch(url, options )
-              .then(res => res.json())
-              .then((res) =>{
-                const metaDataCopy = new Map(metaData);
-                metaDataCopy.set(res.title, {number: res._id, title: res.title})
-                setMetaData(metaDataCopy)
-              })
-              .catch((error) =>{
-                console.log('error in fetch for add', error)
-              })
-          } else{
-            options.method = "PUT"
-            fetch(url, options )
-              .then((res) =>{
-              }).catch((error) =>{
-                console.log('error in fetch for put', error)
-              })
-          }
-        });
-
+        saveTemplateToDatabase(currUser, metaData, setMetaData, state);
         return state
       }
+
+        //loads the templates of the user from the database
       case "loadUserTemplates" : {
         console.log('loadUserTemplates')
         const {userTemplates} = payload;
         const newTemplates = Object.assign({}, state, userTemplates)
         return newTemplates;
       }
+
+        //loads a different template than the current one
       case "loadTEMPLATE": {
-        console.log('loadTEMPLATE')
-        const {key, value} = payload
-        setTemplateTitle(key)
+        setTemplateTitle(payload.key)
         return state
       }
-      case "addTEMPLATE":{
-        console.log('addTEMPLATE')
-        
-        const {key, value} = payload
-        console.log({key, value})
-        const templatesCopy = state;
-        templatesCopy[key] = value;
-        setTemplateTitle(key);
 
-        //update metaData
+        //creates a new blank template
+      case "addTEMPLATE":{
+          //deep copy the state
+        const templatesCopy = {...state};
+          //determine templates title
+        const key = determineTemplateTitle(state)
+          //build the bones of a template
+        templatesCopy[key] = {order: []};
+          //update the curent template title
+        setTemplateTitle(key);
+          //update metaData
         const metaDataCopy = new Map(metaData);
         metaDataCopy.set(key, {number: null, title: key})
         setMetaData(metaDataCopy);
-
         return templatesCopy
       }
-      case "renameTEMPLATE":{
-        console.log('renameTEMPLATE')
-        const {oldName, newName, currTemplate} = payload;
-      
-        //copy state
-        const templatesCopy = JSON.parse(JSON.stringify(state));
 
-        //update the state with the new name for the template.
+        //renames the template
+      case "renameTEMPLATE":{
+        const {oldName, newName, currTemplate} = payload;
+          //copy state
+        const templatesCopy = JSON.parse(JSON.stringify(state));
+          //update the state with the new name for the template.
         templatesCopy[newName] = templatesCopy[oldName];
-        //delete oldName from template
+          //delete oldName from template
         delete templatesCopy[oldName];
-        //update metaData
+          //update metaData
         const metaDataCopy = new Map(metaData);
         const dataCopy = metaDataCopy.get(oldName);
         metaDataCopy.set(newName, dataCopy);
         metaDataCopy.delete(oldName)
         setMetaData(new Map(metaDataCopy))
-
-
-        //update the templateTitle if that was the template name changed
+          //update the templateTitle if that was the template name changed
         if(currTemplate) setTemplateTitle(newName);
-
+          //return updated templates
         return templatesCopy
       }
+
       case "deleteTEMPLATE": {
         const {currTitle} = payload
-        //delete from database
+          //delete from database
         const templateId = metaData.get(currTitle).number
         if(templateId){
-          const url = `templates/userTemplate/?templateId=${templateId}&userId=${currUser}`
-          const options = {
-            method: 'DELETE',
-            headers: {'Content-Type': 'application/json'},
-          }
-          fetch(url, options)
-            .then(res => {
-              if(res.ok) console.log('template has been deleted')
-            })
+          fetchCall.delete('templates', {templateId, userId: currUser})
+            .catch((err) => {err})
         } 
-
-        //remove from metaData
+          //remove from metaData
         const metaDataCopy = new Map(metaData);
         metaDataCopy.delete(currTitle)
         setMetaData(metaDataCopy);
-
-        //remove from local templates
+          //remove from local templates
         const templatesCopy = state;
         delete templatesCopy[currTitle];
-
-        //change templateTitle if it is current.
+          //change templateTitle if it is current.
         if(templateTitle === currTitle){
           console.log(Object.keys(state)[0])
           setTemplateTitle(Object.keys(state)[0])
@@ -387,10 +292,14 @@ const [fetchedData, setFetchedData] = useState(null);
 
         return templatesCopy;
       }
+
+        //when user logs or deletes accountout resets to starting page
       case 'reset':{
         setTemplateTitle('wedding');
         return allT
       }
+
+        //Anything else returns current state
       default: {
         // returns the current state
         return state;
@@ -398,16 +307,13 @@ const [fetchedData, setFetchedData] = useState(null);
     }
   }
 
-
   if(fetchedData){
     dispatch({type: 'loadFetch', payload: fetchedData.payload})
     setFetchedData(null);
   }
 
-
-
   //NEW NEW Popup Controls
-  const [thePopup, popupDispatch] = useReducer(popupReducer, {box: 'myAuth', subAct: 'login'});
+  const [thePopup, popupDispatch] = useReducer(popupReducer, {box: null, subAct: null});
 
   function popupReducer(state, action){
     const {type, subAct} = action
@@ -430,36 +336,23 @@ const [fetchedData, setFetchedData] = useState(null);
     }
   }
 
-
-  //initial load
+    //set up the sidebar functionality.
   const theSidebar = new createSidebarToggle();
+
+  //initial load  
   useEffect(()=>{
-    console.log('enter initial useEffect')
-    //close the sidebar
+      //close the sidebar
     theSidebar.toggle();  
 
-    //add starting templates to cache
+      //add starting templates to cache
     setSectionCache(addContentsToCache(templates, {}));
 
-    //add metadata to starting templates.
-    const dataCopy = new Map(metaData);
-    Object.keys(templates).forEach((el) => {
-      dataCopy.set(el, {title: el, number: null});
-      setMetaData(new Map(dataCopy));
-    })
+      //add metadata from the starting templates.
+    createMetaDataFromStartingTemplates(templates, metaData, setMetaData)
 
-    //check if the user has a cookie
-    fetch('/user/access')
-      .then((data) => data.json())
-      .then((data) => {
-        console.log('user', {data})
-        if(data.authorized){
-          setCurrUser(data.userId)
-        }
-      }).catch((err) => {console.log('error in the building', err)})
-    
+      //check if the user has a cookie
+    checkCookieForAccess(setCurrUser);
   }, [])
-
 
   return (
     <ErrorBoundary>
@@ -481,7 +374,9 @@ const [fetchedData, setFetchedData] = useState(null);
             box: thePopup.box,
             subAct: thePopup.subAct,
             currUser,
-            setCurrUser
+            setCurrUser,
+            metaData,
+            setMetaData
           }}
         >
           <Header />

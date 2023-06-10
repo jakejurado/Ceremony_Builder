@@ -19,10 +19,7 @@ templateController.grabAllUserTemplates = async (req, res, next) => {
 
 
 templateController.addUserTemplate = async (req, res, next) => {
-  console.log('enter_addUserTemplate')
   const { userId, templateTitle, userTemplate } = req.body;
-  console.log('entered addUserTemplate with ', templateTitle)
-  console.log(req.body)
   try {
     const sql_query_add = "INSERT INTO templates (creator, template, title) VALUES ($1, $2, $3) RETURNING _id, title";
     const results = await db.query(sql_query_add, [userId, userTemplate, templateTitle])
@@ -41,13 +38,10 @@ templateController.addUserTemplate = async (req, res, next) => {
 
 templateController.updateUserTemplate = async (req, res, next) => {
   const { userId, templateTitle, userTemplate, templateId } = req.body;
-  console.log('entered update with ', templateTitle, {templateId})
-  console.log(req.body)
   try {
     const sql_query_add = "UPDATE public.templates SET title = $1, template = $2 WHERE _id = $3 AND creator = $4;";
     const results = await db.query(sql_query_add, [templateTitle, userTemplate, templateId, userId]);
     res.locals.templateInfo = results;
-    console.log({results})
     next();
   } catch(err){
     return next({
@@ -59,15 +53,11 @@ templateController.updateUserTemplate = async (req, res, next) => {
 };
 
 templateController.deleteUserTemplate = async (req, res, next) => {
-  console.log('entered delete')
   const { userId, templateId } = req.query;
-  console.log('entered delete')
-  console.log({ userId, templateId })
   try {
-    
     const sql_query_add = "DELETE from templates WHERE _id = $1 AND creator = $2;";
     const results = await db.query(sql_query_add, [templateId, userId]);
-    res.locals.deleteUserTemplate = results
+    res.locals.templateInfo = {msg: 'item deleted', results}
     next();
   } catch(err){
     return next({

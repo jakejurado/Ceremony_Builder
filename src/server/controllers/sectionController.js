@@ -2,7 +2,7 @@ const db = require("../databaseModels/sqlModel");
 const sectionController = {};
 
 sectionController.grabSection = (req, res, next) => {
-  const sectionTitle = req.query.sec;
+  const sectionTitle = req.query.varname;
   const sectionQuery =
     "SELECT scripts.script, meta_data.title, meta_data.varname, meta_data.description FROM scripts JOIN meta_data on scripts.section = $1 AND meta_data.varname = $1";
   db.query(sectionQuery, [sectionTitle])

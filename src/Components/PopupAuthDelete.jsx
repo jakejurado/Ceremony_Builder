@@ -1,7 +1,7 @@
 import React, {useContext} from 'react';
 import PopupNotifications from './PopupNotifications';
 import { PopupContext } from './PopupAuth';
-import { fetchCall } from '../functions/api';
+import { fetchCall } from '../functions/fetches/api';
 
 function PopupAuthDelete(){
   const {

@@ -5,7 +5,7 @@ function SidebarPrint() {
   const { popupDispatch, dispatch } = useContext(GlobalContext);
 
   function handleClick() {
-    dispatch({type: 'saveTEMPLATE'})
+    // dispatch({type: 'saveTEMPLATE'})
     popupDispatch({type: 'myPrint', subAct: null})
   }
 

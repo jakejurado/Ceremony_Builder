@@ -11,12 +11,17 @@ class BaseAPI {
       forgot: 'user/forgot',
       delete: 'user/signup',
       reset: 'user/signup',
+      titles: 'sections/titles',
+      grabSec: 'sections/grab',
+      templates: 'templates/userTemplate',
+      allTemplates: 'templates/all',
+      access: '/user/access'
     }
   }
 }
 
-BaseAPI.prototype.createParams = function(obj, prefix){
-  let url = prefix ? prefix : '';
+BaseAPI.prototype.createParams = function(obj){
+  let url = ''
   Object.entries(obj).forEach((set, index) => {
     const [key, value] = set;
     const sym = index === 0 ? '/?' : '&';
@@ -25,8 +30,9 @@ BaseAPI.prototype.createParams = function(obj, prefix){
   return url;
 }
 
-BaseAPI.prototype.get = async function(endpoint, params){
-  let url = this.createParams(params, this.path[endpoint])
+BaseAPI.prototype.get = async function(endpoint, params = false){
+  let url = this.path[endpoint];
+  if(params) url += this.createParams(params)
   const options = {
     method: "GET", 
     headers: this.headers
@@ -48,9 +54,13 @@ BaseAPI.prototype.post = async function(endpoint, body){
     headers: this.headers,
     body: JSON.stringify(body)
   };
-  const res = await fetch(url, options)
-  const data = res.json();
-  return data
+  try{
+    const res = await fetch(url, options)
+    const data = await res.json();
+    return data
+  } catch(err){
+    console.log(err)
+  }
 } 
 
 BaseAPI.prototype.put = async function(endpoint, body){
@@ -60,7 +70,7 @@ BaseAPI.prototype.put = async function(endpoint, body){
     headers: this.headers,
     body: JSON.stringify(body)
   };
-
+  
   try{
     const res = await fetch(url, options)
     const data = await res.json();
@@ -72,17 +82,17 @@ BaseAPI.prototype.put = async function(endpoint, body){
 } 
 
 BaseAPI.prototype.delete = async function(endpoint, params){
-  const url = this.createParams(params, this.path[endpoint])
+  let url = this.path[endpoint];
+  if(params) url += this.createParams(params)
   const options = {
     method: "DELETE", 
     headers: this.headers,
   };
   try{
     const res = await fetch(url, options)
-    const data = await res.json();
-    return data
+    return
   } catch(err){
-    console.log('unable to delete user')
+    console.log('unable to delete', err)
   }
 } 
 

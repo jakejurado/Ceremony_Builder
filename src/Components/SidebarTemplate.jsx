@@ -11,7 +11,6 @@ function SideBarTemplate() {
   const { templates, setTemplates, dispatch, popupDispatch} = useContext(GlobalContext);
 
   function handlePlusClick(){
-    // setTemplates({...templates, myTemplate: {order:[]}});
     dispatch({ type: "addTEMPLATE", payload: {key: 'myTemplate', value: {order:[]}}});
   }
 

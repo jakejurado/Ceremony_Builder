@@ -1,6 +1,6 @@
 import React, {useContext} from 'react';
 import { PopupContext } from './PopupAuth';
-import { fetchCall } from '../functions/api';
+import { fetchCall } from '../functions/fetches/api';
 
 function PopupAuthLogin(){
   const {
