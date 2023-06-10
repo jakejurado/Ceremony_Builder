@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useRef} from 'react';
 import { PopupContext } from './PopupAuth';
-import { fetchCall } from '../functions/api';
+import { fetchCall } from '../functions/fetches/api';
 
 function PopupAuthForgot(){
   const {

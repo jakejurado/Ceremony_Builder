@@ -7,6 +7,7 @@ import SidebarAccount from "./SidebarAccount";
 import { GlobalContext } from './App';
 
 function Sidebar() {
+  const { currUser } = useContext(GlobalContext)
   const domSidebar = useRef(null);
 
   function handleSidebarHover(){
@@ -26,7 +27,7 @@ function Sidebar() {
         <SidebarAccount />
         <SideBarTemplate />
         <SidebarNames />
-        <SidebarSave />
+        {currUser && <SidebarSave />}
         <SidebarPrint />
       </div>
       {/* <div>Save Current</div> */}

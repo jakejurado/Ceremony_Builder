@@ -13,7 +13,6 @@ function MainDisplay() {
 
   //loads the sections from the state in display to build the dom
   let loadSections = [];
-  console.log({currTemplate})
   const { order, ...rest } = currTemplate;
   for (let i = 0; i < order.length; i++) {
     let [varTitle, pos] = order[i];

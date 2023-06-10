@@ -20,7 +20,7 @@ router.put("/userTemplate", templateController.updateUserTemplate, (req, res) =>
 });
 
 router.delete("/userTemplate", templateController.deleteUserTemplate, (req, res) => {
-  return res.status(200).send(res.locals.templateInfo);
+  return res.status(204).send(res.locals.templateInfo.msg);
 });
 
 module.exports = router;
