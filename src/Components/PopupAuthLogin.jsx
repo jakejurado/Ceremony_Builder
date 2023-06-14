@@ -37,37 +37,39 @@ function PopupAuthLogin(){
   
   return(
     <div className="entireBox" >
-      <div id='loginTab' className="eachTab selectedTab">Login</div>
+      <div id='loginTab' className="eachTab selectedTab">login</div>
       <div id='signupTab' onClick={handleSignupTabClick} className="eachTab">signup</div>
-      <div className="mainInput">
-        <div className = 'line'>
-          <div className="desc">
-            e-mail: 
+      <form>
+        <div className="mainInput">
+          <div className = 'line'>
+            <div className="desc">
+              e-mail: 
+            </div>
+            <div className="inputDiv">
+              <input className='inputContent' ref={userEmailDom} onChange={handleEmailInputChange} placeholder='email' autoComplete="username" />
+            </div>
           </div>
-          <div className="inputDiv">
-            <input className='inputContent' ref={userEmailDom} onChange={handleEmailInputChange} placeholder='email'/>
+          
+          <div className = 'line'>
+            <div className="desc">
+              password: 
+            </div>
+            <div className="inputDiv">
+              <input type='password' className='inputContent' ref={userCurrPassDom} onChange={handleCurrPasswordInputChange} placeholder='password' autoComplete="current-password" />
+            </div>
           </div>
-        </div>
-        
-        <div className = 'line'>
-          <div className="desc">
-            password: 
-          </div>
-          <div className="inputDiv">
-            <input type='password' className='inputContent' ref={userCurrPassDom} onChange={handleCurrPasswordInputChange} placeholder='password'/>
-          </div>
-        </div>
 
-        <ul id='incompleteNotifications'>
-          {!emailCriteria && <li id='incompleteEmailNotification' className='incomplete'>incomplete email address</li> }
-          {!passwordCriteria.len && <li id='incompletePasswordNotification' className='incomplete'>password is too short</li> }
-          {loginFail && <li id='loginfail' className='incomplete'>incorrect email or password</li>}
-          {success && <li id='success' className='complete'>success</li>}
-        </ul>
+          <ul id='incompleteNotifications'>
+            {!emailCriteria && <li id='incompleteEmailNotification' className='incomplete'>incomplete email address</li> }
+            {!passwordCriteria.len && <li id='incompletePasswordNotification' className='incomplete'>password is too short</li> }
+            {loginFail && <li id='loginfail' className='incomplete'>incorrect email or password</li>}
+            {success && <li id='success' className='complete'>success</li>}
+          </ul>
 
-        
-        <div className='lefty' onClick={handleForgotClick}>forgot password? </div>
-      </div>
+          
+          <div className='lefty' onClick={handleForgotClick}>forgot password? </div>
+        </div>
+      </form>
       <div className="bottomBox">
         <div className='submitButton' id='authLoginsubmitButton' ref={buttonDom}>
           Submit

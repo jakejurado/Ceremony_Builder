@@ -2,7 +2,6 @@ import React from 'react';
 import { fetchCall } from './api';
 
 async function fetchUserTemplates(userId, metaData, setMetaData, dispatch ){
-  console.log('fetching user Templates');
   const data = await fetchCall.get('allTemplates', {userId})
 
   const metaDataCopy = new Map(metaData)

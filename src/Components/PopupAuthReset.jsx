@@ -30,7 +30,6 @@ function PopupAuthReset(){
     const newPassword = userNewPassDom1.current.value;
     const newPassword2 = userNewPassDom2.current.value
     const response = await fetchCall.put('reset', { email, password, newPassword, userId});
-    console.log({response})
     if (response.isPasswordReset) {
       setSuccess(true)
     } else {
@@ -64,7 +63,7 @@ function PopupAuthReset(){
               current password: 
             </div>
             <div className="inputDiv">
-              <input className='inputContent' ref={userCurrPassDom} onChange={handleCurrPasswordInputChange} placeholder='verification code' />
+              <input className='inputContent' ref={userCurrPassDom} onChange={handleCurrPasswordInputChange} placeholder='current password' />
             </div>
           </div>
           
@@ -73,7 +72,7 @@ function PopupAuthReset(){
               new password: 
             </div>
             <div className="inputDiv">
-              <input className='inputContent' type='password' ref={userNewPassDom1} onChange={handleNewPasswordInputChange1} placeholder='password' />
+              <input className='inputContent' type='password' ref={userNewPassDom1} onChange={handleNewPasswordInputChange1} placeholder='new password' />
             </div>
           </div>
 
@@ -83,7 +82,7 @@ function PopupAuthReset(){
               new password: 
             </div>
             <div className="inputDiv">
-              <input className='inputContent' type='password' ref={userNewPassDom2} onChange={handleNewPasswordInputChange2} placeholder='password' />
+              <input className='inputContent' type='password' ref={userNewPassDom2} onChange={handleNewPasswordInputChange2} placeholder='new password' />
             </div>
           </div>
 

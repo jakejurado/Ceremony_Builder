@@ -5,7 +5,7 @@ function SidebarNames() {
   const { names, setNames } = useContext(GlobalContext);
 
   function onNameChange(e) {
-    const name = e.target.value;
+    const name = e.target.value.toUpperCase();
     const placeholder = e.target.classList[0];
     setNames({ ...names, [placeholder]: name });
     return name, placeholder;

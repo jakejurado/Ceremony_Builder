@@ -12,15 +12,16 @@ function PopupAuthForgot(){
     handleLoginTabClick, 
     handleSignupTabClick, 
     handleVerifyClick,
+    popupDispatch,
     setLoginFail,
     setSuccess,
   } = useContext(PopupContext);
 
   async function handleSubmitClick(){
     const email = userEmailDom.current.value;
-    const response = await fetchCall.get('forgot', { email });
-    if (response.authenticated) {
-      popupDispatch({ type: 'myAuth', act: 'verify' }); 
+    const response = await fetchCall.put('forgot', { email });
+    if (response.isPasswordReset) {
+      popupDispatch({ type: 'myAuth', subAct: 'login' }); 
       setSuccess(true);
     } else {
       setLoginFail(true);
@@ -31,31 +32,32 @@ function PopupAuthForgot(){
 
   return(
     <div className="entireBox" >
-      <div id='loginTab' className="eachTab" onClick={handleLoginTabClick}>Login</div>
+      <div id='loginTab' className="eachTab" onClick={handleLoginTabClick}>login</div>
       <div id='signupTab' className="eachTab" onClick={handleSignupTabClick}>signup</div>
 
-      <div className="mainInput">
+      <form>
+        <div className="mainInput">
 
-        <div className='lineInstructions'>
-          Enter your email associated with your account and then submit.  You will be provided a code to change your password.
-        </div>
-        
-        
-        <div className='line'>
-          <div className="desc">
-            e-mail: 
+          <div className='lineInstructions'>
+            Enter your email associated with your account and then submit.  You will be provided a code to change your password.
           </div>
-          <div className="inputDiv">
-            <input className='inputContent' ref={userEmailDom} onChange={handleEmailInputChange} placeholder='e-mail' />
+          
+          
+          <div className='line'>
+            <div className="desc">
+              e-mail: 
+            </div>
+            <div className="inputDiv">
+              <input className='inputContent' ref={userEmailDom} onChange={handleEmailInputChange} placeholder='e-mail' />
+            </div>
           </div>
-        </div>
 
-        <ul id='incompleteNotifications'>
-          {!emailCriteria && <li id='incompleteEmailNotification' className='incomplete'>incomplete email address</li> }
-        </ul>
-        
-        <div className="lefty" onClick={handleVerifyClick}>I have the code</div>
-      </div>
+          <ul id='incompleteNotifications'>
+            {!emailCriteria && <li id='incompleteEmailNotification' className='incomplete'>incomplete email address</li> }
+          </ul>
+          
+        </div>
+      </form>
       <div className="bottomBox">
         <div className='submitButton' ref={buttonDom}>
           Submit
