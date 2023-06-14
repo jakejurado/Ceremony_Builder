@@ -63,7 +63,6 @@ function PopupAuth({subAct}){
       currentPopup = <PopupAuthDelete />;
       break
     case 'reset':
-      console.log('reset')
       currentPopup = <PopupAuthReset />;
       break;
     case 'close':

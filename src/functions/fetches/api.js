@@ -7,6 +7,7 @@ class BaseAPI {
     this.path = {
       login : `user/login`,
       signup: 'user/signup',
+      signout: 'user/signout',
       verify: 'user/verify',
       forgot: 'user/forgot',
       delete: 'user/signup',
@@ -74,7 +75,7 @@ BaseAPI.prototype.put = async function(endpoint, body){
   try{
     const res = await fetch(url, options)
     const data = await res.json();
-    return data || {isPasswordReset: false}
+    return data
   } catch(err){
     console.log('error in put', err)
     return {isPasswordReset: false}
@@ -90,7 +91,8 @@ BaseAPI.prototype.delete = async function(endpoint, params){
   };
   try{
     const res = await fetch(url, options)
-    return
+    const response = await res.json();
+    return response; 
   } catch(err){
     console.log('unable to delete', err)
   }

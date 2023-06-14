@@ -9,36 +9,35 @@ import { nameValidator } from '../functions/template/nameTemplate';
 function PopupTemplate(){
   const {templates, dispatch, templateTitle} = useContext(GlobalContext);
 
-  //keeps track of which title is being edited.
+    //keeps track of which title is being edited.
   const [editableTitle, setEditableTitle] = useState(null);
   
-  //test
+    //keeps track of the new title
   const [editedTitle, setEditedTitle] = useState(null);
 
-  //deletes a template from templates
+    //deletes a template from templates
   function handleCloseButton(e){ //x button
     const currTitle = e.currentTarget.dataset.templatetitle;
-    console.log({currTitle})
-
     dispatch({type: 'deleteTEMPLATE', payload: {currTitle}})
   }
 
-  //saves the template and then makes title editable
+    //saves the template and then makes title editable
   function handleEditButton(e){ //pencil button
     const currTitle = e.currentTarget.dataset.templatetitle;
     setEditableTitle(currTitle); 
     setEditedTitle(currTitle);
   }
-
+    //saves the new title to state.
   const handleInputChange = (e) => { //input
     setEditedTitle(e.target.value);
   };
 
+    //saves the new title
   const handleSaveButton = (e) => { //check button
     // save the edited title
     const name = nameValidator(Object.keys(templates), editedTitle);
     dispatch({type: 'renameTEMPLATE', payload: {oldName: editableTitle, newName: name, currTemplate: templateTitle === editableTitle}})
-    setEditableTitle(null);
+    setEditedTitle(null);
     setEditableTitle(null);
   };
 

@@ -1,17 +1,18 @@
 const db = require("../databaseModels/sqlModel");
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
+const generator = require('generate-password');
+const nodemailer = require("nodemailer");
 const saltRounds = 10;
 
 
 const userController = {};
 
-//creates a user in the database
+  //creates a user in the database
 userController.createUser = async ( req, res, next) => {
-  console.log('entered createUser')
-  let {email, password } = req.body;
+  let {email, password } = res.locals.myData
 
-  //check that all fields are not empty
+    //check that all fields are not empty
   if(!email || !password){
     return next({
       log: "Express Error handler caught in createUser err",
@@ -19,12 +20,10 @@ userController.createUser = async ( req, res, next) => {
       message: { err: "field is empty" },
     });
   }
-
   try {
-     //hash password
+      //hash password
     const hashedPassword = await bcrypt.hash(password, saltRounds);
-
-    //signup user
+      //signup user
     const sql_userInsert =  "INSERT INTO users (user_email, user_password) VALUES ($1, $2)";
     await db.query(sql_userInsert, [email, hashedPassword]);
     res.locals.userCreated = { authenticated: true };
@@ -39,35 +38,22 @@ userController.createUser = async ( req, res, next) => {
   }
 }
 
-
-//creates a user in the database
+  //creates a user in the database
 userController.deleteUser = async (req, res, next) => {
-  console.log('enter delete user');
-  console.log(req.query);
-  const { userId, email, password } = req.query;
-
-  // Check that all fields are not empty
-  if (!email || !password || !userId) {
-    return next({
-      log: 'Express Error handler caught in deleteUser err',
-      status: 500,
-      message: { err: 'field is empty' },
-    });
-  }
+  const { userId } = res.locals.myData;
 
   try {
     await db.query('BEGIN'); // Begin transaction
-
+      //delete templates of user
     const deleteTemplatesQuery = 'DELETE FROM public.templates WHERE creator = $1';
     await db.query(deleteTemplatesQuery, [userId]);
-
+      //delete user from database
     const deleteUserQuery = 'DELETE FROM public.users WHERE _id = $1';
     await db.query(deleteUserQuery, [userId]);
-
     await db.query('COMMIT'); // Commit the transaction
-
     res.locals.userDeleted = {userDeleted : true};
     return next();
+
   } catch (err) {
     await db.query('ROLLBACK'); // Rollback the transaction in case of an error
     return next({
@@ -78,26 +64,34 @@ userController.deleteUser = async (req, res, next) => {
   }
 };
 
+userController.checkUserExistence = async (req, res, next) => {
+  const { email } = res.locals.myData;
 
-//resets a users password
+  const checkEmailQuery = 'SELECT * FROM users WHERE user_email = $1';
+  const result = await db.query(checkEmailQuery, [email]);
+
+  if (result.rows.length === 0) {
+    return next({
+      log: "Express error handler caught in validateEmailAndPassword",
+      status: 400,
+      message: { err: "user not in system" },
+    });
+  }
+
+  return next();
+}
+
+  //resets a users password
 userController.resetUserPassword = async ( req, res, next) => {
-  console.log('entered reset')
-  let {email, password, newPassword, userId } = req.body
-
-  console.log('reqbod', req.body)
-
-  console.log('reqquery', req.query)
-
+  let {newPassword, email } = res.locals.myData;
   try {
      //hash password
      const hashedPassword = await bcrypt.hash(newPassword, saltRounds);
-     console.log({hashedPassword})
 
     //signup user
-    const changePasswordQuery = 'UPDATE users SET user_password = $1 WHERE _id = $2';
-    await db.query(changePasswordQuery, [hashedPassword, userId]);
+    const changePasswordQuery = 'UPDATE users SET user_password = $1 WHERE user_email = $2';
+    await db.query(changePasswordQuery, [hashedPassword, email]);
     res.locals.resetPassword = {isPasswordReset : true};
-    console.log('success in reset')
     return next();
 
   } catch (err) {
@@ -109,12 +103,40 @@ userController.resetUserPassword = async ( req, res, next) => {
   }
 }
 
+  //emails newPassword to user
+userController.emailPassword = async (req, res, next) => {  
+  const {newPassword, email} = res.locals.myData;
+
+  let transporter = nodemailer.createTransport({
+    host: process.env.SMTP_HOST,
+    port: process.env.SMTP_PORT,
+    secure: false, 
+    auth: {
+      user: process.env.SMTP_USER,
+      pass: process.env.SMTP_PASSWORD
+    },
+  });
+
+  try {
+    let info = await transporter.sendMail({
+      from: '"Ceremony Builder" <ceremonyBuilder@jacobmarries.com>',
+      to: email,
+      subject: "Ceremony Builder (new password)",
+      text: `Here is the password reset that you have requested: ${newPassword}`,
+      html: `<p><b>Hello,</b></p><p>Here is the new passward that you reqeusted</p><p>${newPassword}</p>`,
+    });
+    next();
+  } catch (err) {
+    console.error('Failed to send email', err);
+    next(err);
+  }
+}
 
 //Confirms that user and password are correct
 userController.authenticateUser = async (req, res, next) => {
-  const {email, password} = req.query;
+  const {email, password} = res.locals.myData
 
-  //both values must not be truthy
+  //both values must not truthy
   if(!email || !password){
     return next({
       log: "Express Error handler caught in createUser err",
@@ -153,11 +175,9 @@ userController.authenticateUser = async (req, res, next) => {
   }
 }
 
-//INPUT: 
-//OUTPUT: 
 //creates a token and places in cookie
 userController.createToken = async (req, res, next) => {
-  const { email } = req.query;
+  const { email } = res.locals.myData
   try {
     const token = await new Promise((resolve, reject) => {
       jwt.sign(
@@ -186,9 +206,6 @@ userController.createToken = async (req, res, next) => {
   }
 };
 
-
-//INPUT
-//OUTPUT
 //confirms that user has a token.
 userController.checkForToken = (req, res, next) => {
   const token = req.cookies.authorization;
@@ -206,18 +223,13 @@ userController.checkForToken = (req, res, next) => {
   }
 };
 
-//INPUT: 
-//OUTPUT
 //verifies current user matches token user.
 userController.verifyToken = async (req, res, next) => {
-  // const {email} = req.query;
-  //verify the JWT token generated for the user
 
   try {
     const decoded = await jwt.verify(req.token, process.env.JWT_SECRET)
     if(decoded){
       res.locals.foundtoken = {authorized: true, email: decoded.email, userId: decoded.userId}
-      console.log(res.locals.foundtoken)
       return next();
     } else{
       return next({
@@ -236,26 +248,40 @@ userController.verifyToken = async (req, res, next) => {
   }
 };
 
-//verifies current user matches token user.
-userController.verifyTokenEmail = async (req, res, next) => {
-  const {email} = req.query;
-  //verify the JWT token generated for the user
+userController.compareTokenAndUser = (req, res, next) => {
+  const token_userId = res.locals.foundtoken.userId;
+  const currUser_userId = res.locals.myData.userId;
+  if(token_userId == currUser_userId) return next();
+  else{
+    return next(err);
+  }
+}
 
-  if(res.locals.foundtoken.email !== email){
-    return next(new Error('Something went wrong!'));
-  } else{
-    console.log('user email has been verified')
+  //removes token and cookie
+userController.removeToken = (req, res, next) => {
+  try {
+    // Clear the 'authorization' cookie
+    res.clearCookie("authorization");
     next();
+  } catch (err) {
+    next({
+      log: "Express error handler caught in removeToken middleware error",
+      status: 500,
+      message: { err: "An error occurred while removing the token" },
+    });
   }
 };
 
-
-
-// userController.gatherMyData = (req, res, next) => {
-//   req.body.email = req.query.email
-
-//   return next();
-// }
+  //generates a new random password
+userController.generatePassword = async (req, res, next) => {
+  const newPassword = generator.generate({
+    length: 10,
+    numbers: true,
+  });
+  console.log('generate', {newPassword})
+  res.locals.myData.newPassword = newPassword.slice(1,-1);
+  next();
+}
 
 
 

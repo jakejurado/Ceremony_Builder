@@ -219,7 +219,6 @@ const [fetchedData, setFetchedData] = useState(null);
 
         //loads the templates of the user from the database
       case "loadUserTemplates" : {
-        console.log('loadUserTemplates')
         const {userTemplates} = payload;
         const newTemplates = Object.assign({}, state, userTemplates)
         return newTemplates;
@@ -286,7 +285,6 @@ const [fetchedData, setFetchedData] = useState(null);
         delete templatesCopy[currTitle];
           //change templateTitle if it is current.
         if(templateTitle === currTitle){
-          console.log(Object.keys(state)[0])
           setTemplateTitle(Object.keys(state)[0])
         }
 
@@ -295,6 +293,7 @@ const [fetchedData, setFetchedData] = useState(null);
 
         //when user logs or deletes accountout resets to starting page
       case 'reset':{
+        fetchCall.get('signout')
         setTemplateTitle('wedding');
         return allT
       }
@@ -341,9 +340,6 @@ const [fetchedData, setFetchedData] = useState(null);
 
   //initial load  
   useEffect(()=>{
-      //close the sidebar
-    theSidebar.toggle();  
-
       //add starting templates to cache
     setSectionCache(addContentsToCache(templates, {}));
 
@@ -352,6 +348,9 @@ const [fetchedData, setFetchedData] = useState(null);
 
       //check if the user has a cookie
     checkCookieForAccess(setCurrUser);
+
+      //close the sidebar
+    theSidebar.toggle();  
   }, [])
 
   return (

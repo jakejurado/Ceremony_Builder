@@ -36,39 +36,41 @@ function PopupAuthSignup(){
 
   return(
     <div className="entireBox" >
-      <div id='loginTab' onClick={handleLoginTabClick} className="eachTab">Login</div>
+      <div id='loginTab' onClick={handleLoginTabClick} className="eachTab">login</div>
       <div id='signupTab' className="eachTab selectedTab">signup</div>
-      <div className="mainInput">
+      <form>
+        <div className="mainInput">
 
-        <div className = 'line'>
-          <div className="desc">
-            e-mail: 
+          <div className = 'line'>
+            <div className="desc">
+              e-mail: 
+            </div>
+            <div className="inputDiv">
+              <input ref={userEmailDom} className='inputContent' onChange={handleEmailInputChange} placeholder='email' autoComplete="username"/>
+            </div>
           </div>
-          <div className="inputDiv">
-            <input ref={userEmailDom} className='inputContent' onChange={handleEmailInputChange} placeholder='email'/>
+
+          <div className = 'line'>
+            <div className="desc">
+              password: 
+            </div>
+            <div className="inputDiv">
+              <input type='password' ref={userNewPassDom1} className='inputContent' onChange={handleNewPasswordInputChange1} placeholder='password' autoComplete="new-password"/>
+            </div>
           </div>
+
+          <div className = 'line moreMargin'>
+            <div className="desc">
+              password: 
+            </div>
+            <div className="inputDiv">
+              <input type='password' ref={userNewPassDom2} className='inputContent' onChange={handleNewPasswordInputChange2} placeholder='password' autoComplete="new-password"/>
+            </div>
+          </div>
+
+          {<PopupNotifications />}
         </div>
-
-        <div className = 'line'>
-          <div className="desc">
-            password: 
-          </div>
-          <div className="inputDiv">
-            <input type='password' ref={userNewPassDom1} className='inputContent' onChange={handleNewPasswordInputChange1} placeholder='password'/>
-          </div>
-        </div>
-
-        <div className = 'line moreMargin'>
-          <div className="desc">
-            password: 
-          </div>
-          <div className="inputDiv">
-            <input type='password' ref={userNewPassDom2} className='inputContent' onChange={handleNewPasswordInputChange2} placeholder='password'/>
-          </div>
-        </div>
-
-        {<PopupNotifications />}
-      </div>
+      </form>
 
       <div className="bottomBox">
         <div className='submitButton' ref={buttonDom}>

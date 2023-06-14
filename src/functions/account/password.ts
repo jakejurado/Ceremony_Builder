@@ -49,8 +49,7 @@ function checkSubmitButtonCriteria(userInfo: userInfoType): boolean{
       if(validEmail && validNewPassword) res = true;
       break;
     case 'login':
-      console.log(validEmail, userInfo.passCurr.length > 4)
-      if(validEmail && userInfo.passCurr.length > 4) res = true;
+      if(validEmail && userInfo.passCurr.length > 5) res = true;
       break;
     case 'forgot':
       if(validEmail) res = true;
@@ -59,7 +58,6 @@ function checkSubmitButtonCriteria(userInfo: userInfoType): boolean{
       if(validEmail && validNewPassword && validCode) res = true;
       break;
     case 'reset':
-      console.log(validEmail && validCurrPassword && validCode)
       if(validEmail && validCurrPassword && validNewPassword) res = true;
       break;
     case 'delete':
@@ -72,7 +70,6 @@ function checkSubmitButtonCriteria(userInfo: userInfoType): boolean{
       console.log('error in checkSubmitButtonCriteria');
   }
   
-  console.log({res})
   return res;
 }
 
