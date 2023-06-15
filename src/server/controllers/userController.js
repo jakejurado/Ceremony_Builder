@@ -278,7 +278,6 @@ userController.generatePassword = async (req, res, next) => {
     length: 10,
     numbers: true,
   });
-  console.log('generate', {newPassword})
   res.locals.myData.newPassword = newPassword.slice(1,-1);
   next();
 }

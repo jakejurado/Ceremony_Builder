@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const templateController = require("../controllers/templateController");
-const userController = require("../controllers/userControllers")
+const userController = require("../controllers/userController")
 
   //grabs all the templates of a user
 router.get("/all", templateController.grabAllUserTemplates, (req, res) => {

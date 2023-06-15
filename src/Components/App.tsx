@@ -320,16 +320,12 @@ const [fetchedData, setFetchedData] = useState(null);
     switch (action.type){
       case 'myAccount':
         return {box: 'myAccount', subAct}
-        break;
       case 'myAuth':
         return {box: 'myAuth', subAct}
-        break;
       case 'myTemplates':
         return {box: 'myTemplates', subAct}
-        break;
       case 'myPrint':
         return {box: 'myPrint', subAct}
-        break;
       default:
         return {box: null, subAct: null}
     }
