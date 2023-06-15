@@ -9,7 +9,7 @@ require("dotenv").config();
 
 
 const sectionRouter = require("./routs/sections");
-const userRouter = require("./routs/user");
+const userRouter = require("./routs/users");
 const templateRouter = require("./routs/templates")
 
 // Parse application/x-www-form-urlencoded

@@ -1,5 +1,5 @@
-@use "../variables" as v;
-@use "../components/buttons.scss" as b;
+@use "./variables" as v;
+@use "./buttons.scss" as b;
 
 #cover {
   position: fixed;
