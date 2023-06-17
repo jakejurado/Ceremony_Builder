@@ -1,26 +1,14 @@
-import { fetchCall } from "../fetches/api";
+import { fetchCall } from "./api";
+import { Templates } from "../../types/types"
+import { SetStateAction } from "react";
+import {FetchTitles, TitlesData} from "../../types/dispatch"
+
 
 //fetch request to the backend/database for all titles along with their varname and category
-function fetchTitles2(updateState) {
-  console.log("fetching titles");
-  fetch("/sections/titles")
-    .then((res) => res.json())
-    .then((res) => organizeDataByCategory(res))
-    .then((res) => {
-      // console.log({ updateState, res });
-      updateState(res);
-    })
-    .catch((error) => {
-      console.error("Error occured in fetchTitles:", error);
-    });
-}
-
-async function fetchTitles(updateState) {
-
-  console.log("fetching titles");
+async function fetchTitles(updateState: React.Dispatch<SetStateAction<TitlesData>>): Promise<void> {
   try{
-    const response = await fetchCall.get('titles');
-    const allTitles = await organizeDataByCategory(response)
+    const response: FetchTitles = await fetchCall.get('titles');
+    const allTitles: TitlesData = await organizeDataByCategory(response)
     updateState(allTitles);
   } catch(err){
     console.log('error in fetching all titles', err)
@@ -28,8 +16,8 @@ async function fetchTitles(updateState) {
 }
 
 //recieves array with multiple objects of "category", "varname", and "title", and returns an object organized by category.
-function organizeDataByCategory(data) {
-  const res = {};
+function organizeDataByCategory(data: FetchTitles): TitlesData {
+  const res: TitlesData = {};
   data.forEach(({ category, title, varname }) => {
     if (!res.hasOwnProperty(category)) res[category] = {};
     res[category][title] = varname;

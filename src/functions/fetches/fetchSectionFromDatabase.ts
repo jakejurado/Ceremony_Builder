@@ -1,16 +1,20 @@
 import React from 'react';
 import { fetchCall } from './api';
+import { Section } from '../../types/types';
+import { LoadFetch, FetchSectionData } from '../../types/dispatch';
+
 
   //fetches section from the database
-async function fetchSectionFromDatabase(varname, index, setState){
+async function fetchSectionFromDatabase(varname: string, index: number, setState: React.Dispatch<React.SetStateAction<{type: string, payload: LoadFetch}>>){
   const data = await fetchCall.get('grabSec', {varname});
-  const sec = await buildSectionFromData(data, varname);
+  const sec = await buildSectionFromData(data);
   setState({type: 'loadFetch', payload : {varname, sec, index}})
 }
 
+
   //builds section from the fetched data
-function buildSectionFromData(data){
-  const section = {
+function buildSectionFromData(data: FetchSectionData): Section{
+  const section : Section= {
       description: data[0].description,
       start_pos: 0,
       title: data[0].title,

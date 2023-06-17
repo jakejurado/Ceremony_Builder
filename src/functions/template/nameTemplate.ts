@@ -1,7 +1,10 @@
+import { Templates, Cache } from "../../types/types";
+
+
 function createNameValidator(){
   const cache = {};
 
-  return (allNames, newName) => {
+  return (allNames: Array<string>, newName: string): string => {
     if( !allNames.includes(newName)) {
       return newName;
 

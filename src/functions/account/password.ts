@@ -1,4 +1,5 @@
-import emailAddresses from "email-addresses";
+// import emailAddresses from "email-addresses";
+import * as emailAddresses from "email-addresses";
 
 
 //takes an email and returns a boolean

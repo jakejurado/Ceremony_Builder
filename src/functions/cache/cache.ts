@@ -1,5 +1,5 @@
 //add contents of array to cache
-import { Templates, Cache } from "../../types/types";
+import { Templates, Cache } from "../../types/types_copy";
 
 
 function addContentsToCache2(templates, cache) {

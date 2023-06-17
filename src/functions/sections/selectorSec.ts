@@ -1,12 +1,12 @@
-import { display, displaySet } from "../../types/types";
+import { selectorSec } from "../../types/types";
 
-type stateObj = {
-  isVisible: boolean;
-  position: number;
-};
+// type selectorSec = {
+//   isVisible: boolean;
+//   position: number | undefined;
+// };
 
-//add box selector to display
-function addSelectorSection(position: string): stateObj {
+  //add box selector to display
+function addSelectorSection(position: string): selectorSec {
   return { isVisible: true, position: parseInt(position) };
 }
 

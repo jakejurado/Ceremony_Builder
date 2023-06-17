@@ -1,8 +1,8 @@
-import { order, updateSecPayload } from "../../types/types";
+import { Order, OrderNonEmpty, updateSecPayload } from "../../types/types";
 
-function updateCardIndex(order: order, payload: updateSecPayload): order {
+function updateCardIndex(order: OrderNonEmpty, payload: updateSecPayload): OrderNonEmpty {
   let { cardIndex, numOfCards, index, add } = payload;
-  const orderCopy: order = [...order];
+  const orderCopy: OrderNonEmpty = [...order];
   let updatedCardIndex: number = cardIndex + add;
   orderCopy[index][1] =
     updatedCardIndex > numOfCards
