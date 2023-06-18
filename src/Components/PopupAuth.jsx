@@ -8,7 +8,7 @@ import PopupAuthSignout from './PopupAuthSignout';
 import PopupAuthDelete from './PopupAuthDelete';
 import { GlobalContext} from "./App";
 import { checkSubmitButtonCriteria, passwordMatch, passwordLength, validateEmail } from '../functions/account/password';
-import {createDomToggle} from "../functions/account/domToggle";
+import {createButtonToggle} from "../functions/account/buttonToggle";
 
 //holds the context for the login/signup state
 export const PopupContext = createContext(null);
@@ -73,7 +73,7 @@ function PopupAuth({subAct}){
     //grabs the submit button and the handleSubmitClick button in the child component and creates a class instance that activates/deactivates button functionality.
   useEffect(()=>{
       //methods for adding/removing event listeners and styles to dom.
-    const buttonFunctionality = new createDomToggle(
+    const buttonFunctionality = new createButtonToggle(
       buttonDom.current,
       handleSubmitClickRef.current,
       'buttonActive'

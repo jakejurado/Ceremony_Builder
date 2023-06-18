@@ -23,16 +23,16 @@ import { addContentsToCache } from "../functions/cache/cache";
 import { addSelectorSection } from "../functions/sections/selectorSec";
 import { updateCardIndex } from "../functions/sections/updateSec";
 import { removeSection } from "../functions/sections/removeSec";
-import { fetchTitles, organizeDataByCategory } from "../functions/sections/selectorBoxFuncs";
+import { fetchTitles, organizeDataByCategory } from "../functions/fetches/selectorBoxFuncs";
 // import { saveDomToTemplates } from "../functions/sections/resetCard";
 import {createSidebarToggle} from '../functions/mainPage/sidebarClass';
-import {fetchCall} from '../functions/fetches/api.js';
-import { addSectionToTemplates} from "../functions/sections/addSectionToTemplates.js";
-import { fetchSectionFromDatabase} from "../functions/fetches/fetchSectionFromDatabase.js";
-import { saveTemplateToDatabase } from "../functions/template/saveTemplateToDatabase.js";
+import {fetchCall} from '../functions/fetches/api';
+import { addSectionToTemplates} from "../functions/sections/addSectionToTemplates";
+import { fetchSectionFromDatabase} from "../functions/fetches/fetchSectionFromDatabase";
+import { saveTemplateToDatabase } from "../functions/fetches/saveTemplateToDatabase";
 import { determineTemplateTitle } from "../functions/template/determineTemplateTitle";
-import { fetchUserTemplates } from "../functions/fetches/fetchUserTemplates.js";
-import { checkCookieForAccess } from "../functions/fetches/checkUserAccess.js"
+import { fetchUserTemplates } from "../functions/fetches/fetchUserTemplates";
+import { checkCookieForAccess } from "../functions/fetches/checkUserAccess"
 import { createMetaDataFromStartingTemplates } from "../functions/metaData/createMetaDataFromStartingTemplates"
 
 //Typescript
@@ -43,8 +43,10 @@ import {
   TemplateSansOrder,
   personState,
   selectorSec,
-  TemplateState
-} from "../types/types";
+  TemplateState,
+  MetaData,
+  MetaDataValue,
+} from "../types/types_copy";
 
   //Style import
 import "../styles/main.scss";
@@ -53,10 +55,11 @@ import "../styles/main.scss";
 export const GlobalContext = createContext(null);
 
 
+
 function App() {
     //meta data for the templates to help sync with database.
   const [metaData, setMetaData] = 
-    useState<Map<string, { title: string, number: number }> | null>(
+    useState<MetaData>(
     new Map()
   );
 
@@ -74,6 +77,7 @@ function App() {
     if(currUser){
       fetchUserTemplates(currUser, metaData, setMetaData, dispatch);
     }
+    console.log(typeof currUser)
   }, [currUser])
 
     //holds the names of the two getting married.
@@ -114,6 +118,9 @@ const [fetchedData, setFetchedData] = useState(null);
 
     //ref the content of the etite
   const domRef = useRef();
+    //ref 
+  const sidebarRef = useRef();
+  const coverRef = useRef();
 
     //informs react when the section selector Box has been activated.
   const [selectorSec, setSelectorSec] = useState({
@@ -332,7 +339,7 @@ const [fetchedData, setFetchedData] = useState(null);
   }
 
     //set up the sidebar functionality.
-  const theSidebar = new createSidebarToggle();
+  const theSidebar = new createSidebarToggle(sidebarRef.current, coverRef.current);
 
   //initial load  
   useEffect(()=>{
@@ -365,6 +372,8 @@ const [fetchedData, setFetchedData] = useState(null);
             currTemplate : templates[templateTitle],
             theSidebar,
             domRef,
+            sidebarRef,
+            coverRef,
             popupDispatch,
             box: thePopup.box,
             subAct: thePopup.subAct,

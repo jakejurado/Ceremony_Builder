@@ -1,4 +1,4 @@
-import { displaySet, displayU } from "../../types/types";
+import { displaySet, displayU } from "../../types/types_copy";
 
 //changes the order of the sections after drag and drop
 function updateSectionOrder(order, payload) {

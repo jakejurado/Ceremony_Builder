@@ -1,16 +1,10 @@
+//USE
 
-
-//TEMPLATES 
-
-  //order
+//ELEMENTRY TYPES
 type OrderContent = [string, number];
+
 type Order = Array<OrderContent | undefined>;
-// type OrderNotNull = Array<OrderContent>
 
-type NonEmptyArray<T> = [T, ...T[]];
-type OrderNonEmpty = NonEmptyArray<OrderContent>;
-
-  //sections
 interface Section {
   script: Array<string>;
   description: string;
@@ -19,54 +13,46 @@ interface Section {
   duplicates?: number;
 }
 
-  //template
 interface TemplateSansOrder {
   [key: string]: Section;
 }
 
-interface TemplateSansSection{
+
+interface Template {
+  [key: string]: Section | { order: Order };
+}
+
+interface EmptyTemplate {
   order: Order;
 }
 
-type Template = TemplateSansSection & Section;
+type FilledTemplate = EmptyTemplate & { [key: string]: Section };
 
-  //templates
-interface TemplatesSansContent{
-  [key: string] : TemplateSansSection
+interface TemplatesSansTemplate {
+  [key: string]: Section | { order: Order }
 }
 
-interface TemplatesWithContent{
-  [key: string] : Template
+type TemplatesFilled = TemplatesSansTemplate & FilledTemplate
+
+interface Templates {
+  [key: string]: Template;
 }
 
-type Templates = TemplatesSansContent | TemplatesWithContent
-
-//CACHE
 interface Cache {
   [key: string]: Section;
 }
 
-//PERSON
-type PersonState = {
+type personState = {
   person1: string | undefined;
   person2: string | undefined;
 };
 
-//SELECTOR BOX
 type selectorSec = {
   isVisible: boolean;
   position: undefined | number;
 };
 
-
-//META DATA
-type MetaDataValue = { title: string; number: number | null };
-type MetaData = Map<string, MetaDataValue> | null;
-
-
-//REDUCERS
-
-  //ReducerPayloads
+//ReducerPayloads
 type moveSecPayload = {
   sourceIndex: number;
   destIndex: number;
@@ -78,6 +64,10 @@ type updateSecPayload = {
   index: number;
   add: number;
 };
+
+type MetaDataValue = { title: string; number: number | null };
+
+type MetaData = Map<string, MetaDataValue> | null;
 
 type loadSecPayload = {};
 
@@ -110,18 +100,13 @@ interface TemplateState {
 }
 
 export {
-  OrderContent,
   Order,
-  OrderNonEmpty,
   Section,
-  TemplateSansOrder,
-  TemplateSansSection,
   Template,
-  TemplatesSansContent,
-  TemplatesWithContent,
+  TemplateSansOrder,
   Templates,
   Cache,
-  PersonState,
+  personState,
   selectorSec,
   moveSecPayload,
   updateSecPayload,
@@ -134,4 +119,6 @@ export {
   TemplateState,
   MetaDataValue,
   MetaData,
+  EmptyTemplate,
+  FilledTemplate,
 };
