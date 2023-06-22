@@ -37,8 +37,8 @@ function PopupAuthLogin(){
   
   return(
     <div className="entireBox" >
-      <div id='loginTab' className="eachTab selectedTab">login</div>
-      <div id='signupTab' onClick={handleSignupTabClick} className="eachTab">signup</div>
+      <div id='loginTab' className="eachTab">login</div>
+      <div id='signupTab' onClick={handleSignupTabClick} className="eachTab selectedTab">signup</div>
       <form>
         <div className="mainInput">
           <div className = 'line'>
@@ -67,13 +67,13 @@ function PopupAuthLogin(){
           </ul>
 
           
-          <div className='lefty' onClick={handleForgotClick}>forgot password? </div>
+          <div className='footerNote' onClick={handleForgotClick}>forgot password? </div>
         </div>
       </form>
       <div className="bottomBox">
-        <div className='submitButton' id='authLoginsubmitButton' ref={buttonDom}>
+        <button className='submitButton' id='authLoginsubmitButton' ref={buttonDom}>
           Submit
-        </div>
+        </button>
       </div>
     </div>
   )

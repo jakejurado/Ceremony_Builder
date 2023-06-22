@@ -38,6 +38,31 @@
   transform: rotate($rotate);
 }
 
+@mixin transformMe($sec){
+  -webkit-transition: transform $sec ease-in-out;
+  -moz-transition: transform $sec ease-in-out;
+}
+
+
+  //for section side buttons
+@mixin secButtonDiv($startDeg, $endDeg, $color, $sec){
+  @include rotateMe($startDeg);
+
+  :hover{
+    @include rotateMe($endDeg);
+    @include transformMe($sec);
+    background-color: $color; 
+    border-radius: 50vw; 
+    box-shadow: 0px 0px 5px black;
+  }
+}
+
+
+
+
+
+// *****************
+
 @mixin buttonDiv($degStart, $degEnd, $sec, $color) {
   display: flex;
   flex-direction: column;

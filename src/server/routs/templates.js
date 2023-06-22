@@ -25,7 +25,8 @@ router.delete("/userTemplate",
   userController.compareTokenAndUser,
   templateController.deleteUserTemplate, 
   (req, res) => {
-    return res.status(204).send(res.locals.templateInfo.msg);
+    return res.status(204).send(res.locals.templateInfo);
+    
   }
 );
 

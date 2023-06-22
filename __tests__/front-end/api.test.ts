@@ -46,6 +46,6 @@ describe('BaseAPI', () => {
     fetchMock.mockResponseOnce(JSON.stringify(expectedData));
 
     const data = await fetchCall.delete('signout', { username: 'testUser' });
-    expect(data).toEqual(expectedData);
+    expect(data).toEqual(true);
   });
 });

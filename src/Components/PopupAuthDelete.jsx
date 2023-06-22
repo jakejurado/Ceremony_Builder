@@ -26,7 +26,7 @@ function PopupAuthDelete(){
     const password = userCurrPassDom.current.value;
     const userId = currUser
     const response = await fetchCall.delete('delete', { email, password, userId });
-    if (response.userDeleted) {
+    if (response) {
       popupDispatch({ type: null, act: null }); // removes popup
       setCurrUser(null); //removes current user
       dispatch({type: 'reset', payload: null})
@@ -39,8 +39,8 @@ function PopupAuthDelete(){
 
   return(
     <div className="entireBox" >
-      <div id='signOutTab' className="eachTab" onClick={handleSignoffClick} >Signout</div>
-      <div id='passwordTab' className="eachTab" onClick={handleResetClick}>Password</div>
+      <div id='signOutTab' className="eachTab selectedTab" onClick={handleSignoffClick} >Signout</div>
+      <div id='passwordTab' className="eachTab selectedTab" onClick={handleResetClick}>Password</div>
       <div id='DeleteTab' className="eachTab selectedTab" style={{backgroundColor: 'red'}} >Delete</div>
       <div className="mainInput">
         <div className='signoutBox'>

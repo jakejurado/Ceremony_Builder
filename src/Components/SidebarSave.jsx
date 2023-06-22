@@ -1,19 +1,29 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useReducer } from "react";
 import { GlobalContext } from "./App";
 
 function SidebarSave() {
-  const { dispatch } = useContext(GlobalContext);
-
+  const { dispatch, currUser } = useContext(GlobalContext);
+  const [notifications, setNotifications] = useState(null);
+  
   function handleClick() {
-    dispatch({type: 'saveTemplateToDatabase', payload: null} )
+    if(!currUser){
+      setNotifications('login or signup to save template')
+    } else {
+      setNotifications('template has been saved')
+      dispatch({type: 'saveTemplateToDatabase', payload: {setState: setNotifications}} )
+    }
+    setTimeout(setNotifications, 9000);
   }
 
   return (
     <div className="sidebarElements">
-      <h2>Save</h2>
+      {/* <h2>SAVE</h2> */}
       <button className="boxButton" onClick={handleClick}>
         Save
       </button>
+      <ul className='saveNotificataions'>
+        {notifications}
+      </ul>
     </div>
   );
 }

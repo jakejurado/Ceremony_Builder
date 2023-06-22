@@ -1,116 +1,148 @@
 @use "./variables" as v;
+@use "./animations" as a;
+@use "./mixins" as m;
 
+
+/*SECTIONS*/
+  //section container
 .section {
   display: grid;
-  grid-template-columns: 5vw 1fr 5vw;
-  width: 100%;
-  transition: width 1s;
-  margin: 3vw auto 3vw auto;
+  grid-template-columns: v.$fSize5 1fr v.$fSize5;
+  margin: v.$fSize5 auto v.$fSize5 auto;
+  width: 100%; //width needed for transition when closed
 }
 
-@keyframes fadeInAnimation {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-}
-
-.fadeIn {
-  animation: fadeInAnimation ease 4s;
-  animation-iteration-count: 1;
-  animation-fill-mode: forwards;
-}
-
+  //The section contains the visible/interactive part of the section
 .innerBox {
   display: flex;
-  grid-column-start: 2;
-  grid-column-end: 3;
   flex-direction: column;
   align-self: center;
-  height: 30vw;
+  grid-column: 2 / 3;
+  height: v.$fSize13;
   background-color: white;
-  margin: 2%;
+  margin: v.$fSize2;
   border: outset;
-  box-shadow: 5px 10px 10px rgb(74, 74, 74);
-  transition: height 0.5s;
+  box-shadow: .5px 10px 10px rgb(74, 74, 74);
 }
 
+  //Section Selector title
 .title {
   text-align: center;
-  padding: 1%;
+  padding: v.$fSize0;
 }
 
-/* holds the arrows and cards */
+  //holds the arrows and cards 
 .middleBox {
   display: grid;
-  grid-template-columns: 3vw 1fr 3vw;
+  grid-template-columns: v.$fSize5 1fr v.$fSize5;
   align-items: center;
   height: 78%;
   overflow: hidden;
 }
+
+  //left arrow to move between cards/scripts
 .lArrow {
   grid-column: 1 / 2;
   text-align: center;
   width: 100%;
   height: 30%;
 }
+
+  //right arrow to move between card/scripts
 .rArrow {
   width: 100%;
   height: 30%;
   grid-column: 3 / 4;
   transform: rotate(180deg);
 }
-.inset {
-  border: inset;
-}
+
+
+
+/*CARD COMPONENT*/
+  //the div contining the script 
 .cards {
   grid-column: 2 / 3;
-  font-family: v.$fontSecond;
   height: 100%;
-  border: inset;
-  background-color: rgba(255, 221, 244, 0.9);
+  background-color: v.$pinkMain2;
   color: rgb(32, 32, 32);
+  border: inset;
   overflow-y: scroll;
-  // padding: 2%;
-  line-height: 1.5;
+  line-height: 1.2;
+  font-family: v.$fontSecond;
   p {
-    padding: 2%;
+    padding: 0 v.$fSize1 0 v.$fSize1;
   }
 }
 
-.secButtons {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  align-items: center;
-  padding: 2vw 0 2vw 0;
-  margin-left: auto;
-  width: 70%;
-}
+  //container for four buttons (add,delete,move)
+  .secButtons {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    padding: v.$fSize3 0 v.$fSize3 0; //section
+    margin-left: auto;
+    width: 70%;
+  
+    div{
+      border-radius: 50%;
+      width: v.$fSize5;
+      height: v.$fSize5;
+
+      img{
+        width: 100%;
+      }
+    }
+  }
+    //plus Button
+  .addButton{
+    @include m.secButtonDiv(0deg, 359deg, v.$greenMain, 1s)
+  }
+    //remove button
+  .removeButton {
+    @include m.secButtonDiv(45deg, 360deg, v.$redMain, 1s);
+  }
+    //up arrow button
+  .upArrow{
+    @include m.secButtonDiv(0deg, 360deg, v.$yellowSecond, 1s)
+  }
+    //down arrow button
+  .dnArrow{
+    @include m.secButtonDiv(180deg, 360deg, v.$yellowSecond, 1s)
+  }
+  
+
+
 
 /* SELECTOR BOX */
+  //container for the selector box
 .selectorBox {
-  width: 60%;
-  margin: 7% auto 7% auto;
-}
-.selections {
-  text-align: center;
-}
-.sectionCategory {
-  display: flex;
-  flex-direction: column;
-  padding: 3%;
-  list-style-type: none;
+  width: 80%;
+  margin: v.$fSize5 auto v.$fSize5 auto;
 }
 
-.sectionTitle {
-  font-family: v.$fontSecond;
-  margin: 1%;
+  //the content of the selector box.
+.selections {
+  text-align: center;
+  ul{
+    display: flex;
+    flex-direction: column;
+    padding: v.$fSize1;
+    list-style-type: none;
+    h3{
+      display: flex;
+      flex-direction: column;
+    }
+    li{
+      font-family: v.$fontSecond;
+      border: solid;
+      border-color: rgb(251, 251, 243);
+      &:hover{
+        border: solid;
+        background-color: white;
+        cursor: pointer;
+      }
+    }
+  }
 }
-.sectionTitle:hover {
-  border: solid;
-  background-color: white;
-  cursor: pointer;
-}
+

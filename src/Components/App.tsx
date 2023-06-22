@@ -24,7 +24,6 @@ import { addSelectorSection } from "../functions/sections/selectorSec";
 import { updateCardIndex } from "../functions/sections/updateSec";
 import { removeSection } from "../functions/sections/removeSec";
 import { fetchTitles, organizeDataByCategory } from "../functions/fetches/selectorBoxFuncs";
-// import { saveDomToTemplates } from "../functions/sections/resetCard";
 import {createSidebarToggle} from '../functions/mainPage/sidebarClass';
 import {fetchCall} from '../functions/fetches/api';
 import { addSectionToTemplates} from "../functions/sections/addSectionToTemplates";
@@ -55,7 +54,6 @@ import "../styles/main.scss";
 export const GlobalContext = createContext(null);
 
 
-
 function App() {
     //meta data for the templates to help sync with database.
   const [metaData, setMetaData] = 
@@ -77,7 +75,6 @@ function App() {
     if(currUser){
       fetchUserTemplates(currUser, metaData, setMetaData, dispatch);
     }
-    console.log(typeof currUser)
   }, [currUser])
 
     //holds the names of the two getting married.
@@ -358,7 +355,7 @@ const [fetchedData, setFetchedData] = useState(null);
 
   return (
     <ErrorBoundary>
-      <div className="App">
+      <div className="AppContainer">
         <GlobalContext.Provider
           value={{
             dispatch,
@@ -385,7 +382,6 @@ const [fetchedData, setFetchedData] = useState(null);
         >
           <Header />
           {thePopup.box &&  <Popup box={thePopup.box} subAct={thePopup.subAct}/> }
-
           <Sidebar />
           <MainDisplay />
         </GlobalContext.Provider>

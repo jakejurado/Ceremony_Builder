@@ -1,4 +1,4 @@
-import sectionController from "../../src/server/controllers/sectionController copy";
+import sectionController from "../../src/server/controllers/sectionController";
 import db from "../../src/server/databaseModels/sqlModel"
 import { Request, Response, NextFunction } from 'express';
 

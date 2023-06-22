@@ -11,7 +11,7 @@ function SidebarPrint() {
 
   return (
     <div className="sidebarElements">
-      <h2>PRINT</h2>
+      {/* <h2>PRINT</h2> */}
       <button className="boxButton" onClick={handleClick}>
         Print
       </button>

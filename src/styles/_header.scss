@@ -1,3 +1,5 @@
+@use "./variables" as v;
+
 .titleS {
   top: 0;
   position: sticky;
@@ -5,12 +7,12 @@
   display: flex;
   justify-content: center;
   width: 100%;
-  margin: 3% 0 7% 0;
+  margin: v.$fSize4 0 v.$fSize7 0;
   z-index: 1;
 }
 
 #h1Image {
   width: 90%;
-  /* background-color: rgb(251, 251, 243); */
-  /* border-bottom: thin solid rgb(75, 75, 75); */
+  // background-color: v.$whiteMain;
+  // border-bottom: thin solid rgb(75, 75, 75); 
 }

@@ -110,9 +110,9 @@ function Sections(props) {
         >
           <div
             id="section"
-            className={`${props.varName} section box_index-${props.cardIndex}`}
+            className={`${props.varName} section box_index-${props.cardIndex} shrinkWidth fadeIn`}
           >
-            <div className="innerBox">
+            <div className="innerBox shrinkHeight">
               <div className="title">
                 <h3 title={props.description}>{props.title}</h3>
               </div>
