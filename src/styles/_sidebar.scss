@@ -1,6 +1,7 @@
 @use "./variables" as v;
 @use "./buttons.scss" as b;
 
+  //The white background behind the sidebar that hides the content while sidebar is open
 #cover {
   position: fixed;
   top: 0;
@@ -10,6 +11,8 @@
   background-color: white;
   opacity: 0.9;
 }
+
+  //The actual sidebar!!
 #sideBar {
   position: fixed;
   display: flex;
@@ -18,93 +21,30 @@
   top: 0;
   width: 33%;
   height: 100%;
-  padding: 0 2vw 0 2vw;
-  // background-color: bisque;
-  background-color: v.$pinkMain;
-  box-shadow: 0.15em 0.15em grey;
+  padding: 0 v.$fSize3 0 v.$fSize3;
+  background-color: v.$yellowThird; //v.$pinkMain;
+  box-shadow: v.$fSize0 v.$fSize0 grey;
   z-index: 2;
-  transition: width 2s;
+  transition: width 1.5s;
+  overflow: scroll;
     &:hover{
-      // background-color: gold;
+      // background-color: v.$yellowThird;
     }
 }
 
-#login {
-  align-self: flex-end;
-  color: v.$whiteMain;
-  font-size: v.$fontSizeMedSm;
-  margin: 0 0 3vw 0;
-}
 
-#sidebarButton {
-  position: fixed;
-  margin: 14% 0 0 1%;
-  z-index: 3;
-}
-
-//All sidebar Elements
-.sidebarElements {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  font-size: v.$fontSizeMed;
-  padding: 3vw 0 3vw 0;
-  border-bottom: solid;
-  border-width: thin;
-  border-color: v.$whiteMain;
-  align-items: center;
-  h2 {
-    margin-bottom: 2vw;
-  }
-  p {
-    display: flex;
-    flex-direction: column;
-    font-family: v.$fontSecond;
-    font-size: v.$fontSizeMedSm;
-    margin: 1vw 0 0 0;
-  }
-  input {
-    border-color: hsl(0, 0%, 80%);
-  }
-}
-
-.h2line{
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items:flex-start;
-  // border: solid;
-}
-
-.icons{
-  // border: thin solid black;
-  padding: .5vw;
-  margin: 1vw;
-
-  border-radius: 50%;
-}
-
-// SIDEBAR TEMPLATES
-.sidebarTemplate {
-}
-
-// SIDEBAR NAMES
-.sidebarNames {
-}
-
-
-.sidebar-login {
+  //the links to login/signup & account/signout
+.sidebar-loginlogout {
   display: flex;
   flex-direction: row-reverse;
   width: 100%;
-  background-color: v.$pinkMain;
+  background-color: v.$yellowThird;
 
   ul {
-    background-color: v.$pinkMain;
-    
-
+    background-color: v.$yellowThird;
+  
     li {
-      margin-left: 1vw;
+      margin-left: v.$fSize1;
       color: v.$whiteMain;
 
       &:hover {
@@ -114,4 +54,68 @@
   }
 }
 
+  //All sidebar Elements
+.sidebarElements {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: v.$fSize3 0 v.$fSize3 0;
+  align-items: center;
+  border-bottom: solid thin v.$whiteMain;;
+  font-size: v.$fontSizeMed;
+    
+  h2 {  //title of component
+    margin-bottom: v.$fSize3;
+  }
 
+  p {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    font-family: v.$fontSecond;
+    font-size: v.$fontSizeMed; //v.$fontSizeMedSm;
+    margin: v.$fSize1 0 0 0;
+  }
+  
+  input {
+    border-color: hsl(0, 0%, 80%);
+    width: v.$fSize12;
+    height: 2rem;
+    font-size: v.$fSize3;
+    padding-left: 1vw;
+  }
+}
+
+// SIDEBAR TEMPLATES
+.sidebarTemplate {
+  
+  .templateSelectorDiv {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items:center;
+
+    .icons{
+      width: 100%;
+      margin: v.$fSize0;
+      border: solid thin v.$yellowThird;
+      
+      &:hover{
+        border: solid thin grey;
+        background-color: v.$whiteMain;
+        border-radius: 50%;
+      }
+    }
+  }
+}
+
+// SIDEBAR SAVE
+.saveNotificataions{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: v.$yellowThird;
+  color: red;
+  font-style:italic;
+  font-size: smaller;
+}

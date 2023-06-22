@@ -59,9 +59,9 @@ function PopupAuthForgot(){
         </div>
       </form>
       <div className="bottomBox">
-        <div className='submitButton' ref={buttonDom}>
+        <button className='submitButton' ref={buttonDom}>
           Submit
-        </div>
+        </button>
       </div>
     </div>
 

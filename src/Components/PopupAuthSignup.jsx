@@ -36,8 +36,8 @@ function PopupAuthSignup(){
 
   return(
     <div className="entireBox" >
-      <div id='loginTab' onClick={handleLoginTabClick} className="eachTab">login</div>
-      <div id='signupTab' className="eachTab selectedTab">signup</div>
+      <div id='loginTab' onClick={handleLoginTabClick} className="eachTab selectedTab">login</div>
+      <div id='signupTab' className="eachTab">signup</div>
       <form>
         <div className="mainInput">
 
@@ -73,9 +73,9 @@ function PopupAuthSignup(){
       </form>
 
       <div className="bottomBox">
-        <div className='submitButton' ref={buttonDom}>
+        <button className='submitButton' ref={buttonDom}>
           Submit
-        </div>
+        </button>
       </div>
     </div>
   )

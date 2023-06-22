@@ -15,11 +15,11 @@ function SidebarNames() {
     <div className="sidebarNames sidebarElements">
       <h2>NAMES</h2>
       <p>
-        person #1:
+        person #1
         <input className="person1" onChange={onNameChange} />
       </p>
       <p>
-        person #2:
+        person #2
         <input className="person2" onChange={onNameChange} />
       </p>
     </div>

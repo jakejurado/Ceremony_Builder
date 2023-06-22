@@ -77,7 +77,6 @@ function App() {
     if(currUser){
       fetchUserTemplates(currUser, metaData, setMetaData, dispatch);
     }
-    console.log(typeof currUser)
   }, [currUser])
 
     //holds the names of the two getting married.
@@ -358,7 +357,7 @@ const [fetchedData, setFetchedData] = useState(null);
 
   return (
     <ErrorBoundary>
-      <div className="App">
+      <div className="AppContainer">
         <GlobalContext.Provider
           value={{
             dispatch,
@@ -385,7 +384,6 @@ const [fetchedData, setFetchedData] = useState(null);
         >
           <Header />
           {thePopup.box &&  <Popup box={thePopup.box} subAct={thePopup.subAct}/> }
-
           <Sidebar />
           <MainDisplay />
         </GlobalContext.Provider>

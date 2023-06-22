@@ -26,7 +26,7 @@ function SideBarTemplate() {
   return (
     <div className="sidebarTemplate sidebarElements">
       <h2>TEMPLATES</h2>
-      <div className = 'h2line'>
+      <div className = 'templateSelectorDiv'>
         <img src={pencil} id='pencilIcon' className='icons' onClick={handleEditClick}/>
         <SelectorOptionMenu options={templateTitles} />
         <img src={plus} className='icons'onClick={handlePlusClick} />

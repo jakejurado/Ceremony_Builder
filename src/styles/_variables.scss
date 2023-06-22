@@ -1,11 +1,14 @@
 $blackMain: rgb(15, 15, 15);
 $blackLight: rgb(65, 65, 65);
 $grayMain: hsl(0, 0%, 80%);
+$pinkMain2: rgb(255, 183, 197);
 $pinkMain: rgb(255, 221, 244);
-$yellowMain: #989534;
-$yellowSecond: rgb(255, 248, 166);
-$redMain: rgb(246 135 135);
-$greenMain: rgb(54, 250, 54);
+$yellowMain: rgb(255, 215, 0); // #989534;
+$yellowSecond: rgb(253, 253, 150);
+$yellowThird: rgb(255, 215, 0);
+$redMain: rgb(220, 20, 60);
+$redMain2: rgb(246 135 135);
+$greenMain: rgb(152, 251, 152);
 $whiteMain: rgb(251, 251, 243);
 $fontMain: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande", "Lucida Sans",
   Arial, sans-serif;
@@ -17,11 +20,29 @@ $fontSizeMedSm: 1.5vw;
 $fontSizeSm: 1vw;
 $fontSizeTiny: 0.75vw;
 
+$fSize0: .25rem;
+$fSize1: .5rem;
+$fSize2: .75rem;
+$fSize3: 1rem;
+$fSize4: 1.5rem;
+$fSize5: 2rem;
+$fSize6: 2.5rem;
+$fSize7: 3rem;
+$fSize8: 4rem;
+$fSize9: 5rem;
+$fSize10: 6rem;
+$fSize11: 7rem;
+$fSize12: 10rem;
+$fSize13: 15rem;
+$fSize14: 20rem;
+
+
 @media screen and (min-width: 1200px) {
   :root {
     $blackMain: rgb(15, 15, 15);
     $blackLight: rgb(65, 65, 65);
-    $pinkMain: rgb(255, 221, 244);
+    $pinkMain2: rgb(255, 221, 244);
+    $pinkMain: rgb(255, 183, 197);
     $yellowMain: #989534;
     $redMain: rgb(246 135 135);
     $greenMain: rgb(54, 250, 54);
@@ -41,7 +62,8 @@ $fontSizeTiny: 0.75vw;
   :root {
     $blackMain: rgb(15, 15, 15);
     $blackLight: rgb(65, 65, 65);
-    $pinkMain: rgb(255, 221, 244);
+    $pinkMain2: rgb(255, 221, 244);
+    $pinkMain: rgb(255, 183, 197);
     $yellowMain: #989534;
     $redMain: rgb(193, 93, 93);
     $whiteMain: rgb(251, 251, 243);

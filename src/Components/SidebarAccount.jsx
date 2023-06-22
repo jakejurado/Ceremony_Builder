@@ -24,7 +24,7 @@ function SidebarAccount(){
   }
 
   return(
-    <div className='sidebar-login'>
+    <div className='sidebar-loginlogout'>
       {!currUser && 
         <ul className='sidebar-login-ul'>
           <li onClick={handleLoginClick}>login</li>

@@ -23,14 +23,12 @@ function Sidebar() {
     <div id="panel">
       <div id="cover" ref={coverRef}/>
       <div id="sideBar" ref={sidebarRef} onMouseOver={handleSidebarHover} onMouseLeave={handleSidebarHover}>
-        {/* <div id="login"><span onClick={handleLoginClick}>login</span> | <span onClick={handleSigninClick}>signup</span></div> */}
         <SidebarAccount />
         <SideBarTemplate />
         <SidebarNames />
         <SidebarSave />
         <SidebarPrint />
       </div>
-      {/* <div>Save Current</div> */}
     </div>
   );
 }

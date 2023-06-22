@@ -21,7 +21,7 @@ function PopupAuthSignout(){
       <div className="mainInput">
         <div className="signoutBox">
           <h2>Signout</h2>
-          <p>aka: logout, signoff, logoff...</p>
+          <p>Is this the button that you've been looking for?</p>
           <button 
           className='submitButton buttonActive acctButton'
           onClick={handleSubmitClick}
