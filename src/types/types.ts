@@ -1,10 +1,16 @@
-//USE
 
-//ELEMENTRY TYPES
-type orderContent = [string, number];
 
-type order = Array<orderContent | undefined>;
+//TEMPLATES 
 
+  //order
+type OrderContent = [string, number];
+type Order = Array<OrderContent | undefined>;
+// type OrderNotNull = Array<OrderContent>
+
+type NonEmptyArray<T> = [T, ...T[]];
+type OrderNonEmpty = NonEmptyArray<OrderContent>;
+
+  //sections
 interface Section {
   script: Array<string>;
   description: string;
@@ -13,38 +19,54 @@ interface Section {
   duplicates?: number;
 }
 
+  //template
 interface TemplateSansOrder {
   [key: string]: Section;
 }
 
-// interface Template {
-//   order: order;
-//   [key: string]: Section | order;
-// }
-
-interface Template {
-  [key: string]: Section | { order: order };
+interface TemplateSansSection{
+  order: Order;
 }
 
-interface Templates {
-  [key: string]: Template;
+type Template = TemplateSansSection & Section;
+
+  //templates
+interface TemplatesSansContent{
+  [key: string] : TemplateSansSection
 }
 
+interface TemplatesWithContent{
+  [key: string] : Template
+}
+
+type Templates = TemplatesSansContent | TemplatesWithContent
+
+//CACHE
 interface Cache {
   [key: string]: Section;
 }
 
-type personState = {
+//PERSON
+type PersonState = {
   person1: string | undefined;
   person2: string | undefined;
 };
 
+//SELECTOR BOX
 type selectorSec = {
   isVisible: boolean;
   position: undefined | number;
 };
 
-//ReducerPayloads
+
+//META DATA
+type MetaDataValue = { title: string; number: number | null };
+type MetaData = Map<string, MetaDataValue> | null;
+
+
+//REDUCERS
+
+  //ReducerPayloads
 type moveSecPayload = {
   sourceIndex: number;
   destIndex: number;
@@ -83,14 +105,23 @@ type dataObj = {
 
 type dataArray = Array<dataObj>;
 
+interface TemplateState {
+  [key: string]: any; // This allows any key with any value type
+}
+
 export {
-  order,
+  OrderContent,
+  Order,
+  OrderNonEmpty,
   Section,
-  Template,
   TemplateSansOrder,
+  TemplateSansSection,
+  Template,
+  TemplatesSansContent,
+  TemplatesWithContent,
   Templates,
   Cache,
-  personState,
+  PersonState,
   selectorSec,
   moveSecPayload,
   updateSecPayload,
@@ -100,4 +131,7 @@ export {
   section,
   dataObj,
   dataArray,
+  TemplateState,
+  MetaDataValue,
+  MetaData,
 };

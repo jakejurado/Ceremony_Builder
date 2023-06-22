@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useRef } from "react";
 import WordCards from "./WordCards";
 import AddSectionButton from "./AddSectionButton";
 import { GlobalContext } from "./App";
@@ -10,7 +10,7 @@ import plus from "../../public/assets/plus-circle.svg";
 
 function Sections(props) {
   //global context
-  const { dispatch, template } = useContext(GlobalContext);
+  const { dispatch, currTemplate } = useContext(GlobalContext);
   //swaping cards
   function handleLeftRightClick(e) {
     const [button, varname, index, cardIndex, numOfCards] =
@@ -69,7 +69,7 @@ function Sections(props) {
   function handleArrowClick(e) {
     let [dir, index] = e.target.classList[0].split("-");
     index = parseInt(index);
-    const numOfSec = template.order.length - 1;
+    const numOfSec = currTemplate.order.length - 1;
 
     let sourceIndex;
     let destIndex;
@@ -91,6 +91,15 @@ function Sections(props) {
     });
   }
 
+  const [curserPos, setcurserPos] = useState();
+  const activeDom = useRef();
+  function captureCardContent(){
+    const innerText = activeDom.current.innerText;
+    const curserPos = activeDom.current.selectionStart;
+    setcurserPos(curserPos);
+    // dispatch({type: 'updateWords', payload: {innerText, sectionName: 'what'}})
+  }
+
   return (
     <Draggable draggableId={props.varName} index={props.id}>
       {(provided) => (
@@ -101,9 +110,9 @@ function Sections(props) {
         >
           <div
             id="section"
-            className={`${props.varName} section box_index-${props.cardIndex}`}
+            className={`${props.varName} section box_index-${props.cardIndex} shrinkWidth fadeIn`}
           >
-            <div className="innerBox">
+            <div className="innerBox shrinkHeight">
               <div className="title">
                 <h3 title={props.description}>{props.title}</h3>
               </div>

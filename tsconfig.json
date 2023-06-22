@@ -1,16 +1,21 @@
 {
   "compilerOptions": {
     "module": "es6",
-    "target": "es5",
+    // "target": "es5",
+    "target": "es2015",
     "noImplicitAny": false,
     "removeComments": true,
     "preserveConstEnums": true,
     "sourceMap": true,
     "allowSyntheticDefaultImports": true,
     "jsx": "react",
-    "lib": ["es2022", "dom"]
+    "lib": ["es2022", "dom"],
+    "moduleResolution": "node",
   },
 
   "include": ["src/**/*"],
-  "exclude": ["node_modules", "**/*.spec.ts"]
+  "exclude": ["node_modules", "**/*.spec.ts"],
+  "paths": {
+    "@modules/*": ["./node_modules"],
+  },
 }

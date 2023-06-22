@@ -1,9 +1,7 @@
-@import "./base/reset";
-@import "./components/buttons.scss";
-@import "./layout/popup";
-@import "./pages/_sidebar";
-@import "./pages/_header.scss";
-@import "./pages/_mainDisplay";
-@import "./pages/_sections";
-@import "./pages/accountBox";
-@import "./pages/addSectionButton";
+@import "./reset";
+@import "./buttons";
+@import "./popup";
+@import "./_sidebar";
+@import "./_header";
+@import "./_mainDisplay";
+@import "./_sections";

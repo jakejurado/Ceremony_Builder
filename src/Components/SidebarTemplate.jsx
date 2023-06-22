@@ -2,13 +2,20 @@ import React, { useContext } from "react";
 // import Select from "react-select";
 import { GlobalContext } from "./App";
 import SelectorOptionMenu from "./SelectorOptionMenu";
+import check from "../../public/assets/check2.svg";
+import pencil from "../../public/assets/pencil_grey.svg";
+import plus from "../../public/assets/plus-circle.svg";
 
 function SideBarTemplate() {
   //brings state from App
-  const { templates, setTemplateTitle } = useContext(GlobalContext);
+  const { templates, setTemplates, dispatch, popupDispatch} = useContext(GlobalContext);
 
-  function handleClick(e) {
-    setTemplateTitle(e.target.innerText);
+  function handlePlusClick(){
+    dispatch({ type: "addTEMPLATE", payload: {key: 'myTemplate', value: {order:[]}}});
+  }
+
+  function handleEditClick(){
+    popupDispatch({type: 'myTemplates', subAct: null})
   }
 
   const templateTitles = [];
@@ -19,7 +26,12 @@ function SideBarTemplate() {
   return (
     <div className="sidebarTemplate sidebarElements">
       <h2>TEMPLATES</h2>
-      <SelectorOptionMenu options={templateTitles} />
+      <div className = 'templateSelectorDiv'>
+        <img src={pencil} id='pencilIcon' className='icons' onClick={handleEditClick}/>
+        <SelectorOptionMenu options={templateTitles} />
+        <img src={plus} className='icons'onClick={handlePlusClick} />
+      </div>
+      
     </div>
   );
 }

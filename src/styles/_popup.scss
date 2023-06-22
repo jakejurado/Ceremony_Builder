@@ -1,0 +1,337 @@
+@use "./variables" as v;
+
+
+  //The container for the popup box
+#popupContainer{
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  z-index: 100;
+}
+
+
+  //The white background cover
+#popupWhiteBackground{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: white;
+  opacity: .9;
+}
+
+/*** PRINT POPUP *****/
+  //white background for behind the print box
+#popupPrintCover{
+  display: flex;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+}
+  //contents of the print box
+#popupPrintBox {
+  display: flex;
+  flex-direction: column;
+  overflow: scroll;
+  background-color: v.$pinkMain;
+  border: solid thick black;
+  padding: v.$fSize3;
+  align-items: center;
+  width: 85vw;
+  height: 85vh;
+  z-index: 4;
+}
+
+/**** TEMPLATE POPUP ****/
+  //the actual box for the templates
+#templateBox{
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: v.$fSize7;
+  background-color: v.$pinkMain;
+  border: thin solid v.$blackMain;
+
+  h3{
+    margin-bottom: v.$fSize3;
+  }
+  
+  #templateBoxUL{
+    display: flex;
+    flex-direction: column;
+    background-color: v.$pinkMain;
+    width: v.$fSize13;
+    li{
+      margin-bottom: v.$fSize1;
+    }
+  }
+}
+
+  //holds three divs displayed in each row
+.templateTitleRows{
+  display: grid;
+  grid-template-columns: 1fr 70% 1fr;
+  width: 100%;
+
+    //center the contents of the div
+  div{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+      //all image icons
+    img{
+      width: 1.25rem;
+      border: solid thin v.$pinkMain;
+
+      &:focus, 
+      &:hover{
+        cursor: pointer;
+        border: solid thin v.$whiteMain;
+        border-radius: 50%;
+      }
+    }
+      //input to rename template
+    input{
+      border-radius: 5px;
+      height: 100%;
+      width: 95%;
+      border: none;
+      background-color: white;
+
+      &:focus {
+        outline: none;
+      }
+    }
+  }
+    
+    //pencil icon
+  .rowsPencil{
+    img:hover, 
+    img:focus{
+      background-color: v.$whiteMain;
+    }
+  } 
+    //x icon
+  .rowsClose{
+    img:hover,
+    img:focus {
+      background-color: v.$redMain;
+      border-color: v.$redMain;
+    }
+  } 
+
+    //save (check) icon
+  .rowsSave{
+    img:hover,
+    img:focus {
+      background-color: v.$greenMain;
+    }
+  } 
+
+    //middle div that holds template name;
+  .rowsTitle{
+    background-color: white;
+    border: solid thin v.$blackMain;
+    border-radius: 5px;
+    height: 100%;
+  }
+}
+
+
+
+
+
+
+
+/**** POPUP AUTH ****/
+  //wrapper for PopupAuth
+  .acctPopup{
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+    //invisible wrapper for all popups.
+  .entireBox{
+    width: 50%;
+    display:flex;
+    flex-wrap: wrap;
+    background: transparent;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    
+    //tabs for login/signup
+    .eachTab{
+      position: relative; 
+      background-color: v.$whiteMain;
+      color: grey;
+      flex-basis: v.$fSize7;
+      text-align: center;
+      padding: v.$fSize0;
+      border-top: solid thin grey;
+      border-left: solid thin grey;
+      border-right: solid thin grey;
+      border-width: thin;
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
+      box-shadow: 5px 5px 10px grey;
+    }
+  
+    //different style for current popupBox tab
+    .selectedTab{
+      background-color: v.$yellowMain;
+      color: white;
+      &:focus,
+      &:hover{
+        color: v.$blackMain;
+      }
+    }
+    
+    //main content div of the popup.
+    .mainInput{
+      position:relative;
+      display: flex;
+      width: 100%;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      background-color: v.$whiteMain;
+      padding-top: v.$fSize4;
+      border: solid thin grey;
+      border-bottom-left-radius: 5px;
+      border-bottom-right-radius: 5px;
+      border-top-right-radius: 5px;
+      box-shadow: 5px 5px 10px grey;
+  
+        //instructions
+      .lineInstructions{
+        position: relative;
+        display: flex;
+        flex-wrap: nowrap;
+        flex-basis: 100%;
+        text-align: center;
+        padding: v.$fSize1;
+      }
+  
+      //each input line
+      .line{
+        position: relative;
+        display: flex;
+        flex-wrap: nowrap;
+        flex-basis: 100%;
+        text-align: center;
+        padding: v.$fSize1;
+        
+        //label for what to enter in the input
+        .desc{
+          text-align: right;
+          flex-basis: 25%;
+          padding-right: v.$fSize3;
+          padding: v.$fSize2 v.$fSize2 v.$fSize2 0;    
+        }
+  
+        //div that holds the input.
+        .inputDiv{
+          flex-basis: 70%;
+          display: flex;
+          border-radius: 5px;
+    
+          input{
+            width: 100%;
+            padding: v.$fSize2 v.$fSize2 v.$fSize2 v.$fSize2;   
+            border: solid thin grey;
+            border-radius: 10px;
+            font-size: v.$fontSizeMed;
+          }
+        }
+      }
+  
+        //adds a bit more margin to the line if needed
+      .moreMargin {
+        margin-bottom: v.$fSize3;
+      }
+  
+        //notifications of error
+      #incompleteNotifications{
+        display: flex;
+        flex-direction: column;
+        margin: v.$fSize4 0 v.$fSize5 0;
+        color: red;
+        list-style-type: circle;
+        font-style: italic;
+      }
+  
+        //notifications that success
+      .complete{
+        color: green;
+      }
+  
+        //footer at bottom
+      .footerNote{
+        flex-basis: 100%;
+        text-align: right;
+        font-size: smaller;
+        padding-right: v.$fSize3
+      }
+    }
+      //submit button div
+    .bottomBox{
+      width: 96%;
+      margin-top: v.$fSize3;
+      border-radius: 5px;
+      
+      .submitButton {
+        border: solid thin grey;
+        border-radius: 5px;
+        padding: v.$fSize1;
+        text-align: center;
+        background-color: v.$whiteMain;
+        color: grey;
+        box-shadow: 5px 5px 10px grey;
+        width: 100%;
+      }
+      
+      .buttonActive{
+        color: black;
+      }
+    } 
+  }
+    
+    
+    //  PopupAuthSignout signout box
+  .signoutBox{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    // margin-bottom: 3vw;
+    h2 {
+      padding: v.$fSize1;
+      margin-bottom: v.$fSize3;
+    }
+  }
+  
+  .acctButton{
+    margin-bottom: v.$fSize3;
+    color: white;
+    background-color: rgb(46, 45, 45);
+    
+    &:hover{
+      background-color: v.$pinkMain;
+      color: black;
+    }
+  }
+    
+    

@@ -10,6 +10,7 @@ function AccountBox() {
         <br />
         password: <input />
       </div>
+      <button type="button">submit</button>
     </div>
   );
 }

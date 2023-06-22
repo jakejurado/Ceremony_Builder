@@ -8,30 +8,27 @@ import { DragDropContext, Droppable } from "react-beautiful-dnd";
 //The main display for the site
 function MainDisplay() {
   //Global Context comes from App.jsx
-  const { selectorTitles, template, dispatch, selectorSec, domRef } =
+  const { selectorTitles, currTemplate, dispatch, selectorSec, domRef, templates, templateTitle } =
     useContext(GlobalContext);
 
-  //loads the sections from the state in display.  Build the dom
+  //loads the sections from the state in display to build the dom
   let loadSections = [];
-  // console.log({ template });
-  const { order, ...rest } = template;
+  const { order, ...rest } = currTemplate;
   for (let i = 0; i < order.length; i++) {
     let [varTitle, pos] = order[i];
 
-    //This occurs when the display is updated, but the template hasn't updated from the fetch yet.  skip that section until ready.
-    if (!rest.hasOwnProperty(varTitle)) continue;
-
-    //if the selector section is true and the index is at the position it should go, add the selector box
+    //if the selector section is true and the index is at the position it should add the selector box
     if (selectorSec.isVisible && i === selectorSec.position) {
       loadSections.push(
-        <SectionSelector
-          key="selectorBox"
-          data={selectorTitles}
-          index={i}
+        <SectionSelector 
+          key="selectorBox" 
+          data={selectorTitles} 
+          index={i} 
           dispatch={dispatch}
-        />
-      );
+       />);
     }
+
+    //load each section into the array to be displayed.
     const { title, description, script } = rest[varTitle];
     loadSections.push(
       <Section
@@ -47,6 +44,18 @@ function MainDisplay() {
       />
     );
   }
+  
+  //shows the selector if the template.order is empty
+  if(!loadSections.length){
+    loadSections.push(
+      <SectionSelector
+        key="selectorBox"
+        data={selectorTitles}
+        index={0}
+        dispatch={dispatch}
+      />
+    )
+  }
 
   //DRAG DROP FUNCTIONALITY
   function dragEnd(e) {
@@ -61,22 +70,18 @@ function MainDisplay() {
     });
   }
 
+  //hides all the buttons for the section that is being dragged and drops
   function createToggleDragStartStop() {
     const nodes = [];
     return (e) => {
       if (!nodes.length) {
         const [node] = document.getElementsByClassName(e.draggableId);
-        const removeBox = node.querySelector(".removeButton");
-        const addBox =
-          node.parentElement.nextElementSibling.querySelector(".addButton");
-        removeBox.style.display = "none";
-        addBox.style.display = "none";
-        nodes.push(removeBox, addBox);
+        const allBtns = node.querySelector(".secButtons");
+        allBtns.style.display = "none";
+        nodes.push(allBtns);
       } else {
-        while (nodes.length) {
-          let node = nodes.pop();
-          node.style.display = "flex";
-        }
+        let node = nodes.pop();
+        node.style.display = "flex";
       }
     };
   }

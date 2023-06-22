@@ -3,7 +3,7 @@ import backgroundImage from "../files/minimal9.png";
 
 function SectionSelector({ data, index, handleSectionChange, dispatch }) {
   function handleClick(e) {
-    const [_, varname] = e.target.classList[1].split("-");
+    const [_, varname] = e.target.classList[0].split("-");
     const res = { action: "addSEC", varname, index: parseInt(index) + 1 };
     // handleSectionChange(res);
     dispatch({
@@ -26,13 +26,13 @@ function SectionSelector({ data, index, handleSectionChange, dispatch }) {
             {Object.entries(data).map(([category, obj]) => (
               <ul
                 key={category}
-                className={"sectionCategory selector-category"}
+                className={"selector-category"}
               >
                 <h3>{category}:</h3>
                 {Object.entries(obj).map(([title, varname]) => (
                   <li
                     key={title}
-                    className={`sectionTitle selector-${varname}`}
+                    className={`selector-${varname}`}
                     onClick={handleClick}
                     onKeyDown={handleClick}
                   >
