@@ -24,7 +24,6 @@ import { addSelectorSection } from "../functions/sections/selectorSec";
 import { updateCardIndex } from "../functions/sections/updateSec";
 import { removeSection } from "../functions/sections/removeSec";
 import { fetchTitles, organizeDataByCategory } from "../functions/fetches/selectorBoxFuncs";
-// import { saveDomToTemplates } from "../functions/sections/resetCard";
 import {createSidebarToggle} from '../functions/mainPage/sidebarClass';
 import {fetchCall} from '../functions/fetches/api';
 import { addSectionToTemplates} from "../functions/sections/addSectionToTemplates";
@@ -55,7 +54,6 @@ import "../styles/main.scss";
 export const GlobalContext = createContext(null);
 
 
-
 function App() {
     //meta data for the templates to help sync with database.
   const [metaData, setMetaData] = 
@@ -70,7 +68,7 @@ function App() {
   const [sectionCache, setSectionCache] = useState(null);
 
     //stores the current users ID
-  const [currUser, setCurrUser] = useState(null);
+  const [currUser, setCurrUser] = useState(45);
 
   //fetch templates after user signs in.
   useEffect(() => {

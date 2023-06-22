@@ -13,9 +13,9 @@ function PopupAuthSignout(){
 
   return(
     <div className="entireBox" >
-      <div id='signOutTab' className="eachTab selectedTab">Signout</div>
-      <div id='passwordTab' className="eachTab" onClick={handleResetClick} >Password</div>
-      <div id='DeleteTab' className="eachTab" onClick={handleDeleteClick} >Delete</div>
+      <div id='signOutTab' className="eachTab">Signout</div>
+      <div id='passwordTab' className="eachTab selectedTab" onClick={handleResetClick} >Password</div>
+      <div id='DeleteTab' className="eachTab selectedTab" onClick={handleDeleteClick} >Delete</div>
 
 
       <div className="mainInput">

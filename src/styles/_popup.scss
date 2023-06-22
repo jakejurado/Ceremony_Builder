@@ -40,10 +40,9 @@
   overflow: scroll;
   background-color: v.$pinkMain;
   border: solid thick black;
-  margin: 1vw;
-  padding: 2vw;
+  padding: v.$fSize3;
   align-items: center;
-  width: 80vw;
+  width: 85vw;
   height: 85vh;
   z-index: 4;
 }
@@ -56,21 +55,21 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 6vw;
+  padding: v.$fSize7;
   background-color: v.$pinkMain;
   border: thin solid v.$blackMain;
 
   h3{
-    margin-bottom: 2vw;
+    margin-bottom: v.$fSize3;
   }
   
   #templateBoxUL{
     display: flex;
     flex-direction: column;
     background-color: v.$pinkMain;
-    width: 25vw;
+    width: v.$fSize13;
     li{
-      margin-bottom: 1vw;
+      margin-bottom: v.$fSize1;
     }
   }
 }
@@ -176,9 +175,9 @@
       position: relative; 
       background-color: v.$whiteMain;
       color: grey;
-      flex-basis: 15%;
+      flex-basis: v.$fSize7;
       text-align: center;
-      padding: .5vw;
+      padding: v.$fSize0;
       border-top: solid thin grey;
       border-left: solid thin grey;
       border-right: solid thin grey;
@@ -194,7 +193,7 @@
       color: white;
       &:focus,
       &:hover{
-        background-color: v.$pinkMain;
+        color: v.$blackMain;
       }
     }
     
@@ -207,7 +206,7 @@
       justify-content: center;
       align-items: center;
       background-color: v.$whiteMain;
-      padding-top: 3vw;
+      padding-top: v.$fSize4;
       border: solid thin grey;
       border-bottom-left-radius: 5px;
       border-bottom-right-radius: 5px;
@@ -221,7 +220,7 @@
         flex-wrap: nowrap;
         flex-basis: 100%;
         text-align: center;
-        padding: 1vw;
+        padding: v.$fSize1;
       }
   
       //each input line
@@ -231,14 +230,14 @@
         flex-wrap: nowrap;
         flex-basis: 100%;
         text-align: center;
-        padding: 1vw;
+        padding: v.$fSize1;
         
         //label for what to enter in the input
         .desc{
           text-align: right;
-          flex-basis:25%;
-          padding-right: 1vw;
-          padding: 3% 3% 3% 0;    
+          flex-basis: 25%;
+          padding-right: v.$fSize3;
+          padding: v.$fSize2 v.$fSize2 v.$fSize2 0;    
         }
   
         //div that holds the input.
@@ -249,7 +248,7 @@
     
           input{
             width: 100%;
-            padding: 3% 3% 3% 3%;
+            padding: v.$fSize2 v.$fSize2 v.$fSize2 v.$fSize2;   
             border: solid thin grey;
             border-radius: 10px;
             font-size: v.$fontSizeMed;
@@ -259,14 +258,14 @@
   
         //adds a bit more margin to the line if needed
       .moreMargin {
-        margin-bottom: 2vw;
+        margin-bottom: v.$fSize3;
       }
   
         //notifications of error
       #incompleteNotifications{
         display: flex;
         flex-direction: column;
-        margin: 3vw 0 4vw 0;
+        margin: v.$fSize4 0 v.$fSize5 0;
         color: red;
         list-style-type: circle;
         font-style: italic;
@@ -282,19 +281,19 @@
         flex-basis: 100%;
         text-align: right;
         font-size: smaller;
-        padding-right: 2vw;
+        padding-right: v.$fSize3
       }
     }
       //submit button div
     .bottomBox{
-      width: 100%;
-      margin-top: 2vw;
+      width: 96%;
+      margin-top: v.$fSize3;
       border-radius: 5px;
       
       .submitButton {
         border: solid thin grey;
         border-radius: 5px;
-        padding: 1vw;
+        padding: v.$fSize1;
         text-align: center;
         background-color: v.$whiteMain;
         color: grey;
@@ -319,13 +318,13 @@
     width: 100%;
     // margin-bottom: 3vw;
     h2 {
-      padding: 1vw;
-      margin-bottom: 2vw;
+      padding: v.$fSize1;
+      margin-bottom: v.$fSize3;
     }
   }
   
   .acctButton{
-    margin-bottom: 2vw;
+    margin-bottom: v.$fSize3;
     color: white;
     background-color: rgb(46, 45, 45);
     
