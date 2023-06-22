@@ -26,7 +26,7 @@ function PopupAuthDelete(){
     const password = userCurrPassDom.current.value;
     const userId = currUser
     const response = await fetchCall.delete('delete', { email, password, userId });
-    if (response.userDeleted) {
+    if (response) {
       popupDispatch({ type: null, act: null }); // removes popup
       setCurrUser(null); //removes current user
       dispatch({type: 'reset', payload: null})

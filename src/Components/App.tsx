@@ -68,7 +68,7 @@ function App() {
   const [sectionCache, setSectionCache] = useState(null);
 
     //stores the current users ID
-  const [currUser, setCurrUser] = useState(45);
+  const [currUser, setCurrUser] = useState(null);
 
   //fetch templates after user signs in.
   useEffect(() => {

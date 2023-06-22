@@ -96,8 +96,7 @@ class BaseAPI {
     };
     try{
       const res = await fetch(url, options)
-      const response = await res.json();
-      return response; 
+      return res.ok
     } catch(err){
       console.log('unable to delete', err)
     }
