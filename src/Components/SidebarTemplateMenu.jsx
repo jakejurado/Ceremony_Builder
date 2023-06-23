@@ -2,7 +2,7 @@ import React, { useCallback, useContext, useEffect, useState } from "react";
 import Select from "react-select";
 import { GlobalContext } from "./App";
 
-function SelectorOptionMenu({ options }) {
+function SidebarTemplateMenu({ options }) {
   const { setTemplateTitle, templateTitle, dispatch, templates } = useContext(GlobalContext);
   const [selectedOption, setSelectedOption] = useState(options[0]);
 
@@ -76,4 +76,4 @@ function SelectorOptionMenu({ options }) {
   );
 }
 
-export default SelectorOptionMenu;
+export default SidebarTemplateMenu;

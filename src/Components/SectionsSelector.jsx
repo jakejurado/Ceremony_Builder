@@ -1,7 +1,7 @@
 import React from "react";
 import backgroundImage from "../files/minimal9.png";
 
-function SectionSelector({ data, index, handleSectionChange, dispatch }) {
+function SectionsSelector({ data, index, handleSectionChange, dispatch }) {
   function handleClick(e) {
     const [_, varname] = e.target.classList[0].split("-");
     const res = { action: "addSEC", varname, index: parseInt(index) + 1 };
@@ -48,4 +48,4 @@ function SectionSelector({ data, index, handleSectionChange, dispatch }) {
   );
 }
 
-export default SectionSelector;
+export default SectionsSelector;

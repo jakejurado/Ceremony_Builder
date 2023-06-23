@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import plusBtn from "../../public/assets/plus-circle.svg";
 
-function AddSectionButton(props) {
+function SectionsAddButton(props) {
   //when add button is clicked, a dispatch is sent to add the selector box to the page
   function handleClick(e) {
     const [title, index] = e.target.parentNode.classList[1].split("-");
@@ -22,4 +22,4 @@ function AddSectionButton(props) {
   );
 }
 
-export default AddSectionButton;
+export default SectionsAddButton;

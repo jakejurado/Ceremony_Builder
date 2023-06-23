@@ -1,6 +1,6 @@
 import React, { useContext, useState, useRef } from "react";
-import WordCards from "./WordCards";
-import AddSectionButton from "./AddSectionButton";
+import SectionsWordCards from "./SectionsWordCards";
+import SectionsAddButton from "./SectionsAddButton";
 import { GlobalContext } from "./App";
 import { Draggable } from "react-beautiful-dnd";
 import leftArrow from "../../public/assets/arrowLft.png";
@@ -128,7 +128,7 @@ function Sections(props) {
                   onMouseDown={toggleInsetClass}
                   onMouseUp={toggleInsetClass}
                 />
-                <WordCards
+                <SectionsWordCards
                   className={`${props.varName}`}
                   key={`${props.varName}`}
                   id={`${props.varName}`}
@@ -159,7 +159,7 @@ function Sections(props) {
                   onKeyDown={handleXbutton}
                 />
               </div>
-              <AddSectionButton
+              <SectionsAddButton
                 key={`addButton-${props.varName}-${props.id}`}
                 belowSection={props.varName}
                 index={props.id}

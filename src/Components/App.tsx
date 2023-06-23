@@ -7,7 +7,7 @@ import React, {
 } from "react";
 
 //React Components
-import MainDisplay from "./MainDisplay";
+import AppMainDisplay from "./AppMainDisplay";
 import Sidebar from "./Sidebar";
 import Header from "./Header";
 import ErrorBoundary from "./ErrorBoundary";
@@ -68,7 +68,7 @@ function App() {
   const [sectionCache, setSectionCache] = useState(null);
 
     //stores the current users ID
-  const [currUser, setCurrUser] = useState(null);
+  const [currUser, setCurrUser] = useState(45);
 
   //fetch templates after user signs in.
   useEffect(() => {
@@ -383,7 +383,7 @@ const [fetchedData, setFetchedData] = useState(null);
           <Header />
           {thePopup.box &&  <Popup box={thePopup.box} subAct={thePopup.subAct}/> }
           <Sidebar />
-          <MainDisplay />
+          <AppMainDisplay />
         </GlobalContext.Provider>
       </div>
     </ErrorBoundary>
