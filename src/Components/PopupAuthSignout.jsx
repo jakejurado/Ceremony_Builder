@@ -1,10 +1,11 @@
 import React, {useContext, useState} from 'react';
 import { PopupContext } from './PopupAuth'; 
 
-
+  //signout component
 function PopupAuthSignout(){
   const {dispatch, popupDispatch, setCurrUser, handleDeleteClick, handleResetClick} = useContext(PopupContext)
   
+    //remove user, remove popup, and reset templates
   function handleSubmitClick(){
     setCurrUser(null);
     popupDispatch({box: null, subAct: null})

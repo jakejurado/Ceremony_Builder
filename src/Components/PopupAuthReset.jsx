@@ -3,7 +3,7 @@ import PopupNotifications from './PopupNotifications';
 import { PopupContext } from './PopupAuth';
 import { fetchCall } from '../functions/fetches/api';
 
-
+  //Reset password component box.
 function PopupAuthReset(){
   const {
     currUser,
@@ -23,6 +23,7 @@ function PopupAuthReset(){
     buttonDom,
   } = useContext(PopupContext);
 
+    //fetch request to reset password
   async function handleSubmitClick(){
     const userId = currUser
     const email = userEmailDom.current.value;

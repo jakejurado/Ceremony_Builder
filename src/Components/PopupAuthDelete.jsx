@@ -3,6 +3,7 @@ import PopupNotifications from './PopupNotifications';
 import { PopupContext } from './PopupAuth';
 import { fetchCall } from '../functions/fetches/api';
 
+  //Delete user popup box
 function PopupAuthDelete(){
   const {
     dispatch,
@@ -20,7 +21,7 @@ function PopupAuthDelete(){
     buttonDom,
   } = useContext(PopupContext);
 
-    //fetch request to signup
+    //fetch request to delete user
   async function handleSubmitClick(){
     const email = userEmailDom.current.value;
     const password = userCurrPassDom.current.value;

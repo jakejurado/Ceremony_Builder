@@ -1,11 +1,12 @@
 import React from "react";
 import backgroundImage from "../files/minimal9.png";
 
-function SectionsSelector({ data, index, handleSectionChange, dispatch }) {
+  //selector box to add a section to the template
+function SectionsSelector({ data, index, dispatch }) {
+
+    //grabs the name of the selected section and adds that section.
   function handleClick(e) {
     const [_, varname] = e.target.classList[0].split("-");
-    const res = { action: "addSEC", varname, index: parseInt(index) + 1 };
-    // handleSectionChange(res);
     dispatch({
       type: "addSEC",
       payload: { varname, index: parseInt(index) },

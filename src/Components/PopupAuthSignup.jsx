@@ -3,6 +3,7 @@ import PopupNotifications from './PopupNotifications';
 import { PopupContext } from './PopupAuth';
 import { fetchCall } from '../functions/fetches/api';
 
+  //signup popup box
 function PopupAuthSignup(){
   const {userEmailDom, 
     userNewPassDom1, 

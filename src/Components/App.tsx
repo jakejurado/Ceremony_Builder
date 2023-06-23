@@ -14,7 +14,7 @@ import ErrorBoundary from "./ErrorBoundary";
 import Popup from './Popup';
 
 //Temparary Data
-import { templateWed, templateWed2, templateSaved } from "../server/files/serverDB2";
+import { templateWed2 } from "../server/files/serverDB2";
 import templateElope from "../server/files/serverDB";
 
 //helperFunctions
@@ -23,7 +23,7 @@ import { addContentsToCache } from "../functions/cache/cache";
 import { addSelectorSection } from "../functions/sections/selectorSec";
 import { updateCardIndex } from "../functions/sections/updateSec";
 import { removeSection } from "../functions/sections/removeSec";
-import { fetchTitles, organizeDataByCategory } from "../functions/fetches/selectorBoxFuncs";
+import { fetchTitles } from "../functions/fetches/selectorBoxFuncs";
 import {createSidebarToggle} from '../functions/mainPage/sidebarClass';
 import {fetchCall} from '../functions/fetches/api';
 import { addSectionToTemplates} from "../functions/sections/addSectionToTemplates";
@@ -68,7 +68,7 @@ function App() {
   const [sectionCache, setSectionCache] = useState(null);
 
     //stores the current users ID
-  const [currUser, setCurrUser] = useState(45);
+  const [currUser, setCurrUser] = useState(null);
 
   //fetch templates after user signs in.
   useEffect(() => {

@@ -6,8 +6,8 @@ import check from "../../public/assets/check2.svg";
 import pencil from "../../public/assets/pencil_grey.svg";
 import plus from "../../public/assets/plus-circle.svg";
 
+  //chooses which template to display
 function SideBarTemplate() {
-  //brings state from App
   const { templates, setTemplates, dispatch, popupDispatch} = useContext(GlobalContext);
 
   function handlePlusClick(){

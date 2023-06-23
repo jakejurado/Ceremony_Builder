@@ -8,10 +8,12 @@ import leftArrowF from "../../public/assets/arrowLftFull.png";
 import arrow from "../../public/assets/arrow-up-circle.svg";
 import plus from "../../public/assets/plus-circle.svg";
 
+  //Section component holds all the sections
 function Sections(props) {
-  //global context
+    //global context
   const { dispatch, currTemplate } = useContext(GlobalContext);
-  //swaping cards
+
+    //swaping cards
   function handleLeftRightClick(e) {
     const [button, varname, index, cardIndex, numOfCards] =
       e.target.classList[0].split("-");
@@ -27,13 +29,13 @@ function Sections(props) {
     props.dispatch({ type: "updateSEC", payload: returnObj });
   }
 
-  //delete section: shrinks the section and then sends a dispatch to remove sec from order
+    //delete section: shrinks the section and then sends a dispatch to remove sec from order
   function handleXbutton(e) {
     const sec = e.target.parentElement.parentElement.parentElement;
     const [innerBox, removeBox] = sec.children;
     const [title, text] = innerBox.children;
 
-    //Shrinks the section to center
+      //Shrinks the section to center
     removeBox.remove();
     sec.style.margin = "0 auto 0 auto";
     const intID = setInterval(() => {
@@ -56,16 +58,16 @@ function Sections(props) {
     }, 500);
   }
 
-  //styling for left and right arrows
+    //styling for left and right arrows
   function toggleImage(e) {
     e.target.src = e.target.src === leftArrow ? leftArrowF : leftArrow;
   }
-  //styling for left & right arrows
+    //styling for left & right arrows
   function toggleInsetClass(e) {
     e.target.classList.toggle("inset");
   }
 
-  //handles the up and down arrows of a section, changing the section order.
+    //handles the up and down arrows of a section, changing the section order.
   function handleArrowClick(e) {
     let [dir, index] = e.target.classList[0].split("-");
     index = parseInt(index);
@@ -89,15 +91,6 @@ function Sections(props) {
         destIndex,
       },
     });
-  }
-
-  const [curserPos, setcurserPos] = useState();
-  const activeDom = useRef();
-  function captureCardContent(){
-    const innerText = activeDom.current.innerText;
-    const curserPos = activeDom.current.selectionStart;
-    setcurserPos(curserPos);
-    // dispatch({type: 'updateWords', payload: {innerText, sectionName: 'what'}})
   }
 
   return (

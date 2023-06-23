@@ -1,19 +1,7 @@
-// import React from "react";
-// import cbImage from "../../public/assets/ceremonybuilder.png";
-
-// function Header() {
-//   return (
-//     <div className="titleS">
-//       <img id="h1Image" src={cbImage} alt="image of words Ceremony Builder" />
-//     </div>
-//   );
-// }
-
-// export default Header;
-
 import React, { useState, useEffect } from 'react';
 import cbImage from "../../public/assets/ceremonybuilder.png";
 
+  //Holds the main website title image
 function Header() {
   const [isVisible, setIsVisible] = useState(true);
   const [scrollPosition, setScrollPosition] = useState(0);
