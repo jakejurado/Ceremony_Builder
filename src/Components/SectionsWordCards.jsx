@@ -1,11 +1,12 @@
-import React, { useContext, useRef, useEffect } from "react";
+import React, { useContext, useRef } from "react";
 import { GlobalContext } from "./App";
 import { enterNames } from "../functions/sections/names";
 import { sanatize } from "../functions/wordCards/sanatize";
 import { formatCards } from "../functions/wordCards/formatCards";
 
+  //Displays main content/scripts of each section
 function WordCards(props) {
-  const { names, templateTitle, templates, setTemplates, dispatch } = useContext(GlobalContext);
+  const { names, dispatch } = useContext(GlobalContext);
   const divRef = useRef(null);
 
     //saves user input and formats it for the database.
@@ -25,13 +26,13 @@ function WordCards(props) {
   const words = content.split("\n");
 
   //construct the sanatized html string
-  // function createHTMLstring(phrases) {}
   let newString = "<p>";
   words.forEach((phrase) => {
     newString += `${sanatize(phrase)}<br/>`;
   });
   newString += "</p>";
 
+    //creates a dom element
   const card = React.createElement("div", {
     className: `cards ${props.className}`,
     contentEditable: "true",

@@ -1,16 +1,16 @@
 import React, {useContext} from 'react';
 import { GlobalContext } from './App';
 
+  //sidebar component that contains account info (login/logout/signup)
 function SidebarAccount(){
-  const {popupDispatch, dispatch, setTemplateTitle, setCurrUser, currUser} = useContext(GlobalContext);
+  const {popupDispatch, dispatch, setCurrUser, currUser} = useContext(GlobalContext);
+
 
   function handleLoginClick(){
-    // setPopup('login')
     popupDispatch({type: 'myAuth', subAct: 'login'})
   }
 
   function handleSignupClick(){
-    // setPopup('signup')
     popupDispatch({type: 'myAuth', subAct: 'signup'})
   }
 

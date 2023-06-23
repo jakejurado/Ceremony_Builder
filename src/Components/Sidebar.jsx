@@ -1,4 +1,4 @@
-import React, { useRef, useContext } from "react";
+import React, { useContext } from "react";
 import SideBarTemplate from "./SidebarTemplate";
 import SidebarNames from "./SidebarNames.jsx";
 import SidebarPrint from "./SidebarPrint";
@@ -6,10 +6,11 @@ import SidebarSave from "./SidebarSave";
 import SidebarAccount from "./SidebarAccount";
 import { GlobalContext } from './App';
 
+  //the sidebar of the application
 function Sidebar() {
-  const { currUser, sidebarRef, coverRef } = useContext(GlobalContext)
-  const domSidebar = useRef(null);
+  const { sidebarRef, coverRef } = useContext(GlobalContext)
 
+    //hoover animations when hovering.
   function handleSidebarHover(){
     const curr = sidebarRef.current.style.width
     if(curr === '0px'){

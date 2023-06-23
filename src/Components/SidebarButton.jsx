@@ -1,7 +1,8 @@
-import React, { useEffect, useContext } from "react";
+import React, { useContext } from "react";
 import { GlobalContext } from "./App";
 import hamburger from "../../public/assets/menu_open_FILL0_wght400_GRAD0_opsz48.svg";
 
+  //button to activate sidebar
 function SidebarButton() {
   const {theSidebar} = useContext(GlobalContext);
 

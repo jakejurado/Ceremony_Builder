@@ -5,7 +5,7 @@ import close from '../../public/assets/close.png';
 import check from '../../public/assets/check2.svg'
 import { nameValidator } from '../functions/template/nameTemplate';
 
-
+  //Template info popup.
 function PopupTemplate(){
   const {templates, dispatch, templateTitle} = useContext(GlobalContext);
 

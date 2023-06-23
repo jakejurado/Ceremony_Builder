@@ -2,11 +2,11 @@ import React, { useRef, useContext } from "react";
 import { GlobalContext } from "./App";
 import Header from "./Header";
 import Section from "./Sections";
-import SectionSelector from "./SectionSelector";
+import SectionsSelector from "./SectionsSelector";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 
 //The main display for the site
-function MainDisplay() {
+function AppMainDisplay() {
   //Global Context comes from App.jsx
   const { selectorTitles, currTemplate, dispatch, selectorSec, domRef, templates, templateTitle } =
     useContext(GlobalContext);
@@ -20,7 +20,7 @@ function MainDisplay() {
     //if the selector section is true and the index is at the position it should add the selector box
     if (selectorSec.isVisible && i === selectorSec.position) {
       loadSections.push(
-        <SectionSelector 
+        <SectionsSelector 
           key="selectorBox" 
           data={selectorTitles} 
           index={i} 
@@ -48,7 +48,7 @@ function MainDisplay() {
   //shows the selector if the template.order is empty
   if(!loadSections.length){
     loadSections.push(
-      <SectionSelector
+      <SectionsSelector
         key="selectorBox"
         data={selectorTitles}
         index={0}
@@ -108,4 +108,4 @@ function MainDisplay() {
   );
 }
 
-export default MainDisplay;
+export default AppMainDisplay;

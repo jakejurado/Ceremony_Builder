@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import { GlobalContext } from "./App";
 
+  //sidebar section for adding user names to ceremony script.
 function SidebarNames() {
   const { names, setNames } = useContext(GlobalContext);
 
