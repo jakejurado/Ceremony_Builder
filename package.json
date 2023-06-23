@@ -4,7 +4,10 @@
   "description": "App for creating wedding ceremonies",
   "main": "./src/index.js",
   "scripts": {
+    "start:client": "webpack-dev-server --mode development --hot --open --port 8080",
+    "start:server": "nodemon ./src/server/server.js",
     "start": "webpack-dev-server --mode development --hot --open",
+    "go": "npm-run-all -p start n",
     "build": "webpack --mode production",
     "test": "jest",
     "n": "nodemon ./src/server/server.js",

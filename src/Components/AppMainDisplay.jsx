@@ -48,7 +48,7 @@ function AppMainDisplay() {
   //shows the selector if the template.order is empty
   if(!loadSections.length){
     loadSections.push(
-      <SectionSelector
+      <SectionsSelector
         key="selectorBox"
         data={selectorTitles}
         index={0}
