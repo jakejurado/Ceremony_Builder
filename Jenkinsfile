@@ -4,7 +4,8 @@ pipeline {
         stage('build') {
             steps {
                 sh 'node --version'
-                sh 'run test'
+                sh 'npm install'
+                sh 'npm test'
             }
         }
     }
