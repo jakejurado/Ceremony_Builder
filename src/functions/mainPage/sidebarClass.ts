@@ -7,15 +7,19 @@ interface SidebarToggleTime {
 }
 
 class createSidebarToggle {
+  sidebarClass: string;
+  coverClass: string;
   sidebar: HTMLElement | undefined;
   cover: HTMLElement | undefined;
   display: boolean;
   storage: HTMLElement[];
   time: SidebarToggleTime;
 
-  constructor(sidebar: HTMLElement | undefined, cover: HTMLElement | undefined){
-    this.sidebar = sidebar;
-    this.cover = cover;
+  constructor(sidebarClass: string, coverClass: string){
+    this.sidebarClass = sidebarClass;
+    this.coverClass = coverClass
+    this.sidebar = undefined;
+    this.cover = undefined;
     this.display = true;
     this.storage = [];
     this.time =  {
@@ -25,6 +29,7 @@ class createSidebarToggle {
     };
   }
 
+    // adds items to sidebar
   populate() {
     if (!this.sidebar) return;
 
@@ -36,9 +41,10 @@ class createSidebarToggle {
     }, this.time.interval);
   }
 
+    // removes items from sidebar
   depopulate() {
     if (!this.sidebar) return;
-
+   
     this.storage.push(...Array.from(this.sidebar.children) as HTMLElement[]);
     const intervalId = setInterval(() => {
       const curr = this.storage.pop();
@@ -49,38 +55,29 @@ class createSidebarToggle {
     }, this.time.interval);
   }
 
+    //populates sidebar and adds event listener
   activate() {
-    if (!this.sidebar) this.sidebar = document.getElementById("sidebar") as HTMLElement;
-    if (!this.cover) this.cover = document.getElementById("cover") as HTMLElement;
-
     setStyle(this.cover, "display", "block");
 
-    setStyle(this.sidebar, "width", "30%");
+    this.sidebar.classList.toggle('sidebar-shrink');
 
     setTimeout(() => {
       this.populate();
     }, this.time.partial);
 
     setTimeout(() => {
-      this.cover?.addEventListener("mousedown", () => {
-        this.toggle();
-      }, { once: true });
+      this.attachListenerCover();
     }, this.time.full);
 
     this.display = true;
   }
 
+    //depopulates sidebar and removes event listener
   deactivate() {
     if (!this.sidebar) return;
-
-    setStyle(this.sidebar, "width", "0");
-
-    setTimeout(() => {
-      // setStyle(this.sidebarButton, "display", "flex");
-    }, this.time.full);
+    this.sidebar.classList.toggle('sidebar-shrink')
 
     if (!this.cover) return;
-
     setStyle(this.cover, "display", "none");
 
     this.depopulate();
@@ -92,9 +89,10 @@ class createSidebarToggle {
     this.display = false;
   }
 
+    //toggles activate and deactivating the sidebar
   toggle() {
-    if (!this.sidebar) this.sidebar = document.getElementById("sideBar") as HTMLElement;
-    if (!this.cover) this.cover = document.getElementById("cover") as HTMLElement;
+    if (!this.sidebar) this.sidebar = document.getElementById(this.sidebarClass) as HTMLElement;
+    if (!this.cover) this.cover = document.getElementById(this.coverClass) as HTMLElement;
 
     if (this.display === false) {
       this.activate();
@@ -103,7 +101,8 @@ class createSidebarToggle {
     }
   }
 
-  attachListener() {
+    //attaches an event listener to the cover
+  attachListenerCover() {
     if (!this.cover) return;
 
     this.cover.addEventListener(
@@ -117,6 +116,7 @@ class createSidebarToggle {
     );
   }
 
+    //attaches an event listener to the sidebar
   attachListenerSidebar() {
     if (!this.sidebar) return;
 

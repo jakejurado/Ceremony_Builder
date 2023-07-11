@@ -9,7 +9,6 @@ import React, {
 //React Components
 import AppMainDisplay from "./AppMainDisplay";
 import Sidebar from "./Sidebar";
-import Header from "./Header";
 import ErrorBoundary from "./ErrorBoundary";
 import Popup from './Popup';
 
@@ -55,6 +54,10 @@ export const GlobalContext = createContext(null);
 
 
 function App() {
+    //keep track of screen size
+  const [isMobile, setIsMobile] = useState(false);
+  const maxMobileSize = 800;
+
     //meta data for the templates to help sync with database.
   const [metaData, setMetaData] = 
     useState<MetaData>(
@@ -336,7 +339,7 @@ const [fetchedData, setFetchedData] = useState(null);
   }
 
     //set up the sidebar functionality.
-  const theSidebar = new createSidebarToggle(sidebarRef.current, coverRef.current);
+  const theSidebar = new createSidebarToggle('sideBar', 'whiteCover');
 
   //initial load  
   useEffect(()=>{
@@ -350,7 +353,12 @@ const [fetchedData, setFetchedData] = useState(null);
     checkCookieForAccess(setCurrUser);
 
       //close the sidebar
-    theSidebar.toggle();  
+    theSidebar.toggle();
+
+      //grab the screen size
+      if(window.innerWidth < maxMobileSize){
+        setIsMobile(true);
+      }
   }, [])
 
   return (
@@ -363,6 +371,7 @@ const [fetchedData, setFetchedData] = useState(null);
             selectorTitles,
             names,
             setNames,
+            isMobile,
             templateTitle,
             setTemplateTitle,
             templates,
@@ -380,7 +389,7 @@ const [fetchedData, setFetchedData] = useState(null);
             setMetaData
           }}
         >
-          <Header />
+          <div ref={coverRef} id='whiteCover'></div>
           {thePopup.box &&  <Popup box={thePopup.box} subAct={thePopup.subAct}/> }
           <Sidebar />
           <AppMainDisplay />

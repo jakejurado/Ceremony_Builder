@@ -1,0 +1,84 @@
+@use "./variables" as v;
+@use "./buttons.scss" as b;
+
+@media (max-width: 768px){
+  
+  //close button
+  .cButton{
+    position: fixed;
+    width: 100vw;
+    top: 90vh;
+    display: flex;
+    flex-direction: column;
+    align-items:center;
+
+    img{
+      width: v.$fSize11;
+    }
+  }
+
+  // ACCOUNT LINKS
+  .sidebar-loginlogout {
+    margin-bottom: 0;
+    ul {
+      padding-right: 10px;
+
+      li {
+        font-size: v.$fSize6;
+
+        &:hover {
+          cursor: pointer;
+        }
+      }
+    }
+  }
+
+
+  //ALL SIDEBAR ELEMENTS
+  .sidebarElements {
+    padding: v.$fSize9 0 v.$fSize9 0;
+    font-size: v.$fSize7;
+
+    p {
+      width: 65%;
+      font-size: v.$fSize5; 
+      margin: 0 0 v.$fSize4 0;
+    }
+    
+    input {
+      width: 100%;
+      height: 4rem;
+      font-size: v.$fSize6;
+      padding: 0 v.$fSize2 0 v.$fSize2;
+    }
+
+    button{
+      width: 35%;
+      height: 4rem;
+      font-size: 3rem;;
+    }
+  }
+
+  // SIDEBAR TEMPLATES
+  .sidebarTemplate {
+    
+    .templateSelectorDiv {
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-evenly;
+      align-items:center;
+
+      .basic-single{
+        width: 65%;
+      }
+
+      .icons{
+        width: v.$fSize7;
+      }
+    }
+  }
+
+
+
+}//end media query

@@ -8,7 +8,7 @@ import { GlobalContext } from './App';
 
   //the sidebar of the application
 function Sidebar() {
-  const { sidebarRef, coverRef } = useContext(GlobalContext)
+  const { sidebarRef, isMobile } = useContext(GlobalContext)
 
     //hoover animations when hovering.
   function handleSidebarHover(){
@@ -21,15 +21,12 @@ function Sidebar() {
   }
 
   return (
-    <div id="panel">
-      <div id="cover" ref={coverRef}/>
-      <div id="sideBar" ref={sidebarRef} onMouseOver={handleSidebarHover} onMouseLeave={handleSidebarHover}>
-        <SidebarAccount />
-        <SideBarTemplate />
-        <SidebarNames />
-        <SidebarSave />
-        <SidebarPrint />
-      </div>
+    <div id="sideBar" className="sidebar-growth" ref={sidebarRef} onMouseOver={handleSidebarHover} onMouseLeave={handleSidebarHover}>
+      <SidebarAccount />
+      <SideBarTemplate />
+      <SidebarNames />
+      <SidebarSave />
+      {!isMobile && <SidebarPrint />}
     </div>
   );
 }

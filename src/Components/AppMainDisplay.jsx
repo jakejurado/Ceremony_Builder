@@ -89,21 +89,24 @@ function AppMainDisplay() {
   const toggleDragStartStop = createToggleDragStartStop();
 
   return (
-    <div id="mainDisplay" ref={domRef}>
-      <DragDropContext onDragEnd={dragEnd} onDragStart={toggleDragStartStop}>
-        <Droppable droppableId="sectiondrop">
-          {(provided) => (
-            <div
-              id="allSections"
-              ref={provided.innerRef}
-              {...provided.droppableProps}
-            >
-              {loadSections}
-              {provided.placeholder}
-            </div>
-          )}
-        </Droppable>
-      </DragDropContext>
+    <div id='titleAndSections'>
+      <Header />
+      <div id="mainDisplay" ref={domRef}>
+        <DragDropContext onDragEnd={dragEnd} onDragStart={toggleDragStartStop}>
+          <Droppable droppableId="sectiondrop">
+            {(provided) => (
+              <div
+                id="allSections"
+                ref={provided.innerRef}
+                {...provided.droppableProps}
+              >
+                {loadSections}
+                {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
+        </DragDropContext>
+      </div>
     </div>
   );
 }
