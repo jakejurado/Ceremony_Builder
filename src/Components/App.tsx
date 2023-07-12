@@ -71,7 +71,7 @@ function App() {
   const [sectionCache, setSectionCache] = useState(null);
 
     //stores the current users ID
-  const [currUser, setCurrUser] = useState(null);
+  const [currUser, setCurrUser] = useState(45);
 
   //fetch templates after user signs in.
   useEffect(() => {
@@ -319,7 +319,7 @@ const [fetchedData, setFetchedData] = useState(null);
   }
 
   //NEW NEW Popup Controls
-  const [thePopup, popupDispatch] = useReducer(popupReducer, {box: null, subAct: null});
+  const [thePopup, popupDispatch] = useReducer(popupReducer, {box: 'myAuth', subAct: 'login'});
 
   function popupReducer(state, action){
     const {type, subAct} = action
