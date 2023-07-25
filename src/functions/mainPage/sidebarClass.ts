@@ -57,9 +57,11 @@ class createSidebarToggle {
 
     //populates sidebar and adds event listener
   activate() {
+    this.fillDomElementsIfEmpty();
+
     setStyle(this.cover, "display", "block");
 
-    this.sidebar.classList.toggle('sidebar-shrink');
+    this.sidebar.classList.remove('sidebar-shrink');
 
     setTimeout(() => {
       this.populate();
@@ -74,8 +76,9 @@ class createSidebarToggle {
 
     //depopulates sidebar and removes event listener
   deactivate() {
-    if (!this.sidebar) return;
-    this.sidebar.classList.toggle('sidebar-shrink')
+    this.fillDomElementsIfEmpty();
+    // if (!this.sidebar) return;
+    this.sidebar.classList.add('sidebar-shrink')
 
     if (!this.cover) return;
     setStyle(this.cover, "display", "none");
@@ -91,14 +94,20 @@ class createSidebarToggle {
 
     //toggles activate and deactivating the sidebar
   toggle() {
-    if (!this.sidebar) this.sidebar = document.getElementById(this.sidebarClass) as HTMLElement;
-    if (!this.cover) this.cover = document.getElementById(this.coverClass) as HTMLElement;
+    if (!this.sidebar || !this.cover ) this.fillDomElementsIfEmpty();
+    // if (!this.sidebar) this.sidebar = document.getElementById(this.sidebarClass) as HTMLElement;
+    // if (!this.cover) this.cover = document.getElementById(this.coverClass) as HTMLElement;
 
     if (this.display === false) {
       this.activate();
     } else {
       this.deactivate();
     }
+  }
+
+  fillDomElementsIfEmpty(){
+    this.sidebar = document.getElementById(this.sidebarClass) as HTMLElement;
+    this.cover = document.getElementById(this.coverClass) as HTMLElement;
   }
 
     //attaches an event listener to the cover

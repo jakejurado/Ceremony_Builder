@@ -32,6 +32,7 @@ import { determineTemplateTitle } from "../functions/template/determineTemplateT
 import { fetchUserTemplates } from "../functions/fetches/fetchUserTemplates";
 import { checkCookieForAccess } from "../functions/fetches/checkUserAccess"
 import { createMetaDataFromStartingTemplates } from "../functions/metaData/createMetaDataFromStartingTemplates"
+import { useSwipeable } from 'react-swipeable';
 
 //Typescript
 import {
@@ -58,6 +59,9 @@ function App() {
   const [isMobile, setIsMobile] = useState(false);
   const maxMobileSize = 800;
 
+    //activate when mobile card view is selected
+  const [isMobileCardView, setMobileCardView] = useState(false);
+
     //meta data for the templates to help sync with database.
   const [metaData, setMetaData] = 
     useState<MetaData>(
@@ -71,7 +75,7 @@ function App() {
   const [sectionCache, setSectionCache] = useState(null);
 
     //stores the current users ID
-  const [currUser, setCurrUser] = useState(45);
+  const [currUser, setCurrUser] = useState(null);
 
   //fetch templates after user signs in.
   useEffect(() => {
@@ -82,9 +86,9 @@ function App() {
 
     //holds the names of the two getting married.
   const [names, setNames] = useState({
-  person1: undefined,
-  person2: undefined,
-});
+    person1: undefined,
+    person2: undefined,
+  });
 
   //holds data that needs to update state asynchronously
 const [fetchedData, setFetchedData] = useState(null);
@@ -181,6 +185,7 @@ const [fetchedData, setFetchedData] = useState(null);
       }
         //changes which card is displayed in that section
       case "updateSEC": {
+        console.log({payload})
           //updates with 'order' which card in the section is being displayed
         const newOrder = updateCardIndex(order, payload);
           //copy state and insert into it the template that has the new section
@@ -200,8 +205,10 @@ const [fetchedData, setFetchedData] = useState(null);
 
         //changes section order by updating the order array within the template
       case "moveSEC": {
+        console.log(payload)
           //create the new order for the display state after drag and drop
         const newOrder = updateSectionOrder(order, payload);
+        console.log({payload})
           //copy state and insert newOrder into the template that has the new section
         const templatesCopy = JSON.parse(JSON.stringify(state));
         templatesCopy[templateTitle] = {order: newOrder, ...sections};
@@ -319,10 +326,10 @@ const [fetchedData, setFetchedData] = useState(null);
   }
 
   //NEW NEW Popup Controls
-  const [thePopup, popupDispatch] = useReducer(popupReducer, {box: 'myAuth', subAct: 'login'});
+  const [thePopup, popupDispatch] = useReducer(popupReducer, {box: null, subAct: null});
 
   function popupReducer(state, action){
-    const {type, subAct} = action
+    const {subAct} = action
     
     switch (action.type){
       case 'myAccount':
@@ -338,8 +345,25 @@ const [fetchedData, setFetchedData] = useState(null);
     }
   }
 
+ 
+
+
     //set up the sidebar functionality.
   const theSidebar = new createSidebarToggle('sideBar', 'whiteCover');
+
+  function sidebarSlider({event, dir}){
+    console.log(event)
+    if(isMobile){
+      switch(dir){
+        case 'Left':
+          theSidebar.deactivate();
+          break;
+        case 'Right':
+          theSidebar.activate();
+          break;
+      }
+    }
+  }
 
   //initial load  
   useEffect(()=>{
@@ -392,6 +416,7 @@ const [fetchedData, setFetchedData] = useState(null);
           <div ref={coverRef} id='whiteCover'></div>
           {thePopup.box &&  <Popup box={thePopup.box} subAct={thePopup.subAct}/> }
           <Sidebar />
+          {/* {isMobileCardView ??} */}
           <AppMainDisplay />
         </GlobalContext.Provider>
       </div>

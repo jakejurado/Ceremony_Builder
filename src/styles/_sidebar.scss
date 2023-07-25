@@ -1,13 +1,6 @@
 @use "./variables" as v;
 @use "./buttons.scss" as b;
 
-@media (max-width: 768px){
-
-}
-
-
-// @media (min-width: 768px){
-
     //The actual sidebar!!
   #sideBar {
     position: fixed;
@@ -16,6 +9,7 @@
     align-items: center;
     top: 0;
     height: 100vh;
+    // padding: 0;
     padding: 0 v.$fSize3 0 v.$fSize3;
     background-color: v.$yellowThird; //v.$pinkMain;
     box-shadow: v.$fSize0 v.$fSize0 grey;
@@ -37,7 +31,7 @@
   }
 
   .sidebar-shrink{
-    width: 0px
+    width: 0px;
   }
 
 
@@ -70,7 +64,7 @@
     width: 100%;
     padding: v.$fSize3 0 v.$fSize3 0;
     align-items: center;
-    border-bottom: solid thin v.$whiteMain;;
+    border-bottom: solid thin v.$whiteMain;
     font-size: v.$fSize3;
       
     h2 {  //title of component

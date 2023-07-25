@@ -1,21 +1,9 @@
 @use "./variables" as v;
 @use "./buttons.scss" as b;
+@use "./mixins" as m;
 
 @media (max-width: 768px){
-  
-  //close button
-  .cButton{
-    position: fixed;
-    width: 100vw;
-    top: 90vh;
-    display: flex;
-    flex-direction: column;
-    align-items:center;
 
-    img{
-      width: v.$fSize11;
-    }
-  }
 
   // ACCOUNT LINKS
   .sidebar-loginlogout {
@@ -55,7 +43,7 @@
     button{
       width: 35%;
       height: 4rem;
-      font-size: 3rem;;
+      font-size: 3rem;
     }
   }
 

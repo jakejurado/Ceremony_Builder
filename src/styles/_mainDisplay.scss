@@ -1,6 +1,6 @@
 /* APP Component */
 .AppContainer {
-  width: 100%;
+  width: 100vw;
   display: flex;
   flex-wrap: none;
 }
@@ -31,7 +31,7 @@
 #titleAndSections{
   display: flex;
   flex-direction: column;
-  width: 90%;
+  width: 90vw;
   margin-left: auto;
   margin-right: auto;
 }

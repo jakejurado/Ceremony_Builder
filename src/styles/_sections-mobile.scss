@@ -1,0 +1,260 @@
+@use "./variables" as v;
+@use "./animations" as a;
+@use "./mixins" as m;
+
+
+@media (max-width: 768px){
+    
+  /*SECTIONS*/
+    //section container
+  .section {
+    display: flex;
+    flex-direction: column-reverse;
+    margin-bottom: 8rem;
+    // justify-content: center;
+    // align-items: center;
+  }
+
+    //The section contains the visible/interactive part of the section
+  .innerBox {
+    display: flex;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+    //Section Selector title
+  .title {
+    text-align: center;
+    padding: v.$fSize1;
+    font-size: 1.5rem;
+  }
+
+    //holds the arrows and cards 
+  .middleBox {
+    display: grid;
+    grid-template-columns: v.$fSize5 1fr v.$fSize5;
+    align-items: center;
+    height: 78%;
+    overflow: hidden;
+  }
+
+    //left arrow to move between cards/scripts
+  .lArrow {
+    grid-column: 1 / 2;
+    text-align: center;
+    width: 100%;
+    height: 30%;
+  }
+
+    //right arrow to move between card/scripts
+  .rArrow {
+    width: 100%;
+    height: 30%;
+    grid-column: 3 / 4;
+    transform: rotate(180deg);
+  }
+
+
+
+  /*CARD COMPONENT*/
+    //the div contining the script 
+  .cards {
+    grid-column: 2 / 3;
+    height: 85%;
+    background-color: v.$pinkMain2;
+    color: rgb(32, 32, 32);
+    border: solid; //inset;
+    overflow-y: scroll;
+    line-height: 1;
+    font-family: v.$fontSecond;
+    font-size: 2rem;
+    p {
+      padding: 0 v.$fSize1 0 v.$fSize1;
+    }
+  }
+
+    //container for four buttons (add,delete,move)
+    .secButtons {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-around;
+      align-items: center;
+      padding: .5rem;
+      margin: 0 auto 0 auto;
+      width: 100%;
+    
+      div{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 0;
+        height: 3rem;
+        // flex: 1 0 25%;
+        transform: rotate(0);
+        width: 3rem;
+
+        img{
+          width: 100%;
+          // transform: rotate(45deg);
+        }
+      }
+    }
+      //plus Button
+    .addButton{
+      order: 2;
+      img{
+        &:hover{
+          background-color: v.$whiteMain;
+        }
+      }
+    }
+      //remove button
+    .removeButton {
+      order: 3;
+      img{
+        transform: rotate(45deg);
+        &:hover{
+          background-color: v.$whiteMain;
+        }
+      }
+    }
+      //up arrow button
+    .upArrow{
+      order: 1;
+      img{
+        &:hover{
+          background-color: v.$whiteMain;
+        }
+      }
+    }
+      //down arrow button
+    .dnArrow{
+      order: 4;
+      img{
+        transform: rotate(180deg);
+        &:hover{
+          transform: rotate(359deg);
+          background-color: v.$whiteMain;
+        }
+      }
+    }
+    
+
+
+
+  /* SELECTOR BOX */
+    //container for the selector box
+  .selectorBox {
+    width: 100%;
+    margin: v.$fSize5 auto v.$fSize5 auto;
+  }
+
+    //the content of the selector box.
+  .selections {
+    text-align: center;
+    ul{
+      display: flex;
+      flex-direction: column;
+      padding: v.$fSize1;
+      list-style-type: none;
+      h3{
+        display: flex;
+        flex-direction: column;
+        font-size: 1.5rem;
+      }
+      li{
+        font-family: v.$fontSecond;
+        border: solid;
+        font-size: 1.5rem;
+        line-height: 1.5;
+        border-color: rgb(251, 251, 243);
+        &:hover{
+          border: solid;
+          background-color: white;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+
+  .section-mobile{
+    position: fixed;
+    z-index: 1;
+
+    .secButtons{
+      display: none;
+    }
+
+    .innerBox{
+    position: fixed;
+    flex-direction: column;
+    align-items: center;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+
+      h3{
+        font-size: 4rem;
+        padding: 1vw;
+      }
+
+      .middleBox{
+        height: 60vh;
+        width: 100vw;
+
+        img{
+          display:none;
+        }
+
+        .cards{
+          // grid-column: 1/4;
+          font-size: 3rem;
+        }
+      }
+
+      .button{
+        display:none;
+      }
+    }
+  }
+
+  .selectorBox{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    z-index: 2;
+
+    .innerBox{
+      height:95vh;
+
+      .title{
+        font-size: 3.5rem;
+      }
+    }
+
+    .middleBox{
+      height: 85%;
+
+      .cards{
+        height: 100%;
+
+        ul{
+          padding: 0;
+          margin: 0;
+
+          h3{
+            font-size: 3rem;
+          }
+          li{
+            font-size: 3rem;
+          }
+        }
+        
+      }
+    }
+  }
+
+}

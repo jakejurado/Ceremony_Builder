@@ -1,5 +1,5 @@
 import React, {useContext} from 'react';
-import close  from '../../public/assets/close.png';
+// import close  from '../../public/assets/close.png';
 import { GlobalContext } from './App';
 
   //sidebar component that contains account info (login/logout/signup)
@@ -26,7 +26,7 @@ function SidebarAccount(){
 
   return(
     <div className='sidebar-loginlogout'>
-      {isMobile && <div className='cButton'><img src={close} alt='close button image' /></div>}
+      {/* {isMobile && <div className='cButton'><img src={close} alt='close button image' /></div>} */}
       {!currUser && 
         <ul className='sidebar-login-ul'>
           <li onClick={handleLoginClick}>login</li>

@@ -31,25 +31,17 @@
   }
 }
 
-// .buttonLg {
-//   width: 10vw;
-//   height: 10vw;
-//   border-radius: 50%;
-//   // background-color: v.$yellowMain;
-//   background-color: v.$pinkMain;
-//   box-shadow: 0.25em 0.07em grey;
-//   // box-shadow: 10px 5px 10px rgb(75, 75, 75);
-//   justify-content: center;
-//   align-items: center;
-//   :hover {
-//     -webkit-animation: shake 0.4s linear;
-//     animation: shake 0.4s linear;
-//   }
-// }
-
   //used in sidebar
 .boxButton {
   @include m.createBoxButton();
   text-align: center;
   margin: 1vw auto 1vw auto;
+}
+
+
+  //Mobile buttons
+@media (max-width: 768px){
+  .cButton{
+    @include m.closeButton-mobile;
+  }
 }

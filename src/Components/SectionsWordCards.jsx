@@ -1,31 +1,47 @@
-import React, { useContext, useRef } from "react";
+import React, { useContext, useRef, useState } from "react";
 import { GlobalContext } from "./App";
 import { enterNames } from "../functions/sections/names";
 import { sanatize } from "../functions/wordCards/sanatize";
 import { formatCards } from "../functions/wordCards/formatCards";
+// import { useSwipeable, onSwipedRight, onSwipedLeft } from 'react-swipeable';
+// import ButtonClose from "./ButtonClose"
 
   //Displays main content/scripts of each section
-function WordCards(props) {
-  const { names, dispatch } = useContext(GlobalContext);
-  const divRef = useRef(null);
-
-    //saves user input and formats it for the database.
-  function saveContent(){
-      //removes names and adds line breaks
-    const textContent = formatCards(divRef.current.innerHTML, names);
-    const sectionName = divRef.current.dataset.varname;
-    const cardIndex = parseInt(divRef.current.dataset.cardindex);
-
-    dispatch({type: 'updateWords', payload: {textContent, sectionName, cardIndex}})
-  }
+function WordCards({cardContent, className, cardIndex, cardDivRef, saveContent}) {
+  const { names } = useContext(GlobalContext);
 
     //add names to props content
-  const content = enterNames(names, props.cardContent);
+  const content = enterNames(names, cardContent);
   
     //split the string by line breaks
   const words = content.split("\n");
 
-  //construct the sanatized html string
+  //mobile functionality
+  function expandCardMobile(e){
+    const dom = findBaseDom(e, 'section')
+    dom.classList.add('section-mobile')
+
+    //remove the div that hides the close button
+    const domButton = dom.querySelector('.cButtonImg');
+    domButton.classList.remove('hide-element')
+  }
+
+    //climb up the dom tree to find the class.
+  function findBaseDom(e, targetClass){
+    let node = e.target.parentNode.parentNode.parentNode;
+    if(!node.classList.contains(targetClass)){
+      node = node.parentNode;
+    }
+    return node
+  }
+
+  const paragraphs = []
+  words.forEach((phrase)=>{
+    const currentContent = sanatize(phrase)
+    paragraphs.push(<p>{currentContent}</p>)
+  })
+
+    //construct the sanatized html string
   let newString = "<p>";
   words.forEach((phrase) => {
     newString += `${sanatize(phrase)}<br/>`;
@@ -34,16 +50,17 @@ function WordCards(props) {
 
     //creates a dom element
   const card = React.createElement("div", {
-    className: `cards ${props.className}`,
+    className: `cards ${className}`,
     contentEditable: "true",
+    onClick: expandCardMobile,
     dangerouslySetInnerHTML: { __html: newString },
-    ref: divRef,
-    'data-varname': `${props.className}`,
-    'data-cardindex': `${props.cardIndex}`,
-    onBlur: saveContent
+    ref: cardDivRef,
+    'data-varname': `${className}`,
+    'data-cardindex': `${cardIndex}`,
+    onBlur: saveContent,
   });
 
   return card;
 }
 
-export default WordCards;
+export default WordCards
