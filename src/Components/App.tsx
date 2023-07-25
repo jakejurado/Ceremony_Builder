@@ -59,9 +59,6 @@ function App() {
   const [isMobile, setIsMobile] = useState(false);
   const maxMobileSize = 800;
 
-    //activate when mobile card view is selected
-  const [isMobileCardView, setMobileCardView] = useState(false);
-
     //meta data for the templates to help sync with database.
   const [metaData, setMetaData] = 
     useState<MetaData>(
@@ -416,7 +413,6 @@ const [fetchedData, setFetchedData] = useState(null);
           <div ref={coverRef} id='whiteCover'></div>
           {thePopup.box &&  <Popup box={thePopup.box} subAct={thePopup.subAct}/> }
           <Sidebar />
-          {/* {isMobileCardView ??} */}
           <AppMainDisplay />
         </GlobalContext.Provider>
       </div>

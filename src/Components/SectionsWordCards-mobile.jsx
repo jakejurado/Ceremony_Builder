@@ -8,7 +8,7 @@ import { formatCards } from "../functions/wordCards/formatCards";
 
   //Displays main content/scripts of each section
 function SectionsWordCards({cardContent, className, cardIndex, cardDivRef, saveContent, cardDisplay, handleCardDisplay}) {
-  const { names } = useContext(GlobalContext);
+  const { names, isMobile } = useContext(GlobalContext);
 
   const [textValue, setTextValue] = useState(enterNames(names, cardContent));
 
@@ -16,8 +16,11 @@ function SectionsWordCards({cardContent, className, cardIndex, cardDivRef, saveC
   function expandCardMobile(e){
     const dom = findBaseDom(e, 'section') 
     const secIndex = dom.dataset.index
-    
-    handleCardDisplay(secIndex)
+    console.log(isMobile)
+    if(isMobile){
+      
+      handleCardDisplay(secIndex)
+    }
   }
 
     //add names to props content

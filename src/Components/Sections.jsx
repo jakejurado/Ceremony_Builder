@@ -120,8 +120,8 @@ function Sections(props) {
   }
 
   //MOBILE 
-    //swipe functionality
-  const handlersBox = useSwipeable({
+    //swipe functionality for the card box
+  const handlersCardBox = useSwipeable({
     onSwiped: ({ event }) => {
       event.stopPropagation();
     },
@@ -130,6 +130,24 @@ function Sections(props) {
     },
     onSwipedLeft: ({event}) => {
       handleLeftRightClickSwipe(event, 'Left')
+    },
+    // onSwipedUp: ({event}) => {
+    //   if(props.mobileClass){
+    //     handleLeftRightClickSwipe(event, 'Up')
+    //   }
+    // },
+    // onSwipedDown: ({event}) => {
+    //   if(props.mobileClass){
+    //     handleLeftRightClickSwipe(event, 'Down')
+    //   }
+    // },
+    
+    preventDefaultTouchmoveEvent: true
+  });
+
+  const handlersSectiondBox = useSwipeable({
+    onSwiped: ({ event }) => {
+      event.stopPropagation();
     },
     onSwipedUp: ({event}) => {
       if(props.mobileClass){
@@ -181,13 +199,7 @@ function Sections(props) {
   //closes the full screen card when clicked.
   function handleMobileCloseButtonClick(e){
     saveContent();
-    //hide the close button
-    // e.target.classList.add('hide-element');
     props.handleCardDisplay();
-
-    //remove the full screen of the cards
-    // const sectionDom = e.target.parentNode.parentNode;
-    // sectionDom.classList.remove('section-mobile')
   }
 
   //STORE WITH FUNCTIONS
@@ -216,12 +228,13 @@ function Sections(props) {
             data-cardindex={props.cardIndex}
             data-numofcards={props.numOfCards}
             data-index={props.id}
+            {...handlersSectiondBox}
           >
             <div className="innerBox shrinkHeight">
               <div className="title">
                 <h3 title={props.description}>{props.title}</h3>
               </div>
-              <div className="middleBox" {...handlersBox}>
+              <div className="middleBox" {...handlersCardBox}>
                 <img
                   src={leftArrow}
                   alt="left arrow to go to previous card"
