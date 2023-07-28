@@ -182,17 +182,13 @@ function Sections(props) {
     switch(dir){
       case 'Right':
       case 'Left':
-        console.log('Right/Left')
         props.dispatch({ type: "updateSEC", payload: returnObj });
         break;
       case "Up":
       case "Down":
-        console.log('Up/Down')
           props.handleCardDisplay(returnIndex);
         break;
       default:
-        console.log(dir)
-        console.log('whaat???')
     }
   }
 

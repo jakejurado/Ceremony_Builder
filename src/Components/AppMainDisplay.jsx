@@ -89,6 +89,17 @@ function AppMainDisplay() {
         </Draggable> 
       );
     }
+
+    if(!loadSections.length){
+      loadSections.push(
+        <SectionsSelector 
+            key="selectorBox" 
+            data={selectorTitles} 
+            index={0} 
+            dispatch={dispatch}
+         />
+      )
+    }
     return loadSections
   }
 
@@ -161,6 +172,7 @@ function AppMainDisplay() {
           break;
         case 'Right':
           theSidebar.activate();
+          theSidebar.removeEventListeners();
           break;
       }
     }
