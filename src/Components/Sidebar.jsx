@@ -4,6 +4,7 @@ import SidebarNames from "./SidebarNames.jsx";
 import SidebarPrint from "./SidebarPrint";
 import SidebarSave from "./SidebarSave";
 import SidebarAccount from "./SidebarAccount";
+import SidebarCopy from "./SidebarCopy";
 import { GlobalContext } from './App';
 import ButtonClose from "./ButtonClose"
 
@@ -32,6 +33,7 @@ function Sidebar() {
       <SidebarNames />
       <SidebarSave />
       {!isMobile && <SidebarPrint />}
+      {isMobile && <SidebarCopy />}
       {theSidebar.display && <ButtonClose classNames='onlyShowOnMobile' clickFunc={handleMobileCloseButtonClick}/> }
     </div>
   );
