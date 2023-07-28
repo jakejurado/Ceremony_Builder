@@ -1,4 +1,4 @@
-const allSections = {
+ const allSections = {
   giving_away: {
     title: "Giving Away",
     start_pos: 0,

@@ -2,15 +2,15 @@ import React, { useContext } from "react";
 // import Select from "react-select";
 import { GlobalContext } from "./App";
 import SidebarTemplateMenu from "./SidebarTemplateMenu";
-import check from "../../public/assets/check2.svg";
 import pencil from "../../public/assets/pencil_grey.svg";
 import plus from "../../public/assets/plus-circle.svg";
 
   //chooses which template to display
 function SideBarTemplate() {
-  const { templates, setTemplates, dispatch, popupDispatch} = useContext(GlobalContext);
+  const { templates, dispatch, popupDispatch, theSidebar, isMobile} = useContext(GlobalContext);
 
   function handlePlusClick(){
+    if(isMobile) theSidebar.deactivate();
     dispatch({ type: "addTEMPLATE", payload: {key: 'myTemplate', value: {order:[]}}});
   }
 

@@ -25,6 +25,7 @@ function AppMainDisplay() {
   const [ cardDisplay, setCardDisplay ] = useState()
   // const [ cardDisplay, setCardDisplay ] = useState(0)
 
+    //updates card view (when in mobile and card expands)
   function handleCardDisplay(secIndex){
       //handle indexes out of range
     const overIndex = secIndex > currTemplate.order.length - 1;
@@ -37,8 +38,6 @@ function AppMainDisplay() {
       setCardDisplay(secIndex)
     }
   }
-
-  //loads the sections from the state in display to build the dom
 
     //creates section components from the template state
   function buildSectionsFromTemplate(temp, selectorSec){
@@ -89,7 +88,7 @@ function AppMainDisplay() {
         </Draggable> 
       );
     }
-
+      //if the order is empty then put selector in the display
     if(!loadSections.length){
       loadSections.push(
         <SectionsSelector 
@@ -103,15 +102,14 @@ function AppMainDisplay() {
     return loadSections
   }
 
+    //builds the card view for mobile
   function buildOneSection(template, cardDisplay){
     const secIndex = cardDisplay
     const { order } = template;
     const [secName, pos] = order[secIndex]
     const { title, description, script } = template[secName];
     
-
     const section = [];
-
     section.push(
       <Section
         key={secName}
@@ -145,7 +143,7 @@ function AppMainDisplay() {
     });
   }
 
-  //hides all the buttons for the section that is being dragged and drops
+    //hides all the buttons for the section that is being dragged and drops
   function createToggleDragStartStop() {
     const nodes = [];
     return (e) => {
@@ -164,6 +162,7 @@ function AppMainDisplay() {
     //hides buttons on drag start
   const toggleDragStartStop = createToggleDragStartStop();
 
+    //handles swipes left and right for the side bar
   function sidebarSlider(dir){
     if(isMobile){
       switch(dir){
@@ -178,6 +177,7 @@ function AppMainDisplay() {
     }
   }
 
+    //impliments swipe
   const { ref: documentRef } = useSwipeable({
     onSwiped: ({ dir }) => {
       sidebarSlider(dir)

@@ -74,7 +74,7 @@ function App() {
     //stores the current users ID
   const [currUser, setCurrUser] = useState(null);
 
-  //fetch templates after user signs in.
+    //fetch templates after user signs in.
   useEffect(() => {
     if(currUser){
       fetchUserTemplates(currUser, metaData, setMetaData, dispatch);
@@ -318,7 +318,7 @@ const [fetchedData, setFetchedData] = useState(null);
     setFetchedData(null);
   }
 
-  //NEW NEW Popup Controls
+  // Popup Controls
   const [thePopup, popupDispatch] = useReducer(popupReducer, {box: null, subAct: null});
 
   function popupReducer(state, action){
@@ -341,7 +341,7 @@ const [fetchedData, setFetchedData] = useState(null);
     //set up the sidebar functionality.
   const theSidebar = new createSidebarToggle('sideBar', 'whiteCover');
 
-  //initial load  
+    //initial load  
   useEffect(()=>{
       //add starting templates to cache
     setSectionCache(addContentsToCache(templates, {}));

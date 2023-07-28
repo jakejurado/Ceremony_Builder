@@ -57,7 +57,6 @@ class createSidebarToggle {
 
     //populates sidebar and adds event listener
   activate() {
-    console.log('activate')
     this.fillDomElementsIfEmpty();
 
     setStyle(this.cover, "display", "block");
@@ -77,7 +76,6 @@ class createSidebarToggle {
 
     //depopulates sidebar and removes event listener
   deactivate() {
-    console.log('deactivate')
     this.fillDomElementsIfEmpty();
     // if (!this.sidebar) return;
     this.sidebar.classList.add('sidebar-shrink')
@@ -96,10 +94,7 @@ class createSidebarToggle {
 
     //toggles activate and deactivating the sidebar
   toggle() {
-    console.log('toggle called')
     if (!this.sidebar || !this.cover ) this.fillDomElementsIfEmpty();
-    // if (!this.sidebar) this.sidebar = document.getElementById(this.sidebarClass) as HTMLElement;
-    // if (!this.cover) this.cover = document.getElementById(this.coverClass) as HTMLElement;
 
     if (this.display === false) {
       this.activate();
