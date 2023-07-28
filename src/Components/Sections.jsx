@@ -1,6 +1,6 @@
 import React, { useContext, useState, useRef, useReducer } from "react";
 // import SectionsWordCards from "./SectionsWordCards";
-import SectionsWordCards from "./SectionsWordCards-mobile";
+import SectionsWordCards from "./SectionsWordCards";
 import SectionsAddButton from "./SectionsAddButton";
 import { GlobalContext } from "./App";
 import { Draggable } from "react-beautiful-dnd";
@@ -214,118 +214,108 @@ function Sections(props) {
 
 
   return (
-    <Draggable draggableId={props.varName} index={props.id}>
-      {(provided) => (
-        <div
-          {...provided.draggableProps}
-          {...provided.dragHandleProps}
-          ref={provided.innerRef}
-        >
-          <div
-            id="section"
-            className={`${props.varName} ${props.mobileClass} section shrinkWidth fadeIn`}
+    <div
+      // id="section"
+      className={`section ${props.varName} ${props.mobileClass} section shrinkWidth fadeIn`}
+      data-varname={props.varName}
+      data-cardindex={props.cardIndex}
+      data-numofcards={props.numOfCards}
+      data-index={props.id}
+      {...handlersSectiondBox}
+    >
+      <div className="innerBox shrinkHeight">
+        <div className="title">
+          <h3 title={props.description}>{props.title}</h3>
+        </div>
+        <div className="middleBox" {...handlersCardBox}>
+          <img
+            src={leftArrow}
+            alt="left arrow to go to previous card"
+            className={`leftClick-${props.varName}-${props.id}-${props.cardIndex}-${props.numOfCards} lArrow`}
             data-varname={props.varName}
             data-cardindex={props.cardIndex}
             data-numofcards={props.numOfCards}
             data-index={props.id}
-            {...handlersSectiondBox}
-          >
-            <div className="innerBox shrinkHeight">
-              <div className="title">
-                <h3 title={props.description}>{props.title}</h3>
-              </div>
-              <div className="middleBox" {...handlersCardBox}>
-                <img
-                  src={leftArrow}
-                  alt="left arrow to go to previous card"
-                  className={`leftClick-${props.varName}-${props.id}-${props.cardIndex}-${props.numOfCards} lArrow`}
-                  data-varname={props.varName}
-                  data-cardindex={props.cardIndex}
-                  data-numofcards={props.numOfCards}
-                  data-index={props.id}
-                  data-dir="Left"
-                  onClick={handleLeftRightClick}
-                  onKeyDown={handleLeftRightClick}
-                  onMouseEnter={toggleImage}
-                  onMouseLeave={toggleImage}
-                  onMouseDown={toggleInsetClass}
-                  onMouseUp={toggleInsetClass}
-                />
-                <SectionsWordCards
-                  className={`${props.varName}`}
-                  key={`${props.varName}`}
-                  id={`${props.varName}`}
-                  cardContent={props.cardContent}
-                  cardIndex={props.cardIndex}
-                  class={`${props.varName}-${props.cardIndex}`}
-                  title={props.title} //only need for title.
-                  cardDivRef={cardDivRef}
-                  saveContent={saveContent}
-                  handleCardDisplay={props.handleCardDisplay}
-                  cardDisplay={props.cardDisplay}
-                />
-                <img
-                  src={leftArrow}
-                  alt="right arrow to go to next card"
-                  className={`rightClick-${props.varName}-${props.id}-${props.cardIndex}-${props.numOfCards} rArrow`}
-                  data-varname={props.varName}
-                  data-cardindex={props.cardIndex}
-                  data-numofcards={props.numOfCards}
-                  data-index={props.id}
-                  data-dir="Right"
-                  onClick={handleLeftRightClick}
-                  onKeyDown={handleLeftRightClick}
-                  onMouseEnter={toggleImage}
-                  onMouseLeave={toggleImage}
-                  onMouseDown={toggleInsetClass}
-                  onMouseUp={toggleInsetClass}
-                />
-              </div>
-            </div>
-            <div className="secButtons">
-              <div className="removeButton">
-                <img
-                  src={plus}
-                  alt="x for closing the section box"
-                  className={`${props.varName}-${props.id}`}
-                  onClick={handleXbutton}
-                  onKeyDown={handleXbutton}
-                />
-              </div>
-              <SectionsAddButton
-                key={`addButton-${props.varName}-${props.id}`}
-                belowSection={props.varName}
-                index={props.id}
-                dispatch={props.dispatch}
-              />
-              <div className="upArrow">
-                <img
-                  className={`up-${props.id}`}
-                  data-dir='Up'
-                  data-index={props.id}
-                  onClick={handleArrowClick}
-                  // onKeyDown={{ handleArrowClick }}
-                  alt="arrow pointing up"
-                  src={arrow}
-                />
-              </div>
-              <div className="dnArrow">
-                <img
-                  src={arrow}
-                  className={`dn-${props.id}`}
-                  data-dir='Down'
-                  data-index={props.id}
-                  onClick={handleArrowClick}
-                  // onKeyDown={{ handleArrowClick }}
-                  alt="arrow pointing down"
-                />
-              </div>
-            </div>
-            { props.mobileClass && <ButtonClose classNames='' clickFunc={handleMobileCloseButtonClick} /> }
-          </div>
+            data-dir="Left"
+            onClick={handleLeftRightClick}
+            onKeyDown={handleLeftRightClick}
+            onMouseEnter={toggleImage}
+            onMouseLeave={toggleImage}
+            onMouseDown={toggleInsetClass}
+            onMouseUp={toggleInsetClass}
+          />
+          <SectionsWordCards
+            className={`${props.varName}`}
+            key={`${props.varName}`}
+            id={`${props.varName}`}
+            cardContent={props.cardContent}
+            cardIndex={props.cardIndex}
+            class={`${props.varName}-${props.cardIndex}`}
+            title={props.title} //only need for title.
+            cardDivRef={cardDivRef}
+            saveContent={saveContent}
+            handleCardDisplay={props.handleCardDisplay}
+            cardDisplay={props.cardDisplay}
+          />
+          <img
+            src={leftArrow}
+            alt="right arrow to go to next card"
+            className={`rightClick-${props.varName}-${props.id}-${props.cardIndex}-${props.numOfCards} rArrow`}
+            data-varname={props.varName}
+            data-cardindex={props.cardIndex}
+            data-numofcards={props.numOfCards}
+            data-index={props.id}
+            data-dir="Right"
+            onClick={handleLeftRightClick}
+            onKeyDown={handleLeftRightClick}
+            onMouseEnter={toggleImage}
+            onMouseLeave={toggleImage}
+            onMouseDown={toggleInsetClass}
+            onMouseUp={toggleInsetClass}
+          />
         </div>
-      )}
-    </Draggable>
+      </div>
+      <div className="secButtons">
+        <div className="removeButton">
+          <img
+            src={plus}
+            alt="x for closing the section box"
+            className={`${props.varName}-${props.id}`}
+            onClick={handleXbutton}
+            onKeyDown={handleXbutton}
+          />
+        </div>
+        <SectionsAddButton
+          key={`addButton-${props.varName}-${props.id}`}
+          belowSection={props.varName}
+          index={props.id}
+          dispatch={props.dispatch}
+        />
+        <div className="upArrow">
+          <img
+            className={`up-${props.id}`}
+            data-dir='Up'
+            data-index={props.id}
+            onClick={handleArrowClick}
+            // onKeyDown={{ handleArrowClick }}
+            alt="arrow pointing up"
+            src={arrow}
+          />
+        </div>
+        <div className="dnArrow">
+          <img
+            src={arrow}
+            className={`dn-${props.id}`}
+            data-dir='Down'
+            data-index={props.id}
+            onClick={handleArrowClick}
+            // onKeyDown={{ handleArrowClick }}
+            alt="arrow pointing down"
+          />
+        </div>
+      </div>
+      { props.mobileClass && <ButtonClose classNames='' clickFunc={handleMobileCloseButtonClick} /> }
+    </div>
   );
 }
 

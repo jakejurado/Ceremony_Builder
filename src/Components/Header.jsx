@@ -37,12 +37,12 @@ function Header() {
   return (
     <div className="titleS">
       {isVisible &&(
-        <img id="h1Image" src={isMobile? cb2Image : cb2Image} alt="image of words Ceremony Builder" />
+        <img id="h1Image" src={isMobile? cb2Image : cbImage} alt="image of words Ceremony Builder" />
       )}
 
       {/* {isMobile && (
         <img id="h1Image" src={isMobile? cb2Image : cbImage} alt="image of words Ceremony Builder" />
-      )} */}
+      )}  */}
     </div>
   );
 }

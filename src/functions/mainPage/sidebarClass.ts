@@ -57,6 +57,7 @@ class createSidebarToggle {
 
     //populates sidebar and adds event listener
   activate() {
+    console.log('activate')
     this.fillDomElementsIfEmpty();
 
     setStyle(this.cover, "display", "block");
@@ -76,6 +77,7 @@ class createSidebarToggle {
 
     //depopulates sidebar and removes event listener
   deactivate() {
+    console.log('deactivate')
     this.fillDomElementsIfEmpty();
     // if (!this.sidebar) return;
     this.sidebar.classList.add('sidebar-shrink')
@@ -94,6 +96,7 @@ class createSidebarToggle {
 
     //toggles activate and deactivating the sidebar
   toggle() {
+    console.log('toggle called')
     if (!this.sidebar || !this.cover ) this.fillDomElementsIfEmpty();
     // if (!this.sidebar) this.sidebar = document.getElementById(this.sidebarClass) as HTMLElement;
     // if (!this.cover) this.cover = document.getElementById(this.coverClass) as HTMLElement;
@@ -110,35 +113,32 @@ class createSidebarToggle {
     this.cover = document.getElementById(this.coverClass) as HTMLElement;
   }
 
-    //attaches an event listener to the cover
+  toggleFunc = () => {
+    this.toggle();
+  };
+
   attachListenerCover() {
     if (!this.cover) return;
 
-    this.cover.addEventListener(
-      "mousedown",
-      () => {
-        this.toggle();
-      },
-      {
-        once: true,
-      }
-    );
+    this.cover.addEventListener("mousedown", this.toggleFunc, { once: true });
   }
 
-    //attaches an event listener to the sidebar
   attachListenerSidebar() {
     if (!this.sidebar) return;
 
-    this.sidebar.addEventListener(
-      "mousedown",
-      () => {
-        this.toggle();
-      },
-      {
-        once: true,
-      }
-    );
+    this.sidebar.addEventListener("mousedown", this.toggleFunc, { once: true });
+  }
+
+  removeEventListeners() {
+    if (this.cover) {
+      this.cover.removeEventListener("mousedown", this.toggleFunc);
+    }
+
+    if (this.sidebar) {
+      this.sidebar.removeEventListener("mousedown", this.toggleFunc);
+    }
   }
 }
+
 
 export { createSidebarToggle };

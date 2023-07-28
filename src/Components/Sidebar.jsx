@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useState } from "react";
 import SideBarTemplate from "./SidebarTemplate";
 import SidebarNames from "./SidebarNames.jsx";
 import SidebarPrint from "./SidebarPrint";
@@ -13,7 +13,6 @@ function Sidebar() {
 
     //hoover animations when hovering.
   function handleSidebarHover(){
-    console.log(sidebarRef.current)
     const curr = sidebarRef.current.style.width
     if(curr === '0px'){
       sidebarRef.current.style.width = '1%'
@@ -26,7 +25,6 @@ function Sidebar() {
     theSidebar.deactivate();
   }
 
-
   return (
     <div id="sideBar" className="sidebar-growth" ref={sidebarRef} onMouseOver={handleSidebarHover} onMouseLeave={handleSidebarHover} >
       <SidebarAccount />
@@ -34,7 +32,7 @@ function Sidebar() {
       <SidebarNames />
       <SidebarSave />
       {!isMobile && <SidebarPrint />}
-      <ButtonClose classNames='onlyShowOnMobile' clickFunc={handleMobileCloseButtonClick}/>
+      {theSidebar.display && <ButtonClose classNames='onlyShowOnMobile' clickFunc={handleMobileCloseButtonClick}/> }
     </div>
   );
 }

@@ -141,7 +141,6 @@ const [fetchedData, setFetchedData] = useState(null);
     const { type, payload } = action;
 
     switch (type) {
-
         //adds a section to the current displayed template
       case 'addSEC':{
         const { varname, index } = payload;
@@ -182,7 +181,6 @@ const [fetchedData, setFetchedData] = useState(null);
       }
         //changes which card is displayed in that section
       case "updateSEC": {
-        console.log({payload})
           //updates with 'order' which card in the section is being displayed
         const newOrder = updateCardIndex(order, payload);
           //copy state and insert into it the template that has the new section
@@ -202,10 +200,8 @@ const [fetchedData, setFetchedData] = useState(null);
 
         //changes section order by updating the order array within the template
       case "moveSEC": {
-        console.log(payload)
           //create the new order for the display state after drag and drop
         const newOrder = updateSectionOrder(order, payload);
-        console.log({payload})
           //copy state and insert newOrder into the template that has the new section
         const templatesCopy = JSON.parse(JSON.stringify(state));
         templatesCopy[templateTitle] = {order: newOrder, ...sections};
@@ -342,25 +338,8 @@ const [fetchedData, setFetchedData] = useState(null);
     }
   }
 
- 
-
-
     //set up the sidebar functionality.
   const theSidebar = new createSidebarToggle('sideBar', 'whiteCover');
-
-  function sidebarSlider({event, dir}){
-    console.log(event)
-    if(isMobile){
-      switch(dir){
-        case 'Left':
-          theSidebar.deactivate();
-          break;
-        case 'Right':
-          theSidebar.activate();
-          break;
-      }
-    }
-  }
 
   //initial load  
   useEffect(()=>{
@@ -374,12 +353,12 @@ const [fetchedData, setFetchedData] = useState(null);
     checkCookieForAccess(setCurrUser);
 
       //close the sidebar
-    theSidebar.toggle();
+    theSidebar.deactivate();
 
       //grab the screen size
-      if(window.innerWidth < maxMobileSize){
-        setIsMobile(true);
-      }
+    if(window.innerWidth < maxMobileSize){
+      setIsMobile(true);
+    }
   }, [])
 
   return (

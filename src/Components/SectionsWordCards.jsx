@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState } from "react";
+import React, { useContext, useRef, useState, useEffect } from "react";
 import { GlobalContext } from "./App";
 import { enterNames } from "../functions/sections/names";
 import { sanatize } from "../functions/wordCards/sanatize";
@@ -7,26 +7,25 @@ import { formatCards } from "../functions/wordCards/formatCards";
 // import ButtonClose from "./ButtonClose"
 
   //Displays main content/scripts of each section
-function WordCards({cardContent, className, cardIndex, cardDivRef, saveContent}) {
-  const { names } = useContext(GlobalContext);
+function SectionsWordCards({cardContent, className, cardIndex, cardDivRef, saveContent, cardDisplay, handleCardDisplay}) {
+  const { names, isMobile } = useContext(GlobalContext);
 
-    //add names to props content
-  const content = enterNames(names, cardContent);
-  
-    //split the string by line breaks
-  const words = content.split("\n");
+  const [textValue, setTextValue] = useState(enterNames(names, cardContent));
 
   //mobile functionality
   function expandCardMobile(e){
-    const dom = findBaseDom(e, 'section')
-    dom.classList.add('section-mobile')
-
-    //remove the div that hides the close button
-    const domButton = dom.querySelector('.cButtonImg');
-    domButton.classList.remove('hide-element')
+    const dom = findBaseDom(e, 'section') 
+    const secIndex = dom.dataset.index
+    if(isMobile){
+      
+      handleCardDisplay(secIndex)
+    }
   }
 
-    //climb up the dom tree to find the class.
+    //add names to props content
+  const content = enterNames(names, cardContent);
+
+    //climb up the dom tree to find   the class.
   function findBaseDom(e, targetClass){
     let node = e.target.parentNode.parentNode.parentNode;
     if(!node.classList.contains(targetClass)){
@@ -35,32 +34,29 @@ function WordCards({cardContent, className, cardIndex, cardDivRef, saveContent})
     return node
   }
 
-  const paragraphs = []
-  words.forEach((phrase)=>{
-    const currentContent = sanatize(phrase)
-    paragraphs.push(<p>{currentContent}</p>)
-  })
+  const handleChange = (e) => {
+    setTextValue(e.target.value);
+  };
 
-    //construct the sanatized html string
-  let newString = "<p>";
-  words.forEach((phrase) => {
-    newString += `${sanatize(phrase)}<br/>`;
-  });
-  newString += "</p>";
 
-    //creates a dom element
-  const card = React.createElement("div", {
-    className: `cards ${className}`,
-    contentEditable: "true",
-    onClick: expandCardMobile,
-    dangerouslySetInnerHTML: { __html: newString },
-    ref: cardDivRef,
-    'data-varname': `${className}`,
-    'data-cardindex': `${cardIndex}`,
-    onBlur: saveContent,
-  });
+  useEffect(()=>{
+    setTextValue(content)
+  }, [cardContent, names])
 
-  return card;
+
+  return (
+    <textarea 
+      ref={cardDivRef} 
+      className={`cards ${className}`}
+      onClick = {expandCardMobile}
+      data-varname ={`${className}`}
+      data-cardindex= {`${cardIndex}`}
+      onBlur = {saveContent}
+      value = {textValue}
+      onChange ={handleChange}
+    >
+    </textarea> 
+  )
 }
 
-export default WordCards
+export default SectionsWordCards

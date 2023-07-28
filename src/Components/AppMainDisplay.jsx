@@ -3,7 +3,8 @@ import { GlobalContext } from "./App";
 import Header from "./Header";
 import Section from "./Sections";
 import SectionsSelector from "./SectionsSelector";
-import { DragDropContext, Droppable } from "react-beautiful-dnd";
+//packages
+import { Draggable, DragDropContext, Droppable } from "react-beautiful-dnd";
 import { useSwipeable } from 'react-swipeable';
 
 //The main display for the site
@@ -22,6 +23,7 @@ function AppMainDisplay() {
 
     //State for mobile view and enlarging card
   const [ cardDisplay, setCardDisplay ] = useState()
+  // const [ cardDisplay, setCardDisplay ] = useState(0)
 
   function handleCardDisplay(secIndex){
       //handle indexes out of range
@@ -56,24 +58,35 @@ function AppMainDisplay() {
             dispatch={dispatch}
          />);
       }
-  
       //load each section into the array to be displayed.
       const { title, description, script } = rest[varTitle];
       loadSections.push(
-        <Section
-          key={varTitle}
-          id={i}
-          title={title}
-          cardContent={script[pos]}
-          description={description}
-          varName={varTitle}
-          cardIndex={pos}
-          numOfCards={script.length - 1}
-          dispatch={dispatch}
-          mobileClass=''
-          cardDisplay = {cardDisplay}
-          handleCardDisplay={handleCardDisplay}
-        />
+        <Draggable draggableId={varTitle} index={i} key={varTitle}> 
+          {(provided) => 
+            (
+              <div
+                {...provided.draggableProps}
+                {...provided.dragHandleProps}
+                ref={provided.innerRef}
+              >
+                <Section
+                  key={varTitle}
+                  id={i}
+                  title={title}
+                  cardContent={script[pos]}
+                  description={description}
+                  varName={varTitle}
+                  cardIndex={pos}
+                  numOfCards={script.length - 1}
+                  dispatch={dispatch}
+                  mobileClass=''
+                  cardDisplay = {cardDisplay}
+                  handleCardDisplay={handleCardDisplay}
+                />
+              </div>
+            )
+          }
+        </Draggable> 
       );
     }
     return loadSections
@@ -108,12 +121,6 @@ function AppMainDisplay() {
     return section
   }
 
-  //build the sections out from the state
-  const loadSectionsToDisplay = 
-    cardDisplay
-    ? buildOneSection(currTemplate, cardDisplay)
-    : buildSectionsFromTemplate(currTemplate, selectorSec)
-
   //DRAG DROP FUNCTIONALITY
   function dragEnd(e) {
     toggleDragStartStop();
@@ -146,17 +153,14 @@ function AppMainDisplay() {
     //hides buttons on drag start
   const toggleDragStartStop = createToggleDragStartStop();
 
-  // const swipeHandlers = useSwipeable({ onSwipedRight: theSidebar.toggle });
-
   function sidebarSlider(dir){
-    console.log(dir)
     if(isMobile){
       switch(dir){
         case 'Left':
-          theSidebar.toggle();
+          theSidebar.deactivate();
           break;
         case 'Right':
-          theSidebar.toggle();
+          theSidebar.activate();
           break;
       }
     }
@@ -175,27 +179,41 @@ function AppMainDisplay() {
     return () => documentRef({});
   });
 
-  return (
-    <div id='titleAndSections'>
-      {/* <Header /> */}
-      <div id="mainDisplay" ref={domRef}>
-        <DragDropContext onDragEnd={dragEnd} onDragStart={toggleDragStartStop}>
-          <Droppable droppableId="sectiondrop">
-            {(provided) => (
-              <div
-                id="allSections"
-                ref={provided.innerRef}
-                {...provided.droppableProps}
-              >
-                {loadSectionsToDisplay}
-                {provided.placeholder}
-              </div>
-            )}
-          </Droppable>
-        </DragDropContext>
+
+  if(!cardDisplay){
+    return (
+      <div id='titleAndSections'>
+        <Header />
+        <div id="mainDisplay" ref={domRef}>
+          <DragDropContext onDragEnd={dragEnd} onDragStart={toggleDragStartStop}>
+            <Droppable droppableId="sectiondrop">
+              {(provided) => (
+                <div
+                  id="allSections"
+                  ref={provided.innerRef}
+                  {...provided.droppableProps}
+                >
+                  {buildSectionsFromTemplate(currTemplate, selectorSec)}
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
+          </DragDropContext>
+        </div>
       </div>
-    </div>
-  );
+    );
+
+  } else{
+    return(
+      <div id='titleAndSections'>
+        <div id="mainDisplay" ref={domRef}>
+          <div id="allSections">
+            {buildOneSection(currTemplate, cardDisplay)}
+          </div>
+        </div>
+      </div>
+    )
+  }
 }
 
 export default AppMainDisplay;
