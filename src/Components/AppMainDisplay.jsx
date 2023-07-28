@@ -164,6 +164,7 @@ function AppMainDisplay() {
 
     //handles swipes left and right for the side bar
   function sidebarSlider(dir){
+    console.log(dir)
     if(isMobile){
       switch(dir){
         case 'Left':

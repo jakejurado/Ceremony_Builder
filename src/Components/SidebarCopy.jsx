@@ -17,6 +17,7 @@ function SidebarCopy() {
     }, function(err) {
         setNotifications('Could not copy text: ', err);
     });
+    setTimeout(setNotifications, 9000);
 }
 
   function copyToClipboard(){ 
