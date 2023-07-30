@@ -1,55 +1,94 @@
-import sectionController from "../../src/server/controllers/sectionController";
-import db from "../../src/server/databaseModels/sqlModel"
-import { Request, Response, NextFunction } from 'express';
+const sectionController = require("../../src/server/controllers/sectionController");
+// Mock the 'db' module
+const db = require("../../src/server/databaseModels/sqlModel");
+jest.mock("../../src/server/databaseModels/sqlModel");
 
-// Mock the db.query function
-jest.mock("../../src/server/databaseModels/sqlModel", () => {
-  return {
-    query: jest.fn(),
-  };
-});
-
-describe("sectionController", () => {
-  let mockRequest: Partial<Request>;
-  let nextFunction: NextFunction = jest.fn();
-  let mockResponse: Response;
+describe('sectionController', () => {
 
   beforeEach(() => {
-    mockResponse = {
-      locals: {},
-    } as Response;
+    // Clear all instances and calls to constructor and all methods:
+    db.query.mockClear();
   });
 
-  it("grabSection should populate res.locals.mySection with data from db", async () => {
-    const mockDbResponse = {
-      rows: [{ /* mock data here */ }],
+  it('grabSection should get a section and call next', async () => {
+    const req = {};
+    const res = {
+      locals: {
+        myData: {
+          varname: 'sectionTitle',
+        },
+        mySection: [],
+      },
     };
-    
-    // set up our mockResponse to have the expected shape
-    mockResponse.locals.myData = { varname: "test" };
-    
-    // mock our db.query to return our mockDbResponse when called
-    (db.query as jest.MockedFunction<typeof db.query>).mockResolvedValueOnce(mockDbResponse);
+    const next = jest.fn();
+    db.query.mockResolvedValueOnce({ rows: ['data'] });
 
-    await sectionController.grabSection(mockRequest as Request, mockResponse as Response, nextFunction);
-
-    expect(db.query).toBeCalledWith(expect.any(String), ["test"]);
-    expect(mockResponse.locals.mySection).toEqual(mockDbResponse.rows);
-    expect(nextFunction).toBeCalledWith();
+    await sectionController.grabSection(req, res, next);
+    expect(db.query).toHaveBeenCalledWith(
+      expect.any(String),
+      expect.arrayContaining([res.locals.myData.varname])
+    );
+    expect(res.locals.mySection).toEqual(['data']);
+    expect(next).toHaveBeenCalled();
   });
 
-  it("grabAllSectionTitles should populate res.locals.allTitles with data from db", async () => {
-    const mockDbResponse = {
-      rows: [{ /* mock data here */ }],
+  it('grabAllSectionTitles should get all section titles and call next', async () => {
+    const req = {};
+    const res = {
+      locals: {
+        allTitles: [],
+      },
     };
+    const next = jest.fn();
+    db.query.mockResolvedValueOnce({ rows: ['title1', 'title2'] });
 
-    // mock our db.query to return our mockDbResponse when called
-    (db.query as jest.MockedFunction<typeof db.query>).mockResolvedValueOnce(mockDbResponse);
+    await sectionController.grabAllSectionTiles(req, res, next);
+    expect(db.query).toHaveBeenCalledWith(expect.any(String));
+    expect(res.locals.allTitles).toEqual(['title1', 'title2']);
+    expect(next).toHaveBeenCalled();
+  });
 
-    await sectionController.grabAllSectionTitles(mockRequest as Request, mockResponse as Response, nextFunction);
+  xit('grabSection should handle db query errors', async () => {
+    const req = {};
+    const res = {
+      locals: {
+        myData: {
+          varname: 'sectionTitle',
+        },
+        mySection: [],
+      },
+    };
+    const next = jest.fn();
+    db.query.mockRejectedValueOnce(new Error('DB error'));
 
-    expect(db.query).toBeCalledWith(expect.any(String));
-    expect(mockResponse.locals.allTitles).toEqual(mockDbResponse.rows);
-    expect(nextFunction).toBeCalledWith();
+    await sectionController.grabSection(req, res, next);
+    expect(db.query).toHaveBeenCalledWith(
+      expect.any(String),
+      expect.arrayContaining([res.locals.myData.varname])
+    );
+    expect(next).toHaveBeenCalledWith({
+      log: "Express error handler caught in grabSection middleware error",
+      status: 500,
+      message: { err: "An error in grabSection" },
+    });
+  });
+
+  xit('grabAllSectionTitles should handle db query errors', async () => {
+    const req = {};
+    const res = {
+      locals: {
+        allTitles: [],
+      },
+    };
+    const next = jest.fn();
+    db.query.mockRejectedValueOnce(new Error('DB error'));
+
+    await sectionController.grabAllSectionTiles(req, res, next);
+    expect(db.query).toHaveBeenCalledWith(expect.any(String));
+    expect(next).toHaveBeenCalledWith({
+      log: "Express error handler caught in grabAllSectionTitles middleware error",
+      status: 500,
+      message: { err: "An error in GrabAllSectionTitles" },
+    });
   });
 });

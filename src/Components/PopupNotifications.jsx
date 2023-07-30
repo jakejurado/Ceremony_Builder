@@ -1,7 +1,7 @@
 import React, {useContext} from 'react';
 import { PopupContext } from './PopupAuth';
 
-
+  //notifications for popups to inform user if criteria is not met
 function PopupNotifications(){
   const {emailCriteria, passwordCriteria, codeCriteria, loginFail, success } = useContext(PopupContext)
 

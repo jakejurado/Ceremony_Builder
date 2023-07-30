@@ -11,6 +11,15 @@
   z-index: 1;
 }
 
+@media (max-width: 768px){
+  .titleS {
+    position: relative;
+  }
+  #h1Image{
+    width: 100%;
+  }
+}
+
 #h1Image {
   width: 90%;
   // background-color: v.$whiteMain;

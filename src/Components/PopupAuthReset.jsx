@@ -3,7 +3,7 @@ import PopupNotifications from './PopupNotifications';
 import { PopupContext } from './PopupAuth';
 import { fetchCall } from '../functions/fetches/api';
 
-
+  //Reset password component box.
 function PopupAuthReset(){
   const {
     currUser,
@@ -23,6 +23,7 @@ function PopupAuthReset(){
     buttonDom,
   } = useContext(PopupContext);
 
+    //fetch request to reset password
   async function handleSubmitClick(){
     const userId = currUser
     const email = userEmailDom.current.value;
@@ -44,58 +45,61 @@ function PopupAuthReset(){
       <div id='signOutTab' className="eachTab selectedTab" onClick={handleSignoffClick} >Signout</div>
       <div id='passwordTab' className="eachTab">Password</div>
       <div id='DeleteTab' className="eachTab selectedTab" onClick={handleDeleteClick} >Delete</div>
-      <div className="mainInput">
-        <div className='signoutBox'>
-          
-          <h2>Reset Password</h2>
 
-          <div className= 'line'>
-            <div className="desc">
-              email: 
+      <form>
+        <div className="mainInput">
+          <div className='signoutBox'>
+            
+            <h2>Reset Password</h2>
+
+            <div className= 'line'>
+              {/* <div className="desc">
+                email: 
+              </div> */}
+              <div className="inputDiv">
+                <input className='inputContent' ref={userEmailDom} onChange={handleEmailInputChange} autoComplete="username" placeholder='e-mail'/>
+              </div>
             </div>
-            <div className="inputDiv">
-              <input className='inputContent' ref={userEmailDom} onChange={handleEmailInputChange} placeholder='e-mail'/>
+
+            <div className= 'line'>
+              {/* <div className="desc">
+                current password: 
+              </div> */}
+              <div className="inputDiv">
+                <input className='inputContent' ref={userCurrPassDom} onChange={handleCurrPasswordInputChange} autoComplete="current-password" type='password' placeholder='current password' />
+              </div>
             </div>
+            
+            <div className= 'line'>
+              {/* <div className="desc">
+                new password: 
+              </div> */}
+              <div className="inputDiv">
+                <input className='inputContent' type='password' ref={userNewPassDom1} onChange={handleNewPasswordInputChange1} autoComplete="new-password" placeholder='new password' />
+              </div>
+            </div>
+
+
+            <div className= 'line depth'>
+              {/* <div className="desc">
+                new password: 
+              </div> */}
+              <div className="inputDiv">
+                <input className='inputContent' type='password' ref={userNewPassDom2} onChange={handleNewPasswordInputChange2} autoComplete="new-password" placeholder='new password' />
+              </div>
+            </div>
+
+            {<PopupNotifications />}
+
           </div>
-
-          <div className= 'line'>
-            <div className="desc">
-              current password: 
-            </div>
-            <div className="inputDiv">
-              <input className='inputContent' ref={userCurrPassDom} onChange={handleCurrPasswordInputChange} placeholder='current password' />
-            </div>
-          </div>
-          
-          <div className= 'line'>
-            <div className="desc">
-              new password: 
-            </div>
-            <div className="inputDiv">
-              <input className='inputContent' type='password' ref={userNewPassDom1} onChange={handleNewPasswordInputChange1} placeholder='new password' />
-            </div>
-          </div>
-
-
-          <div className= 'line depth'>
-            <div className="desc">
-              new password: 
-            </div>
-            <div className="inputDiv">
-              <input className='inputContent' type='password' ref={userNewPassDom2} onChange={handleNewPasswordInputChange2} placeholder='new password' />
-            </div>
-          </div>
-
-          {<PopupNotifications />}
-
         </div>
-      </div>
-
-      <div className="bottomBox">
-        <div className='submitButton' ref={buttonDom}>
-          Submit
+      
+        <div className="bottomBox">
+          <div className='submitButton' ref={buttonDom}>
+            Submit
+          </div>
         </div>
-      </div>
+      </form>
     </div>
   )
 

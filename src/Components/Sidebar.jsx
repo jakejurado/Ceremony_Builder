@@ -1,15 +1,18 @@
-import React, { useRef, useContext } from "react";
+import React, { useContext, useState } from "react";
 import SideBarTemplate from "./SidebarTemplate";
 import SidebarNames from "./SidebarNames.jsx";
 import SidebarPrint from "./SidebarPrint";
 import SidebarSave from "./SidebarSave";
 import SidebarAccount from "./SidebarAccount";
+import SidebarCopy from "./SidebarCopy";
 import { GlobalContext } from './App';
+import ButtonClose from "./ButtonClose"
 
+  //the sidebar of the application
 function Sidebar() {
-  const { currUser, sidebarRef, coverRef } = useContext(GlobalContext)
-  const domSidebar = useRef(null);
+  const { sidebarRef, isMobile, theSidebar } = useContext(GlobalContext)
 
+    //hoover animations when hovering.
   function handleSidebarHover(){
     const curr = sidebarRef.current.style.width
     if(curr === '0px'){
@@ -19,16 +22,20 @@ function Sidebar() {
     }
   }
 
+  function handleMobileCloseButtonClick(){
+    theSidebar.deactivate();
+  }
+
+
   return (
-    <div id="panel">
-      <div id="cover" ref={coverRef}/>
-      <div id="sideBar" ref={sidebarRef} onMouseOver={handleSidebarHover} onMouseLeave={handleSidebarHover}>
-        <SidebarAccount />
-        <SideBarTemplate />
-        <SidebarNames />
-        <SidebarSave />
-        <SidebarPrint />
-      </div>
+    <div id="sideBar" className="sidebar-growth" ref={sidebarRef} onMouseOver={handleSidebarHover} onMouseLeave={handleSidebarHover} >
+      <SidebarAccount />
+      <SideBarTemplate />
+      <SidebarNames />
+      <SidebarSave />
+      {!isMobile && <SidebarPrint />}
+      {isMobile && <SidebarCopy />}
+      {isMobile && <ButtonClose classNames='' clickFunc={handleMobileCloseButtonClick}/>}
     </div>
   );
 }
