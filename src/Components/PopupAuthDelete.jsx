@@ -43,37 +43,40 @@ function PopupAuthDelete(){
       <div id='signOutTab' className="eachTab selectedTab" onClick={handleSignoffClick} >Signout</div>
       <div id='passwordTab' className="eachTab selectedTab" onClick={handleResetClick}>Password</div>
       <div id='DeleteTab' className="eachTab selectedTab" style={{backgroundColor: 'red'}} >Delete</div>
-      <div className="mainInput">
-        <div className='signoutBox'>
-          
-          <h2>Delete Account</h2>
+      <form>
+        <div className="mainInput">
+          <div className='signoutBox'>
+            
+            <h2>Delete Account</h2>
 
-          <div className= 'line'>
-            <div className="desc">
-              email: 
+            <div className= 'line'>
+              {/* <div className="desc">
+                email: 
+              </div> */}
+              <div className="inputDiv">
+                <input className='inputContent' ref={userEmailDom} onChange={handleEmailInputChange} placeholder='e-mail'/>
+              </div>
             </div>
-            <div className="inputDiv">
-              <input className='inputContent' ref={userEmailDom} onChange={handleEmailInputChange} placeholder='e-mail'/>
+
+            <div className= 'line'>
+              {/* <div className="desc">
+                password: 
+              </div> */}
+              <div className="inputDiv">
+                <input className='inputContent' ref={userCurrPassDom} onChange={handleCurrPasswordInputChange} placeholder='password' />
+              </div>
             </div>
+            {<PopupNotifications />}
           </div>
+        </div>
+      
 
-          <div className= 'line'>
-            <div className="desc">
-              password: 
-            </div>
-            <div className="inputDiv">
-              <input className='inputContent' ref={userCurrPassDom} onChange={handleCurrPasswordInputChange} placeholder='verification code' />
-            </div>
+        <div className="bottomBox">
+          <div className='submitButton' ref={buttonDom} >
+            Delete Account
           </div>
-          {<PopupNotifications />}
         </div>
-      </div>
-
-      <div className="bottomBox">
-        <div className='submitButton' ref={buttonDom} >
-          Delete Account
-        </div>
-      </div>
+      </form>
     </div>
   )
 }

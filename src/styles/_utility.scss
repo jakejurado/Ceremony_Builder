@@ -1,0 +1,18 @@
+
+
+.hide-element{
+  display: none;
+}
+
+.show-element{
+  display: block;
+}
+
+
+@media (min-width: 768px){
+  .onlyShowOnMobile{
+    img{
+      display: none;
+    }
+  }
+}

@@ -53,27 +53,27 @@ function PopupAuthReset(){
             <h2>Reset Password</h2>
 
             <div className= 'line'>
-              <div className="desc">
+              {/* <div className="desc">
                 email: 
-              </div>
+              </div> */}
               <div className="inputDiv">
                 <input className='inputContent' ref={userEmailDom} onChange={handleEmailInputChange} autoComplete="username" placeholder='e-mail'/>
               </div>
             </div>
 
             <div className= 'line'>
-              <div className="desc">
+              {/* <div className="desc">
                 current password: 
-              </div>
+              </div> */}
               <div className="inputDiv">
                 <input className='inputContent' ref={userCurrPassDom} onChange={handleCurrPasswordInputChange} autoComplete="current-password" type='password' placeholder='current password' />
               </div>
             </div>
             
             <div className= 'line'>
-              <div className="desc">
+              {/* <div className="desc">
                 new password: 
-              </div>
+              </div> */}
               <div className="inputDiv">
                 <input className='inputContent' type='password' ref={userNewPassDom1} onChange={handleNewPasswordInputChange1} autoComplete="new-password" placeholder='new password' />
               </div>
@@ -81,9 +81,9 @@ function PopupAuthReset(){
 
 
             <div className= 'line depth'>
-              <div className="desc">
+              {/* <div className="desc">
                 new password: 
-              </div>
+              </div> */}
               <div className="inputDiv">
                 <input className='inputContent' type='password' ref={userNewPassDom2} onChange={handleNewPasswordInputChange2} autoComplete="new-password" placeholder='new password' />
               </div>
@@ -93,12 +93,13 @@ function PopupAuthReset(){
 
           </div>
         </div>
-      </form>
-      <div className="bottomBox">
-        <div className='submitButton' ref={buttonDom}>
-          Submit
+      
+        <div className="bottomBox">
+          <div className='submitButton' ref={buttonDom}>
+            Submit
+          </div>
         </div>
-      </div>
+      </form>
     </div>
   )
 

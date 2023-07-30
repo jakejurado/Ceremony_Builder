@@ -1,49 +1,62 @@
-import React, { useContext, useRef } from "react";
+import React, { useContext, useRef, useState, useEffect } from "react";
 import { GlobalContext } from "./App";
 import { enterNames } from "../functions/sections/names";
 import { sanatize } from "../functions/wordCards/sanatize";
 import { formatCards } from "../functions/wordCards/formatCards";
+// import { useSwipeable, onSwipedRight, onSwipedLeft } from 'react-swipeable';
+// import ButtonClose from "./ButtonClose"
 
   //Displays main content/scripts of each section
-function WordCards(props) {
-  const { names, dispatch } = useContext(GlobalContext);
-  const divRef = useRef(null);
+function SectionsWordCards({cardContent, className, cardIndex, cardDivRef, saveContent, cardDisplay, handleCardDisplay}) {
+  const { names, isMobile } = useContext(GlobalContext);
 
-    //saves user input and formats it for the database.
-  function saveContent(){
-      //removes names and adds line breaks
-    const textContent = formatCards(divRef.current.innerHTML, names);
-    const sectionName = divRef.current.dataset.varname;
-    const cardIndex = parseInt(divRef.current.dataset.cardindex);
+  const [textValue, setTextValue] = useState(enterNames(names, cardContent));
 
-    dispatch({type: 'updateWords', payload: {textContent, sectionName, cardIndex}})
+  //mobile functionality
+  function expandCardMobile(e){
+    const dom = findBaseDom(e, 'section') 
+    const secIndex = dom.dataset.index
+    if(isMobile){
+      
+      handleCardDisplay(secIndex)
+    }
   }
 
     //add names to props content
-  const content = enterNames(names, props.cardContent);
-  
-    //split the string by line breaks
-  const words = content.split("\n");
+  const content = enterNames(names, cardContent);
 
-  //construct the sanatized html string
-  let newString = "<p>";
-  words.forEach((phrase) => {
-    newString += `${sanatize(phrase)}<br/>`;
-  });
-  newString += "</p>";
+    //climb up the dom tree to find   the class.
+  function findBaseDom(e, targetClass){
+    let node = e.target.parentNode.parentNode.parentNode;
+    if(!node.classList.contains(targetClass)){
+      node = node.parentNode;
+    }
+    return node
+  }
 
-    //creates a dom element
-  const card = React.createElement("div", {
-    className: `cards ${props.className}`,
-    contentEditable: "true",
-    dangerouslySetInnerHTML: { __html: newString },
-    ref: divRef,
-    'data-varname': `${props.className}`,
-    'data-cardindex': `${props.cardIndex}`,
-    onBlur: saveContent
-  });
+  const handleChange = (e) => {
+    setTextValue(e.target.value);
+  };
 
-  return card;
+
+  useEffect(()=>{
+    setTextValue(content)
+  }, [cardContent, names])
+
+
+  return (
+    <textarea 
+      ref={cardDivRef} 
+      className={`cards ${className}`}
+      onClick = {expandCardMobile}
+      data-varname ={`${className}`}
+      data-cardindex= {`${cardIndex}`}
+      onBlur = {saveContent}
+      value = {textValue}
+      onChange ={handleChange}
+    >
+    </textarea> 
+  )
 }
 
-export default WordCards;
+export default SectionsWordCards

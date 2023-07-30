@@ -45,9 +45,6 @@ function PopupAuthForgot(){
           
           
           <div className='line'>
-            <div className="desc">
-              e-mail: 
-            </div>
             <div className="inputDiv">
               <input className='inputContent' ref={userEmailDom} onChange={handleEmailInputChange} placeholder='e-mail' />
             </div>

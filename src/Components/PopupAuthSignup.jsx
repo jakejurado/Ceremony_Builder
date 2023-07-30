@@ -43,27 +43,27 @@ function PopupAuthSignup(){
         <div className="mainInput">
 
           <div className = 'line'>
-            <div className="desc">
+            {/* <div className="desc">
               e-mail: 
-            </div>
+            </div> */}
             <div className="inputDiv">
               <input ref={userEmailDom} className='inputContent' onChange={handleEmailInputChange} placeholder='email' autoComplete="username"/>
             </div>
           </div>
 
           <div className = 'line'>
-            <div className="desc">
+            {/* <div className="desc">
               password: 
-            </div>
+            </div> */}
             <div className="inputDiv">
               <input type='password' ref={userNewPassDom1} className='inputContent' onChange={handleNewPasswordInputChange1} placeholder='password' autoComplete="new-password"/>
             </div>
           </div>
 
           <div className = 'line moreMargin'>
-            <div className="desc">
+            {/* <div className="desc">
               password: 
-            </div>
+            </div> */}
             <div className="inputDiv">
               <input type='password' ref={userNewPassDom2} className='inputContent' onChange={handleNewPasswordInputChange2} placeholder='password' autoComplete="new-password"/>
             </div>

@@ -1,6 +1,25 @@
 import React from 'react';
 
-class BaseAPI {
+class Cache {
+  cache: {
+    [key: string] : any 
+  } | undefined
+
+  constructor(){
+    this.cache = {}
+  }
+
+  inCache(search: string): boolean{
+    return this.cache.hasOwnProperty(search)
+  }
+
+  addToCache(search: string, data: any): void{
+    this.cache[search] = data
+  }
+}
+
+
+class BaseAPI extends Cache{
   url : string;
   headers : {[key: string]: string};
   path : {
@@ -8,16 +27,17 @@ class BaseAPI {
   }
 
   constructor(url) {
+    super();
     this.url = url;
     this.headers = {'Content-Type': 'application/json'};
     this.path = {
       login : `user/login`,
       signup: 'user/signup',
       signout: 'user/signout',
-      verify: 'user/verify',
-      forgot: 'user/forgot',
       delete: 'user/signup',
       reset: 'user/signup',
+      verify: 'user/verify',
+      forgot: 'user/forgot',
       titles: 'sections/titles',
       grabSec: 'sections/grab',
       templates: 'templates/userTemplate',
@@ -37,6 +57,11 @@ class BaseAPI {
   }
 
   async get(endpoint: string, params: { varname?: string, userId?: number } | false = false): Promise<any>{
+      //grab cached data
+    if(params && params.varname && this.inCache(params.varname)){
+      return this.cache[params.varname]
+    }
+      //fetch data
     let url: string = this.path[endpoint];
     if(params) url += this.createParams(params)
     const options = {
@@ -46,6 +71,8 @@ class BaseAPI {
     try {
       const res = await fetch(url, options)
       const data = await res.json();
+        //cache the data
+      if(params && params.varname) this.addToCache(params.varname, data)
       return data
     } catch(err){
       console.log('error in API')
@@ -100,7 +127,7 @@ class BaseAPI {
     } catch(err){
       console.log('unable to delete', err)
     }
-  } 
+  }
 }
 
 const fetchCall = new BaseAPI('');
