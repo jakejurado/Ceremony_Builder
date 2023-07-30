@@ -32,7 +32,6 @@ import { determineTemplateTitle } from "../functions/template/determineTemplateT
 import { fetchUserTemplates } from "../functions/fetches/fetchUserTemplates";
 import { checkCookieForAccess } from "../functions/fetches/checkUserAccess"
 import { createMetaDataFromStartingTemplates } from "../functions/metaData/createMetaDataFromStartingTemplates"
-import { useSwipeable } from 'react-swipeable';
 
 //Typescript
 import {
@@ -59,12 +58,9 @@ function App() {
   const maxMobileSize = 800;
   const [isMobile, setIsMobile] = useState(window.innerWidth < maxMobileSize);
   
-  const [isSidebar, setIsSidebar] = useState(false)
     //set up the sidebar functionality.
   const theSidebar = new createSidebarToggle('sideBar', 'whiteCover', isMobile);
   
-
-
     //meta data for the templates to help sync with database.
   const [metaData, setMetaData] = 
     useState<MetaData>(
@@ -73,9 +69,6 @@ function App() {
 
     //templates to start the program
   const allT = {wedding: templateWed2, elope: templateElope }
-
-    //cache for all sections from templates and ones added by user during session
-  const [sectionCache, setSectionCache] = useState(null);
 
     //stores the current users ID
   const [currUser, setCurrUser] = useState(null);
@@ -152,24 +145,15 @@ const [fetchedData, setFetchedData] = useState(null);
         const { varname, index } = payload;
           //remove section selector
         setSelectorSec({ isVisible: false, position: undefined });
-          //either update state or fetch section
-        if(sectionCache.hasOwnProperty(varname)){
-          return addSectionToTemplates(state, templateTitle, varname, index, sectionCache)
-        } else {
-          fetchSectionFromDatabase(varname, index, setFetchedData);
-          return state;
-        }
+          //get section data
+        fetchSectionFromDatabase(varname, index, setFetchedData);
+        return state;
       }  
 
         //loads a section that was fetched from 'addSEC' case.
       case 'loadFetch':{
         const {varname, sec, index} = payload;
-          //update sectionCache
-        const newCache = {...sectionCache}
-        newCache[varname] = sec;
-        setSectionCache(newCache);
-          //add section to the template and update state
-        return addSectionToTemplates(state, templateTitle, varname, index, newCache);
+        return addSectionToTemplates(state, templateTitle, varname, index, sec);
       }
 
         //removes section from current template
@@ -347,7 +331,9 @@ const [fetchedData, setFetchedData] = useState(null);
     //initial load  
   useEffect(()=>{
       //add starting templates to cache
-    setSectionCache(addContentsToCache(templates, {}));
+    addContentsToCache(templates)
+
+    
 
       //add metadata from the starting templates.
     createMetaDataFromStartingTemplates(templates, metaData, setMetaData)
