@@ -14,14 +14,16 @@ class createSidebarToggle {
   display: boolean;
   storage: HTMLElement[];
   time: SidebarToggleTime;
+  isMobile: boolean;
 
-  constructor(sidebarClass: string, coverClass: string){
+  constructor(sidebarClass: string, coverClass: string, isMobile: boolean = false){
     this.sidebarClass = sidebarClass;
     this.coverClass = coverClass
     this.sidebar = undefined;
     this.cover = undefined;
     this.display = true;
     this.storage = [];
+    this.isMobile = isMobile
     this.time =  {
       full: 1500,
       partial: 1000,
@@ -41,6 +43,7 @@ class createSidebarToggle {
     }, this.time.interval);
   }
 
+
     // removes items from sidebar
   depopulate() {
     if (!this.sidebar) return;
@@ -57,6 +60,7 @@ class createSidebarToggle {
 
     //populates sidebar and adds event listener
   activate() {
+    console.log('enter activate')
     this.fillDomElementsIfEmpty();
 
     setStyle(this.cover, "display", "block");
@@ -67,10 +71,12 @@ class createSidebarToggle {
       this.populate();
     }, this.time.partial);
 
-    setTimeout(() => {
-      this.attachListenerCover();
-    }, this.time.full);
-
+    if(!this.isMobile) {
+      setTimeout(() => {
+        this.attachListenerCover();
+      }, this.time.full);
+    }
+    
     this.display = true;
   }
 
@@ -85,43 +91,39 @@ class createSidebarToggle {
 
     this.depopulate();
 
-    setTimeout(() => {
-      this.attachListenerSidebar();
-    }, this.time.full);
-
+    if(!this.isMobile) {
+      setTimeout(() => {
+        this.attachListenerSidebar();
+      }, this.time.full);
+    }
+    
     this.display = false;
   }
 
-    //toggles activate and deactivating the sidebar
-  toggle() {
-    if (!this.sidebar || !this.cover ) this.fillDomElementsIfEmpty();
-
-    if (this.display === false) {
-      this.activate();
-    } else {
-      this.deactivate();
-    }
-  }
+  
 
   fillDomElementsIfEmpty(){
     this.sidebar = document.getElementById(this.sidebarClass) as HTMLElement;
     this.cover = document.getElementById(this.coverClass) as HTMLElement;
   }
 
+
   toggleFunc = () => {
-    this.toggle();
+    this.deactivate();
   };
+
+  activateFunc = () => {
+    this.activate()
+  }
 
   attachListenerCover() {
     if (!this.cover) return;
-
     this.cover.addEventListener("mousedown", this.toggleFunc, { once: true });
   }
 
   attachListenerSidebar() {
     if (!this.sidebar) return;
-
-    this.sidebar.addEventListener("mousedown", this.toggleFunc, { once: true });
+    this.sidebar.addEventListener("mousedown", this.activateFunc, { once: true });
   }
 
   removeEventListeners() {
@@ -130,7 +132,7 @@ class createSidebarToggle {
     }
 
     if (this.sidebar) {
-      this.sidebar.removeEventListener("mousedown", this.toggleFunc);
+      this.sidebar.removeEventListener("mousedown", this.activateFunc);
     }
   }
 }

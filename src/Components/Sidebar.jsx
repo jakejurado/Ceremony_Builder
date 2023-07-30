@@ -26,6 +26,7 @@ function Sidebar() {
     theSidebar.deactivate();
   }
 
+
   return (
     <div id="sideBar" className="sidebar-growth" ref={sidebarRef} onMouseOver={handleSidebarHover} onMouseLeave={handleSidebarHover} >
       <SidebarAccount />
@@ -34,7 +35,7 @@ function Sidebar() {
       <SidebarSave />
       {!isMobile && <SidebarPrint />}
       {isMobile && <SidebarCopy />}
-      {theSidebar.display && <ButtonClose classNames='onlyShowOnMobile' clickFunc={handleMobileCloseButtonClick}/> }
+      {isMobile && <ButtonClose classNames='' clickFunc={handleMobileCloseButtonClick}/>}
     </div>
   );
 }

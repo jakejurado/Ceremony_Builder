@@ -56,8 +56,14 @@ export const GlobalContext = createContext(null);
 
 function App() {
     //keep track of screen size
-  const [isMobile, setIsMobile] = useState(false);
   const maxMobileSize = 800;
+  const [isMobile, setIsMobile] = useState(window.innerWidth < maxMobileSize);
+  
+  const [isSidebar, setIsSidebar] = useState(false)
+    //set up the sidebar functionality.
+  const theSidebar = new createSidebarToggle('sideBar', 'whiteCover', isMobile);
+  
+
 
     //meta data for the templates to help sync with database.
   const [metaData, setMetaData] = 
@@ -338,9 +344,6 @@ const [fetchedData, setFetchedData] = useState(null);
     }
   }
 
-    //set up the sidebar functionality.
-  const theSidebar = new createSidebarToggle('sideBar', 'whiteCover');
-
     //initial load  
   useEffect(()=>{
       //add starting templates to cache
@@ -353,12 +356,14 @@ const [fetchedData, setFetchedData] = useState(null);
     checkCookieForAccess(setCurrUser);
 
       //close the sidebar
-    theSidebar.deactivate();
+    setTimeout(() => {
+      theSidebar.deactivate()
+    }, 1000);
 
-      //grab the screen size
-    if(window.innerWidth < maxMobileSize){
-      setIsMobile(true);
-    }
+    //   //grab the screen size
+    // if(window.innerWidth < maxMobileSize){
+    //   setIsMobile(true);
+    // }
   }, [])
 
   return (

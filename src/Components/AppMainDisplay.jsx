@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { GlobalContext } from "./App";
 import Header from "./Header";
 import Section from "./Sections";
@@ -164,15 +164,14 @@ function AppMainDisplay() {
 
     //handles swipes left and right for the side bar
   function sidebarSlider(dir){
-    console.log(dir)
     if(isMobile){
       switch(dir){
         case 'Left':
           theSidebar.deactivate();
           break;
         case 'Right':
+          theSidebar.removeEventListeners()
           theSidebar.activate();
-          theSidebar.removeEventListeners();
           break;
       }
     }
@@ -186,11 +185,16 @@ function AppMainDisplay() {
     preventDefaultTouchmoveEvent: true
   });
 
-  React.useEffect(() => {
+  useEffect(() => {
     documentRef(document);
-    // Clean up swipeable event listeners
+      // Clean up swipeable event listeners
     return () => documentRef({});
   });
+
+  // useEffect(() => {
+  //   // theSidebar.fillDomElementsIfEmpty();
+  //   // theSidebar.removeEventListeners();
+  // }, [])
 
 
   if(!cardDisplay){
