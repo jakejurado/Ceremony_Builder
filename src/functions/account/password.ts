@@ -38,13 +38,15 @@ interface userInfoType {
 }
 
 function checkSubmitButtonCriteria(userInfo: userInfoType): boolean{
+  console.log(userInfo)
   let validEmail: boolean = validateEmail(userInfo.email)
   let validNewPassword: boolean = passwordCriteria(userInfo.passNew1, userInfo.passNew2)
   let validCurrPassword: boolean = passwordCriteria(userInfo.passCurr, userInfo.passCurr)
   let validCode: boolean = userInfo.code ? true: false;
-  let validPasswordLength: boolean = parseInt(userInfo.passCurr) > 4;
+  let validPasswordLength: boolean = parseInt(userInfo.passCurr) > 5;
 
   let res = false;
+  console.log(userInfo.title)
   switch(userInfo.title){
     case 'signup':
       if(validEmail && validNewPassword) res = true;

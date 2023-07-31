@@ -1,11 +1,13 @@
-import React, { useCallback, useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Select from "react-select";
 import { GlobalContext } from "./App";
 
-function SelectorOptionMenu({ options }) {
+  //Provides the template menu that is displayed in the sidebar f
+function SidebarTemplateMenu({ options }) {
   const { setTemplateTitle, templateTitle, dispatch, templates } = useContext(GlobalContext);
   const [selectedOption, setSelectedOption] = useState(options[0]);
 
+    //finds the current template to display in the menu
   useEffect(() => {
     // Find the index of the currently selected option
     const index = options.findIndex((option) => option.label === templateTitle);
@@ -15,6 +17,7 @@ function SelectorOptionMenu({ options }) {
     }
   }, [templateTitle, options]);
 
+    //updates displayed template and menu template
   function handleChange(selectedOption) {
     setSelectedOption(selectedOption);
     setTemplateTitle(selectedOption.label);
@@ -24,6 +27,7 @@ function SelectorOptionMenu({ options }) {
     });
   }
 
+    //style for the template menu
   const colourStyles = {
     control: (styles) => ({
       ...styles,
@@ -76,4 +80,4 @@ function SelectorOptionMenu({ options }) {
   );
 }
 
-export default SelectorOptionMenu;
+export default SidebarTemplateMenu;

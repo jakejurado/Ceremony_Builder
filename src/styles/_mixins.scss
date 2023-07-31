@@ -61,6 +61,8 @@
 
 
 
+
+
 // *****************
 
 @mixin buttonDiv($degStart, $degEnd, $sec, $color) {
@@ -96,7 +98,7 @@
   width: 10vw;
   height: 4vw;
   font-family: v.$fontSecond;
-  font-size: v.$fontSizeMed;
+  font-size: v.$fSize3;
   background-color: v.$whiteMain;
   color: v.$blackMain;
   border: solid;
@@ -110,5 +112,18 @@
   &:active {
     background-color: v.$yellowMain;
     color: white;
+  }
+}
+
+@mixin closeButton-mobile{
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  img{
+    width:15%;
   }
 }

@@ -2,6 +2,7 @@ import React, {useContext} from 'react';
 import { PopupContext } from './PopupAuth';
 import { fetchCall } from '../functions/fetches/api';
 
+  //Login popup component
 function PopupAuthLogin(){
   const {
     userEmailDom, 
@@ -21,6 +22,7 @@ function PopupAuthLogin(){
     handleSubmitClickRef,
   } = useContext(PopupContext)
 
+    //fetch request to login.
   async function handleSubmitClick(){
     const email = userEmailDom.current.value;
     const password = userCurrPassDom.current.value;
@@ -42,18 +44,18 @@ function PopupAuthLogin(){
       <form>
         <div className="mainInput">
           <div className = 'line'>
-            <div className="desc">
+            {/* <div className="desc">
               e-mail: 
-            </div>
+            </div> */}
             <div className="inputDiv">
               <input className='inputContent' ref={userEmailDom} onChange={handleEmailInputChange} placeholder='email' autoComplete="username" />
             </div>
           </div>
           
           <div className = 'line'>
-            <div className="desc">
+            {/* <div className="desc">
               password: 
-            </div>
+            </div> */}
             <div className="inputDiv">
               <input type='password' className='inputContent' ref={userCurrPassDom} onChange={handleCurrPasswordInputChange} placeholder='password' autoComplete="current-password" />
             </div>

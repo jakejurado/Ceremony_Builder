@@ -3,14 +3,15 @@ import { GlobalContext } from "./App";
 import { enterNames } from "../functions/sections/names";
 import printJs from "print-js";
 
+  //Print Popup Box
 function PopupPrint() {
   const { templates, templateTitle, names } = useContext(GlobalContext);
   const template = templates[ templateTitle]
 
   const ele = useRef(null)
 
+    //print on load
   useEffect(()=>{
-    // const ele = document.getElementById("popupPrint");
     printJs({
       printable: ele.current,
       type: "html",
@@ -21,7 +22,7 @@ function PopupPrint() {
     });
   }, [])
 
-  // style: '.custom-h3 { color: red; }'
+    //style for print
   const printstyle = ".printBox { margin: 0px 0px 0px 0px; padding: 0}";
 
   return (

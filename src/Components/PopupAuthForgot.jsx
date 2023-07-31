@@ -2,6 +2,7 @@ import React, {useContext, useEffect, useRef} from 'react';
 import { PopupContext } from './PopupAuth';
 import { fetchCall } from '../functions/fetches/api';
 
+  //forgot password popup box
 function PopupAuthForgot(){
   const {
     userEmailDom, 
@@ -11,12 +12,12 @@ function PopupAuthForgot(){
     handleSubmitClickRef,
     handleLoginTabClick, 
     handleSignupTabClick, 
-    handleVerifyClick,
     popupDispatch,
     setLoginFail,
     setSuccess,
   } = useContext(PopupContext);
 
+    //fetch to start the email reset process
   async function handleSubmitClick(){
     const email = userEmailDom.current.value;
     const response = await fetchCall.put('forgot', { email });
@@ -44,9 +45,6 @@ function PopupAuthForgot(){
           
           
           <div className='line'>
-            <div className="desc">
-              e-mail: 
-            </div>
             <div className="inputDiv">
               <input className='inputContent' ref={userEmailDom} onChange={handleEmailInputChange} placeholder='e-mail' />
             </div>

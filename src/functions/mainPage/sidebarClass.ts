@@ -7,17 +7,23 @@ interface SidebarToggleTime {
 }
 
 class createSidebarToggle {
+  sidebarClass: string;
+  coverClass: string;
   sidebar: HTMLElement | undefined;
   cover: HTMLElement | undefined;
   display: boolean;
   storage: HTMLElement[];
   time: SidebarToggleTime;
+  isMobile: boolean;
 
-  constructor(sidebar: HTMLElement | undefined, cover: HTMLElement | undefined){
-    this.sidebar = sidebar;
-    this.cover = cover;
+  constructor(sidebarClass: string, coverClass: string, isMobile: boolean = false){
+    this.sidebarClass = sidebarClass;
+    this.coverClass = coverClass
+    this.sidebar = undefined;
+    this.cover = undefined;
     this.display = true;
     this.storage = [];
+    this.isMobile = isMobile
     this.time =  {
       full: 1500,
       partial: 1000,
@@ -25,6 +31,7 @@ class createSidebarToggle {
     };
   }
 
+    // adds items to sidebar
   populate() {
     if (!this.sidebar) return;
 
@@ -36,9 +43,11 @@ class createSidebarToggle {
     }, this.time.interval);
   }
 
+
+    // removes items from sidebar
   depopulate() {
     if (!this.sidebar) return;
-
+   
     this.storage.push(...Array.from(this.sidebar.children) as HTMLElement[]);
     const intervalId = setInterval(() => {
       const curr = this.storage.pop();
@@ -49,87 +58,84 @@ class createSidebarToggle {
     }, this.time.interval);
   }
 
+    //populates sidebar and adds event listener
   activate() {
-    if (!this.sidebar) this.sidebar = document.getElementById("sidebar") as HTMLElement;
-    if (!this.cover) this.cover = document.getElementById("cover") as HTMLElement;
+    console.log('enter activate')
+    this.fillDomElementsIfEmpty();
 
     setStyle(this.cover, "display", "block");
 
-    setStyle(this.sidebar, "width", "30%");
+    this.sidebar.classList.remove('sidebar-shrink');
 
     setTimeout(() => {
       this.populate();
     }, this.time.partial);
 
-    setTimeout(() => {
-      this.cover?.addEventListener("mousedown", () => {
-        this.toggle();
-      }, { once: true });
-    }, this.time.full);
-
+    if(!this.isMobile) {
+      setTimeout(() => {
+        this.attachListenerCover();
+      }, this.time.full);
+    }
+    
     this.display = true;
   }
 
+    //depopulates sidebar and removes event listener
   deactivate() {
-    if (!this.sidebar) return;
-
-    setStyle(this.sidebar, "width", "0");
-
-    setTimeout(() => {
-      // setStyle(this.sidebarButton, "display", "flex");
-    }, this.time.full);
+    this.fillDomElementsIfEmpty();
+    // if (!this.sidebar) return;
+    this.sidebar.classList.add('sidebar-shrink')
 
     if (!this.cover) return;
-
     setStyle(this.cover, "display", "none");
 
     this.depopulate();
 
-    setTimeout(() => {
-      this.attachListenerSidebar();
-    }, this.time.full);
-
+    if(!this.isMobile) {
+      setTimeout(() => {
+        this.attachListenerSidebar();
+      }, this.time.full);
+    }
+    
     this.display = false;
   }
 
-  toggle() {
-    if (!this.sidebar) this.sidebar = document.getElementById("sideBar") as HTMLElement;
-    if (!this.cover) this.cover = document.getElementById("cover") as HTMLElement;
+  
 
-    if (this.display === false) {
-      this.activate();
-    } else {
-      this.deactivate();
-    }
+  fillDomElementsIfEmpty(){
+    this.sidebar = document.getElementById(this.sidebarClass) as HTMLElement;
+    this.cover = document.getElementById(this.coverClass) as HTMLElement;
   }
 
-  attachListener() {
-    if (!this.cover) return;
 
-    this.cover.addEventListener(
-      "mousedown",
-      () => {
-        this.toggle();
-      },
-      {
-        once: true,
-      }
-    );
+  toggleFunc = () => {
+    this.deactivate();
+  };
+
+  activateFunc = () => {
+    this.activate()
+  }
+
+  attachListenerCover() {
+    if (!this.cover) return;
+    this.cover.addEventListener("mousedown", this.toggleFunc, { once: true });
   }
 
   attachListenerSidebar() {
     if (!this.sidebar) return;
+    this.sidebar.addEventListener("mousedown", this.activateFunc, { once: true });
+  }
 
-    this.sidebar.addEventListener(
-      "mousedown",
-      () => {
-        this.toggle();
-      },
-      {
-        once: true,
-      }
-    );
+  removeEventListeners() {
+    if (this.cover) {
+      this.cover.removeEventListener("mousedown", this.toggleFunc);
+    }
+
+    if (this.sidebar) {
+      this.sidebar.removeEventListener("mousedown", this.activateFunc);
+    }
   }
 }
+
 
 export { createSidebarToggle };

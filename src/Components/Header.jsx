@@ -1,23 +1,15 @@
-// import React from "react";
-// import cbImage from "../../public/assets/ceremonybuilder.png";
+import React, { useState, useEffect, useContext } from 'react';
+import cbImage from "../../public/assets/ceremonybuilderMain.png";
+import cb2Image from "../../public/assets/ceremonybuilderTitle.png";
+import { GlobalContext } from './App';
 
-// function Header() {
-//   return (
-//     <div className="titleS">
-//       <img id="h1Image" src={cbImage} alt="image of words Ceremony Builder" />
-//     </div>
-//   );
-// }
-
-// export default Header;
-
-import React, { useState, useEffect } from 'react';
-import cbImage from "../../public/assets/ceremonybuilder.png";
-
+  //Holds the main website title image
 function Header() {
+  const {isMobile} = useContext(GlobalContext)
+
   const [isVisible, setIsVisible] = useState(true);
   const [scrollPosition, setScrollPosition] = useState(0);
-  const threshold = 100;
+  const threshold = 200;
 
   const toggleVisibility = () => {
     const currentScrollPos = window.pageYOffset;
@@ -44,9 +36,13 @@ function Header() {
 
   return (
     <div className="titleS">
-      {isVisible && (
-        <img id="h1Image" src={cbImage} alt="image of words Ceremony Builder" />
+      {isVisible &&(
+        <img id="h1Image" src={isMobile? cb2Image : cbImage} alt="image of words Ceremony Builder" />
       )}
+
+      {/* {isMobile && (
+        <img id="h1Image" src={isMobile? cb2Image : cbImage} alt="image of words Ceremony Builder" />
+      )}  */}
     </div>
   );
 }

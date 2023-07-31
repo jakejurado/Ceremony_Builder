@@ -1,18 +1,10 @@
 //add contents of array to cache
 import { Templates, Cache } from "../../types/types_copy";
+import { fetchCall } from '../fetches/api'
+// import { fetchCall } from './api';
 
 
-function addContentsToCache2(templates, cache) {
-  console.log('entered add contents to cashe')
-  const newCache = JSON.parse(JSON.stringify(cache))
-  Object.values(templates).forEach((template) => {
-    Object.assign(newCache, template);
-  });
-  delete newCache.order;
-  return newCache;
-}
-
-function addContentsToCache(templates, cache) {
+function addContentsToCacheOLD(templates, cache) {
   const newCache = JSON.parse(JSON.stringify(cache))
   Object.values(templates).forEach((template) => {
     for (const [varname, data] of Object.entries(template)) {
@@ -21,6 +13,25 @@ function addContentsToCache(templates, cache) {
     }
   });
   return newCache;
+}
+
+function addContentsToCache(templates) {
+  Object.values(templates).forEach((template) => {
+    for (const [varname, data] of Object.entries(template)) {
+      if (varname === "order") continue;
+      if(!fetchCall.inCache(varname)){
+        const cacheBuild = data.script.map(script => {
+          return {
+            description: data.description,
+            title: data.title,
+            script: script,
+            varname: varname
+          }
+        })
+        fetchCall.addToCache(varname, cacheBuild)
+      }
+    }
+  });
 }
 
 export { addContentsToCache };

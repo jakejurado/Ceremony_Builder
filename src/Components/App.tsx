@@ -7,9 +7,8 @@ import React, {
 } from "react";
 
 //React Components
-import MainDisplay from "./MainDisplay";
+import AppMainDisplay from "./AppMainDisplay";
 import Sidebar from "./Sidebar";
-import Header from "./Header";
 import ErrorBoundary from "./ErrorBoundary";
 import Popup from './Popup';
 
@@ -55,6 +54,13 @@ export const GlobalContext = createContext(null);
 
 
 function App() {
+    //keep track of screen size
+  const maxMobileSize = 800;
+  const [isMobile, setIsMobile] = useState(window.innerWidth < maxMobileSize);
+  
+    //set up the sidebar functionality.
+  const theSidebar = new createSidebarToggle('sideBar', 'whiteCover', isMobile);
+  
     //meta data for the templates to help sync with database.
   const [metaData, setMetaData] = 
     useState<MetaData>(
@@ -64,13 +70,10 @@ function App() {
     //templates to start the program
   const allT = {wedding: templateWed2, elope: templateElope }
 
-    //cache for all sections from templates and ones added by user during session
-  const [sectionCache, setSectionCache] = useState(null);
-
     //stores the current users ID
   const [currUser, setCurrUser] = useState(null);
 
-  //fetch templates after user signs in.
+    //fetch templates after user signs in.
   useEffect(() => {
     if(currUser){
       fetchUserTemplates(currUser, metaData, setMetaData, dispatch);
@@ -79,9 +82,9 @@ function App() {
 
     //holds the names of the two getting married.
   const [names, setNames] = useState({
-  person1: undefined,
-  person2: undefined,
-});
+    person1: undefined,
+    person2: undefined,
+  });
 
   //holds data that needs to update state asynchronously
 const [fetchedData, setFetchedData] = useState(null);
@@ -137,30 +140,20 @@ const [fetchedData, setFetchedData] = useState(null);
     const { type, payload } = action;
 
     switch (type) {
-
         //adds a section to the current displayed template
       case 'addSEC':{
         const { varname, index } = payload;
           //remove section selector
         setSelectorSec({ isVisible: false, position: undefined });
-          //either update state or fetch section
-        if(sectionCache.hasOwnProperty(varname)){
-          return addSectionToTemplates(state, templateTitle, varname, index, sectionCache)
-        } else {
-          fetchSectionFromDatabase(varname, index, setFetchedData);
-          return state;
-        }
+          //get section data
+        fetchSectionFromDatabase(varname, index, setFetchedData);
+        return state;
       }  
 
         //loads a section that was fetched from 'addSEC' case.
       case 'loadFetch':{
         const {varname, sec, index} = payload;
-          //update sectionCache
-        const newCache = {...sectionCache}
-        newCache[varname] = sec;
-        setSectionCache(newCache);
-          //add section to the template and update state
-        return addSectionToTemplates(state, templateTitle, varname, index, newCache);
+        return addSectionToTemplates(state, templateTitle, varname, index, sec);
       }
 
         //removes section from current template
@@ -315,11 +308,11 @@ const [fetchedData, setFetchedData] = useState(null);
     setFetchedData(null);
   }
 
-  //NEW NEW Popup Controls
+  // Popup Controls
   const [thePopup, popupDispatch] = useReducer(popupReducer, {box: null, subAct: null});
 
   function popupReducer(state, action){
-    const {type, subAct} = action
+    const {subAct} = action
     
     switch (action.type){
       case 'myAccount':
@@ -335,13 +328,12 @@ const [fetchedData, setFetchedData] = useState(null);
     }
   }
 
-    //set up the sidebar functionality.
-  const theSidebar = new createSidebarToggle(sidebarRef.current, coverRef.current);
-
-  //initial load  
+    //initial load  
   useEffect(()=>{
       //add starting templates to cache
-    setSectionCache(addContentsToCache(templates, {}));
+    addContentsToCache(templates)
+
+    
 
       //add metadata from the starting templates.
     createMetaDataFromStartingTemplates(templates, metaData, setMetaData)
@@ -350,7 +342,14 @@ const [fetchedData, setFetchedData] = useState(null);
     checkCookieForAccess(setCurrUser);
 
       //close the sidebar
-    theSidebar.toggle();  
+    setTimeout(() => {
+      theSidebar.deactivate()
+    }, 1000);
+
+    //   //grab the screen size
+    // if(window.innerWidth < maxMobileSize){
+    //   setIsMobile(true);
+    // }
   }, [])
 
   return (
@@ -363,6 +362,7 @@ const [fetchedData, setFetchedData] = useState(null);
             selectorTitles,
             names,
             setNames,
+            isMobile,
             templateTitle,
             setTemplateTitle,
             templates,
@@ -380,10 +380,10 @@ const [fetchedData, setFetchedData] = useState(null);
             setMetaData
           }}
         >
-          <Header />
+          <div ref={coverRef} id='whiteCover'></div>
           {thePopup.box &&  <Popup box={thePopup.box} subAct={thePopup.subAct}/> }
           <Sidebar />
-          <MainDisplay />
+          <AppMainDisplay />
         </GlobalContext.Provider>
       </div>
     </ErrorBoundary>
