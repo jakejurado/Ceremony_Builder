@@ -18,7 +18,7 @@ function passwordCriteria(pass1: string | undefined, pass2: string | undefined):
 }
 
 function passwordLength(pass1: string | undefined): boolean {
-  return pass1.length > 5 ? true : false;
+  return pass1.length > 6 ? true : false;
 }
 
 function passwordMatch(pass1: string | undefined, pass2: string | undefined): boolean {
@@ -38,15 +38,13 @@ interface userInfoType {
 }
 
 function checkSubmitButtonCriteria(userInfo: userInfoType): boolean{
-  console.log(userInfo)
   let validEmail: boolean = validateEmail(userInfo.email)
   let validNewPassword: boolean = passwordCriteria(userInfo.passNew1, userInfo.passNew2)
   let validCurrPassword: boolean = passwordCriteria(userInfo.passCurr, userInfo.passCurr)
   let validCode: boolean = userInfo.code ? true: false;
-  let validPasswordLength: boolean = parseInt(userInfo.passCurr) > 5;
+  let validPasswordLength: boolean = parseInt(userInfo.passCurr) > 7;
 
   let res = false;
-  console.log(userInfo.title)
   switch(userInfo.title){
     case 'signup':
       if(validEmail && validNewPassword) res = true;

@@ -44,18 +44,12 @@ function PopupAuthLogin(){
       <form>
         <div className="mainInput">
           <div className = 'line'>
-            {/* <div className="desc">
-              e-mail: 
-            </div> */}
             <div className="inputDiv">
               <input className='inputContent' ref={userEmailDom} onChange={handleEmailInputChange} placeholder='email' autoComplete="username" />
             </div>
           </div>
           
           <div className = 'line'>
-            {/* <div className="desc">
-              password: 
-            </div> */}
             <div className="inputDiv">
               <input type='password' className='inputContent' ref={userCurrPassDom} onChange={handleCurrPasswordInputChange} placeholder='password' autoComplete="current-password" />
             </div>

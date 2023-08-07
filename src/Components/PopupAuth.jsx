@@ -108,7 +108,7 @@ function PopupAuth({subAct}){
     setIsButtonActive(res)
       //reset login state
     setLoginFail(false)
-  }, [])
+  }, [subAct])
 
   //checks password2 input value to determine if submit button should be active
   const handleNewPasswordInputChange1 = useCallback((e) => {
@@ -120,7 +120,7 @@ function PopupAuth({subAct}){
       //update the isButtonActive state if all conditions are met
     const res = checkSubmitButtonCriteria(userInfo);
     setIsButtonActive(res)
-  },[]);
+  },[subAct]);
 
   const handleNewPasswordInputChange2 = useCallback((e) =>{
       //update newPasswordCriteria2 state if password criteria is met
@@ -131,7 +131,7 @@ function PopupAuth({subAct}){
       //update the isButtonActive state if all conditions are met
     const res = checkSubmitButtonCriteria(userInfo);
     setIsButtonActive(res)
-  }, []);
+  }, [subAct]);
 
   //checks code input value to determine if submit button should be active
   const handleCodeInputChange = useCallback((e) => {
@@ -141,11 +141,10 @@ function PopupAuth({subAct}){
       //update the isButtonActive state if all conditions are met
     const res = checkSubmitButtonCriteria(userInfo);
     setIsButtonActive(res)
-  }, []);
+  }, [subAct]);
 
   //grabs the data from the input and places in object.
   const grabUserData = useCallback(() => {
-    console.log({subAct})
     return{
       title : subAct,
       email : userEmailDom.current.value,

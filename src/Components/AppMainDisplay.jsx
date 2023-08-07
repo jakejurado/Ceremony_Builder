@@ -16,7 +16,7 @@ function AppMainDisplay() {
     currTemplate, 
     dispatch, 
     selectorSec, 
-    domRef, 
+    allSecRef,
     theSidebar, 
     isMobile
   } = useContext(GlobalContext);
@@ -201,7 +201,7 @@ function AppMainDisplay() {
     return (
       <div id='titleAndSections'>
         <Header />
-        <div id="mainDisplay" ref={domRef}>
+        <div id="mainDisplay" ref={allSecRef}>
           <DragDropContext onDragEnd={dragEnd} onDragStart={toggleDragStartStop}>
             <Droppable droppableId="sectiondrop">
               {(provided) => (
@@ -223,7 +223,7 @@ function AppMainDisplay() {
   } else{
     return(
       <div id='titleAndSections'>
-        <div id="mainDisplay" ref={domRef}>
+        <div id="mainDisplay" ref={allSecRef}>
           <div id="allSections">
             {buildOneSection(currTemplate, cardDisplay)}
           </div>

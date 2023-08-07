@@ -11,6 +11,7 @@ const userController = {};
   //creates a user in the database
 userController.createUser = async ( req, res, next) => {
   let {email, password } = res.locals.myData
+  console.log({email, password})
 
     //check that all fields are not empty
   if(!email || !password){
@@ -27,9 +28,11 @@ userController.createUser = async ( req, res, next) => {
     const sql_userInsert =  "INSERT INTO users (user_email, user_password) VALUES ($1, $2)";
     await db.query(sql_userInsert, [email, hashedPassword]);
     res.locals.userCreated = { authenticated: true };
+    console.log(res.locals.userCreated)
     return next();
 
   } catch (err) {
+    console.log({err})
     return next({
       log: "Express Error handler caught in createUser err",
       status: 500,

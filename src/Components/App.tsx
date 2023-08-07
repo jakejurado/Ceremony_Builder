@@ -58,6 +58,12 @@ function App() {
   const maxMobileSize = 800;
   const [isMobile, setIsMobile] = useState(window.innerWidth < maxMobileSize);
   
+  if(isMobile && window.innerWidth > maxMobileSize){
+    setIsMobile(false)
+  } else if(!isMobile && window.innerWidth < maxMobileSize){
+    setIsMobile(true)
+  }
+
     //set up the sidebar functionality.
   const theSidebar = new createSidebarToggle('sideBar', 'whiteCover', isMobile);
   
@@ -92,33 +98,32 @@ const [fetchedData, setFetchedData] = useState(null);
 
 //holds all titles, varnames, and category in an object for all sections
   //RESET TO EMPTY OBJECT FOR PRODUCTION
-  const [selectorTitles, setSelectorTitles] = useState({
-    "Basic Elements": {
-      "Giving Away": "giving_away",
-      "Opening Remarks: First Words": "opening_remakrs1",
-      "Opening Remarks: Main Content": "opening_remarks2",
-      "Declaration of Intent": "declaration",
-      Charge: "charge",
-      "Transition to Vows": "vows_symbolism",
-      Vows: "vow_content",
-      "Rings Content": "ring_content",
-      "Ring Exchange": "ring_exchange",
-      Pronouncement: "pronouncement",
-      "The Kiss": "kiss",
-      Introduction: "introduction",
-    },
-    Readings: { "Reading: Traditional": "reading_traditional" },
-    Prayer: { "Prayer: Opening": "prayer_opening" },
-    Unity: { "Unity: Cocktail": "unity_cocktail" },
-    Religious: { Arras: "arras" },
-    "Including Others": { "Last Kiss": "last_kiss" },
-    "Other Options": { "License Signing": "license_sign" },
-  });
-  // const [selectorTitles, setSelectorTitles] = useState({});
+  // const [selectorTitles, setSelectorTitles] = useState({
+  //   "Basic Elements": {
+  //     "Giving Away": "giving_away",
+  //     "Opening Remarks: First Words": "opening_remakrs1",
+  //     "Opening Remarks: Main Content": "opening_remarks2",
+  //     "Declaration of Intent": "declaration",
+  //     Charge: "charge",
+  //     "Transition to Vows": "vows_symbolism",
+  //     Vows: "vow_content",
+  //     "Rings Content": "ring_content",
+  //     "Ring Exchange": "ring_exchange",
+  //     Pronouncement: "pronouncement",
+  //     "The Kiss": "kiss",
+  //     Introduction: "introduction",
+  //   },
+  //   Readings: { "Reading: Traditional": "reading_traditional" },
+  //   Prayer: { "Prayer: Opening": "prayer_opening" },
+  //   Unity: { "Unity: Cocktail": "unity_cocktail" },
+  //   Religious: { Arras: "arras" },
+  //   "Including Others": { "Last Kiss": "last_kiss" },
+  //   "Other Options": { "License Signing": "license_sign" },
+  // });
+  const [selectorTitles, setSelectorTitles] = useState({});
 
-    //ref the content of the etite
-  const domRef = useRef();
-    //ref 
+    //ref
+  const allSecRef = useRef()
   const sidebarRef = useRef();
   const coverRef = useRef();
 
@@ -140,6 +145,7 @@ const [fetchedData, setFetchedData] = useState(null);
     const { type, payload } = action;
 
     switch (type) {
+
         //adds a section to the current displayed template
       case 'addSEC':{
         const { varname, index } = payload;
@@ -303,12 +309,13 @@ const [fetchedData, setFetchedData] = useState(null);
     }
   }
 
+    //adds fetched data to templates
   if(fetchedData){
     dispatch({type: 'loadFetch', payload: fetchedData.payload})
     setFetchedData(null);
   }
 
-  // Popup Controls
+    // Popup Controls
   const [thePopup, popupDispatch] = useReducer(popupReducer, {box: null, subAct: null});
 
   function popupReducer(state, action){
@@ -333,8 +340,6 @@ const [fetchedData, setFetchedData] = useState(null);
       //add starting templates to cache
     addContentsToCache(templates)
 
-    
-
       //add metadata from the starting templates.
     createMetaDataFromStartingTemplates(templates, metaData, setMetaData)
 
@@ -345,11 +350,6 @@ const [fetchedData, setFetchedData] = useState(null);
     setTimeout(() => {
       theSidebar.deactivate()
     }, 1000);
-
-    //   //grab the screen size
-    // if(window.innerWidth < maxMobileSize){
-    //   setIsMobile(true);
-    // }
   }, [])
 
   return (
@@ -368,7 +368,7 @@ const [fetchedData, setFetchedData] = useState(null);
             templates,
             currTemplate : templates[templateTitle],
             theSidebar,
-            domRef,
+            allSecRef,
             sidebarRef,
             coverRef,
             popupDispatch,
