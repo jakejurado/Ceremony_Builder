@@ -3,6 +3,7 @@ import { GlobalContext} from "./App";
 import PopupAuth from './PopupAuth';
 import PopupPrint from './PopupPrint';
 import PopupTemplate from './PopupTemplate';
+import PopupAI from './PopupAI';
 
   //Main Component that holds all popup notifications
 function Popup({box, subAct}){
@@ -19,6 +20,7 @@ function Popup({box, subAct}){
         {box === 'myAuth' && <PopupAuth subAct={subAct}/> }
         {box === 'myPrint' && <PopupPrint />}
         {box === 'myTemplates' && <PopupTemplate />}
+        {box === 'myAI' && <PopupAI subAct={subAct}/>}
       </div>
   )
 }

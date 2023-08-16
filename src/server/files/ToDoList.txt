@@ -1,3 +1,0 @@
-1) Fix the selector box insert index to deal the last section addButton has been selected
-2) fix the varname in database for opening_remakrs1
-3) Create a loading box for when fetch calls are made.  Placeholder until data is returned.

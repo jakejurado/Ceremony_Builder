@@ -98,29 +98,29 @@ const [fetchedData, setFetchedData] = useState(null);
 
 //holds all titles, varnames, and category in an object for all sections
   //RESET TO EMPTY OBJECT FOR PRODUCTION
-  // const [selectorTitles, setSelectorTitles] = useState({
-  //   "Basic Elements": {
-  //     "Giving Away": "giving_away",
-  //     "Opening Remarks: First Words": "opening_remakrs1",
-  //     "Opening Remarks: Main Content": "opening_remarks2",
-  //     "Declaration of Intent": "declaration",
-  //     Charge: "charge",
-  //     "Transition to Vows": "vows_symbolism",
-  //     Vows: "vow_content",
-  //     "Rings Content": "ring_content",
-  //     "Ring Exchange": "ring_exchange",
-  //     Pronouncement: "pronouncement",
-  //     "The Kiss": "kiss",
-  //     Introduction: "introduction",
-  //   },
-  //   Readings: { "Reading: Traditional": "reading_traditional" },
-  //   Prayer: { "Prayer: Opening": "prayer_opening" },
-  //   Unity: { "Unity: Cocktail": "unity_cocktail" },
-  //   Religious: { Arras: "arras" },
-  //   "Including Others": { "Last Kiss": "last_kiss" },
-  //   "Other Options": { "License Signing": "license_sign" },
-  // });
-  const [selectorTitles, setSelectorTitles] = useState({});
+  const [selectorTitles, setSelectorTitles] = useState({
+    "Basic Elements": {
+      "Giving Away": "giving_away",
+      "Opening Remarks: First Words": "opening_remakrs1",
+      "Opening Remarks: Main Content": "opening_remarks2",
+      "Declaration of Intent": "declaration",
+      Charge: "charge",
+      "Transition to Vows": "vows_symbolism",
+      Vows: "vow_content",
+      "Rings Content": "ring_content",
+      "Ring Exchange": "ring_exchange",
+      Pronouncement: "pronouncement",
+      "The Kiss": "kiss",
+      Introduction: "introduction",
+    },
+    Readings: { "Reading: Traditional": "reading_traditional" },
+    Prayer: { "Prayer: Opening": "prayer_opening" },
+    Unity: { "Unity: Cocktail": "unity_cocktail" },
+    Religious: { Arras: "arras" },
+    "Including Others": { "Last Kiss": "last_kiss" },
+    "Other Options": { "License Signing": "license_sign" },
+  });
+  // const [selectorTitles, setSelectorTitles] = useState({});
 
     //ref
   const allSecRef = useRef()
@@ -317,6 +317,7 @@ const [fetchedData, setFetchedData] = useState(null);
 
     // Popup Controls
   const [thePopup, popupDispatch] = useReducer(popupReducer, {box: null, subAct: null});
+  // const [thePopup, popupDispatch] = useReducer(popupReducer, {box: 'myAI', subAct: null});
 
   function popupReducer(state, action){
     const {subAct} = action
@@ -330,6 +331,8 @@ const [fetchedData, setFetchedData] = useState(null);
         return {box: 'myTemplates', subAct}
       case 'myPrint':
         return {box: 'myPrint', subAct}
+      case 'myAI':
+        return subAct
       default:
         return {box: null, subAct: null}
     }

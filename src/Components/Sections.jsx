@@ -8,6 +8,7 @@ import leftArrow from "../../public/assets/arrowLft.png";
 import leftArrowF from "../../public/assets/arrowLftFull.png";
 import arrow from "../../public/assets/arrow-up-circle.svg";
 import plus from "../../public/assets/plus-circle.svg";
+import robot from "../../public/assets/robot.svg";
 import ButtonClose from "./ButtonClose"
 import { formatCards } from "../functions/wordCards/formatCards";
 import { useSwipeable } from 'react-swipeable';
@@ -16,14 +17,24 @@ import { useSwipeable } from 'react-swipeable';
 function Sections(props) {
 
     //global context
-  const { names, dispatch, currTemplate } = useContext(GlobalContext);
+  const { names, dispatch, popupDispatch, currTemplate } = useContext(GlobalContext);
 
     //card dom ref
   const cardDivRef = useRef(null)
  
   //4 BUTTONS ON TOP OF SECTIONs (add, delete, move section up/down)
     //delete section: shrinks the section and then sends a dispatch to remove sec from order
-  function handleXbutton(e) {
+    function handleAIbutton(e){
+      const dom = findParentNode(e.target, 'section')
+      const returnObj= {
+        varname: dom.dataset.varname,
+        index: parseInt(dom.dataset.index),
+        cardIndex: parseInt(dom.dataset.cardindex),
+      }
+      popupDispatch({type: 'myAI', subAct : {box: 'myAI', subAct: {...returnObj}}})
+    }
+  
+    function handleXbutton(e) {
     const sec = findParentNode(e.target, 'section') 
     const [innerBox, removeBox] = sec.children;
     const [title, text] = innerBox.children;
@@ -272,6 +283,15 @@ function Sections(props) {
         </div>
       </div>
       <div className="secButtons">
+        {/* <div className='aiButton'>
+          <img
+            src={robot}
+            alt="AI button to activate the writer helper"
+            className={`${props.varName}-${props.id}`}
+            onClick={(handleAIbutton)}
+            onKeyDown={handleAIbutton}
+           />
+        </div> */}
         <div className="removeButton">
           <img
             src={plus}

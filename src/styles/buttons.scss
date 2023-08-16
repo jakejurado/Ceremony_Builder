@@ -45,3 +45,8 @@
     @include m.closeButton-mobile;
   }
 }
+
+  //ai button selections
+.radio-btn{
+  @include m.createBoxButton();
+}

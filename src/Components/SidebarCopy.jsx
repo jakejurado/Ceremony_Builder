@@ -12,9 +12,10 @@ function SidebarCopy() {
   }
 
   function copyToClipboard2(text) {
-    navigator.clipboard.writeText(text).then(function() {
+    navigator.clipboard.writeText(text)
+      .then(function() {
         setNotifications('Copying to clipboard was successful!');
-    }, function(err) {
+      }, function(err) {
         setNotifications('Could not copy text: ', err);
     });
     setTimeout(setNotifications, 9000);
