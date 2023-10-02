@@ -4,14 +4,26 @@ const port = process.env.PORT || 8081;
 const path = require("path");
 const cookieParser = require("cookie-parser");
 const bodyParser = require('body-parser');
-// const cors = require("cors");
+const { rateLimit } = require('express-rate-limit')
+const helmet = require("helmet");
+
 require("dotenv").config();
 
-
+const limiter = rateLimit({
+	windowMs: 15 * 60 * 1000, // 15 minutes
+	limit: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes)
+	standardHeaders: 'draft-7', // draft-6: `RateLimit-*` headers; draft-7: combined `RateLimit` header
+	legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+	// store: ... , // Use an external store for more precise rate limiting
+})
 const sectionRouter = require("./routs/sections");
 const userRouter = require("./routs/user");
 const templateRouter = require("./routs/templates")
 
+//use helmet
+app.use(helmet());
+// Apply the rate limiting middleware to all requests
+app.use(limiter)
 // Parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
 // Parse application/json
