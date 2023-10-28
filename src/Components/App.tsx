@@ -146,7 +146,7 @@ const [fetchedData, setFetchedData] = useState(null);
           //remove section selector
         setSelectorSec({ isVisible: false, position: undefined });
           //get section data
-        fetchSectionFromDatabase(varname, index, setFetchedData);
+        fetchSectionFromDatabase(varname, index, setFetchedData, currUser);
         return state;
       }  
 

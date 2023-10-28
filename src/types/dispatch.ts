@@ -4,7 +4,7 @@ import {Section, Templates} from "./types";
 type LoadFetch = {
   varname: string;
   sec: Section;
-  index: number
+  index: number;
 }
 
 type FetchSectionDataItem = {
