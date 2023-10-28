@@ -14,6 +14,7 @@ describe('fetchSectionFromDatabase', () => {
     
     const mockVarname = 'testVarname';
     const mockIndex = 1;
+    const mockUserId = 7;
     
     const mockState = jest.fn();
     
@@ -21,7 +22,7 @@ describe('fetchSectionFromDatabase', () => {
     (fetchCall.get as jest.Mock).mockImplementation(async () => mockData);
     
     // Call the function with the mocks
-    await fetchSectionFromDatabase(mockVarname, mockIndex, mockState);
+    await fetchSectionFromDatabase(mockVarname, mockIndex, mockState, mockUserId);
     
     // Define the expected section and payload
     const expectedSection = {
