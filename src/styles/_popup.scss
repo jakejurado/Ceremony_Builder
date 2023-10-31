@@ -110,7 +110,6 @@
     input{
       border-radius: 5px;
       height: 100%;
-      width: 95%;
       border: none;
       background-color: white;
       
@@ -170,6 +169,7 @@
 //invisible wrapper for all popups.
 .entireBox{
   width: 50%;
+  max-width: 600px;
   display:flex;
   flex-wrap: wrap;
   background: transparent;
@@ -193,6 +193,10 @@
     border-top-right-radius: 10px;
     box-shadow: 5px 5px 10px grey;
   }
+  .alertTab{
+    background-color: red;
+  }
+  
     
     //different style for current popupBox tab
   .selectedTab{
@@ -258,9 +262,11 @@
         margin: 0 auto 0 auto;
         display: flex;
         border-radius: 5px;
+        display: flex;
+        flex-direction: column;
+       
         
         input{
-          width: 100%;
           padding: v.$fSize2 v.$fSize2 v.$fSize2 v.$fSize2;   
           border: solid thin grey;
           border-radius: 10px;
@@ -268,6 +274,14 @@
         }
       }
     }
+
+    .error{
+      color: red;
+      font-style: italic;
+      font-size: v.$fSize2;
+      text-align: center;
+    }
+    
     
     //adds a bit more margin to the line if needed
     .moreMargin {
@@ -294,7 +308,11 @@
       flex-basis: 100%;
       text-align: right;
       font-size: smaller;
-      padding-right: v.$fSize3
+      padding-right: v.$fSize3;
+      margin: 1% 0 1% 0;
+      &:hover{
+        cursor: pointer;
+      } 
     }
   }
 
@@ -353,10 +371,22 @@
   margin-bottom: v.$fSize3;
   color: white;
   background-color: rgb(46, 45, 45);
+  width: 50%;
+  padding: 1em;
+  margin: 10% 10% 15% 10%;
+  border-radius: 10px;
+  font-size: v.$fSize3;
   
   &:hover{
     background-color: v.$pinkMain;
     color: black;
+  }
+}
+
+.deleteButton{
+  &:hover{
+    background-color: red;
+    color: white;
   }
 }
 

@@ -1,66 +1,74 @@
-import React, {useContext, useEffect, useRef} from 'react';
+import React, {useContext, useState} from 'react';
+import { useForm } from "react-hook-form";
 import { PopupContext } from './PopupAuth';
 import { fetchCall } from '../functions/fetches/api';
 
   //forgot password popup box
 function PopupAuthForgot(){
   const {
-    userEmailDom, 
-    handleEmailInputChange, 
-    emailCriteria, 
-    buttonDom,
-    handleSubmitClickRef,
     handleLoginTabClick, 
     handleSignupTabClick, 
     popupDispatch,
-    setLoginFail,
-    setSuccess,
   } = useContext(PopupContext);
 
+  const [submitFail, setSubmitFail] = useState(false);
+  const { register, handleSubmit, watch, formState: { errors } } = useForm();
+
     //fetch to start the email reset process
-  async function handleSubmitClick(){
-    const email = userEmailDom.current.value;
+  async function handleSubmitClick(data){
+    const email = data.email
     const response = await fetchCall.put('forgot', { email });
     if (response.isPasswordReset) {
       popupDispatch({ type: 'myAuth', subAct: 'login' }); 
-      setSuccess(true);
     } else {
-      setLoginFail(true);
+      setSubmitFail(true);
     }
   }
 
-  handleSubmitClickRef.current = handleSubmitClick;
-
   return(
     <div className="entireBox" >
-      <div id='loginTab' className="eachTab" onClick={handleLoginTabClick}>login</div>
-      <div id='signupTab' className="eachTab" onClick={handleSignupTabClick}>signup</div>
+      <div id='loginTab' className="eachTab selectedTab" onClick={handleLoginTabClick}>login</div>
+      <div id='signupTab' className="eachTab selectedTab" onClick={handleSignupTabClick}>signup</div>
 
-      <form>
+      <form onSubmit={handleSubmit(handleSubmitClick)}>
         <div className="mainInput">
 
           <div className='lineInstructions'>
             Enter your email associated with your account and then submit.  You will be provided a code to change your password.
           </div>
           
-          
+
           <div className='line'>
-            <div className="inputDiv">
-              <input className='inputContent' ref={userEmailDom} onChange={handleEmailInputChange} placeholder='e-mail' />
+            <div className='inputDiv'>
+              <input 
+                className='inputContent' 
+                autoComplete="username" 
+                placeholder='email' 
+                {...register("email", 
+                  { 
+                    required: 'Email is required', minLength: { value: 3, message: "Incomplete email address" }, 
+                    pattern: {
+                      value: /.*@.*/,
+                      message: "Email must include '@'"
+              }  })} />
+              {errors.email && <div className="error">{errors.email.message}</div>}
             </div>
           </div>
 
-          <ul id='incompleteNotifications'>
-            {!emailCriteria && <li id='incompleteEmailNotification' className='incomplete'>incomplete email address</li> }
-          </ul>
-          
+          <div className='line'>
+            <div className='inputDiv'>
+              {submitFail && <div className="error">Unable to send you a temporary password.</div>}
+            </div>
+          </div>
+
+          <div className="line">
+            <div className='inputDiv'>
+              <input type="submit" className='submitButton' id='authLoginsubmitButton' />
+            </div>
+          </div>
+
         </div>
       </form>
-      <div className="bottomBox">
-        <button className='submitButton' ref={buttonDom}>
-          Submit
-        </button>
-      </div>
     </div>
 
 

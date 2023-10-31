@@ -1,82 +1,74 @@
-import React, {useContext} from 'react';
-import PopupNotifications from './PopupNotifications';
+import React, { useContext, useState } from 'react';
+import { useForm } from "react-hook-form";
 import { PopupContext } from './PopupAuth';
 import { fetchCall } from '../functions/fetches/api';
 
-  //signup popup box
-function PopupAuthSignup(){
-  const {userEmailDom, 
-    userNewPassDom1, 
-    userNewPassDom2, 
-    handleEmailInputChange, 
-    handleNewPasswordInputChange1, 
-    handleNewPasswordInputChange2, 
+function PopupAuthSignup() {
+  const [signupFail, setSignupFail] = useState(false);
+  const { register, handleSubmit, watch, formState: { errors } } = useForm();
+
+  const { 
     popupDispatch, 
     handleLoginTabClick,
-    setSuccess,
-    handleSubmitClickRef,
-    buttonDom,
-    setLoginFail
   } = useContext(PopupContext)
 
+  const password = watch("password");
+
     //fetch request to signup
-  async function handleSubmitClick(){
-    const email = userEmailDom.current.value;
-    const password = userNewPassDom1.current.value;
-    const password2 = userNewPassDom2.current.value
+  async function handleSubmitClick(result){
+    const email = result.email
+    const password = result.password
     const response = await fetchCall.post('signup', { email, password });
-    if (response.authenticated) {
+    if (response?.authenticated) {
       popupDispatch({type: 'myAuth', subAct: 'login'}); // 
-      setSuccess(true);
     } else {
-      setLoginFail(true);
+      setSignupFail(true);
     }
   }
 
-  handleSubmitClickRef.current = handleSubmitClick;
-
   return(
-    <div className="entireBox" >
+    <div className="entireBox">
       <div id='loginTab' onClick={handleLoginTabClick} className="eachTab selectedTab">login</div>
       <div id='signupTab' className="eachTab">signup</div>
-      <form>
-        <div className="mainInput">
+      <div className='mainInput'>
+        <form onSubmit={handleSubmit(handleSubmitClick)}>
 
-          <div className = 'line'>
-            {/* <div className="desc">
-              e-mail: 
-            </div> */}
-            <div className="inputDiv">
-              <input ref={userEmailDom} className='inputContent' onChange={handleEmailInputChange} placeholder='email' autoComplete="username"/>
+          <div className='line'>
+            <div className='inputDiv'>
+              <input className='inputContent' autoComplete="username" placeholder='email' {...register("email", { required: 'Email is required', minLength: { value: 6, message: "Incomplete email address" } })} />
+              {errors.email && <div className="error">{errors.email.message}</div>}
             </div>
           </div>
 
-          <div className = 'line'>
-            {/* <div className="desc">
-              password: 
-            </div> */}
-            <div className="inputDiv">
-              <input type='password' ref={userNewPassDom1} className='inputContent' onChange={handleNewPasswordInputChange1} placeholder='password' autoComplete="new-password"/>
+          <div className='line'>
+            <div className='inputDiv'>
+              <input className='inputContent' type='password' placeholder='password' {...register("password", { required: 'Password is required', minLength: 6 })} />
+              {errors.password && <div className="error" style={{ color: 'red' }}>{errors.password.message}</div>}
             </div>
           </div>
 
-          <div className = 'line moreMargin'>
-            {/* <div className="desc">
-              password: 
-            </div> */}
-            <div className="inputDiv">
-              <input type='password' ref={userNewPassDom2} className='inputContent' onChange={handleNewPasswordInputChange2} placeholder='password' autoComplete="new-password"/>
+          <div className='line'>
+            <div className='inputDiv'>
+              <input className='inputContent' type='password' placeholder='confirm password' {...register("password2", { 
+                validate: value => value === password || 'Passwords do not match'
+              })} />
+              {errors.password2 && <div className="error" style={{ color: 'red' }}>{errors.password2.message}</div>}
             </div>
           </div>
 
-          {<PopupNotifications />}
-        </div>
-      </form>
+          <div className='line'>
+            <div className='inputDiv'>
+              {signupFail && <div className="error">Unable to create an account at this time.</div>}
+            </div>
+          </div>
 
-      <div className="bottomBox">
-        <button className='submitButton' ref={buttonDom}>
-          Submit
-        </button>
+          <div className="line">
+            <div className='inputDiv'>
+              <input type="submit" className='submitButton' id='authLoginsubmitButton' />
+            </div>
+          </div>
+
+        </form>
       </div>
     </div>
   )
