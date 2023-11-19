@@ -312,9 +312,9 @@ const [fetchedData, setFetchedData] = useState(null);
   const [thePopup, popupDispatch] = useReducer(popupReducer, {box: null, subAct: null});
 
   function popupReducer(state, action){
-    const {subAct} = action
+    const {subAct, type} = action
     
-    switch (action.type){
+    switch (type){
       case 'myAccount':
         return {box: 'myAccount', subAct}
       case 'myAuth':
@@ -332,8 +332,6 @@ const [fetchedData, setFetchedData] = useState(null);
   useEffect(()=>{
       //add starting templates to cache
     addContentsToCache(templates)
-
-    
 
       //add metadata from the starting templates.
     createMetaDataFromStartingTemplates(templates, metaData, setMetaData)
