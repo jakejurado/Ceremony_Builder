@@ -28,6 +28,7 @@
   "author": "Jacob Jurado",
   "license": "UNLICENSED",
   "dependencies": {
+    "@aws-sdk/client-secrets-manager": "^3.454.0",
     "@types/node": "^18.13.0",
     "@types/react": "^18.0.27",
     "@types/react-dom": "^18.0.10",

@@ -201,7 +201,7 @@ userController.createToken = async (req, res, next) => {
     next({
       log: "Express error handler caught in createToken middleware error",
       status: 500,
-      message: { err: "An error occurred while creating a token" },
+      message: { err: `An error occurred while creating a token: ${err}` },
     });
   }
 };

@@ -1,6 +1,8 @@
 const { Pool } = require("pg");
 
-const myURI = process.env.MYURL;
+const { MYURL } = require("../envSecrets/envfiles");
+
+const myURI = process.env.MYURL
 
 const pool = new Pool({
   connectionString: myURI,
