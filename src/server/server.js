@@ -20,9 +20,7 @@ async function startServer(){
   process.env.SMTP_PORT = secrets.SMTP_PORT;
   process.env.SMTP_USER = secrets.SMTP_USER;
   process.env.SMTP_PASSWORD = secrets.SMTP_PASSWORD;
-  // jwtSecret, myUrl, secretKey, smtpHost, smtpPort, smtpUser, smtpPassword
-  console.log({secrets})
-
+  
 
   const limiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes

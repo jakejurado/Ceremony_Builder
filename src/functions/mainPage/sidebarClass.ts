@@ -60,7 +60,6 @@ class createSidebarToggle {
 
     //populates sidebar and adds event listener
   activate() {
-    console.log('enter activate')
     this.fillDomElementsIfEmpty();
 
     setStyle(this.cover, "display", "block");
