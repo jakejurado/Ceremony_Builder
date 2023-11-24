@@ -85,7 +85,7 @@ const [fetchedData, setFetchedData] = useState(null);
   const [selectorTitles, setSelectorTitles] = useState({
     "Basic Elements": {
       "Giving Away": "giving_away",
-      "Opening Remarks: First Words": "opening_remakrs1",
+      "Opening Remarks: First Words": "opening_remarks1",
       "Opening Remarks: Main Content": "opening_remarks2",
       "Declaration of Intent": "declaration",
       "Charge": "charge",
