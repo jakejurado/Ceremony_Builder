@@ -15,7 +15,7 @@ function addSectionToTemplates(myTemplates: TemplateSansSection | Template, temp
     //check if new section is already in the template and update meta data
   const [_, suffix] = sectionVarname.split("~");
   if(suffix){
-    currTemplate[sectionVarname].title = `${varname} ${suffix}`;
+    currTemplate[sectionVarname].title = `${currTemplate[sectionVarname].title} ${suffix}`;
     currTemplate[varname].duplicates = parseInt(suffix);
   }
     //update the order
@@ -38,6 +38,7 @@ function updateOrder(varname: string, index: number, order: Order): Order{
   function createVarname(varname: string, template: TemplateSansSection | Template): string{
     if(!template.hasOwnProperty(varname)) return varname;
     if (isTemplate(template, varname)) {
+      
       return duplicateVarname(varname, template);
     }
     throw new Error("Template does not contain a section.");

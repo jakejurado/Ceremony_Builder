@@ -12,9 +12,8 @@ import Sidebar from "./Sidebar";
 import ErrorBoundary from "./ErrorBoundary";
 import Popup from './Popup';
 
-//Temparary Data
-import { templateWed2 } from "../server/files/serverDB2";
-import templateElope from "../server/files/serverDB";
+//Starting Data
+import {templateWed, templateElope } from '../server/files/database-script.js';
 
 //helperFunctions
 import { updateSectionOrder } from "../functions/mainPage/dragdropFuncs";
@@ -35,15 +34,7 @@ import { createMetaDataFromStartingTemplates } from "../functions/metaData/creat
 
 //Typescript
 import {
-  Cache,
-  Templates,
-  Template,
-  TemplateSansOrder,
-  personState,
-  selectorSec,
-  TemplateState,
   MetaData,
-  MetaDataValue,
 } from "../types/types_copy";
 
   //Style import
@@ -68,8 +59,7 @@ function App() {
   );
 
     //templates to start the program
-  const allT = {wedding: templateWed2, elope: templateElope }
-
+  const allT = {wedding: templateWed, elope: templateElope }
     //stores the current users ID
   const [currUser, setCurrUser] = useState(null);
 
@@ -98,21 +88,65 @@ const [fetchedData, setFetchedData] = useState(null);
       "Opening Remarks: First Words": "opening_remakrs1",
       "Opening Remarks: Main Content": "opening_remarks2",
       "Declaration of Intent": "declaration",
-      Charge: "charge",
+      "Charge": "charge",
       "Transition to Vows": "vows_symbolism",
-      Vows: "vow_content",
+      "Vows": "vow_content",
       "Rings Content": "ring_content",
       "Ring Exchange": "ring_exchange",
-      Pronouncement: "pronouncement",
+      "Pronouncement": "pronouncement",
       "The Kiss": "kiss",
-      Introduction: "introduction",
+      "Introduction": "introduction",
     },
-    Readings: { "Reading: Traditional": "reading_traditional" },
-    Prayer: { "Prayer: Opening": "prayer_opening" },
-    Unity: { "Unity: Cocktail": "unity_cocktail" },
-    Religious: { Arras: "arras" },
-    "Including Others": { "Last Kiss": "last_kiss" },
-    "Other Options": { "License Signing": "license_sign" },
+    "Readings": { 
+      "Reading: Traditional": "reading_traditional",
+      "Reading: Humor": "reading_humor",
+      "Reading: Entertainment": "reading_entertainment",
+      "Reading: Scripture": "reading_scripture",
+    },
+    "Prayer": { 
+      "Prayer: Opening": "prayer_opening",
+      "Prayer: Wedding": "prayer_middle",
+      "Prayer: Benediction": "prayer_benediction", 
+    },
+    "Unity": { 
+      "Unity: Candle": "unity_candle",
+      "Unity: Sand": "unity_sand",
+      "Unity: Stone": "unity_stone",
+      "Unity: Wine Box:": "unity_winebox",
+      "Unity: Rose": "unity_rose",
+      "Unity: Tea Ceremony": "unity_tea",
+      "Unity: Hand Fasting": "unity_handfasting",
+      "Unity: Mead": "unity_mead",
+      "Unity: Cocktail": "unity_cocktail",
+      "Unity Canvas": "unity_canvas",
+      "Unity Glass": "unity_glass",
+      "Unity: Playdough": "unity_playdough",
+      "Unity: Beer": "unity_beer",
+      "Unity: Plant": "unity_plant",
+    },
+    "Religious": { 
+      "Arras": "arras",
+      "Lasso": "lasso",
+      "Veil": "veil",
+      "Veil & Cord": "veil_cord",
+      "God Knot": "god_knot",
+      "Breaking Glass": "breaking_glass",
+    },
+    "Including Others": { 
+      "Last Kiss": "last_kiss",
+      "Flowers For Mothers": "flowers_mothers",
+      "Gift To Parents": "gift_parents",
+      "Song": "song",
+      "Ring Warmer": "ring_warmer",
+      "Vows of Suppoert": "vows_of_support"
+    },
+    "Other Options": { 
+      "Blessing": "blessing",
+      "Deceased": "deceased",
+      "Turn Off Devices": "turnoff",
+      "License Singing": "license_sign",
+      "Custom": "custom"
+    },
   });
   // const [selectorTitles, setSelectorTitles] = useState({});
 
@@ -148,7 +182,7 @@ const [fetchedData, setFetchedData] = useState(null);
           //get section data
         fetchSectionFromDatabase(varname, index, setFetchedData, currUser);
         return state;
-      }  
+      }
 
         //loads a section that was fetched from 'addSEC' case.
       case 'loadFetch':{
@@ -271,7 +305,7 @@ const [fetchedData, setFetchedData] = useState(null);
         const templateId = metaData.get(currTitle).number
         if(templateId){
           fetchCall.delete('templates', {templateId, userId: currUser})
-            .catch((err) => {err})
+            .catch((err) => {console.log(err)})
         } 
           //remove from metaData
         const metaDataCopy = new Map(metaData);
@@ -344,10 +378,10 @@ const [fetchedData, setFetchedData] = useState(null);
       theSidebar.deactivate()
     }, 1000);
 
-    //   //grab the screen size
-    // if(window.innerWidth < maxMobileSize){
-    //   setIsMobile(true);
-    // }
+    //grab the screen size
+    if(window.innerWidth < maxMobileSize){
+      setIsMobile(true);
+    }
   }, [])
 
   return (
