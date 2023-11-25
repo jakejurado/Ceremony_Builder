@@ -4,7 +4,7 @@ import React, {
   useReducer,
   createContext,
   useRef,
-} from "react";
+} from 'react';
 
 //React Components
 import AppMainDisplay from "./AppMainDisplay";
