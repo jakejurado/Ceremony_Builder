@@ -2,7 +2,7 @@ const allSections = {
   giving_away: {
     title: "Giving Away",
     start_pos: 0,
-    description: "description goes here",
+    description: "This is a way the father/mother/parents can express their approval/blessing of the marriage.  Some couples enjoy the traditional wording while others prefer to tweak the section to something more contemporary.",
     script: [
       "Who gives this woman to be married to this man?\n\nFATHER/MOTHER/BOTH: I do!",
       "Who supports this woman in her marriage to this man? \n FATHER/MOTHER/BOTH: I do!",
@@ -19,7 +19,7 @@ const allSections = {
   opening_remarks1: {
     title: "Opening Remarks: Opening Phrase",
     start_pos: 2,
-    description: "description goes here",
+    description: "This begins the ceremony by welcoming the guest and stating the purpose of the gathering. This section is also used to acknowlege those who have passed away or who could not be present.",
     script: [
       "Dear family and friends, we have gathered here today to witness and celebrate the wedding of PERSON_1 and PERSON_2",
       "Dearly Beloved Friends and Family -Welcome to One and All- we have gathered here today to share in celebration the marriage of these two people",
@@ -43,7 +43,7 @@ const allSections = {
   opening_remarks2: {
     title: "Opening Remarks: Main Content",
     start_pos: 1,
-    description: "description goes here",
+    description: "This begins the ceremony by welcoming the guest and stating the purpose of the gathering. This section is also used to acknowlege those who have passed away or who could not be present.",
     script: [
       "Marriage is the promise of hope between two people who love each other sincerely, who honor each other as individuals, and who wish to unite their lives and share the future together. In this ceremony, they dedicate themselves to the happiness and well-being of each other, in a union of mutual caring and responsibility.",
       "Taught by our own joys, by our own sorrows, even by our own failures, that in marriage, as in all life, whosoever insists upon saving their lesser goods and their little self, shall miss what is greater, but whosoever forgets themselves in devotion to their beloved and in consecration to their common enterprise, is surest to find a full and happy life.",
@@ -76,7 +76,7 @@ const allSections = {
   declaration: {
     title: "Declaration of Intent",
     start_pos: 1,
-    description: "description goes here",
+    description: "Originally this was the basic legal requirement one needed to get married.  Now it can serve as a way to begin the ceremony, complete the CHARGE, or flow into the VOWS.",
     script: [
       "PERSON_2, will you take this (woman/man), whose hands you hold, choosing her/him alone to be your wedded (wife/husband)? Will you live with her/him in the state of true matrimony? Will you love her, comfort her, through good times and bad, in sickness and in health, honor her/him at all times, and be faithful to her? \n PERSON_1, will you take this (man/woman), whose hands you hold, choosing him/her alone to be your wedded (husband/wife)? Will you live with him/her in the state of true matrimony? Will you love him/her, comfort him/her, through good times and bad, in sickness and in health, honor him/her at all times, and be faithful to him/her?",
       "Will you, PERSON_2, take this (woman/man) to be your wedded wife?  \n -person2: I will. \n \n Will you, PERSON_1, take this (man/woman) to be your wedded husband?  \n -PERSON_1: I will.",
@@ -101,7 +101,7 @@ const allSections = {
   charge: {
     title: "Charge",
     start_pos: 1,
-    description: "description goes here",
+    description: "The officiant addresses the couple about marriage or how to maintain a strong relationship.",
     script: [
       "Challenging Adventure \n Marriage is perhaps the greatest and most challenging adventure of human relationships. No ceremony can create your marriage; only you can do that through love and patience; through dedication and perseverance; through talking and listening, helping and supporting and believing in each other; through tenderness and laughter; through learning to forgive, learning to appreciate your differences, and by learning to make the important things matter, and to let go of the rest. What this ceremony can do is to witness and affirm the choice you make to stand together as life-mates and partners.",
       "Marriage is \n The Ceremony of marriage in which you come to be united is one of the first and oldest ceremonies in all the world.  Marriage is a gift in that we give ourselves totally to one another.  I believe that marriage is a gift given to comfort the sorrows of life and to magnify life's joys \n Marriage is the clasping of hands, the blending of two hearts, the union of two lives into one and your marriage must stand, not by the authority of the state, nor by the seal on your wedding certificate, but by the strength and power of the faith and love you have in one another",
@@ -134,7 +134,7 @@ const allSections = {
   vows_intro: {
     title: "Vows: Intro",
     start_pos: 2,
-    description: "description goes here",
+    description: "This section is where the officiant talks about the importance of the vows",
     script: [
       "We've come to the point of your ceremony where you're going to say your vows to one another. But before you do that, I ask you to remember that love, which is rooted in faith, trust, and acceptance, will be the foundation of an abiding and deepening relationship. No other ties are more tender, no other vows more sacred than those you now assume.",
       "If you are able to keep the vows you take here today, not because of any religious or civic law, but out of a desire to love and be loved by another person fully, without limitation, then your life will have joy and the home you establish will be a place in which you both will find the direction of your growth, your freedom, and your responsibility",
@@ -150,7 +150,7 @@ const allSections = {
   vows_content: {
     title: "Vows: Repeat",
     start_pos: 0,
-    description: "description goes here",
+    description: "This section is where the couple make promises (vows) to each other.  You can write them yourself and read them, or repeat pre-written ones",
     script: [
       "Traditional Vows #1 \n I, PERSON_2, take you PERSON_1, to be my wife, to have and to hold from this day forward, for better or for worse, for richer, for poorer, in sickness and in health, to love and to cherish; from this day forward until death do us part. \n I, PERSON_1, take you PERSON_2, to be my husband, to have and to hold from this day forward, for better or for worse, for richer, for poorer, in sickness and in health, to love and to cherish; from this day forward until death do us part.",
       "Traditional Vows #1aDo you, PERSON_2, take PERSON_1, to be your wife, to have and to hold from this day forward, for better or for worse, for richer, for poorer, in sickness and in health, to love and to cherish; from this day forward until death do you part? \n Do you, PERSON_1, take PERSON_2, to be your husband to have and to hold from this day forward, for better or for worse, for richer, for poorer, in sickness and in health, to love and to cherish; from this day forward until death do you part.",
@@ -181,7 +181,7 @@ const allSections = {
   ring_content: {
     title: "Rings: Symbolism",
     start_pos: 0,
-    description: "description goes here",
+    description: "This explains the symbolism & meaning behind the giving of the rings.",
     script: [
       "May I have the rings please? \n These rings are made of precious metal, but they are made more precious by your wearing them, for they will adorn your loving hands.  May they be a symbol of your eternal love for one another.  As you wear them, may they be a constant reminder to you of one another, and of the deep bond of faith, trust and love which they represent.",
       "At this time will you take out the rings you have for each other. \n Rings are very large in their significance.  They are made of precious metal, which symbolizes that your love is the most precious element in each other's life. The ring has no beginning and no ending, which symbolizes that the love between the two of you will never cease.",
@@ -201,7 +201,7 @@ const allSections = {
   ring_exchange: {
     title: "Rings: Repeat",
     start_pos: 0,
-    description: "description goes here",
+    description: "When the couple exchange RINGS they have an opportunity to speak meaning into their act of giving.",
     script: [
       'PERSON_2, please place this ring on PERSON_1\'s finger and repeat after me: \n "I give you this ring, to wear upon you hand, as a symbol of our love and our unity. With this ring I thee wed." \n PERSON_1, please place this ring on PERSON_2\'s finger and repeat after me. "I give you this ring, to wear upon your hand, as a symbol of our love and our unity. With this ring I thee wed."',
       "PERSON_2, place the ring on PERSON_1's finger as a visible sign of the vows which you have made \n PERSON_1, Place the ring on PERSON_2's finger as a visible sign of the vows which you have made.",
@@ -224,7 +224,7 @@ const allSections = {
   pronouncement: {
     title: "Pronouncement",
     start_pos: 1,
-    description: "description goes here",
+    description: "This is where the Officiant officially pronounces the couple as married",
     script: [
       "By the power vested in me by the State of California, I now pronounce you husband and wife. \n You may now kiss the bride ",
       "PERSON_2 and PERSON_1, you have come here today before your friends and family and have expressed your desire to become husband and wife. \n You have shown your love and affection by joining of hands, and have made promises of faith and devotion, each to the other, and have sealed these promises by giving and the receiving of the rings. \n Therefore, it is my privilege as a minister and by the authority given to me by the state of California, I now pronounce that you are Husband and Wife",
@@ -257,7 +257,7 @@ const allSections = {
   kiss: {
     title: "The Kiss",
     start_pos: 1,
-    description: "description goes here",
+    description: "The Officiant instructs the couple to kiss, NOT how to kiss :)",
     script: [
       "PERSON_2, You may kiss your beautiful Wife",
       "PERSON_2, you may kiss your bride.",
@@ -271,7 +271,7 @@ const allSections = {
   introduction: {
     title: "Introduction",
     start_pos: 0,
-    description: "description goes here",
+    description: "The Officiant introduces the couple as married",
     script: [
       "li>Ladies and Gentlemen, it is my privilege to introduce to you for the first time Mr. and Mrs. _____",
       "li>Ladies and gentlemen, it is now my honor and pleasure to present to you ________ and ________ as husband and wife.",
@@ -279,7 +279,46 @@ const allSections = {
       "li>Write your own...",
     ],
   },
+
+  blessings: {
+    title: "Blessings",
+    start_pos: 0,
+    description: "Here is a way for the officiant to speak a blessing over the couple’s marriage and life. This can be done with a religious tone or not.",
+    script:[
+      "Chinese Blessing \nMay you be friend forever and ever \nWhen the hills are all flat \nAnd the rivers run dry \nWhen the trees blossom in winter \nAnd the snow falls in summer, \nWhen heaven and earth mix \nNot till then will you part from each other.",
+      "Apache Wedding Blessing  (option 1) \nMay you feel no rain as each of you become the shelter to the other. \nMay you feel no cold as each of you become the warmth to the other \nMay there be no more lonliness as each of you becomes the companion to the other \nAlthough there are two bodies, may there be only one life before you. \nSo go now to your dwelling place, to enter into the days of your togetherness. \nMay the Lord bless you and take care of you \nMay the Lord be kind and gracious to you \nMay the Lord look on you with favor and give you peace. \nAnd may your days be good and long upon the earth.",
+      "Apache Wedding Blessing  (option 2) \nNow you will feel no rain, \nFor each of you will be shelter to the other. \nNow you will feel no cold, \nFor each of you will be warmth to each other. \nNow there is no more loneliness for you, \nFor each of you will be comfort to the other. \nThough you are two bodies, \nThere is but one life before you. \nGo now to your dwelling place, \nTo enter into the days of your togetherness. \nAnd, may the days of your life \nBe good and long upon the earth.",
+      "Irish Wedding Blessing  \nMay God be with you and bless you \nMay you see your children's children \nMay you be poor in misfortunes, \nRich in blessings \nMay you know nothing but happiness \nFrom this day forward",
+      "An Irish Wedding Blessing  \nYou are the star of each night, \nYou are the brightness of every morning, \nYou are the story of each guest, \nYou are the report of every land. \nNo evil shall befall you, on hill nor bank, \nIn field or valley, on mountain or in glen. \nNeither above, nor below, neither in sea, \nNor on shore, in skies above, \nNor in the depths. \nYou are the kernel of my heart, \nYou are the face of my sun, \nYou are the harp of my music, \nYou are the crown of my company",
+      "The Lord bless you and keep you. The Lord make his face to shine upon you and be gracious unto you. The Lord lift up the light of his countinence upon you, and give you peace.",
+      "May the God of Abraham, the God of Isaac, the God of Jacob be with you, and my he fulfill in you his blessing. May you see your children's children to the third and fourth generation. Through the help of our God Jesus Christ. Who, with the Father and the Holy Spirit, lives and reigns, God forever and ever.",
+      "May the love of God be above you to over-shadow you... \nBeneath you to uphold you... \nBefore you to guide you... \nBehind you to protect you \nClose beside you and within you to make you able for all things:\And to reward your faithfulness with the joy and peace which the world cannot give--neither can it take away. Through Jesus Christ our Lord to whom be glory now and evermore. Amen.",
+      "And now, go out into the world in peace, be of good courage, hold fast to that which is good; render to no man evil for evil; support the weak, help the afflicted, love and serve the Lord, rejoicing in his presence as he goes with you always. Amen.",
+      "And, now may the courage of the early morning's dawning, \nThe strength of eternal hills and wide open fields, \nThe joy of silent streams and of the gentle wind, \nThe beauty of flowered gardens and the song of birds, \nAnd the faith of youth be in your hearts:\And the love of God, that alone can build happiness \nThat makes family love flourish with the radiance of great joy, \nBe with you always:\And the peace of a quiet evening's ending \nAnd of the midnight, \nBe yours now and forever. Amen.",
+      "May the courage of the early morning's dawning, the strength of the eternal hills, the peace of the evening's ending, and the love of God be in your hearts now and forevermore. Amen.",
+      "Go placidly amid the noise and the haste, and remember what peace there may be in silence. As far as possible without surrender be on good terms with all persons. Speak your truth quietly and clearly; and listen to others......; they too have their story. Be yourself. Especially do not feign affection. Neither be cynical about love; for in the face of all aridity and disenchantment, it is as perennial as the grass....nurture strength of spirit to shield you in sudden misfortune. But do not distress yourself with imaginings. Many fears are born of fatigue and loneliness. Beyond a wholesome discipline, be gentle with yourself. You are a child of the universe....the universe is unfolding as it should. Therefore be at peace with God....in the noisy confusion of life, keep peace with your soul. Go in peace.",
+      "May Almighty God, who at the beginning did create our first parents, Adam and Eve, and did sanctify and join them together in marriage, pour upon you the riches of his grace, sanctify and bless you, that you may please him both in body and soul: and live together in holy love unto your lives' end. Amen",
+      "Nourished by understanding \nWarmed by friends \nFed by loved ones \nMatured by wisdom \nTempered by tears \nMade holy by caring and sharing \nBlessed by God \nGo forth in peace!",
+      "May the Lord fill you with all spiritual benediction and grace that you \nMay live together in the fullness of life. \nMay you have peace -- Not of the stagnant pool, but of deep water, flowing. \nMay you have poise -- Not of the sheltered trees, but of the oak, deep rooted, storm strengthened, and free. \nMay you have power --Not of fisted might, but of the quickened seed stretching toward infinite light. <br>Amen",
+      "God the Father, God the Son, God the Holy Spirit, bless, preserve, and keep you; May the Lord look with favor upon you, and fill you with all spiritual benediction and grace; that you may so live together in this life, that in the world to come you may have life everlasting.",
+      "May God be always close to you and keep you. \nMay you walk the paths of peace, today and always. \nMay you always stay in love with each other. \nLet all you do be done in love. \nGo in His peace. Amen.",
+      "May the joy and peace which only God can give, and which cannot be taken away by anything in this world, be yours today and in all life's tomorrows. Go in His peace. Amen",
+      "May your marriage enrich your lives. \nMay you work together to build a relationship of substance and qualiMay the honesty of your communication build a foundation of understanding, connection, and trust. May you respect each other's individual personality and philosophy, and give each other room to grow and fulfill each other's dreaMay your love and relationship deepen with each day that passMay your sense of humor and playful spirit continue to enliven your relationshMay you understand that neither of you is perfect: you are both subject to human frailties: and may your love strengthen when you fall short of each other's expectationsMay you be <q>best friends</q>, better together than either of you are apart",
+      "Mi Adir el hakol \nMi Baruch el hakol \nMi Gadol el hakol \nHey'varesh h'atan v'hakallah<br>\Splendor is upon everything \nBlessing is upon everything \nWho is full of this abundance? \nBless this groom and bride",
+      "Celtic Christian Wedding Blessing \nBlessed be the Light that has guided your souls to the threshold of this new day.  \nBlessed be the Journey you walk as one sharing your love with the world.  \nBlessed be the Stillness that refreshes your souls and awakens God's Dream in your hearts.  \nThe Shield of the God of Life be yours.  \nThe Compassion of the Loving Christ be yours.  \nThe Wisdom of the Living Spirit be yours. Now and evermore.",
+      "Old English Blessing \nMay your joys be as bright as the morning, \nyour years of happiness  \nas numerous as the stars in the heavens, \nand your troubles but shadows \nthat fade in the sunlight of love",
+      "Old Welch Blessing\Wishing you<br> \A house full of sunshine,  \nHearts full of cheer,  \nLove that grows deeper  \neach day of the year",
+      "Irish Blessing (Version #1) \nMay the road rise to meet you, \nMay the wind be always at your back. \nMay the sun shine warm upon your face, \nThe rains fall soft upon your fields. \nAnd until we meet again, \nMay God hold you in the palm of his hand.\May God be with you and bless you; \nMay you see your children's children. \nMay you be poor in misfortune, \nRich in blessings, \nMay you know nothing but happiness \nFrom this day forward.\May the road rise to meet you \nMay the wind be always at your back \nMay the warm rays of sun fall upon your home \nAnd may the hand of a friend always be near.\May green be the grass you walk on, \nMay blue be the skies above you, \nMay pure be the joys that surround you, \nMay true be the hearts that love you.",
+      "Irish Blessing, (Version #2) \nMay the raindrops fall lightly on your brow  \nMay the soft winds freshen your spirit  \nMay the sunshine brighten your heart  \nMay the burdens of the day rest lightly upon you  \nAnd may God enfold you in the mantle of His love. \May the road rise to meet you \nMay the wind be always at your back \nMay the sun shine warm upon your face \nand the rain fall soft upon your fields \nAnd until we meet again my friend \nMay God hold you in the hollow (palm) of his hand <br>\May God be with you and bless you \nMay you see your children's children \nMay you be poor in misfortunes and rich in Blessings \nMay you know nothing but happiness \nfrom this day forward <br>\But rich or poor, quick or slow, \nMay you know nothing but happiness \nFrom this day forward. \nMay the joys of today \nBe those of tomorrow. ",
+      "Irish Wedding Blessing \nMay your mornings bring joy and your evenings bring peace. \nMay your troubles grow few as your blessings increase. \nMay the saddest day of your future \nBe no worse than the happiest day of your past. \nMay your hands be forever clasped in friendship \nAnd your hearts joined forever in love. \nYour lives are very special, \nGod has touched you in many ways. \nMay his blessings rest upon you \nAnd fill all your coming days.",
+      "Irish Wedding Blessing  \nMay God give you... \nFor every storm, a rainbow, \nFor every tear, a smile, \nFor every care, a promise, \nAnd a blessing in each trial. \nFor every problem life sends, \nA faithful friend to share, \nFor every sigh, a sweet song, \nAnd an answer for each prayer.",
+      "Traditional Irish Blessing \nI wish healing upon you \nThe healing of Mary with me, \nMary, Michael and Brighid \nBe with me all three. <br>\Fly with the birds of the air \nFly with the wasps of the hill \nSwim with the sea-going whale \nFor they are swiftest <br>\Be upon the clouds of the sky \nFor they are the rainiest \nBe upon the river's current \nCascading to the sea",
+      "LAPD Blessing \nMay your home be filled with happiness, but void of 415 (pronounced four fifteen) (fights or disturbances) \nMay you refrain from 484ing (pronounced four eighty-fouring) each other's  wallet (petty theft) \nMay ________  never forget to go Code 6 when he's out with his friends _ _ _ _ \nMay your marriage be the one assignment that never has a 128 (pronounced one twenty-eight) (It means complaint) \nMay your wedding reception have no 390s (pronounced three nineties) (intoxicated people) \nAnd may we never forget who the real L90 (pronounced L ninety) is (watch commander/supervisor)",
+      "Write your own...",
+    ]
+  }
 };
+
 
 const templateElope = {
   openingRemarks1: allSections.opening_remarks1,
@@ -289,6 +328,7 @@ const templateElope = {
   vows_content: allSections.vows_content,
   ring_content: allSections.ring_content,
   ring_exchange: allSections.ring_exchange,
+  blessings: allSections.blessings,
   pronouncement: allSections.pronouncement,
   order: [
     ['openingRemarks1', 0],
@@ -298,6 +338,7 @@ const templateElope = {
     ['vows_content', 0],
     ['ring_content', 0],
     ['ring_exchange', 0],
+    ['blessings', 18],
     ['pronouncement', 0],
   ]
 };
@@ -312,6 +353,7 @@ const templateWed = {
   vows_content: allSections.vows_content,
   ring_content: allSections.ring_content,
   ring_exchange: allSections.ring_exchange,
+  blessings: allSections.blessings,
   pronouncement: allSections.pronouncement,
   kiss: allSections.kiss,
   introduction: allSections.introduction,
@@ -325,6 +367,7 @@ const templateWed = {
     ['vows_content', 0],
     ['ring_content', 0],
     ['ring_exchange', 0],
+    ['blessings', 18],
     ['pronouncement', 0],
     ['kiss', 0],
     ['introduction', 0],
