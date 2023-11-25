@@ -1,5 +1,5 @@
 import React from "react";
-import backgroundImage from "../files/minimal9.png";
+import backgroundImage from "../../public/assets/minimal9.png";
 
   //selector box to add a section to the template
 function SectionsSelector({ data, index, dispatch }) {

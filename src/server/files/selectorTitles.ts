@@ -62,7 +62,7 @@ export const allCategoryTitles: CategoryTitles = {
       "Gift To Parents": "gift_parents",
       "Song": "song",
       "Ring Warmer": "ring_warmer",
-      "Vows of Suppoert": "vows_of_support"
+      "Vows of Support": "vows_of_support"
     },
     "Other Options": { 
       "Blessing": "blessings",
