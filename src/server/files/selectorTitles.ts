@@ -1,4 +1,12 @@
-export const allCategoryTitles = {
+interface Category {
+  [key: string]: string;
+}
+
+type CategoryTitles = {
+  [key: string]: Category;
+}
+
+export const allCategoryTitles: CategoryTitles = {
     "Basic Elements": {
       "Giving Away": "giving_away",
       "Opening Remarks: First Words": "opening_remarks1",
