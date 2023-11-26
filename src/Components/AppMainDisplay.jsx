@@ -3,6 +3,7 @@ import { GlobalContext } from "./App";
 import Header from "./Header";
 import Section from "./Sections";
 import SectionsSelector from "./SectionsSelector";
+
 //packages
 import { Draggable, DragDropContext, Droppable } from "react-beautiful-dnd";
 import { useSwipeable } from 'react-swipeable';
@@ -17,8 +18,9 @@ function AppMainDisplay() {
     dispatch, 
     selectorSec, 
     domRef, 
-    theSidebar, 
-    isMobile
+    isMobile,
+    openSidebar,
+    closeSidebar
   } = useContext(GlobalContext);
 
     //State for mobile view and enlarging card
@@ -167,11 +169,10 @@ function AppMainDisplay() {
     if(isMobile){
       switch(dir){
         case 'Left':
-          theSidebar.deactivate();
+          closeSidebar();
           break;
         case 'Right':
-          theSidebar.removeEventListeners()
-          theSidebar.activate();
+          openSidebar();
           break;
       }
     }
@@ -190,12 +191,6 @@ function AppMainDisplay() {
       // Clean up swipeable event listeners
     return () => documentRef({});
   });
-
-  // useEffect(() => {
-  //   // theSidebar.fillDomElementsIfEmpty();
-  //   // theSidebar.removeEventListeners();
-  // }, [])
-
 
   if(!cardDisplay){
     return (

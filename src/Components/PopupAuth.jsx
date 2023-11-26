@@ -40,7 +40,7 @@ function PopupAuth({subAct}){
     case 'close':
       return null
     default:
-      console.log('error')
+      console.error('error')
   }
    
   const handleSignupTabClick = useCallback(() => {

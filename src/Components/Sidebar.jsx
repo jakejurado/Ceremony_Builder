@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import SideBarTemplate from "./SidebarTemplate";
 import SidebarNames from "./SidebarNames.jsx";
 import SidebarPrint from "./SidebarPrint";
@@ -10,7 +10,7 @@ import ButtonClose from "./ButtonClose"
 
   //the sidebar of the application
 function Sidebar() {
-  const { sidebarRef, isMobile, theSidebar } = useContext(GlobalContext)
+  const { sidebarRef, isMobile, closeSidebar, mySidebar } = useContext(GlobalContext)
 
     //hoover animations when hovering.
   function handleSidebarHover(){
@@ -23,19 +23,18 @@ function Sidebar() {
   }
 
   function handleMobileCloseButtonClick(){
-    theSidebar.deactivate();
+    closeSidebar();
   }
 
-
   return (
-    <div id="sideBar" className="sidebar-growth" ref={sidebarRef} onMouseOver={handleSidebarHover} onMouseLeave={handleSidebarHover} >
+    <div id="sideBar" className="sidebar-growth" ref={sidebarRef} onFocus={handleSidebarHover} onMouseOver={handleSidebarHover} onMouseLeave={handleSidebarHover} >
       <SidebarAccount />
       <SideBarTemplate />
       <SidebarNames />
       <SidebarSave />
       {!isMobile && <SidebarPrint />}
       {isMobile && <SidebarCopy />}
-      {isMobile && <ButtonClose classNames='' clickFunc={handleMobileCloseButtonClick}/>}
+      {isMobile && mySidebar === true && <ButtonClose classNames='' clickFunc={handleMobileCloseButtonClick}/>}
     </div>
   );
 }
