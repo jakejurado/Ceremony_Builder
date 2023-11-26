@@ -4,10 +4,12 @@ const analyticsController = {};
 //SECTION
 analyticsController.recordSection = async (req, res, next) => {
   const sectionTitle = res.locals.myData.varname;
-  const currUser = res.locals.myData.userId
+  const currUser = res.locals.myData.userId === 'null' ? 1 : res.locals.myData.userId;
   const action = 'grab'; // Assuming 'grab' is the intended action
   const query = `INSERT INTO analytics (type, user_id, action, name) VALUES ($1, $2, $3, $4)`;
-  
+  console.log({sectionTitle, currUser, action})
+  console.log('res.locals.myData:', res.locals.myData);
+  console.log('res.locals.myData.userId:', res.locals.myData.userId);
   try {
     await db.query(query, ['section', currUser, action, sectionTitle]);
     next();
