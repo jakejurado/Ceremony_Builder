@@ -1,6 +1,9 @@
-#AWS
+# AWS
 
-##Updating the EC2 with the current github version.
+## Overview:
+AWS EC2 holds the app.  The AWS Secret Manager holds the .env.local file.
+
+## Updating the EC2 with the current github version.
 0. open terminal on the mac.
 1. navigate to the folder that holds the private key.
 2. run the command: 
@@ -11,3 +14,11 @@
 npm run build`
 7. change the permissions back: `sudo chown -R nginx:nginx /home/ec2-user/ceremony_builder/dist/`
 8. restart nginx: `sudo systemctl restart nginx`
+
+
+## EC2
+- talk about the packages installed inside the EC2 (Nginx, ect..)
+
+## Secret Manager
+
+

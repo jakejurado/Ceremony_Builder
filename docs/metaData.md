@@ -1,9 +1,9 @@
-#metaData
+# metaData
 
-##Overview
+## Overview
 metaData was created in order to keep track of the template and its reference in the database.  
 
-##Structure
+## Structure
 The metaData holds a Map data structure with 2 items.  The first is the current name of the template.  The second is an object that has two properties:
  1. number: number -> is the unique identifier for the template in the database.
  2. title: 'string -> is the original name of the template that is saved in the database.

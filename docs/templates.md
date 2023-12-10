@@ -1,19 +1,19 @@
-#Templates (useReducer)
+# Templates (useReducer)
 
-##Overview
+## Overview
 The heart of the site is the object *Templates*, stored in a useReducer.  The *Templates* object contains multiple templates that the user either creates or chooses to have displayed.  Updating the *Templates* is done by using the dispatch function.  We'll cover the structure of the *Templates* object and the different dispatch functions.
 
 
-##Templates Structure
-###Overview
+## Templates Structure
+### Overview
 There are multiple levels to the *Template* object: 
  - sections: a part of a wedding ceremony, like the vows, or exchange of rings
  - order: lists the order of sections in a ceremony
  - template: contains sections and an order
  - templates: holds multiple templates
 
-###Templates Breakdown
-####Section
+### Templates Breakdown
+#### Section
 The purpose of the section object is to hold all the data and metadata needed to display a specific part of the wedding ceremony.  The section object is composed of 4 properties:
 - **title**: string -> the vanity title of the section, used to display the name, like 'Giving Away', 'Opening Remarks', 'The Kiss'.
 
@@ -41,7 +41,7 @@ kiss: {
 
 ``
 
-####order
+#### order
 The purpose of the order array is to keep track of the order that the *sections* will be displayed in the *template*.  The order array can hold multiple arrays inside of it that have two elements:
 1. string -> section *varname*, which is the variable named used in the database
 2. number -> the index of which script the user has chosen for their ceremony.
@@ -71,7 +71,7 @@ If a new section is added, the index number will be populated by the 'start_pos'
 Please note that the order array can be empty.  That means that no sections are chosen for the template yet.
 
 
-####Template
+#### Template
 The template is an object that holds up to multiple *sections* and only one *order* array.  The keys are variable name of the *section* and the values are the *section* object, except for the *order* key which will provide the *order* array.
 
 example:
@@ -96,7 +96,7 @@ const quickWeddingTemplate = {
 };
 ``
 
-####Templates
+#### Templates
 The *templates* object hold multiple *template* objects.
 
 example:
@@ -109,12 +109,12 @@ const templates = {
   
 
 
-##useReducer Cases (updating state with dispatch)
+## useReducer Cases (updating state with dispatch)
 At the heart of the *reducer* is a switch case. The reducer is expecting an object that looks like this:
 `{type: string, payload: any}`
 Depending on what string is in the type property, the reducer will have different expectations for the payload.  Here is a look at the different cases:
 
-##addSEC
+## addSEC
 This case will add a new section from the database or cache.  This is initialized when a user initiates the load by selecting a *section* from the *sectionSelector*.
 
 The payload is expected to be an object with two properties:
@@ -134,7 +134,7 @@ When this case is entered, two functions will run:
  2. fetchSectionFromDatabase -> which is an async function that retrieves the corresponding *section*
 
 
-##loadFetch
+## loadFetch
 This case will load a section and is only called after the async function of 'fetchSectionFromDatabase', which was called by the previous case (addSEC).
 
 The payload is expected to be an object with three properties:
@@ -158,7 +158,7 @@ When this case is entered, two functions will run:
  1. addSectionToTemplate -> takes the current state and adds the section to the current template being used.
 
 
-##deleteSEC
+## deleteSEC
 This case will delete a *section* from the current template
 
 The payload is expected to be an object with one property:
@@ -182,7 +182,7 @@ When this case is entered, the following occurs:
 
 
 
-##updateSEC
+## updateSEC
 This case will update which script is being displayed on a specific section.
 
 The payload is expected to be an object with 4 properties:
@@ -210,7 +210,7 @@ When this case is entered, the following occurs:
  3. the new *order* is placed into the copy.
 
 
-##updateWords
+## updateWords
 updates the script text with the user inputed content
 
 The payload is expected to be an object with 3 properties:
@@ -236,7 +236,7 @@ When this case is entered, the following occurs:
  2. the specific script is updated
  
 
-##moveSEC
+## moveSEC
 This case will update the order in which the sections are displayed.
 
 The payload is expected to be an object with 2 properties:
@@ -260,7 +260,7 @@ When this case is entered, the following occurs:
  3. the new *order* is placed into the copy.
 
 
-##selectSEC
+## selectSEC
 This case will insert the *sectionSelector* into the viewport in the spot that the user clicks.  The sectionSelector lists all the available sections that can be downloaded.
 
 The payload is expected to be an object with 2 properties:
@@ -283,7 +283,7 @@ When this case is entered, the following occurs:
 
 
 
-##saveTemplateToDatabase
+## saveTemplateToDatabase
 This case save the current template to the database.  
 
 There is no payload
@@ -312,7 +312,7 @@ When this case is entered, the following occurs:
  1. adds the user templates to the default templates already there.
 
 
-##loadTEMPLATE
+## loadTEMPLATE
 This case will replace the current *template* being displayed with another one, selected by the user..
 
 The payload is expected to be an object with 2 properties:
@@ -332,7 +332,7 @@ When this case is entered, the following occurs:
  1. the state 'templateTitle' is set to the template name.
 
 
-##addTEMPLATE
+## addTEMPLATE
 This case add a new blank template to the *templates* and update the current template being displayed.
 
 There is no payload.
@@ -351,7 +351,7 @@ When this case is entered, the following occurs:
  4. metaData is updated wtih the new info.
 
 
-##renameTEMPLATE
+## renameTEMPLATE
 This case will rename a *template*.
 
 The payload is expected to be an object with 3 properties:
@@ -379,7 +379,7 @@ When this case is entered, the following occurs:
  5. If the currTemplate is the one being changed then the currTemplate is updated with the new name.
 
 
-##deleteTEMPLATE
+## deleteTEMPLATE
 This case will delete a template
 
 The payload is expected to be an object with 2 properties:
@@ -402,7 +402,7 @@ When this case is entered, the following occurs:
  3. the template is deleted from the copy
 
 
-##reset
+## reset
 This case signs the user out, removes the templates and restores default templates.
 
 example:

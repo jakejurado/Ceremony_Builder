@@ -1,12 +1,12 @@
-#The Pop up Feature (thePopup)
+# The Pop up Feature (thePopup)
 
-##Overview
+## Overview
 thePopup controlls all popups and uses React's useReducer.  When a dispatch is recieved, the following popup will occur depending on which case is matched.  The popup controlls:
  - the login/signup popup
  - the template popup
  - the print page popup.
 
-##Contents
+## Contents
 thePopup relys on the dispatch function within useReducer to send an object to the reducer.  The reducer receives an action object with two properties:
 
  1. **type**: string -> can either be 
@@ -24,7 +24,7 @@ thePopup relys on the dispatch function within useReducer to send an object to t
    - 'signout' -> opens the signout popup.
 
 
-##Usage
+## Usage
 import useContext hook and the instance of state we made called 'GlobalContext':
 ``import {useContext} from 'react ``
 ``import { GlobalContext} from "./App"``
@@ -39,7 +39,7 @@ or the following to close the popup box:
 ``popupDispatch({type: null, subAct: null})``
 
 
-##Functionality
+## Functionality
 In the JSX of the App.jsx page, we have some conditional rendoring:
 ``{thePopup.box &&  <Popup box={thePopup.box} subAct={thePopup.subAct}/> }``
 
