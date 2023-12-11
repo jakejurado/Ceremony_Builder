@@ -1,4 +1,4 @@
-#The Sidebar
+# The Sidebar
 
 ## Overview
 The sidebar opens and closes from the left hand side whether you are on desktop or mobile.  When you close the sidebar, the elements inside the sidebar dissapear from the bottom up before the sidebar slowly goess off screen (for mobile) or shrinks to the side (for desktop).  The sidebar can be opened by swiping from left to right (on mobile) or clicking the sidebar (on desktop).  It closes by swiping from right to left or clicking the x (on mobile) or clicking outside the Sidebar on desktop.
@@ -59,7 +59,7 @@ Inside the Sidebar component is a close button that when clicked the closeButton
 
 
 ## The Sidebar Component.
-The sidebar component holds a tools:
+The sidebar component holds these components:
  - SidebarAccount Component: for authentication functionality.
  - SideBarTemplate Component: for selecting which Template to use for the wedding ceremony.
  - SidebarSave Component: for saving the current Template to the database.

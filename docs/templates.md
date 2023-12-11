@@ -24,7 +24,7 @@ The purpose of the section object is to hold all the data and metadata needed to
 - **description**: string -> a short sentance or two that describes the purpose of the section.  So if the section is 'vows', then the description would say: 'the part of the ceremony where the couple express why they love the other and what they promise for their future.'
 
 Here is an example:
-``
+```
 kiss: {
   title: "The Kiss",
   start_pos: 1,
@@ -38,8 +38,7 @@ kiss: {
     "Write your own...",
   ],
 },
-
-``
+```
 
 #### order
 The purpose of the order array is to keep track of the order that the *sections* will be displayed in the *template*.  The order array can hold multiple arrays inside of it that have two elements:
@@ -47,7 +46,7 @@ The purpose of the order array is to keep track of the order that the *sections*
 2. number -> the index of which script the user has chosen for their ceremony.
 
 example:
-``
+```
 order = [
   ["giving_away", 0],
   ["openingRemarks1", 2],
@@ -62,7 +61,7 @@ order = [
   ["kiss", 1],
   ["introduction", 0]
 ]
-``
+```
 
 The order should correspond with the sections that are in the template, so when a section is removed or added to the template, the order should either remove or add an array for that corresponding template.  
 
@@ -72,10 +71,10 @@ Please note that the order array can be empty.  That means that no sections are 
 
 
 #### Template
-The template is an object that holds up to multiple *sections* and only one *order* array.  The keys are variable name of the *section* and the values are the *section* object, except for the *order* key which will provide the *order* array.
+The template is an object that can hold multiple *sections* and only one *order* array.  The keys are variable name of the *section* and the values are the *section* object, except for the *order* key which will provide the *order* array.
 
 example:
-``
+```
 const quickWeddingTemplate = {
   openingRemarks1:    { --section data-- },
   declaration:        { --section data-- },
@@ -94,7 +93,7 @@ const quickWeddingTemplate = {
     ["kiss", 1],
   ]
 };
-``
+```
 
 #### Templates
 The *templates* object hold multiple *template* objects.
@@ -111,7 +110,7 @@ const templates = {
 
 ## useReducer Cases (updating state with dispatch)
 At the heart of the *reducer* is a switch case. The reducer is expecting an object that looks like this:
-`{type: string, payload: any}`
+```{type: string, payload: any}```
 Depending on what string is in the type property, the reducer will have different expectations for the payload.  Here is a look at the different cases:
 
 ## addSEC
@@ -122,12 +121,12 @@ The payload is expected to be an object with two properties:
  2. index: number -> holds the spot where this section will be added to the current template.
 
 example: 
-``
+```
 const action = {
   type: 'addSEC',
   payload: {varname: 'giving_away', index: 6}
 }
-``
+```
 
 When this case is entered, two functions will run:
  1. setSelectorSec -> which will set the state to remove the sectionSelector.
@@ -143,7 +142,7 @@ The payload is expected to be an object with three properties:
  3. index: number -> holds the spot where this section will be added to the current template.
 
 example: 
-``
+```
 const action = {
   type: 'loadFetch',
   payload: {
@@ -152,7 +151,7 @@ const action = {
     index: 6
   }
 }
-``
+```
 
 When this case is entered, two functions will run:
  1. addSectionToTemplate -> takes the current state and adds the section to the current template being used.
@@ -165,14 +164,14 @@ The payload is expected to be an object with one property:
  1. index: number -> holds the index reference for the *order* array for which section needs to be deleted.
 
 example: 
-``
+```
 const action = {
   type: 'deleteSEC',
   payload: {
     index: 6
   }
 }
-``
+```
 
 When this case is entered, the following occurs:
  1. removeSection -> which removes the section from the *order* array.
@@ -192,7 +191,7 @@ The payload is expected to be an object with 4 properties:
  4. add: 1 | -1 -> either increment to the next card or decrement to the previous card.
 
 example: 
-``
+```
 const action = {
   type: 'updateSEC',
   payload: {
@@ -202,7 +201,7 @@ const action = {
     add: 1
   }
 }
-``
+```
 
 When this case is entered, the following occurs:
  1. a newOrder is created with the the changes.
@@ -220,7 +219,7 @@ The payload is expected to be an object with 3 properties:
 
 
 example: 
-``
+```
 const action = {
   type: 'updateWords',
   payload: {
@@ -229,7 +228,7 @@ const action = {
     cardIndex: 4,
   }
 }
-``
+```
 
 When this case is entered, the following occurs:
  1. a new copy of Templates is made
@@ -244,7 +243,7 @@ The payload is expected to be an object with 2 properties:
  2. destIndex: number -> the location in the array where the section will be placed.
 
 example: 
-``
+```
 const action = {
   type: 'moveSEC',
   payload: {
@@ -252,7 +251,7 @@ const action = {
     destIndex: 3
   }
 }
-``
+```
 
 When this case is entered, the following occurs:
  1. a newOrder is created with the the changes.
@@ -267,14 +266,14 @@ The payload is expected to be an object with 2 properties:
  1. index: number -> the index in the *order* array where sectionSelector will be placed
 
 example: 
-``
+```
 const action = {
   type: 'selectSEC',
   payload: {
     index: 4
   }
 }
-``
+```
 
 When this case is entered, the following occurs:
  1. creates an object to update the selectorSec state
@@ -292,21 +291,21 @@ When this case is entered, the following occurs:
  1. saveTemplateToDatabase function is run grabbing the currUser, metaData, setMetaData, and state and then making an async call.
 
 
-##loadUserTemplates
+## loadUserTemplates
 This case will load all of the user *templates* into state. 
 
 The payload is expected to be an object with 1 property:
  1. userTemplates: object of templates -> all the user templates.
 
 example: 
-``
+```
 const action = {
   type: 'loadUserTemplates',
   payload: {
     userTemplates: { --templates-- }
   }
 }
-``
+```
 
 When this case is entered, the following occurs:
  1. adds the user templates to the default templates already there.
@@ -319,14 +318,14 @@ The payload is expected to be an object with 2 properties:
  1. key: string -> this is the name of the template that corresponds to one of the keys in the *templates* object
 
 example: 
-``
+```
 const action = {
   type: 'selectSEC',
   payload: {
     key: 'traditionalCeremony'
   }
 }
-``
+```
 
 When this case is entered, the following occurs:
  1. the state 'templateTitle' is set to the template name.
@@ -338,11 +337,11 @@ This case add a new blank template to the *templates* and update the current tem
 There is no payload.
 
 example: 
-``
+```
 const action = {
   type: 'addTemplate',
 }
-``
+```
 
 When this case is entered, the following occurs:
  1. a copy of *templates* is made.
@@ -360,7 +359,7 @@ The payload is expected to be an object with 3 properties:
  3. currTemplate: string -> the variable name of the current template being displayed
 
 example: 
-``
+```
 const action = {
   type: 'selectSEC',
   payload: {
@@ -369,7 +368,7 @@ const action = {
     currTemplate: 'funCeremony',
   }
 }
-``
+```
 
 When this case is entered, the following occurs:
  1. a copy of the *templates* is made.
@@ -386,14 +385,14 @@ The payload is expected to be an object with 2 properties:
  1. currTitle: string -> this is the variable name of the template that will be deleted
 
 example: 
-``
+```
 const action = {
   type: 'selectSEC',
   payload: {
     currTitle: 'traditionalCeremony'
   }
 }
-``
+```
 
 When this case is entered, the following occurs:
  1. the template is deleted in the database.
@@ -406,11 +405,11 @@ When this case is entered, the following occurs:
 This case signs the user out, removes the templates and restores default templates.
 
 example:
-``
+```
 const action = {
   type: 'reset',
 }
-``
+```
 
 When this case is entered, the following occurs:
  1. the user is signed out

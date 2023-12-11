@@ -1,9 +1,9 @@
-#Wedding Ceremony Builder
+# Wedding Ceremony Builder
 
-##Overview
+## Overview
 Wedding Ceremony Builder (WCB) is a web application that allows users to create their own wedding ceremony script.  
 
-##Structure
+## Structure
 At the heart of WCB is the state *templates* served by the useReducer hook.  Templates is an object that hold multiple templates (or ceremony scripts).  Each ceremony script (template) is constructed with multiple *sections* (like vows, rings, the pronouncement, ect...).  There are a plethora of sections and the user can choose which ones to include/exclude.
 
 Each section has multiple wording options.  So for the section, "The Kiss", the user can choose either of these script options:
