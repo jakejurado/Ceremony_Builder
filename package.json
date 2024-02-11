@@ -5,8 +5,8 @@
   "main": "./src/index.js",
   "scripts": {
     "start:client": "webpack-dev-server --mode development --hot --open --port 8080",
-    "start:server": "nodemon ./src/server/server.js",
-    "start": "webpack-dev-server --mode development --hot --open",
+    "start": "nodemon ./src/server/server.js",
+    "startd": "webpack-dev-server --mode development --hot --open",
     "go": "npm-run-all -p start n",
     "build": "webpack --mode production",
     "test": "jest",
