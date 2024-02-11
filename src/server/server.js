@@ -12,14 +12,14 @@ require("dotenv").config();
 
 
 async function startServer(){
-  const secrets = await getSecrets();
-  process.env.MYURL = secrets.MYURL;
-  process.env.JWT_SECRET = secrets.JWT_SECRET;
-  process.env.SECRET_KEY = secrets.SECRET_KEY;
-  process.env.SMTP_HOST = secrets.SMTP_HOST;
-  process.env.SMTP_PORT = secrets.SMTP_PORT;
-  process.env.SMTP_USER = secrets.SMTP_USER;
-  process.env.SMTP_PASSWORD = secrets.SMTP_PASSWORD;
+  // const secrets = await getSecrets();
+  // process.env.MYURL = secrets.MYURL;
+  // process.env.JWT_SECRET = secrets.JWT_SECRET;
+  // process.env.SECRET_KEY = secrets.SECRET_KEY;
+  // process.env.SMTP_HOST = secrets.SMTP_HOST;
+  // process.env.SMTP_PORT = secrets.SMTP_PORT;
+  // process.env.SMTP_USER = secrets.SMTP_USER;
+  // process.env.SMTP_PASSWORD = secrets.SMTP_PASSWORD;
   
 
   const limiter = rateLimit({
