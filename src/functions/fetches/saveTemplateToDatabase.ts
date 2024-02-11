@@ -14,7 +14,6 @@ async function saveTemplateToDatabase(currUser: number, metaData: MetaData, setM
     try{
       if(templateId){
         const res = await fetchCall.put('templates', body)
-        console.log({res})
           //update template in database
       } else {
         const data = await fetchCall.post('templates', body);

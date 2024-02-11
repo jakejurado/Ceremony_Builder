@@ -5,9 +5,9 @@ import { LoadFetch, FetchSectionData } from '../../types/dispatch';
 
 
   //fetches section from the database
-async function fetchSectionFromDatabase(varname: string, index: number, setState: React.Dispatch<React.SetStateAction<{type: string, payload: LoadFetch}>>){
-  const data = await fetchCall.get('grabSec', {varname});
-  const sec = await buildSectionFromData(data);
+async function fetchSectionFromDatabase(varname: string, index: number, setState: React.Dispatch<React.SetStateAction<{type: string, payload: LoadFetch}>>, userId: number){
+  const data = await fetchCall.get('grabSec', {varname, userId});
+  const sec = buildSectionFromData(data);
   setState({type: 'loadFetch', payload : {varname, sec, index}})
 }
 

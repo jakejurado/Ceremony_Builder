@@ -4,7 +4,8 @@ import React, {
   useReducer,
   createContext,
   useRef,
-} from "react";
+  useMemo,
+} from 'react';
 
 //React Components
 import AppMainDisplay from "./AppMainDisplay";
@@ -12,9 +13,9 @@ import Sidebar from "./Sidebar";
 import ErrorBoundary from "./ErrorBoundary";
 import Popup from './Popup';
 
-//Temparary Data
-import { templateWed2 } from "../server/files/serverDB2";
-import templateElope from "../server/files/serverDB";
+//Starting Data
+import {templateWed, templateElope } from '../server/files/database-script';
+import  { allCategoryTitles } from '../server/files/selectorTitles';
 
 //helperFunctions
 import { updateSectionOrder } from "../functions/mainPage/dragdropFuncs";
@@ -23,8 +24,7 @@ import { addSelectorSection } from "../functions/sections/selectorSec";
 import { updateCardIndex } from "../functions/sections/updateSec";
 import { removeSection } from "../functions/sections/removeSec";
 import { fetchTitles } from "../functions/fetches/selectorBoxFuncs";
-import {createSidebarToggle} from '../functions/mainPage/sidebarClass';
-import {fetchCall} from '../functions/fetches/api';
+import { fetchCall } from '../functions/fetches/api';
 import { addSectionToTemplates} from "../functions/sections/addSectionToTemplates";
 import { fetchSectionFromDatabase} from "../functions/fetches/fetchSectionFromDatabase";
 import { saveTemplateToDatabase } from "../functions/fetches/saveTemplateToDatabase";
@@ -32,18 +32,11 @@ import { determineTemplateTitle } from "../functions/template/determineTemplateT
 import { fetchUserTemplates } from "../functions/fetches/fetchUserTemplates";
 import { checkCookieForAccess } from "../functions/fetches/checkUserAccess"
 import { createMetaDataFromStartingTemplates } from "../functions/metaData/createMetaDataFromStartingTemplates"
+import { openSidebarEffects, closeSidebarEffects } from '../functions/mainPage/sidebarFuncs';
 
 //Typescript
 import {
-  Cache,
-  Templates,
-  Template,
-  TemplateSansOrder,
-  personState,
-  selectorSec,
-  TemplateState,
   MetaData,
-  MetaDataValue,
 } from "../types/types_copy";
 
   //Style import
@@ -52,14 +45,20 @@ import "../styles/main.scss";
   //global context
 export const GlobalContext = createContext(null);
 
-
 function App() {
     //keep track of screen size
   const maxMobileSize = 800;
   const [isMobile, setIsMobile] = useState(window.innerWidth < maxMobileSize);
   
     //set up the sidebar functionality.
-  const theSidebar = new createSidebarToggle('sideBar', 'whiteCover', isMobile);
+  const [mySidebar, setMySidebar] = useState(false);
+  function closeSidebar(){
+    setMySidebar(false);
+  }
+  function openSidebar(){
+    setMySidebar(true);
+  }
+
   
     //meta data for the templates to help sync with database.
   const [metaData, setMetaData] = 
@@ -68,8 +67,7 @@ function App() {
   );
 
     //templates to start the program
-  const allT = {wedding: templateWed2, elope: templateElope }
-
+  const allT = {wedding: templateWed, elope: templateElope }
     //stores the current users ID
   const [currUser, setCurrUser] = useState(null);
 
@@ -86,41 +84,18 @@ function App() {
     person2: undefined,
   });
 
-  //holds data that needs to update state asynchronously
-const [fetchedData, setFetchedData] = useState(null);
+    //holds data that needs to update state asynchronously
+  const [fetchedData, setFetchedData] = useState(null);
 
 
-//holds all titles, varnames, and category in an object for all sections
-  //RESET TO EMPTY OBJECT FOR PRODUCTION
-  const [selectorTitles, setSelectorTitles] = useState({
-    "Basic Elements": {
-      "Giving Away": "giving_away",
-      "Opening Remarks: First Words": "opening_remakrs1",
-      "Opening Remarks: Main Content": "opening_remarks2",
-      "Declaration of Intent": "declaration",
-      Charge: "charge",
-      "Transition to Vows": "vows_symbolism",
-      Vows: "vow_content",
-      "Rings Content": "ring_content",
-      "Ring Exchange": "ring_exchange",
-      Pronouncement: "pronouncement",
-      "The Kiss": "kiss",
-      Introduction: "introduction",
-    },
-    Readings: { "Reading: Traditional": "reading_traditional" },
-    Prayer: { "Prayer: Opening": "prayer_opening" },
-    Unity: { "Unity: Cocktail": "unity_cocktail" },
-    Religious: { Arras: "arras" },
-    "Including Others": { "Last Kiss": "last_kiss" },
-    "Other Options": { "License Signing": "license_sign" },
-  });
-  // const [selectorTitles, setSelectorTitles] = useState({});
+    //holds all titles, varnames, and category in an object for all sections
+  const [selectorTitles, setSelectorTitles] = useState({...allCategoryTitles});
 
     //ref the content of the etite
   const domRef = useRef();
     //ref 
-  const sidebarRef = useRef();
-  const coverRef = useRef();
+  const sidebarRef = useRef<HTMLDivElement>(null);
+  const coverRef = useRef<HTMLDivElement>(null);
 
     //informs react when the section selector Box has been activated.
   const [selectorSec, setSelectorSec] = useState({
@@ -146,9 +121,9 @@ const [fetchedData, setFetchedData] = useState(null);
           //remove section selector
         setSelectorSec({ isVisible: false, position: undefined });
           //get section data
-        fetchSectionFromDatabase(varname, index, setFetchedData);
+        fetchSectionFromDatabase(varname, index, setFetchedData, currUser);
         return state;
-      }  
+      }
 
         //loads a section that was fetched from 'addSEC' case.
       case 'loadFetch':{
@@ -271,7 +246,7 @@ const [fetchedData, setFetchedData] = useState(null);
         const templateId = metaData.get(currTitle).number
         if(templateId){
           fetchCall.delete('templates', {templateId, userId: currUser})
-            .catch((err) => {err})
+            .catch((err) => {console.error(err)})
         } 
           //remove from metaData
         const metaDataCopy = new Map(metaData);
@@ -308,13 +283,13 @@ const [fetchedData, setFetchedData] = useState(null);
     setFetchedData(null);
   }
 
-  // Popup Controls
+    // Popup Controls
   const [thePopup, popupDispatch] = useReducer(popupReducer, {box: null, subAct: null});
 
   function popupReducer(state, action){
-    const {subAct} = action
+    const {subAct, type} = action
     
-    switch (action.type){
+    switch (type){
       case 'myAccount':
         return {box: 'myAccount', subAct}
       case 'myAuth':
@@ -333,53 +308,74 @@ const [fetchedData, setFetchedData] = useState(null);
       //add starting templates to cache
     addContentsToCache(templates)
 
-    
-
       //add metadata from the starting templates.
     createMetaDataFromStartingTemplates(templates, metaData, setMetaData)
 
       //check if the user has a cookie
     checkCookieForAccess(setCurrUser);
 
-      //close the sidebar
-    setTimeout(() => {
-      theSidebar.deactivate()
-    }, 1000);
+    //grab the screen size
+    if(window.innerWidth < maxMobileSize){
+      setIsMobile(true);
+    }
 
-    //   //grab the screen size
-    // if(window.innerWidth < maxMobileSize){
-    //   setIsMobile(true);
-    // }
+    //add event listener to check for screen size change
+    const handleResize = () => {
+      if (window.innerWidth < maxMobileSize) {
+        setIsMobile(true);
+      } else {
+        setIsMobile(false);
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    // Cleanup function
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
   }, [])
 
+  useEffect(()=>{  
+      //changes the css of the dom and adds/removes event listeners
+    if(mySidebar){
+      openSidebarEffects(sidebarRef, coverRef, closeSidebar);
+    } else{
+      closeSidebarEffects(sidebarRef, coverRef, openSidebar);
+    }
+
+  }, [mySidebar, setMySidebar])
+
+  const value = useMemo(() => ({
+    dispatch,
+      selectorSec,
+      selectorTitles,
+      names,
+      setNames,
+      isMobile,
+      templateTitle,
+      setTemplateTitle,
+      templates,
+      currTemplate : templates[templateTitle],
+      domRef,
+      sidebarRef,
+      coverRef,
+      popupDispatch,
+      box: thePopup.box,
+      subAct: thePopup.subAct,
+      currUser,
+      setCurrUser,
+      metaData,
+      mySidebar,
+      setMetaData,
+      openSidebar,
+      closeSidebar,
+  }),[dispatch, selectorSec, selectorTitles, names, isMobile, templateTitle, templates, domRef, mySidebar, sidebarRef, coverRef, popupDispatch, thePopup.box, thePopup.subAct, currUser, metaData]);
+    
   return (
     <ErrorBoundary>
       <div className="AppContainer">
-        <GlobalContext.Provider
-          value={{
-            dispatch,
-            selectorSec,
-            selectorTitles,
-            names,
-            setNames,
-            isMobile,
-            templateTitle,
-            setTemplateTitle,
-            templates,
-            currTemplate : templates[templateTitle],
-            theSidebar,
-            domRef,
-            sidebarRef,
-            coverRef,
-            popupDispatch,
-            box: thePopup.box,
-            subAct: thePopup.subAct,
-            currUser,
-            setCurrUser,
-            metaData,
-            setMetaData
-          }}
-        >
+        <GlobalContext.Provider value={value}>
           <div ref={coverRef} id='whiteCover'></div>
           {thePopup.box &&  <Popup box={thePopup.box} subAct={thePopup.subAct}/> }
           <Sidebar />

@@ -5,8 +5,8 @@
   "main": "./src/index.js",
   "scripts": {
     "start:client": "webpack-dev-server --mode development --hot --open --port 8080",
-    "start:server": "nodemon ./src/server/server.js",
-    "start": "webpack-dev-server --mode development --hot --open",
+    "start": "nodemon ./src/server/server.js",
+    "startd": "webpack-dev-server --mode development --hot --open",
     "go": "npm-run-all -p start n",
     "build": "webpack --mode production",
     "test": "jest",
@@ -28,6 +28,7 @@
   "author": "Jacob Jurado",
   "license": "UNLICENSED",
   "dependencies": {
+    "@aws-sdk/client-secrets-manager": "^3.454.0",
     "@types/node": "^18.13.0",
     "@types/react": "^18.0.27",
     "@types/react-dom": "^18.0.10",
@@ -37,9 +38,10 @@
     "cookie-session": "^2.0.0",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
-    "email-addresses": "^5.0.0",
     "express": "^4.18.1",
+    "express-rate-limit": "^7.0.2",
     "generate-password": "^1.7.0",
+    "helmet": "^7.0.0",
     "jsonwebtoken": "^9.0.0",
     "mongoose": "^6.5.2",
     "nodemailer": "^6.9.3",
@@ -49,6 +51,7 @@
     "react": "^18.2.0",
     "react-beautiful-dnd": "^13.1.1",
     "react-dom": "^18.2.0",
+    "react-hook-form": "^7.47.0",
     "react-select": "^5.7.0",
     "react-swipeable": "^7.0.1"
   },

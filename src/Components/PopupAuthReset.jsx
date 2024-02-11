@@ -1,5 +1,5 @@
-import React, {useContext, useRef, useEffect} from 'react';
-import PopupNotifications from './PopupNotifications';
+import React, {useContext, useState} from 'react';
+import { useForm } from "react-hook-form";
 import { PopupContext } from './PopupAuth';
 import { fetchCall } from '../functions/fetches/api';
 
@@ -7,38 +7,33 @@ import { fetchCall } from '../functions/fetches/api';
 function PopupAuthReset(){
   const {
     currUser,
-    userCurrPassDom, 
-    userEmailDom, 
-    userNewPassDom1, 
-    userNewPassDom2, 
-    handleEmailInputChange, 
-    handleCurrPasswordInputChange, 
-    handleNewPasswordInputChange1, 
-    handleNewPasswordInputChange2, 
-    setSuccess,
-    setLoginFail,
     handleDeleteClick,
     handleSignoffClick,
-    handleSubmitClickRef,
-    buttonDom,
   } = useContext(PopupContext);
 
+  const [submitFail, setSubmitFail] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const { register, handleSubmit, watch, formState: { errors } } = useForm();
+  const password = watch("password");
+
     //fetch request to reset password
-  async function handleSubmitClick(){
+  async function handleSubmitClick(data){
     const userId = currUser
-    const email = userEmailDom.current.value;
-    const password = userCurrPassDom.current.value;
-    const newPassword = userNewPassDom1.current.value;
-    const newPassword2 = userNewPassDom2.current.value
+    const email = data.email;
+    const password = data.currentPassword;
+    const newPassword = data.password;
     const response = await fetchCall.put('reset', { email, password, newPassword, userId});
     if (response.isPasswordReset) {
-      setSuccess(true)
+      setSuccess(true);
+      setTimeout(() => {
+        setSuccess(false);
+      }, 5000);
     } else {
-      setLoginFail(true);
+      setSubmitFail(true);
     }
   }
 
-  handleSubmitClickRef.current = handleSubmitClick;
+
 
   return(
     <div className="entireBox" >
@@ -46,58 +41,68 @@ function PopupAuthReset(){
       <div id='passwordTab' className="eachTab">Password</div>
       <div id='DeleteTab' className="eachTab selectedTab" onClick={handleDeleteClick} >Delete</div>
 
-      <form>
-        <div className="mainInput">
-          <div className='signoutBox'>
-            
-            <h2>Reset Password</h2>
+      <form onSubmit={handleSubmit(handleSubmitClick)}>
+        <div className="mainInput">          
+          <h2>Reset Password</h2>
 
-            <div className= 'line'>
-              {/* <div className="desc">
-                email: 
-              </div> */}
-              <div className="inputDiv">
-                <input className='inputContent' ref={userEmailDom} onChange={handleEmailInputChange} autoComplete="username" placeholder='e-mail'/>
-              </div>
+          <div className='line'>
+            <div className='inputDiv'>
+              <input 
+                className='inputContent' 
+                autoComplete="username" 
+                placeholder='email' 
+                {...register("email", 
+                  { 
+                    required: 'Email is required', minLength: { value: 3, message: "Incomplete email address" }, 
+                    pattern: {
+                      value: /.*@.*/,
+                      message: "Email must include '@'"
+              }  })} />
+              {errors.email && <div className="error">{errors.email.message}</div>}
             </div>
-
-            <div className= 'line'>
-              {/* <div className="desc">
-                current password: 
-              </div> */}
-              <div className="inputDiv">
-                <input className='inputContent' ref={userCurrPassDom} onChange={handleCurrPasswordInputChange} autoComplete="current-password" type='password' placeholder='current password' />
-              </div>
-            </div>
-            
-            <div className= 'line'>
-              {/* <div className="desc">
-                new password: 
-              </div> */}
-              <div className="inputDiv">
-                <input className='inputContent' type='password' ref={userNewPassDom1} onChange={handleNewPasswordInputChange1} autoComplete="new-password" placeholder='new password' />
-              </div>
-            </div>
-
-
-            <div className= 'line depth'>
-              {/* <div className="desc">
-                new password: 
-              </div> */}
-              <div className="inputDiv">
-                <input className='inputContent' type='password' ref={userNewPassDom2} onChange={handleNewPasswordInputChange2} autoComplete="new-password" placeholder='new password' />
-              </div>
-            </div>
-
-            {<PopupNotifications />}
-
           </div>
-        </div>
-      
-        <div className="bottomBox">
-          <div className='submitButton' ref={buttonDom}>
-            Submit
+
+          <div className='line'>
+            <div className='inputDiv'>
+              <input className='inputContent' type='password' autoComplete="current-password" placeholder='current password' {...register("currentPassword", { required: 'Password is required', minLength: { value: 6, message: "Password must be at least 6 characters" } })} />
+              {errors.password && <div className="error" style={{ color: 'red' }}>{errors.password.message}</div>}
+            </div>
           </div>
+          
+          <div className='line'>
+            <div className='inputDiv'>
+              <input className='inputContent' type='password' placeholder='new password' {...register("password", { required: 'Password is required', minLength: 6 })} />
+              {errors.password && <div className="error" style={{ color: 'red' }}>{errors.password.message}</div>}
+            </div>
+          </div>
+
+          <div className='line'>
+            <div className='inputDiv'>
+              <input className='inputContent' type='password' placeholder='confirm password' {...register("password2", { 
+                validate: value => value === password || 'Passwords do not match'
+              })} />
+              {errors.password2 && <div className="error" style={{ color: 'red' }}>{errors.password2.message}</div>}
+            </div>
+          </div>
+
+          <div className='line'> 
+            <div className='inputDiv'>
+              {submitFail && <div className="error">Unable to update your password.</div>}
+            </div>
+          </div>
+
+          <div className='line'>
+            <div className='inputDiv'>
+              {success && <div className="complete">Your password has been reset.</div>}
+            </div>
+          </div>
+
+          <div className="line">
+            <div className='inputDiv'>
+              <input type="submit" className='submitButton' id='authLoginsubmitButton' />
+            </div>
+          </div>
+
         </div>
       </form>
     </div>
