@@ -1,8 +1,8 @@
 import React, { useContext } from "react";
-import plusBtn from "../../public/assets/plus-circle.svg";
+import aiBtn from "../../public/assets/robot_2_.svg";
 
   //a simple plus button to add a section
-function SectionsAddButton(props) {
+function SectionsButtonAI(props) {
   //when add button is clicked, a dispatch is sent to add the selector box to the page
   function handleClick(e) {
     const [title, index] = e.target.parentNode.classList[1].split("-");
@@ -11,10 +11,10 @@ function SectionsAddButton(props) {
 
   return (
     <div
-      className={`addSectionButton ${props.belowSection}-${props.index} ${props.belowSection}-${props.index} addButton  `}
+      className={`addSectionButton ${props.belowSection}-${props.index} ${props.belowSection}-${props.index} aiButton  `}
     >
       <img
-        src={plusBtn}
+        src={aiBtn}
         alt="add section button"
         onClick={handleClick}
         onKeyDown={handleClick}
@@ -23,4 +23,4 @@ function SectionsAddButton(props) {
   );
 }
 
-export default SectionsAddButton;
+export default SectionsButtonAI;

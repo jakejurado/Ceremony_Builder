@@ -110,6 +110,11 @@
   .dnArrow{
     @include m.secButtonDiv(180deg, 360deg, v.$yellowSecond, 1s)
   }
+
+    //down arrow button
+  .aiButton{
+    @include m.secButtonDiv(0deg, 359deg, v.$yellowThird, 1s);
+  }
   
 
 
