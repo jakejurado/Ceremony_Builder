@@ -3,6 +3,7 @@ import { GlobalContext} from "./App";
 import PopupAuth from './PopupAuth';
 import PopupPrint from './PopupPrint';
 import PopupTemplate from './PopupTemplate';
+import PopupAI from './PopupAI';
 
   //Main Component that holds all popup notifications
 function Popup({box, subAct}){
@@ -12,6 +13,8 @@ function Popup({box, subAct}){
   const handleBackgroundClick = useCallback(() =>{
     popupDispatch({type: null, box: null});
   }, [])
+
+  console.log({subAct})
   
   return(
       <div id='popupContainer'>
@@ -19,6 +22,7 @@ function Popup({box, subAct}){
         {box === 'myAuth' && <PopupAuth subAct={subAct}/> }
         {box === 'myPrint' && <PopupPrint />}
         {box === 'myTemplates' && <PopupTemplate />}
+        {box === 'boxAI' && <PopupAI  subAct={subAct} />}
       </div>
   )
 }

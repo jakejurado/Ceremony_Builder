@@ -298,6 +298,8 @@ function App() {
         return {box: 'myTemplates', subAct}
       case 'myPrint':
         return {box: 'myPrint', subAct}
+      case 'boxAI':
+        return {box: 'boxAI', subAct}
       default:
         return {box: null, subAct: null}
     }

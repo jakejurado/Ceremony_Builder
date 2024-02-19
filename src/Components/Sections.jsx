@@ -274,10 +274,16 @@ function Sections(props) {
       </div>
       <div className="secButtons">
         <SectionsButtonAI
-          key={`addButton-${props.varName}-${props.id}`}
+          proper = {props}
+          key={`aiButton-${props.varName}-${props.id}`}
           belowSection={props.varName}
           index={props.id}
-          dispatch={props.dispatch}
+          varName={props.varName}
+          cardIndex={props.cardIndex}
+          cardContent={props.cardContent}
+          saveContent={saveContent}
+          handleCardDisplay={props.handleCardDisplay}
+          cardDisplay={props.cardDisplay}
         />
         <div className="removeButton">
           <img

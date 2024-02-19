@@ -1,21 +1,32 @@
 import React, { useContext } from "react";
 import aiBtn from "../../public/assets/robot_2_.svg";
+import { GlobalContext } from "./App";
 
   //a simple plus button to add a section
-function SectionsButtonAI(props) {
+function SectionsButtonAI({index, varName, cardIndex, cardContent, props}) {
+  const { popupDispatch } = useContext(GlobalContext);
+
   //when add button is clicked, a dispatch is sent to add the selector box to the page
   function handleClick(e) {
-    const [title, index] = e.target.parentNode.classList[1].split("-");
-    props.dispatch({ type: "selectSEC", payload: { title, index } });
+    const dataVarname = e.target.parentNode.dataset.varname;
+    const dataIndex = e.target.parentNode.dataset.index;
+    const dataCardIndex = e.target.parentNode.dataset.cardindex;
+    const dataCardContent = e.target.parentNode.dataset.cardcontent;
+    popupDispatch({ type: "boxAI", subAct: { dataVarname, dataIndex, dataCardContent, dataCardIndex } });
   }
+
 
   return (
     <div
-      className={`addSectionButton ${props.belowSection}-${props.index} ${props.belowSection}-${props.index} aiButton  `}
+      data-index={index}
+      data-varname={varName}
+      data-cardindex={cardIndex}
+      data-cardcontent={cardContent}
+      className={`aiSectionButton aiButton`}
     >
       <img
         src={aiBtn}
-        alt="add section button"
+        alt="ai section button"
         onClick={handleClick}
         onKeyDown={handleClick}
       />
