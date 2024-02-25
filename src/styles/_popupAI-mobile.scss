@@ -35,6 +35,7 @@
     line-height: 1;
     font-size: 1.25em;
   }
+  
 
   #aiOptions{
     flex-direction: column;
@@ -55,10 +56,38 @@
   }
 
   #aiButtons{
+    flex-direction: column;
+    align-items: center;
     button{
+      width: 50%;
+      height: 3em;
       color: v.$blackMain;
       font-size: 2.50em; 
       line-height: 1.5;     
+    }
+  }
+}
+
+
+
+
+// POPUP RESULTS SCREEN
+#aiSwapContent{
+  display: flex;
+  justify-content:flex-end;
+  padding-right: 2em;
+  width: 100%;
+  :hover{
+    cursor: pointer;
+  }
+  button{
+    font-size: .75em;
+    font-style: italic;
+    color: grey;
+    border: none;
+    background-color: white;
+    :hover{
+      cursor: pointer;
     }
   }
 }
