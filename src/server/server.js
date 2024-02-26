@@ -7,19 +7,18 @@ const bodyParser = require('body-parser');
 const { rateLimit } = require('express-rate-limit')
 const helmet = require("helmet");
 const { getSecrets } = require("./envSecrets/envfiles");
-
 require("dotenv").config();
 
-
 async function startServer(){
-  // const secrets = await getSecrets();
-  // process.env.MYURL = secrets.MYURL;
-  // process.env.JWT_SECRET = secrets.JWT_SECRET;
-  // process.env.SECRET_KEY = secrets.SECRET_KEY;
-  // process.env.SMTP_HOST = secrets.SMTP_HOST;
-  // process.env.SMTP_PORT = secrets.SMTP_PORT;
-  // process.env.SMTP_USER = secrets.SMTP_USER;
-  // process.env.SMTP_PASSWORD = secrets.SMTP_PASSWORD;
+  const secrets = await getSecrets();
+  process.env.MYURL = secrets.MYURL;
+  process.env.JWT_SECRET = secrets.JWT_SECRET;
+  process.env.SECRET_KEY = secrets.SECRET_KEY;
+  process.env.SMTP_HOST = secrets.SMTP_HOST;
+  process.env.SMTP_PORT = secrets.SMTP_PORT;
+  process.env.SMTP_USER = secrets.SMTP_USER;
+  process.env.SMTP_PASSWORD = secrets.SMTP_PASSWORD;
+  process.env.OPENAI_KEY = secrets.OPENAI_KEY;
   
 
   const limiter = rateLimit({
@@ -31,7 +30,8 @@ async function startServer(){
   })
   const sectionRouter = require("./routs/sections");
   const userRouter = require("./routs/user");
-  const templateRouter = require("./routs/templates")
+  const templateRouter = require("./routs/templates");
+  const aiRouter = require("./routs/ai");
 
   //use helmet
   app.use(helmet());
@@ -57,12 +57,13 @@ async function startServer(){
   app.use("/sections", sectionRouter);
   app.use("/user", userRouter);
   app.use("/templates", templateRouter);
+  app.use("/ai", aiRouter);
 
     //serve the original page
   app.get("/", (req, res) => {
     return res
       .status(200)
-      .res.sendFile(path.resolve(__dirname, "../dist/index.html"));
+      .sendFile(path.resolve(__dirname, "../dist/index.html"));
   });
 
     // catch all stray endpoints that don't match and send 404 status
@@ -73,7 +74,7 @@ async function startServer(){
     const defaultErr = {
       log: "Express error handler caught unknown middleware error",
       status: 400,
-      message: { err: "An error occurred"},
+      message: { err: "An error occurredd " + err},
     };
     const errorObj = Object.assign({}, defaultErr, err);
     console.log(errorObj.log);

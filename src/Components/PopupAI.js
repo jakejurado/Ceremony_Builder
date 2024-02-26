@@ -3,30 +3,28 @@ import { GlobalContext } from './App'
 import PopupAISubmitScreen from './PopupAISubmitScreen'
 import PopupAIResultsScreen from './PopupAIResultsScreen'
 import PopupAILoading from './PopupAILoading'
-
+import { fetchCall } from '../functions/fetches/api'
 
 function PopupAI({ subAct }) {
   const { popupDispatch, dispatch} = useContext(GlobalContext)
   const { dataVarname, dataIndex, dataCardContent, dataCardIndex } = subAct
-
   const [prompt, setPrompt] = useState('');
-  const [results, setResuts] = useState('who gives???');
+  const [results, setResuts] = useState();
   const [loading, setLoading] = useState(false);
   const [hasSubmitted, setHasSubmitted] = useState(false);
 
-  
   function submitPromt(input){
     setPrompt(input);
     setHasSubmitted(true);
     setLoading(true);
-    setTimeout(()=>{setLoading(false)}, 1000)
-    //send prompt to api
+    fetchPrompt(input);
   }
 
-  function fetchPrompt(){
-    //send request.
-    //grab response and update results.
-    //set loading to false
+  async function fetchPrompt(input){
+    const body = {input};
+    const data = await fetchCall.post('writer', body);
+    setResults(data)
+    setLoading(false)
   }
 
   function saveAIResults(){

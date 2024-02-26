@@ -42,7 +42,8 @@ class BaseAPI extends Cache{
       grabSec: 'sections/grab',
       templates: 'templates/userTemplate',
       allTemplates: 'templates/all',
-      access: '/user/access'
+      access: '/user/access',
+      writer: 'ai/grab'
     }
   }
 
@@ -89,6 +90,7 @@ class BaseAPI extends Cache{
     };
     try{
       const res = await fetch(url, options)
+      console.log({res})
       const data = await res.json();
       return data
     } catch(err){

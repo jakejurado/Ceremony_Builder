@@ -8,7 +8,6 @@ function PopupAISubmitScreen({cardContent, submitPromt, cancelPopup}){
   const handleSubmit = (event) => {
     event.preventDefault(); // Prevents the default form submit action
     const prompt = buildPrompt(cardContent, length, tone);
-    console.log(prompt)
     submitPromt(prompt)
   };
 
