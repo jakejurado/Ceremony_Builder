@@ -62,7 +62,7 @@ async function startServer(){
   app.get("/", (req, res) => {
     return res
       .status(200)
-      .res.sendFile(path.resolve(__dirname, "../dist/index.html"));
+      sendFile(path.resolve(__dirname, "../dist/index.html"));
   });
 
     // catch all stray endpoints that don't match and send 404 status
