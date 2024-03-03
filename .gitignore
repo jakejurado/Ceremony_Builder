@@ -1,5 +1,6 @@
 node_modules
 .env
+.env.local
 dist/
 package-lock.json
 public/.DS_Store
