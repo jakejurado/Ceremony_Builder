@@ -45,6 +45,7 @@
     "jsonwebtoken": "^9.0.0",
     "mongoose": "^6.5.2",
     "nodemailer": "^6.9.3",
+    "openai": "^4.28.0",
     "pg": "^8.8.0",
     "print-js": "^1.6.0",
     "raw-body": "^2.5.2",

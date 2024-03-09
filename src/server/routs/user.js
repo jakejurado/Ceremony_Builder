@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const userController = require("../controllers/userController");
-// const analyticsController = require("../controllers/analyticsController");
+const analyticsController = require("../controllers/analyticsController");
 
   //creates a user to the database
 router.post("/signup", userController.createUser, (req, res) => {
