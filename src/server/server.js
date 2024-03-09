@@ -7,9 +7,7 @@ const bodyParser = require('body-parser');
 const { rateLimit } = require('express-rate-limit')
 const helmet = require("helmet");
 const { getSecrets } = require("./envSecrets/envfiles");
-
 require("dotenv").config();
-
 
 async function startServer(){
   const secrets = await getSecrets();
@@ -31,7 +29,7 @@ async function startServer(){
   })
   const sectionRouter = require("./routs/sections");
   const userRouter = require("./routs/user");
-  const templateRouter = require("./routs/templates")
+  const templateRouter = require("./routs/templates");
 
   //use helmet
   app.use(helmet());
@@ -62,7 +60,7 @@ async function startServer(){
   app.get("/", (req, res) => {
     return res
       .status(200)
-      sendFile(path.resolve(__dirname, "../dist/index.html"));
+      .sendFile(path.resolve(__dirname, "../dist/index.html"));
   });
 
     // catch all stray endpoints that don't match and send 404 status
@@ -73,7 +71,7 @@ async function startServer(){
     const defaultErr = {
       log: "Express error handler caught unknown middleware error",
       status: 400,
-      message: { err: "An error occurred"},
+      message: { err: "An error occurredd " + err},
     };
     const errorObj = Object.assign({}, defaultErr, err);
     console.log(errorObj.log);

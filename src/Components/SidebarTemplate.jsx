@@ -7,10 +7,10 @@ import plus from "../../public/assets/plus-circle.svg";
 
   //chooses which template to display
 function SideBarTemplate() {
-  const { templates, dispatch, popupDispatch, theSidebar, isMobile} = useContext(GlobalContext);
+  const { templates, dispatch, popupDispatch, isMobile, closeSidebar} = useContext(GlobalContext);
 
   function handlePlusClick(){
-    if(isMobile) theSidebar.deactivate();
+    if(isMobile) closeSidebar();
     dispatch({ type: "addTEMPLATE", payload: {key: 'myTemplate', value: {order:[]}}});
   }
 
