@@ -36,12 +36,12 @@ async function startServer(){
   // Apply the rate limiting middleware to all requests
   app.use(limiter)
   // Parse application/x-www-form-urlencoded
-  app.use(bodyParser.urlencoded({ extended: false }));
+  app.use(bodyParser.urlencoded({ extended: true }));
   // Parse application/json
   app.use(bodyParser.json({ limit: '500kb' }));
     //express
   app.use(express.json());
-  app.use(express.urlencoded({ extended: true }));
+  app.use(express.urlencoded({ extended: false }));
   app.use(express.static("dist"));
     //cookies
   app.use(cookieParser());

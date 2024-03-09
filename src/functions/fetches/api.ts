@@ -51,7 +51,7 @@ class BaseAPI extends Cache{
     Object.entries(obj).forEach((set, index) => {
       const [key, value] = set;
       const sym = index === 0 ? '/?' : '&';
-      url += `${sym}${key}=${value}`;
+      url += `${sym}${key}=${encodeURIComponent(value)}`;
     });
     return url;
   }
@@ -75,7 +75,7 @@ class BaseAPI extends Cache{
       if(params && params.varname) this.addToCache(params.varname, data)
       return data
     } catch(err){
-      console.log('error in API')
+      console.error('error in API')
       return false
     }
   } 
