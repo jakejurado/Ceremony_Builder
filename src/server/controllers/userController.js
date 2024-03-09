@@ -21,22 +21,27 @@ userController.createUser = async ( req, res, next) => {
     });
   }
   try {
-      //hash password
+    // Hash password
     const hashedPassword = await bcrypt.hash(password, saltRounds);
-      //signup user
-    const sql_userInsert =  "INSERT INTO users (user_email, user_password) VALUES ($1, $2)";
-    await db.query(sql_userInsert, [email, hashedPassword]);
-    res.locals.userCreated = { authenticated: true };
+    // Signup user
+    const sql_userInsert = "INSERT INTO users (user_email, user_password) VALUES ($1, $2) RETURNING _id";
+    const result = await db.query(sql_userInsert, [email, hashedPassword]);
+
+    if (result.rows.length === 0) {
+      throw new Error("Failed to insert user.");
+    }
+    const insertedUserId = result.rows[0]._id; 
+    res.locals.userCreated = { authenticated: true, userId: insertedUserId }; 
     return next();
 
   } catch (err) {
     return next({
       log: "Express Error handler caught in createUser err",
       status: 500,
-      message: { err: "user already exists" },
+      message: { err: err.message },
     });
   }
-}
+};
 
   //creates a user in the database
 userController.deleteUser = async (req, res, next) => {
@@ -157,7 +162,7 @@ userController.authenticateUser = async (req, res, next) => {
 
     //password
     if(passwordsMatch){
-      res.locals.userAuthenticated = { authenticated: true, userId };;
+      res.locals.userAuthenticated = { authenticated: true, userId };
       return next();
     } else{
       return next({
