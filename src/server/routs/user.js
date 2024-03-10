@@ -4,7 +4,7 @@ const userController = require("../controllers/userController");
 const analyticsController = require("../controllers/analyticsController");
 
   //creates a user to the database
-router.post("/signup", userController.createUser, (req, res) => {
+router.post("/signup", userController.createUser, analyticsController.recordNewUser, (req, res) => {
   return res.status(200).send(res.locals.userCreated);
 });
 
@@ -13,6 +13,7 @@ router.delete("/signup",
   userController.authenticateUser,
   userController.deleteUser, 
   userController.removeToken,
+  analyticsController.recordUserDelete,
   (req, res) => {
     return res.status(200).send(res.locals.userDeleted);
   }
@@ -27,7 +28,7 @@ router.put("/signup",
 });
 
   //authenticates a user for login
-router.get("/login", userController.authenticateUser, userController.createToken,  (req, res) => {
+router.get("/login", userController.authenticateUser, userController.createToken, analyticsController.recordUserSignin,  (req, res) => {
   return res.status(200).send(res.locals.userAuthenticated);
 })
 
