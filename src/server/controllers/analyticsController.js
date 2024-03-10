@@ -45,7 +45,8 @@ analyticsController.recordTemplateDelete = async (req, res, next) => {
   try{
     db.query(query, [type, currUser, action, teplateId]);
     next();
-  } catch (error){
+  } catch(error){
+    const errorQuery = `INSERT INTO errorlog (controller, message) VALUES ($1, $2)`
     db.query(errorQuery, ['recordTemplateDelete', error.message]);
     next()
   }
@@ -60,7 +61,8 @@ analyticsController.recordTemplateUpdate = async (req, res, next) => {
   try{
     db.query(query, [type, currUser, action, templateId]);
     next();
-  } catch (error){
+  } catch(error){
+    const errorQuery = `INSERT INTO errorlog (controller, message) VALUES ($1, $2)`
     db.query(errorQuery, ['recordTemplateUpdate', error.message]);
     next()
   }
@@ -82,7 +84,7 @@ analyticsController.recordNewUser = async (req, res, next) => {
     const errorQuery = `INSERT INTO errorlog (controller, message) VALUES ($1, $2)`;
     await db.query(errorQuery, ['recordNewUser', error.message]);
     next();
-  } 
+  }
 };
 
 analyticsController.recordUserSignin = async (req, res, next) => {
@@ -111,9 +113,49 @@ analyticsController.recordUserDelete = async (req, res, next) => {
     db.query(query, [type, userId, action, email]);
     next();
   } catch(error){
-    const errorQuery = `INSERT INTO errorlog (controller, message) VALUES ($1, $2)`;
+    const errorQuery = `INSERT INTO errorlog (controller, message) VALUES ($1, $2)`
     db.query(errorQuery, ['recordUserDelete', error.message]);
     next()
+  }
+}
+
+analyticsController.recordSignout = async (req, res, next) => {
+  const currUser = res.locals.myData.userId | 500
+  const type = 'user'   
+  const action = 'signout'
+  const query = 'INSERT INTO analytics (type, user_id, action) VALUES ($1, $2, $3)';
+  try{
+    db.query(query, [type, currUser, action])
+    next();
+  } catch(error) {
+    const errorQuery = `INSERT INTO errorlog (controller, message) VALUES ($1, $2)`
+    db.query(errorQuery, ['recordUserSignout', error.message]);
+    next()
+  }
+
+}
+
+analyticsController.recordOpenAi = async (req, res, next) => {
+  const {user, templateId} = res.locals.myData
+  const type = 'aiWriter'
+  const action = 'write'
+  const checkedUser = user ?? 500;
+  const name = res.locals.aiResults.ok.message.content
+
+  try{
+    const query = 'INSERT INTO analytics (type, user_id, action, name) VALUES ($1, $2, $3, $4)';
+    db.query(query, [type, checkedUser, action, name]);
+    next();
+  } catch(error){
+    try{
+      const errorQuery = `INSERT INTO errorlog (controller, message) VALUES ($1, $2)`
+      db.query(errorQuery, ['recordOpenAi', error.message]);
+      next();
+    } catch(error){
+      console.log('second error', error.message)
+      next();
+    }
+    next();
   }
 }
 

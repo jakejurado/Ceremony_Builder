@@ -1,7 +1,8 @@
 import React, { useContext, useState, useRef, useReducer } from "react";
 // import SectionsWordCards from "./SectionsWordCards";
 import SectionsWordCards from "./SectionsWordCards";
-import SectionsAddButton from "./SectionsAddButton";
+import SectionsButtonAdd from "./SectionsButtonAdd";
+import SectionsButtonAI from "./SectionsButtonAI";
 import { GlobalContext } from "./App";
 import { Draggable } from "react-beautiful-dnd";
 import leftArrow from "../../public/assets/arrowLft.png";
@@ -272,6 +273,18 @@ function Sections(props) {
         </div>
       </div>
       <div className="secButtons">
+        <SectionsButtonAI
+          proper = {props}
+          key={`aiButton-${props.varName}-${props.id}`}
+          belowSection={props.varName}
+          index={props.id}
+          varName={props.varName}
+          cardIndex={props.cardIndex}
+          cardContent={props.cardContent}
+          saveContent={saveContent}
+          handleCardDisplay={props.handleCardDisplay}
+          cardDisplay={props.cardDisplay}
+        />
         <div className="removeButton">
           <img
             src={plus}
@@ -281,7 +294,7 @@ function Sections(props) {
             onKeyDown={handleXbutton}
           />
         </div>
-        <SectionsAddButton
+        <SectionsButtonAdd
           key={`addButton-${props.varName}-${props.id}`}
           belowSection={props.varName}
           index={props.id}
