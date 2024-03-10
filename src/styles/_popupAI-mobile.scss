@@ -1,0 +1,97 @@
+@use "./variables" as v;
+
+@media (max-width: 768px){
+
+    
+  /*** AIBOX POPUP *****/
+  //white background for behind the print box
+  #aiCover{
+    flex-wrap: nowrap;
+    width: 100vw;
+    height: auto;
+    padding-top: 0;
+    margin-top: 0;
+  }
+
+  #aiInnerBox {
+    padding-top: 0;
+    margin-top: 0;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+  }
+
+
+  /*** AI SUBMIT SCREEN ***/
+  #aiTextBoxDiv{
+    font-size: 2em;
+  }
+
+  #aiInstructions{
+    width: 100%;
+    text-align: center;
+    margin: 0 1em 1em 1em;
+    padding: 0;
+    line-height: 1;
+    font-size: 1.25em;
+  }
+  
+
+  #aiOptions{
+    flex-direction: column;
+  }
+
+  .aiOption{
+
+    h3{
+      font-size: 2.5em;
+    }
+    div{
+      font-size: 2em;
+    }
+  }
+
+  .hidden-radio {
+    display: none;
+  }
+
+  #aiButtons{
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+    margin-top: 8em;
+    button{
+      width: auto;
+      height: 2em;
+      color: v.$blackMain;
+      font-size: 2.50em; 
+      line-height: 1.5;     
+    }
+  }
+}
+
+
+
+
+// POPUP RESULTS SCREEN
+#aiSwapContent{
+  display: flex;
+  justify-content:flex-end;
+  padding-right: 2em;
+  width: 100%;
+  :hover{
+    cursor: pointer;
+  }
+  button{
+    font-size: .75em;
+    font-style: italic;
+    color: grey;
+    border: none;
+    background-color: white;
+    :hover{
+      cursor: pointer;
+    }
+  }
+}
+
+

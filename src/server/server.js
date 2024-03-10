@@ -18,6 +18,7 @@ async function startServer(){
   process.env.SMTP_PORT = secrets.SMTP_PORT;
   process.env.SMTP_USER = secrets.SMTP_USER;
   process.env.SMTP_PASSWORD = secrets.SMTP_PASSWORD;
+  process.env.OPENAI_KEY = secrets.OPENAI_KEY;
   
 
   const limiter = rateLimit({
@@ -30,6 +31,7 @@ async function startServer(){
   const sectionRouter = require("./routs/sections");
   const userRouter = require("./routs/user");
   const templateRouter = require("./routs/templates");
+  const aiRouter = require("./routs/ai");
 
   //use helmet
   app.use(helmet());
@@ -55,6 +57,7 @@ async function startServer(){
   app.use("/sections", sectionRouter);
   app.use("/user", userRouter);
   app.use("/templates", templateRouter);
+  app.use("/ai", aiRouter);
 
     //serve the original page
   app.get("/", (req, res) => {

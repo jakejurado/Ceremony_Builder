@@ -42,7 +42,8 @@ class BaseAPI extends Cache{
       grabSec: 'sections/grab',
       templates: 'templates/userTemplate',
       allTemplates: 'templates/all',
-      access: '/user/access'
+      access: '/user/access',
+      writer: 'ai/grab'
     }
   }
 
