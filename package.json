@@ -6,7 +6,7 @@
   "scripts": {
     "start:client": "webpack-dev-server --mode development --hot --open --port 8080",
     "start:server": "nodemon ./src/server/server.js",
-    "start": "webpack-dev-server --mode development --hot --open",
+    "start": "npm-run-all -p start:client start:server",
     "go": "npm-run-all -p start n",
     "build": "webpack --mode production",
     "test": "jest",
