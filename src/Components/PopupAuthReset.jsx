@@ -19,7 +19,7 @@ function PopupAuthReset(){
     //fetch request to reset password
   async function handleSubmitClick(data){
     const userId = currUser
-    const email = data.email;
+    const email = data.email.toLowerCase();
     const password = data.currentPassword;
     const newPassword = data.password;
     const response = await fetchCall.put('reset', { email, password, newPassword, userId});

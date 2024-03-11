@@ -17,7 +17,7 @@ function PopupAuthLogin() {
 
     //fetch request to login.
   async function handleSubmitClick(result){
-    const email = result.email
+    const email = result.email.toLowerCase();
     const password = result.password
     const response = await fetchCall.get('login', { email, password });
     if (response.authenticated) {

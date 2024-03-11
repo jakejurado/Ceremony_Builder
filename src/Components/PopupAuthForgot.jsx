@@ -16,7 +16,7 @@ function PopupAuthForgot(){
 
     //fetch to start the email reset process
   async function handleSubmitClick(data){
-    const email = data.email
+    const email = data.email.toLowerCase();
     const response = await fetchCall.put('forgot', { email });
     if (response.isPasswordReset) {
       popupDispatch({ type: 'myAuth', subAct: 'login' }); 
