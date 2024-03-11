@@ -11,17 +11,17 @@ require("dotenv").config();
 
 async function startServer(){
   const secrets = await getSecrets();
-  process.env.MYURL = secrets.MYURL;
-  process.env.JWT_SECRET = secrets.JWT_SECRET;
-  process.env.SECRET_KEY = secrets.SECRET_KEY;
-  process.env.SMTP_HOST = secrets.SMTP_HOST;
-  process.env.SMTP_PORT = secrets.SMTP_PORT;
-  process.env.SMTP_USER = secrets.SMTP_USER;
-  process.env.SMTP_PASSWORD = secrets.SMTP_PASSWORD;
-  process.env.OPENAI_KEY = secrets.OPENAI_KEY;
+  // process.env.MYURL = secrets.MYURL;
+  // process.env.JWT_SECRET = secrets.JWT_SECRET;
+  // process.env.SECRET_KEY = secrets.SECRET_KEY;
+  // process.env.SMTP_HOST = secrets.SMTP_HOST;
+  // process.env.SMTP_PORT = secrets.SMTP_PORT;
+  // process.env.SMTP_USER = secrets.SMTP_USER;
+  // process.env.SMTP_PASSWORD = secrets.SMTP_PASSWORD;
+  // process.env.OPENAI_KEY = secrets.OPENAI_KEY;
   
 
-  app.set('trust proxy', true);
+  app.set('trust proxy', false);
 
   const limiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes

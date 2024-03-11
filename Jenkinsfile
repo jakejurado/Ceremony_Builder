@@ -8,11 +8,5 @@ pipeline {
                 sh 'npm test'
             }
         }
-        stage('deploy') {
-            steps {
-                sh 'npm run build' 
-                sh 'railway up' 
-            }
-        }
     }
 }
