@@ -10,7 +10,7 @@ const { getSecrets } = require("./envSecrets/envfiles");
 require("dotenv").config();
 
 async function startServer(){
-  const secrets = await getSecrets();
+  // const secrets = await getSecrets();
   // process.env.MYURL = secrets.MYURL;
   // process.env.JWT_SECRET = secrets.JWT_SECRET;
   // process.env.SECRET_KEY = secrets.SECRET_KEY;
@@ -21,7 +21,7 @@ async function startServer(){
   // process.env.OPENAI_KEY = secrets.OPENAI_KEY;
   
 
-  app.set('trust proxy', false);
+  // app.set('trust proxy', false);
 
   const limiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
