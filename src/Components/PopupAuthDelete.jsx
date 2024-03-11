@@ -20,7 +20,7 @@ function PopupAuthDelete(){
 
     //fetch request to delete user
   async function handleSubmitClick(data){
-    const email = data.email;
+    const email = data.email.toLowerCase();
     const password = data.password;
     const userId = currUser
     const response = await fetchCall.delete('delete', { email, password, userId });
