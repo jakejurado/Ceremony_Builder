@@ -21,7 +21,7 @@ async function startServer(){
   process.env.OPENAI_KEY = secrets.OPENAI_KEY;
   
 
-  app.set('trust proxy', true);
+  app.set('trust proxy', false);
 
   const limiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
