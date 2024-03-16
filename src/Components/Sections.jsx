@@ -273,18 +273,6 @@ function Sections(props) {
         </div>
       </div>
       <div className="secButtons">
-        <SectionsButtonAI
-          proper = {props}
-          key={`aiButton-${props.varName}-${props.id}`}
-          belowSection={props.varName}
-          index={props.id}
-          varName={props.varName}
-          cardIndex={props.cardIndex}
-          cardContent={props.cardContent}
-          saveContent={saveContent}
-          handleCardDisplay={props.handleCardDisplay}
-          cardDisplay={props.cardDisplay}
-        />
         <div className="removeButton">
           <img
             src={plus}
@@ -299,6 +287,18 @@ function Sections(props) {
           belowSection={props.varName}
           index={props.id}
           dispatch={props.dispatch}
+        />
+        <SectionsButtonAI
+          proper = {props}
+          key={`aiButton-${props.varName}-${props.id}`}
+          belowSection={props.varName}
+          index={props.id}
+          varName={props.varName}
+          cardIndex={props.cardIndex}
+          cardContent={props.cardContent}
+          saveContent={saveContent}
+          handleCardDisplay={props.handleCardDisplay}
+          cardDisplay={props.cardDisplay}
         />
         <div className="upArrow">
           <img
