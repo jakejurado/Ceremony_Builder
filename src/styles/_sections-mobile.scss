@@ -74,7 +74,7 @@
     }
   }
 
-    //container for four buttons (add,delete,move)
+    //container for five buttons (add,delete,move)
     .secButtons {
       display: flex;
       flex-direction: row;
@@ -111,7 +111,7 @@
     }
       //remove button
     .removeButton {
-      order: 3;
+      order: 4;
       img{
         transform: rotate(45deg);
         &:hover{
@@ -119,6 +119,11 @@
         }
       }
     }
+
+    .aiButton{
+      order: 3;
+    }
+
       //up arrow button
     .upArrow{
       order: 1;
@@ -130,7 +135,7 @@
     }
       //down arrow button
     .dnArrow{
-      order: 4;
+      order: 5;
       img{
         transform: rotate(180deg);
         &:hover{
