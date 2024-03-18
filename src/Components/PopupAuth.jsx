@@ -5,15 +5,18 @@ import PopupAuthForgot from './PopupAuthForgot';
 import PopupAuthReset from './PopupAuthReset';
 import PopupAuthSignout from './PopupAuthSignout';
 import PopupAuthDelete from './PopupAuthDelete';
-import { GlobalContext} from "./App";
+import { useAuth } from '../hooks/useAuth';
+import { usePopup } from '../hooks/usePopup';
+import { useTemplates } from '../hooks/useTemplates';
 
   //holds the context for the login/signup state
-export const PopupContext = createContext(null);
+export const PopupAuthContext = createContext(null);
 
   //description: depending on currentPopup state, a specific popup (login, signup, reset password, delete account, signout) is displayed.  Those components functionality all come from this component.
 function PopupAuth({subAct}){
-  //CONTEXT: global state
-  const {setCurrUser, currUser, dispatch, popupDispatch} = useContext(GlobalContext)
+  const { setCurrUser, currUser } = useAuth();
+  const { dispatch } = useTemplates();
+  const { popupDispatch } = usePopup();
 
     //Loads popup corresponding with the subAct of popup state.
   let currentPopup;
@@ -32,7 +35,7 @@ function PopupAuth({subAct}){
       currentPopup = <PopupAuthSignout />;
       break;
     case 'delete':
-      currentPopup = <PopupAuthDelete />;
+      currentPopup = <PopupAuthDelete handleSignoffClick={handleSignoffClick} handleResetClick={handleResetClick} />;
       break
     case 'reset':
       currentPopup = <PopupAuthReset />;
@@ -42,7 +45,7 @@ function PopupAuth({subAct}){
     default:
       console.error('error')
   }
-   
+  
   const handleSignupTabClick = useCallback(() => {
     popupDispatch({type: 'myAuth', subAct: 'signup'})
   }, [])
@@ -72,11 +75,11 @@ function PopupAuth({subAct}){
   }, [])
 
   return(
-    <PopupContext.Provider value={{popupDispatch, dispatch, setCurrUser, currUser, handleLoginTabClick, handleSignupTabClick, handleForgotClick, handleVerifyClick, handleDeleteClick, handleResetClick, handleSignoffClick}}>
+    <PopupAuthContext.Provider value={{popupDispatch, dispatch, setCurrUser, currUser, handleLoginTabClick, handleSignupTabClick, handleForgotClick, handleVerifyClick, handleDeleteClick, handleResetClick, handleSignoffClick}}>
         <div className = 'acctPopup'>
           {currentPopup}
         </div>
-    </PopupContext.Provider>
+    </PopupAuthContext.Provider>
   )
 }
 

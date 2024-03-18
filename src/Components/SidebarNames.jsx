@@ -1,9 +1,9 @@
-import React, { useContext } from "react";
-import { GlobalContext } from "./App";
+import React from "react";
+import { useTemplates } from "../hooks/useTemplates";
 
   //sidebar section for adding user names to ceremony script.
 function SidebarNames() {
-  const { names, setNames } = useContext(GlobalContext);
+  const { names, setNames } = useTemplates();
 
   function onNameChange(e) {
     const name = e.target.value.toUpperCase();

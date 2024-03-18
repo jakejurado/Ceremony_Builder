@@ -1,18 +1,21 @@
 import React, {useContext, useState} from 'react';
 import { useForm } from "react-hook-form";
-import { PopupContext } from './PopupAuth';
+import { PopupAuthContext } from './PopupAuth';
 import { fetchCall } from '../functions/fetches/api';
+import { useAuth } from '../hooks/useAuth';
+import { useTemplates } from '../hooks/useTemplates';
+import {PopupContext} from '../context/PopupProvider';
 
   //Delete user popup box
-function PopupAuthDelete(){
+function PopupAuthDelete({}){
+  const {dispatch} = useTemplates();
+  const {currUser, setCurrUser} = useAuth();
+  const { closePopup } = PopupContext();
+
   const {
-    dispatch,
-    currUser,
-    setCurrUser,
-    popupDispatch,
     handleSignoffClick,
     handleResetClick,
-  } = useContext(PopupContext);
+  } = useContext(PopupAuthContext);
 
   const [submitFail, setSubmitFail] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -25,7 +28,7 @@ function PopupAuthDelete(){
     const userId = currUser
     const response = await fetchCall.delete('delete', { email, password, userId });
     if (response) {
-      popupDispatch({ type: null, act: null }); // removes popup
+      closePopup(); // removes popup
       setCurrUser(null); //removes current user
       dispatch({type: 'reset', payload: null})
     } else {

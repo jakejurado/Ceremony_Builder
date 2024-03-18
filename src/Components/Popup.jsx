@@ -1,22 +1,18 @@
 import React, {useContext, useCallback} from 'react'
-import { GlobalContext} from "./App";
 import PopupAuth from './PopupAuth';
 import PopupPrint from './PopupPrint';
 import PopupTemplate from './PopupTemplate';
 import PopupAI from './PopupAI';
+import {PopupContext} from '../context/PopupProvider';
 
   //Main Component that holds all popup notifications
 function Popup({box, subAct}){
-  const {popupDispatch} = useContext(GlobalContext)
+  const { closePopup } = PopupContext();
 
-    //connects with parent state that displays the popup and removes it.
-  const handleBackgroundClick = useCallback(() =>{
-    popupDispatch({type: null, box: null});
-  }, [])
   
   return(
       <div id='popupContainer'>
-        <div id='popupWhiteBackground' onClick={handleBackgroundClick}></div>
+        <div id='popupWhiteBackground' onClick={closePopup}></div>
         {box === 'myAuth' && <PopupAuth subAct={subAct}/> }
         {box === 'myPrint' && <PopupPrint />}
         {box === 'myTemplates' && <PopupTemplate />}

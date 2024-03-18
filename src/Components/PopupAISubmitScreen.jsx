@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 
 
-function PopupAISubmitScreen({cardContent, submitPromt, cancelPopup}){
+function PopupAISubmitScreen({cardContent, submitPromt, closePopup}){
   const [length, setLength] = useState('');
   const [tone, setTone] = useState('');
 
@@ -72,7 +72,7 @@ function PopupAISubmitScreen({cardContent, submitPromt, cancelPopup}){
 
       <div id='aiButtons'>
         <button onClick={handleSubmit}>Submit</button>
-        <button onClick={cancelPopup}>Cancel</button>
+        <button onClick={closePopup}>Cancel</button>
       </div>
 
     </>

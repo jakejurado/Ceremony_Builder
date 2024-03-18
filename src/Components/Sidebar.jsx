@@ -5,12 +5,14 @@ import SidebarPrint from "./SidebarPrint";
 import SidebarSave from "./SidebarSave";
 import SidebarAccount from "./SidebarAccount";
 import SidebarCopy from "./SidebarCopy";
-import { GlobalContext } from './App';
-import ButtonClose from "./ButtonClose"
+import ButtonClose from "./ButtonClose";
+import { useScreen } from "../hooks/useScreen.jsx";
+import { useSidebar } from "../hooks/useSidebar.jsx";
 
   //the sidebar of the application
 function Sidebar() {
-  const { sidebarRef, isMobile, closeSidebar, mySidebar } = useContext(GlobalContext)
+  const { sidebarRef, closeSidebar, mySidebar } = useSidebar();
+  const { isMobile } = useScreen();
 
     //hoover animations when hovering.
   function handleSidebarHover(){

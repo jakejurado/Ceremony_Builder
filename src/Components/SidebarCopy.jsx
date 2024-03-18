@@ -1,9 +1,9 @@
-import React, { useContext, useState } from "react";
-import { GlobalContext } from "./App";
+import React, { useState } from "react";
+import { useTemplates } from "../hooks/useTemplates";
 
   //sidebar copy to clipboard.
 function SidebarCopy() {
-  const { templates, templateTitle, names } = useContext(GlobalContext);
+  const { templates, templateTitle } = useTemplates();
   const [notifications, setNotifications] = useState(null);
 
   async function handleClick() {

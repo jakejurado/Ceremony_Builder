@@ -1,19 +1,21 @@
 import React, { useContext, useState } from 'react';
 import { useForm } from "react-hook-form";
-import { PopupContext } from './PopupAuth';
+import { PopupAuthContext } from './PopupAuth';
 import { fetchCall } from '../functions/fetches/api';
+import { usePopup } from '../hooks/usePopup';
+import { useAuth } from '../hooks/useAuth';
 
 //login popup.  This is a child component of PopupAuth.
 function PopupAuthLogin() {
+  const { popupDispatch } = usePopup();
+  const { setCurrUser } = useAuth();
   const { register, handleSubmit, formState: { errors } } = useForm();
   const [signinFail, setSigninFail] = useState(false);
 
   const {
     handleSignupTabClick, 
-    handleForgotClick,
-    setCurrUser, 
-    popupDispatch, 
-  } = useContext(PopupContext)
+    handleForgotClick, 
+  } = useContext(PopupAuthContext)
 
     //fetch request to login.
   async function handleSubmitClick(result){
@@ -65,6 +67,5 @@ function PopupAuthLogin() {
     </div>
   )
 }
-
 
 export default PopupAuthLogin

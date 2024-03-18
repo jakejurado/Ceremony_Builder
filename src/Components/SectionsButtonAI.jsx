@@ -1,10 +1,11 @@
 import React, { useContext } from "react";
 import aiBtn from "../../public/assets/robot_2_.svg";
 import { GlobalContext } from "./App";
+import { usePopup } from "../hooks/usePopup";
 
   //a simple plus button to add a section
 function SectionsButtonAI({index, varName, cardIndex, cardContent, props}) {
-  const { popupDispatch } = useContext(GlobalContext);
+  const { popupDispatch } = usePopup();
 
   //when add button is clicked, a dispatch is sent to add the selector box to the page
   function handleClick(e) {

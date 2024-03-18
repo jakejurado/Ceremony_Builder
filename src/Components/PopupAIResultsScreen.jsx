@@ -4,7 +4,7 @@ function PopupAIResultsScreen({
   aiResults, 
   saveAIResults, 
   cardContent,
-  cancelPopup,
+  closePopup,
   submitPromt,
   prompt,
 }){
@@ -44,7 +44,7 @@ function PopupAIResultsScreen({
 
       <div id='aiButtons'>
         <button onClick={saveAIResults}>Accept</button>
-        <button onClick={cancelPopup}>Reject</button>
+        <button onClick={closePopup}>Reject</button>
         <button onClick={handleTryAgain}>Try Again</button>
       </div>
     </>

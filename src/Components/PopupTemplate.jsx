@@ -1,13 +1,13 @@
 import React, {useContext, useState, useCallback} from 'react';
-import { GlobalContext } from './App';
 import pencil from '../../public/assets/pencil_grey.svg';
 import close from '../../public/assets/close.png';
 import check from '../../public/assets/check2.svg'
 import { nameValidator } from '../functions/template/nameTemplate';
+import { useTemplates } from '../hooks/useTemplates';
 
   //Template info popup.
 function PopupTemplate(){
-  const {templates, dispatch, templateTitle} = useContext(GlobalContext);
+  const {templates, dispatch, templateTitle} = useTemplates();
 
     //keeps track of which title is being edited.
   const [editableTitle, setEditableTitle] = useState(null);

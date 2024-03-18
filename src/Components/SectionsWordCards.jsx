@@ -5,10 +5,13 @@ import { sanatize } from "../functions/wordCards/sanatize";
 import { formatCards } from "../functions/wordCards/formatCards";
 // import { useSwipeable, onSwipedRight, onSwipedLeft } from 'react-swipeable';
 // import ButtonClose from "./ButtonClose"
+import { useTemplates } from "../hooks/useTemplates";
+import { useScreen } from "../hooks/useScreen";
 
   //Displays main content/scripts of each section
 function SectionsWordCards({cardContent, className, cardIndex, cardDivRef, saveContent, cardDisplay, handleCardDisplay}) {
-  const { names, isMobile } = useContext(GlobalContext);
+  const { names } = useTemplates();
+  const { isMobile } = useScreen();
 
   const [textValue, setTextValue] = useState(enterNames(names, cardContent));
 

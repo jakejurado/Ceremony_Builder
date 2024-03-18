@@ -1,9 +1,11 @@
-import React, { useContext, useState } from "react";
-import { GlobalContext } from "./App";
+import React, { useState } from "react";
+import { useTemplates } from "../hooks/useTemplates";
+import { useAuth } from "../hooks/useAuth";
 
   //saves the current templates to database
 function SidebarSave() {
-  const { dispatch, currUser } = useContext(GlobalContext);
+  const { dispatch } = useTemplates();
+  const { currUser } = useAuth();
   const [notifications, setNotifications] = useState(null);
   
     //directs user to login/signup if currUser is null; otherwise saves to database

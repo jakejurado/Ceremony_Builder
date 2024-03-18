@@ -1,15 +1,16 @@
 import React, {useContext, useState} from 'react';
 import { useForm } from "react-hook-form";
-import { PopupContext } from './PopupAuth';
+import { PopupAuthContext } from './PopupAuth';
 import { fetchCall } from '../functions/fetches/api';
+import { usePopup } from '../hooks/usePopup';
 
   //forgot password popup box
 function PopupAuthForgot(){
+  const { popupDispatch } = usePopup();
   const {
     handleLoginTabClick, 
     handleSignupTabClick, 
-    popupDispatch,
-  } = useContext(PopupContext);
+  } = useContext(PopupAuthContext);
 
   const [submitFail, setSubmitFail] = useState(false);
   const { register, handleSubmit, watch, formState: { errors } } = useForm();

@@ -1,14 +1,20 @@
 import React, {useContext} from 'react';
-import { PopupContext } from './PopupAuth'; 
+import { PopupAuthContext } from './PopupAuth'; 
+import { usePopup } from '../hooks/usePopup';
+import { useTemplates } from '../hooks/useTemplates';
+import { useAuth } from '../hooks/useAuth';
 
   //signout component
 function PopupAuthSignout(){
-  const {dispatch, popupDispatch, setCurrUser, handleDeleteClick, handleResetClick} = useContext(PopupContext)
+  const {handleDeleteClick, handleResetClick} = useContext(PopupAuthContext);
+  const {dispatch} = useTemplates();
+  const {closePopup} = usePopup();
+  const {setCurrUser} = useAuth();
   
     //remove user, remove popup, and reset templates
   function handleSubmitClick(){
     setCurrUser(null);
-    popupDispatch({box: null, subAct: null})
+    closePopup()
     dispatch({type: 'reset', payload: null})
   }
 

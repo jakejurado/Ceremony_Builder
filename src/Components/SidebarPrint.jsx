@@ -1,9 +1,9 @@
 import React, { useContext } from "react";
-import { GlobalContext } from "./App";
+import { usePopup } from "../hooks/usePopup";
 
   //sidebar print section.
 function SidebarPrint() {
-  const { popupDispatch } = useContext(GlobalContext);
+  const { popupDispatch } = usePopup();
 
   function handleClick() {
     popupDispatch({type: 'myPrint', subAct: null})

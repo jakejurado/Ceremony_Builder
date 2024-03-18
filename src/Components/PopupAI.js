@@ -1,13 +1,15 @@
 import React, { useContext, useState, useCallback } from 'react'
-import { GlobalContext } from './App'
 import PopupAISubmitScreen from './PopupAISubmitScreen'
 import PopupAIResultsScreen from './PopupAIResultsScreen'
 import PopupAILoading from './PopupAILoading'
 import PopupAIError from './PopupAIError'
 import { fetchCall } from '../functions/fetches/api'
+import { usePopup } from '../hooks/usePopup'
+import { useTemplates } from '../hooks/useTemplates'
 
 function PopupAI({ subAct }) {
-  const { popupDispatch, dispatch, user, metaData, templateTitle, } = useContext(GlobalContext)
+  const { popupDispatch } = usePopup()
+  const { templateTitle, dispatch, user, metaData } = useTemplates();
   const { dataVarname, dataIndex, dataCardContent, dataCardIndex } = subAct
   const [prompt, setPrompt] = useState('');
   const [results, setResults] = useState();
@@ -53,12 +55,9 @@ function PopupAI({ subAct }) {
       cardIndex: Number(dataCardIndex)
     }
     dispatch({type, payload})
-    handleBackgroundClick();
+    closePopup();
   }
 
-  const handleBackgroundClick = useCallback(() =>{
-    popupDispatch({type: null, box: null});
-  }, [])
 
   if(error){
     return (
@@ -77,7 +76,7 @@ function PopupAI({ subAct }) {
           <PopupAISubmitScreen 
             cardContent={dataCardContent}
             submitPromt={submitPromt}
-            cancelPopup={handleBackgroundClick}
+            closePopup={closePopup}
           />
         )}
         
@@ -88,7 +87,7 @@ function PopupAI({ subAct }) {
             aiResults={results}
             saveAIResults={saveAIResults}
             cardContent={dataCardContent}
-            cancelPopup={handleBackgroundClick}
+            closePopup={closePopup}
             submitPromt={submitPromt}
             prompt={prompt}
           /> 

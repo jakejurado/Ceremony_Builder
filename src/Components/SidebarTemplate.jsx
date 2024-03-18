@@ -1,13 +1,27 @@
-import React, { useContext } from "react";
+import React, { useEffect, useState } from "react";
 // import Select from "react-select";
-import { GlobalContext } from "./App";
 import SidebarTemplateMenu from "./SidebarTemplateMenu";
 import pencil from "../../public/assets/pencil_grey.svg";
 import plus from "../../public/assets/plus-circle.svg";
+import { useScreen } from "../hooks/useScreen";
+import { useTemplates } from "../hooks/useTemplates";
+import { useSidebar } from "../hooks/useSidebar";
 
   //chooses which template to display
 function SideBarTemplate() {
-  const { templates, dispatch, popupDispatch, isMobile, closeSidebar} = useContext(GlobalContext);
+  const { isMobile } = useScreen();
+  const { templates, dispatch, popupDispatch} = useTemplates();
+  const { closeSidebar} = useSidebar();
+  const [templateTitles, setTemplateTitles] = useState([]);
+
+  
+  useEffect(() => {
+    const allTitles = []
+    Object.keys(templates).forEach((template, i) => {
+      allTitles.push({ label: template, value: template });
+    });
+    setTemplateTitles(allTitles);
+  }, [templates])
 
   function handlePlusClick(){
     if(isMobile) closeSidebar();
@@ -18,10 +32,6 @@ function SideBarTemplate() {
     popupDispatch({type: 'myTemplates', subAct: null})
   }
 
-  const templateTitles = [];
-  Object.keys(templates).forEach((template, i) => {
-    templateTitles.push({ label: template, value: template });
-  });
 
   return (
     <div className="sidebarTemplate sidebarElements">

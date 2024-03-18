@@ -1,8 +1,10 @@
-import React, { useState, useContext, useEffect } from "react";
-import { GlobalContext } from "./App";
+import React, { useState, useContext, useEffect, useRef } from "react";
 import Header from "./Header";
 import Section from "./Sections";
 import SectionsSelector from "./SectionsSelector";
+import { useTemplates } from "../hooks/useTemplates";
+import { useSidebar } from "../hooks/useSidebar";
+import { useScreen } from "../hooks/useScreen";
 
 //packages
 import { Draggable, DragDropContext, Droppable } from "react-beautiful-dnd";
@@ -10,18 +12,11 @@ import { useSwipeable } from 'react-swipeable';
 
 //The main display for the site
 function AppMainDisplay() {
+  const { selectorTitles, currTemplate, dispatch, selectorSec} = useTemplates();
+  const { openSidebar, closeSidebar } = useSidebar();
+  const { isMobile } = useScreen();
 
-  //Global Context comes from App.jsx
-  const { 
-    selectorTitles, 
-    currTemplate, 
-    dispatch, 
-    selectorSec, 
-    domRef, 
-    isMobile,
-    openSidebar,
-    closeSidebar
-  } = useContext(GlobalContext);
+  const domRef = useRef();
 
     //State for mobile view and enlarging card
   const [ cardDisplay, setCardDisplay ] = useState()
@@ -50,7 +45,7 @@ function AppMainDisplay() {
       let [varTitle, pos] = order[i];
   
       //if the selector section is true and the index is at the position it should add the selector box
-      if (selectorSec.isVisible && i === selectorSec.position) {
+      if (selectorSec?.isVisible && i === selectorSec?.position) {
         loadSections.push(
           <SectionsSelector 
             key="selectorBox" 

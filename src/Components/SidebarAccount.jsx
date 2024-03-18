@@ -1,10 +1,16 @@
-import React, {useContext} from 'react';
+import React from 'react';
 // import close  from '../../public/assets/close.png';
-import { GlobalContext } from './App';
+import { usePopup } from '../hooks/usePopup';
+import { useAuth } from '../hooks/useAuth';
+import { useScreen } from '../hooks/useScreen';
+import { useTemplates } from '../hooks/useTemplates';
 
   //sidebar component that contains account info (login/logout/signup)
 function SidebarAccount(){
-  const {popupDispatch, dispatch, setCurrUser, currUser, isMobile} = useContext(GlobalContext);
+  const { popupDispatch } = usePopup();
+  const { currUser, setCurrUser } = useAuth();
+  const { isMobile } = useScreen();
+  const { dispatch } = useTemplates();
 
 
   function handleLoginClick(){
@@ -26,6 +32,7 @@ function SidebarAccount(){
 
   return(
     <div className='sidebar-loginlogout'>
+    
       {/* {isMobile && <div className='cButton'><img src={close} alt='close button image' /></div>} */}
       {!currUser && 
         <ul className='sidebar-login-ul'>

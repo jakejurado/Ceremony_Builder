@@ -1,10 +1,10 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Select from "react-select";
-import { GlobalContext } from "./App";
+import { useTemplates } from "../hooks/useTemplates";
 
   //Provides the template menu that is displayed in the sidebar f
 function SidebarTemplateMenu({ options }) {
-  const { setTemplateTitle, templateTitle, dispatch, templates } = useContext(GlobalContext);
+  const { setTemplateTitle, templateTitle, dispatch, templates } = useTemplates();
   const [selectedOption, setSelectedOption] = useState(options[0]);
 
     //finds the current template to display in the menu

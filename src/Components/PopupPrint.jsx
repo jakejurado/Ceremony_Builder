@@ -1,12 +1,11 @@
 import React, { useContext, useEffect, useRef } from "react";
-import { GlobalContext } from "./App";
 import { enterNames } from "../functions/sections/names";
 import printJs from "print-js";
+import { useTemplates } from "../hooks/useTemplates";
 
   //Print Popup Box
 function PopupPrint() {
-  const { templates, templateTitle, names } = useContext(GlobalContext);
-  const template = templates[ templateTitle]
+  const { names, currTemplate} = useTemplates();;
 
   const ele = useRef(null)
 
@@ -29,15 +28,15 @@ function PopupPrint() {
     <div id='popupPrintCover'>
       <div id='popupPrintBox'>
         <div id="popupPrint" ref={ele}>
-          {template.order.map((sec, index) => {
-            const words = template[sec[0]].script[sec[1]].split("<br/>");
+          {currTemplate.order.map((sec, index) => {
+            const words = currTemplate[sec[0]].script[sec[1]].split("<br/>");
             return (
               <div
                 className="printBox"
                 key={`popup${index}`}
                 style={{ textAlign: "center" }}
               >
-                <h3>{template[sec[0]].title}</h3>
+                <h3>{currTemplate[sec[0]].title}</h3>
 
                 {words.map((phrase, i) => (
                   <p className="printP" key={`phra se${i}`}>

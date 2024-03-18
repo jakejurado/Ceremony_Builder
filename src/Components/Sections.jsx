@@ -12,12 +12,13 @@ import plus from "../../public/assets/plus-circle.svg";
 import ButtonClose from "./ButtonClose"
 import { formatCards } from "../functions/wordCards/formatCards";
 import { useSwipeable } from 'react-swipeable';
+import { useTemplates } from "../hooks/useTemplates";
 
   //Section component holds all the sections
 function Sections(props) {
 
     //global context
-  const { names, dispatch, currTemplate } = useContext(GlobalContext);
+  const { names, dispatch, currTemplate } = useTemplates();
 
     //card dom ref
   const cardDivRef = useRef(null)
