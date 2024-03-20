@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { usePopup } from "../hooks/usePopup";
+import { usePopup } from "../../hooks/usePopup";
 
   //sidebar print section.
 function SidebarPrint() {

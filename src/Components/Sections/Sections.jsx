@@ -1,24 +1,22 @@
-import React, { useContext, useState, useRef, useReducer } from "react";
+import React, { useRef } from "react";
 // import SectionsWordCards from "./SectionsWordCards";
 import SectionsWordCards from "./SectionsWordCards";
 import SectionsButtonAdd from "./SectionsButtonAdd";
 import SectionsButtonAI from "./SectionsButtonAI";
-import { GlobalContext } from "./App";
-import { Draggable } from "react-beautiful-dnd";
-import leftArrow from "../../public/assets/arrowLft.png";
-import leftArrowF from "../../public/assets/arrowLftFull.png";
-import arrow from "../../public/assets/arrow-up-circle.svg";
-import plus from "../../public/assets/plus-circle.svg";
-import ButtonClose from "./ButtonClose"
-import { formatCards } from "../functions/wordCards/formatCards";
+import leftArrow from "../../../public/assets/arrowLft.png";
+import leftArrowF from "../../../public/assets/arrowLftFull.png";
+import arrow from "../../../public/assets/arrow-up-circle.svg";
+import plus from "../../../public/assets/plus-circle.svg";
+import ButtonClose from '../Utility/ButtonClose';
+import { formatCards } from "../../functions/wordCards/formatCards";
 import { useSwipeable } from 'react-swipeable';
-import { useTemplates } from "../hooks/useTemplates";
+import { useTemplates } from "../../hooks/useTemplates";
 
   //Section component holds all the sections
 function Sections(props) {
 
     //global context
-  const { names, dispatch, currTemplate } = useTemplates();
+  const { names, dispatch, currTemplate, templateTitle } = useTemplates();
 
     //card dom ref
   const cardDivRef = useRef(null)
@@ -48,7 +46,7 @@ function Sections(props) {
       //delayed dispatch in order to see section shrink
       props.dispatch({
         type: "deleteSEC",
-        payload: { index: parseInt(index) },
+        payload: { index: parseInt(index), templateTitle },
       });
     }, 500);
   }
@@ -78,8 +76,11 @@ function Sections(props) {
       payload: {
         sourceIndex,
         destIndex,
+        templateTitle,
+        currTemplate
       },
     });
+
   }
 
   //SECTION CARDS NAVIGATION
@@ -96,6 +97,7 @@ function Sections(props) {
     index: parseInt(e.target.dataset.index),
     cardIndex: parseInt(e.target.dataset.cardindex),
     numOfCards: parseInt(e.target.dataset.numofcards),
+    templateTitle
   };
 
     //update state.
@@ -118,7 +120,7 @@ function Sections(props) {
     const cardIndex = parseInt(cardDivRef.current.dataset.cardindex);
     
       //update state
-    dispatch({type: 'updateWords', payload: {textContent, sectionName, cardIndex}})
+    dispatch({type: 'updateWords', payload: {textContent, sectionName, cardIndex, templateTitle}})
   }
 
   //MOBILE 
@@ -171,11 +173,13 @@ function Sections(props) {
     
     const dom = findParentNode(event.target, 'section');
     const returnObj= {
+      varname: dom.dataset.varname,
       action: "updateSEC",
       add: dir === 'Right' ? -1 : 1,
       index: parseInt(dom.dataset.index),
       cardIndex: parseInt(dom.dataset.cardindex),
-      numOfCards: parseInt(dom.dataset.numofcards)
+      numOfCards: parseInt(dom.dataset.numofcards),
+      templateTitle
     }
 
     const i = parseInt(dom.dataset.index);

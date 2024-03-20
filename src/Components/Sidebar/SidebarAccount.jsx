@@ -1,16 +1,15 @@
 import React from 'react';
 // import close  from '../../public/assets/close.png';
-import { usePopup } from '../hooks/usePopup';
-import { useAuth } from '../hooks/useAuth';
-import { useScreen } from '../hooks/useScreen';
-import { useTemplates } from '../hooks/useTemplates';
+import { usePopup } from '../../hooks/usePopup';
+import { useAuth } from '../../hooks/useAuth';
+import { useScreen } from '../../hooks/useScreen';
+import { useTemplates } from '../../hooks/useTemplates';
 
   //sidebar component that contains account info (login/logout/signup)
 function SidebarAccount(){
   const { popupDispatch } = usePopup();
   const { currUser, setCurrUser } = useAuth();
-  const { isMobile } = useScreen();
-  const { dispatch } = useTemplates();
+  const { resetTemplates } = useTemplates();
 
 
   function handleLoginClick(){
@@ -27,7 +26,7 @@ function SidebarAccount(){
 
   function handleSignoutClick(){
     setCurrUser(null);
-    dispatch({type: 'reset', payload: null})
+    resetTemplates();
   }
 
   return(

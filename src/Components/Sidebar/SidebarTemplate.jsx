@@ -1,16 +1,19 @@
 import React, { useEffect, useState } from "react";
 // import Select from "react-select";
 import SidebarTemplateMenu from "./SidebarTemplateMenu";
-import pencil from "../../public/assets/pencil_grey.svg";
-import plus from "../../public/assets/plus-circle.svg";
-import { useScreen } from "../hooks/useScreen";
-import { useTemplates } from "../hooks/useTemplates";
-import { useSidebar } from "../hooks/useSidebar";
+import pencil from "../../../public/assets/pencil_grey.svg";
+import plus from "../../../public/assets/plus-circle.svg";
+import { determineTemplateTitle } from "../../functions/template/determineTemplateTitle";
+import { useScreen } from "../../hooks/useScreen";
+import { useTemplates } from "../../hooks/useTemplates";
+import { useSidebar } from "../../hooks/useSidebar";
+import { usePopup } from "../../hooks/usePopup";
 
   //chooses which template to display
 function SideBarTemplate() {
   const { isMobile } = useScreen();
-  const { templates, dispatch, popupDispatch} = useTemplates();
+  const { templates, setTemplateTitle, dispatch, setMetaData, metaData} = useTemplates();
+  const { popupDispatch } = usePopup();
   const { closeSidebar} = useSidebar();
   const [templateTitles, setTemplateTitles] = useState([]);
 
@@ -25,7 +28,18 @@ function SideBarTemplate() {
 
   function handlePlusClick(){
     if(isMobile) closeSidebar();
-    dispatch({ type: "addTEMPLATE", payload: {key: 'myTemplate', value: {order:[]}}});
+    
+    //update templates state
+    const key = determineTemplateTitle(templates)
+    dispatch({type: 'addTEMPLATE', payload: {newTitle: key}})
+
+    //update the curent template title
+    setTemplateTitle(key);
+    
+    //update metaData
+    const metaDataCopy = new Map(metaData);
+    metaDataCopy.set(key, {number: null, title: key})
+    setMetaData(metaDataCopy);
   }
 
   function handleEditClick(){

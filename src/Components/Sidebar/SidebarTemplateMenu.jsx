@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Select from "react-select";
-import { useTemplates } from "../hooks/useTemplates";
+import { useTemplates, setTemplateTitle } from "../../hooks/useTemplates";
 
   //Provides the template menu that is displayed in the sidebar f
 function SidebarTemplateMenu({ options }) {
@@ -21,10 +21,6 @@ function SidebarTemplateMenu({ options }) {
   function handleChange(selectedOption) {
     setSelectedOption(selectedOption);
     setTemplateTitle(selectedOption.label);
-    dispatch({
-      type: "loadTEMPLATE",
-      payload: { key: selectedOption.label, value: templates[selectedOption.label] }
-    });
   }
 
     //style for the template menu

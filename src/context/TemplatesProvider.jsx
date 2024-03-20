@@ -4,6 +4,7 @@ import { templatesReducer } from '../reducers/templatesReducer';
 import { allCategoryTitles } from '../server/files/selectorTitles';
 import { addContentsToCache } from '../functions/cache/cache';
 import { createMetaDataFromStartingTemplates } from '../functions/metaData/createMetaDataFromStartingTemplates';
+import { fetchTitles } from "../functions/fetches/selectorBoxFuncs";
 const allT = {wedding: templateWed, elope: templateElope }
 
 export const TemplatesContext = createContext(null);
@@ -21,10 +22,21 @@ export const TemplatesProvider = ({ children }) => {
   });
     //meta data for the templates to help sync with database.
   const [metaData, setMetaData] = useState(new Map());
+  const [selectorSec, setSelectorSec] = useState({ isVisible: false, position: undefined });
+
+  function resetTemplates(){
+    dispatch({type: 'reset', payload: allT})
+    setTemplateTitle('wedding');
+    createMetaDataFromStartingTemplates(allT, new Map(), setMetaData)
+  }
+
+  function removeSelectorSec(){
+    setSelectorSec({ isVisible: false, position: undefined });
+  }
 
 
   if(fetchedData){
-    dispatch({type: 'loadFetch', payload: fetchedData.payload})
+    dispatch({type: 'loadFetch', payload: {...fetchedData.payload, templateTitle }})
     setFetchedData(null);
   }
 
@@ -35,6 +47,9 @@ export const TemplatesProvider = ({ children }) => {
 
         //add metadata from the starting templates.
       createMetaDataFromStartingTemplates(templates, metaData, setMetaData)
+
+        //fetch selector titles
+      // if (Object.keys(selectorTitles).length === 0){}  
   }, [])
 
 
@@ -52,8 +67,13 @@ export const TemplatesProvider = ({ children }) => {
       metaData,
       setMetaData,
       currTemplate : templates[templateTitle],
+      allT,
+      selectorSec,
+      setSelectorSec,
+      resetTemplates,
+      removeSelectorSec,
     }
-    ), [templates, dispatch, templateTitle, fetchedData, selectorTitles, names, metaData]);
+    ), [templates, dispatch, templateTitle, fetchedData, selectorTitles, names, metaData, allT, selectorSec, removeSelectorSec]);
 
   return (
     <TemplatesContext.Provider value={providerValue} >

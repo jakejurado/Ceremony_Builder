@@ -1,12 +1,16 @@
-import React, { useContext } from "react";
-import plusBtn from "../../public/assets/plus-circle.svg";
+import React from "react";
+import plusBtn from "../../../public/assets/plus-circle.svg";
+import { addSelectorSection } from "../../functions/sections/selectorSec";
+import { useTemplates } from '../../hooks/useTemplates'
 
   //a simple plus button to add a section
 function SectionsButtonAdd(props) {
+  const { setSelectorSec } = useTemplates();
   //when add button is clicked, a dispatch is sent to add the selector box to the page
   function handleClick(e) {
     const [title, index] = e.target.parentNode.classList[1].split("-");
-    props.dispatch({ type: "selectSEC", payload: { title, index } });
+    const insertSelector = addSelectorSection(index);
+    setSelectorSec(insertSelector);
   }
 
   return (

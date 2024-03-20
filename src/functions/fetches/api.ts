@@ -93,7 +93,7 @@ class BaseAPI extends Cache{
       const data = await res.json();
       return data
     } catch(err){
-      console.log(err)
+      console.error(err)
     }
   } 
 
@@ -110,7 +110,7 @@ class BaseAPI extends Cache{
       const data = await res.json();
       return data
     } catch(err){
-      console.log('error in put', err)
+      console.error('error in put', err)
       return {isPasswordReset: false}
     }
   } 
@@ -126,7 +126,7 @@ class BaseAPI extends Cache{
       const res = await fetch(url, options)
       return res.ok
     } catch(err){
-      console.log('unable to delete', err)
+      console.error('unable to delete', err)
     }
   }
 }

@@ -2,26 +2,33 @@ import React from 'react';
 import {Order, TemplateSansSection, Template, TemplatesSansContent, TemplatesWithContent, Templates, Section} from '../../types/types';
 
   //adds a section to the current template
-function addSectionToTemplates(myTemplates: TemplateSansSection | Template, templateTitle: string, varname: string, index: number, sec: Section ): Templates{
-    //deep copy templates
-  const templates: TemplatesSansContent | TemplatesWithContent = JSON.parse(JSON.stringify(myTemplates));
-    //save reference within templates
-  const currTemplate: TemplateSansSection | Template = templates[templateTitle];
-  let order: Order = currTemplate.order;
-    //duplicate varname if needed (e.g. 'charge' -> 'charge~1')
-  const sectionVarname: string = createVarname(varname, currTemplate);
-    //add section to current template
-  currTemplate[sectionVarname] = sec;
-    //check if new section is already in the template and update meta data
-  const [_, suffix] = sectionVarname.split("~");
-  if(suffix){
-    currTemplate[sectionVarname].title = `${currTemplate[sectionVarname].title} ${suffix}`;
-    currTemplate[varname].duplicates = parseInt(suffix);
+function addSectionToTemplates(
+    myTemplates: TemplateSansSection | Template, 
+    templateTitle: string, 
+    varname: string, 
+    index: number, 
+    sec: Section 
+  ): Templates{
+
+      //deep copy templates
+    const templates: TemplatesSansContent | TemplatesWithContent = JSON.parse(JSON.stringify(myTemplates));
+      //save reference within templates
+    const currTemplate: TemplateSansSection | Template = templates[templateTitle];
+    let order: Order = currTemplate.order;
+      //duplicate varname if needed (e.g. 'charge' -> 'charge~1')
+    const sectionVarname: string = createVarname(varname, currTemplate);
+      //add section to current template
+    currTemplate[sectionVarname] = sec;
+      //check if new section is already in the template and update meta data
+    const [_, suffix] = sectionVarname.split("~");
+    if(suffix){
+      currTemplate[sectionVarname].title = `${currTemplate[sectionVarname].title} ${suffix}`;
+      currTemplate[varname].duplicates = parseInt(suffix);
+    }
+      //update the order
+    currTemplate.order = updateOrder(sectionVarname, index, order)
+    return templates;
   }
-    //update the order
-  currTemplate.order = updateOrder(sectionVarname, index, order)
-  return templates;
-}
 
   //adds the section to the order in the current template
 function updateOrder(varname: string, index: number, order: Order): Order{

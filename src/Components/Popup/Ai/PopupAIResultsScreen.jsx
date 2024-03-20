@@ -22,6 +22,7 @@ function PopupAIResultsScreen({
     if(!isResent){
       const newPrompt = "I'm sending this prompt again, because the first response was not good: " + prompt;
       submitPromt(newPrompt)
+      setIsResent(true);
     } else{
       submitPromt(prompt)
     }

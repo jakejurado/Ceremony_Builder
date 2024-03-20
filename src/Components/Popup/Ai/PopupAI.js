@@ -3,12 +3,12 @@ import PopupAISubmitScreen from './PopupAISubmitScreen'
 import PopupAIResultsScreen from './PopupAIResultsScreen'
 import PopupAILoading from './PopupAILoading'
 import PopupAIError from './PopupAIError'
-import { fetchCall } from '../functions/fetches/api'
-import { usePopup } from '../hooks/usePopup'
-import { useTemplates } from '../hooks/useTemplates'
+import { fetchCall } from '../../../functions/fetches/api'
+import { usePopup } from '../../../hooks/usePopup'
+import { useTemplates } from '../../../hooks/useTemplates'
 
 function PopupAI({ subAct }) {
-  const { popupDispatch } = usePopup()
+  const { closePopup } = usePopup()
   const { templateTitle, dispatch, user, metaData } = useTemplates();
   const { dataVarname, dataIndex, dataCardContent, dataCardIndex } = subAct
   const [prompt, setPrompt] = useState('');
@@ -52,7 +52,8 @@ function PopupAI({ subAct }) {
     const payload = {
       textContent: results,
       sectionName: dataVarname,
-      cardIndex: Number(dataCardIndex)
+      cardIndex: Number(dataCardIndex),
+      templateTitle,
     }
     dispatch({type, payload})
     closePopup();

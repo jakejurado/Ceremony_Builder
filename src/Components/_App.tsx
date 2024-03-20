@@ -4,7 +4,7 @@ import {PopupProvider} from '../context/PopupProvider';
 import { AuthProvider } from '../context/AuthProvider';
 import { SidebarProvider } from '../context/SidebarProvider';
 import { ScreenProvider } from '../context/ScreenProvider';
-import ErrorBoundary from './ErrorBoundary';
+import ErrorBoundary from './Utility/ErrorBoundary';
 import App from './App';
 
 

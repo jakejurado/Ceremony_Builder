@@ -1,16 +1,34 @@
 import React from "react";
-import backgroundImage from "../../public/assets/minimal9.png";
-
+import backgroundImage from "../../../public/assets/minimal9.png";
+import { useAuth } from '../../hooks/useAuth'
+import { fetchSectionFromDatabase } from "../../functions/fetches/fetchSectionFromDatabase";
+import { useTemplates } from "../../hooks/useTemplates";
   //selector box to add a section to the template
 function SectionsSelector({ data, index, dispatch }) {
+  const {currUser} = useAuth;
+  const {templateTitle, removeSelectorSec} = useTemplates();
 
     //grabs the name of the selected section and adds that section.
-  function handleClick(e) {
+  async function handleClick(e) {
     const [_, varname] = e.target.classList[0].split("-");
-    dispatch({
-      type: "addSEC",
-      payload: { varname, index: parseInt(index) },
-    });
+    // dispatch({
+    //   type: "addSEC",
+    //   payload: { varname, index: parseInt(index) },
+    // });
+
+    try{
+      const response = await fetchSectionFromDatabase(varname, parseInt(index), currUser)
+      
+      dispatch({
+        type: "loadFetch",
+        payload: { varname, sec: response, index: parseInt(index), templateTitle }
+      });
+      removeSelectorSec();
+
+    } catch(err){
+      console.error(err)
+      removeSelectorSec();
+    }
   }
 
   return (

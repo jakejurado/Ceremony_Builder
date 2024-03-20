@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect, useRef } from "react";
 import Header from "./Header";
-import Section from "./Sections";
-import SectionsSelector from "./SectionsSelector";
+import Section from "./Sections/Sections";
+import SectionsSelector from "./Sections/SectionsSelector";
 import { useTemplates } from "../hooks/useTemplates";
 import { useSidebar } from "../hooks/useSidebar";
 import { useScreen } from "../hooks/useScreen";
@@ -12,7 +12,7 @@ import { useSwipeable } from 'react-swipeable';
 
 //The main display for the site
 function AppMainDisplay() {
-  const { selectorTitles, currTemplate, dispatch, selectorSec} = useTemplates();
+  const { selectorTitles, templateTitle, currTemplate, dispatch, selectorSec} = useTemplates();
   const { openSidebar, closeSidebar } = useSidebar();
   const { isMobile } = useScreen();
 
@@ -129,13 +129,15 @@ function AppMainDisplay() {
 
   //DRAG DROP FUNCTIONALITY
   function dragEnd(e) {
-    toggleDragStartStop();
+    toggleDragStartStop(e);
 
     dispatch({
       type: "moveSEC",
       payload: {
         sourceIndex: e.source.index,
         destIndex: e.destination.index,
+        templateTitle,
+        currTemplate
       },
     });
   }

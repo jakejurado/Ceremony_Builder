@@ -1,5 +1,5 @@
 import React from 'react';
-import close from "../../public/assets/close.png"
+import close from "../../../public/assets/close.png"
 
 function ButtonClose({classNames, clickFunc}){
 

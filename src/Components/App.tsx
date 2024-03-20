@@ -4,8 +4,8 @@ import React, {
 
 //React Components
 import AppMainDisplay from "./AppMainDisplay";
-import Sidebar from "./Sidebar";
-import Popup from './Popup';
+import Sidebar from "./Sidebar/Sidebar";
+import Popup from './Popup/Popup';
 import { useAuth } from '../hooks/useAuth';
 import { useTemplates } from '../hooks/useTemplates';
 import { usePopup } from '../hooks/usePopup';

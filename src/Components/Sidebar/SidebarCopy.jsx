@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useTemplates } from "../hooks/useTemplates";
+import { useTemplates } from "../../hooks/useTemplates";
 
   //sidebar copy to clipboard.
 function SidebarCopy() {
@@ -21,7 +21,7 @@ function SidebarCopy() {
 }
 
   function copyToClipboard(){ 
-    const template = templates[ templateTitle]
+    const template = templates[templateTitle]
 
 
     const words = template.order.reduce((acc, cul) => {
@@ -29,7 +29,7 @@ function SidebarCopy() {
       const secTitle = sec.title
       const secWords = sec.script[cul[1]]
 
-      acc += acc + `\n${secTitle}\n${secWords}\n`
+      acc += `\n${secTitle}\n${secWords}\n`
       return acc
 
     }, '')

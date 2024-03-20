@@ -4,16 +4,16 @@ import { MetaData, Templates, TemplatesWithContent } from '../../types/types';
 
 async function saveTemplateToDatabase(currUser: number, metaData: MetaData, setMetaData: React.Dispatch<SetStateAction<MetaData>>, state: Templates){
   for(const [theTitle, set] of metaData){
-    const {number} = set;
+
     const userId: number = currUser;
     const userTemplate: string = JSON.stringify(state[theTitle]);
     const templateTitle: string = theTitle
-    const templateId: number = number
+    const templateId: number = set?.number
     const body = { userId, templateTitle, templateId, userTemplate };
       //enter template into database and return templateId
     try{
       if(templateId){
-        const res = await fetchCall.put('templates', body)
+        await fetchCall.put('templates', body)
           //update template in database
       } else {
         const data = await fetchCall.post('templates', body);
@@ -23,7 +23,7 @@ async function saveTemplateToDatabase(currUser: number, metaData: MetaData, setM
         setMetaData(new Map(newMetaData))
       }
     } catch(err){
-      console.log(err)
+      console.error(err)
     }
   }
 }

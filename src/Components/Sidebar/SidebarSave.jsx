@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import { useTemplates } from "../hooks/useTemplates";
-import { useAuth } from "../hooks/useAuth";
+import { useTemplates } from "../../hooks/useTemplates";
+import { useAuth } from "../../hooks/useAuth";
+import { saveTemplateToDatabase } from "../../functions/fetches/saveTemplateToDatabase";
 
   //saves the current templates to database
 function SidebarSave() {
-  const { dispatch } = useTemplates();
+  const { metaData, setMetaData, templates } = useTemplates();
   const { currUser } = useAuth();
   const [notifications, setNotifications] = useState(null);
   
@@ -13,8 +14,9 @@ function SidebarSave() {
     if(!currUser){
       setNotifications('login or signup to save template')
     } else {
+      saveTemplateToDatabase(currUser, metaData, setMetaData, templates);
       setNotifications('template has been saved')
-      dispatch({type: 'saveTemplateToDatabase', payload: {setState: setNotifications}} )
+      // dispatch({type: 'saveTemplateToDatabase', payload: {setState: setNotifications}} )
     }
     setTimeout(setNotifications, 9000);
   }

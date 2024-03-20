@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useRef } from "react";
-import { enterNames } from "../functions/sections/names";
+import { enterNames } from "../../../functions/sections/names";
 import printJs from "print-js";
-import { useTemplates } from "../hooks/useTemplates";
+import { useTemplates } from "../../../hooks/useTemplates";
 
   //Print Popup Box
 function PopupPrint() {

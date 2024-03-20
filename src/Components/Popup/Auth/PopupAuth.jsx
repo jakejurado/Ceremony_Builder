@@ -5,9 +5,9 @@ import PopupAuthForgot from './PopupAuthForgot';
 import PopupAuthReset from './PopupAuthReset';
 import PopupAuthSignout from './PopupAuthSignout';
 import PopupAuthDelete from './PopupAuthDelete';
-import { useAuth } from '../hooks/useAuth';
-import { usePopup } from '../hooks/usePopup';
-import { useTemplates } from '../hooks/useTemplates';
+import { useAuth } from '../../../hooks/useAuth';
+import { usePopup } from '../../../hooks/usePopup';
+import { useTemplates } from '../../../hooks/useTemplates';
 
   //holds the context for the login/signup state
 export const PopupAuthContext = createContext(null);

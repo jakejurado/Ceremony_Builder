@@ -1,8 +1,8 @@
 import React, {useContext, useState} from 'react';
 import { useForm } from "react-hook-form";
 import { PopupAuthContext } from './PopupAuth';
-import { fetchCall } from '../functions/fetches/api';
-import { useAuth } from '../hooks/useAuth';
+import { fetchCall } from '../../../functions/fetches/api';
+import { useAuth } from '../../../hooks/useAuth';
 
   //Reset password component box.
 function PopupAuthReset(){

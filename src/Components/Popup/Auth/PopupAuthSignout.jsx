@@ -1,21 +1,22 @@
 import React, {useContext} from 'react';
 import { PopupAuthContext } from './PopupAuth'; 
-import { usePopup } from '../hooks/usePopup';
-import { useTemplates } from '../hooks/useTemplates';
-import { useAuth } from '../hooks/useAuth';
+import { usePopup } from '../../../hooks/usePopup';
+import { useTemplates } from '../../../hooks/useTemplates';
+import { useAuth } from '../../../hooks/useAuth';
+import { fetchCall } from '../../../functions/fetches/api';
 
   //signout component
 function PopupAuthSignout(){
-  const {handleDeleteClick, handleResetClick} = useContext(PopupAuthContext);
-  const {dispatch} = useTemplates();
-  const {closePopup} = usePopup();
-  const {setCurrUser} = useAuth();
+  const { handleDeleteClick, handleResetClick } = useContext(PopupAuthContext);
+  const { resetTemplates } = useTemplates();
+  const { closePopup } = usePopup();
+  const { setCurrUser } = useAuth();
   
     //remove user, remove popup, and reset templates
   function handleSubmitClick(){
     setCurrUser(null);
     closePopup()
-    dispatch({type: 'reset', payload: null})
+    resetTemplates();
   }
 
   return(

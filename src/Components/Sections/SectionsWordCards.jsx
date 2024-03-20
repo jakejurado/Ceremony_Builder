@@ -1,12 +1,9 @@
-import React, { useContext, useRef, useState, useEffect } from "react";
-import { GlobalContext } from "./App";
-import { enterNames } from "../functions/sections/names";
-import { sanatize } from "../functions/wordCards/sanatize";
-import { formatCards } from "../functions/wordCards/formatCards";
+import React, { useState, useEffect } from "react";
+import { enterNames } from "../../functions/sections/names";
 // import { useSwipeable, onSwipedRight, onSwipedLeft } from 'react-swipeable';
 // import ButtonClose from "./ButtonClose"
-import { useTemplates } from "../hooks/useTemplates";
-import { useScreen } from "../hooks/useScreen";
+import { useTemplates } from "../../hooks/useTemplates";
+import { useScreen } from "../../hooks/useScreen";
 
   //Displays main content/scripts of each section
 function SectionsWordCards({cardContent, className, cardIndex, cardDivRef, saveContent, cardDisplay, handleCardDisplay}) {

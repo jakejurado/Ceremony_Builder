@@ -12,7 +12,6 @@ export const PopupProvider = ({ children }) => {
   }, [])
 
 
-
   return (
     <PopupContext.Provider value={{ popupState, popupDispatch, box: popupState.box, subAct: popupState.subAct, closePopup }}>
       {children}

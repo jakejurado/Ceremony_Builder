@@ -80,7 +80,7 @@ async function startServer(){
       message: { err: "An error occurredd " + err},
     };
     const errorObj = Object.assign({}, defaultErr, err);
-    console.log(errorObj.log);
+    console.error(errorObj.log);
     return res.status(errorObj.status).json(errorObj.message);
   });
 

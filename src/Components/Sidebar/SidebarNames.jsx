@@ -1,5 +1,5 @@
 import React from "react";
-import { useTemplates } from "../hooks/useTemplates";
+import { useTemplates } from "../../hooks/useTemplates";
 
   //sidebar section for adding user names to ceremony script.
 function SidebarNames() {

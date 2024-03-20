@@ -1,8 +1,8 @@
 import React, { useContext, useRef, useState } from "react";
-import { GlobalContext } from "./App";
-import { enterNames } from "../functions/sections/names";
-import { sanatize } from "../functions/wordCards/sanatize";
-import { formatCards } from "../functions/wordCards/formatCards";
+import { GlobalContext } from "../App";
+import { enterNames } from "../../functions/sections/names";
+import { sanatize } from "../../functions/wordCards/sanatize";
+import { formatCards } from "../../functions/wordCards/formatCards";
 // import { useSwipeable, onSwipedRight, onSwipedLeft } from 'react-swipeable';
 // import ButtonClose from "./ButtonClose"
 

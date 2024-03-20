@@ -5,9 +5,9 @@ import SidebarPrint from "./SidebarPrint";
 import SidebarSave from "./SidebarSave";
 import SidebarAccount from "./SidebarAccount";
 import SidebarCopy from "./SidebarCopy";
-import ButtonClose from "./ButtonClose";
-import { useScreen } from "../hooks/useScreen.jsx";
-import { useSidebar } from "../hooks/useSidebar.jsx";
+import ButtonClose from "../Utility/ButtonClose.jsx";
+import { useScreen } from "../../hooks/useScreen.jsx";
+import { useSidebar } from "../../hooks/useSidebar.jsx";
 
   //the sidebar of the application
 function Sidebar() {

@@ -1,7 +1,6 @@
-import React, { useContext } from "react";
-import aiBtn from "../../public/assets/robot_2_.svg";
-import { GlobalContext } from "./App";
-import { usePopup } from "../hooks/usePopup";
+import React from "react";
+import aiBtn from "../../../public/assets/robot_2_.svg";
+import { usePopup } from "../../hooks/usePopup";
 
   //a simple plus button to add a section
 function SectionsButtonAI({index, varName, cardIndex, cardContent, props}) {
@@ -15,7 +14,6 @@ function SectionsButtonAI({index, varName, cardIndex, cardContent, props}) {
     const dataCardContent = e.target.parentNode.dataset.cardcontent;
     popupDispatch({ type: "boxAI", subAct: { dataVarname, dataIndex, dataCardContent, dataCardIndex } });
   }
-
 
   return (
     <div

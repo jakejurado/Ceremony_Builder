@@ -1,9 +1,9 @@
 import React, { useContext, useState } from 'react';
 import { useForm } from "react-hook-form";
 import { PopupAuthContext } from './PopupAuth';
-import { fetchCall } from '../functions/fetches/api';
-import { usePopup } from '../hooks/usePopup';
-import { useAuth } from '../hooks/useAuth';
+import { fetchCall } from '../../../functions/fetches/api';
+import { usePopup } from '../../../hooks/usePopup';
+import { useAuth } from '../../../hooks/useAuth';
 
 //login popup.  This is a child component of PopupAuth.
 function PopupAuthLogin() {
