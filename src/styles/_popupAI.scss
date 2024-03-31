@@ -33,6 +33,7 @@
 #aiTextBoxDiv{
   flex-basis: 100%;
   width: 80%;
+  min-height: 4em;
   border: solid grey 2px;
   border-radius: 25px;
   margin: 1em 1em 0 1em;
@@ -115,7 +116,7 @@
   width: 100%;
   margin-top: 2em;
   button{
-    width: 7em;
+    width: 5em;
    line-height: 1.5;
     margin: .5em;
     border-radius: 5px;

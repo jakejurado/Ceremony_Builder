@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useContext } from 'react';
 import cbImage from "../../public/assets/ceremonybuilderMain.png";
 import cb2Image from "../../public/assets/ceremonybuilderTitle.png";
-import { GlobalContext } from './App';
+import { useScreen } from '../hooks/useScreen';
 
   //Holds the main website title image
 function Header() {
-  const {isMobile} = useContext(GlobalContext)
+  const { isMobile } = useScreen();
 
   const [isVisible, setIsVisible] = useState(true);
   const [scrollPosition, setScrollPosition] = useState(0);
