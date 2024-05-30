@@ -69,6 +69,8 @@
   padding: v.$fSize7;
   background-color: v.$pinkMain;
   border: thin solid v.$blackMain;
+  border-radius: 15px;
+  box-shadow: 5px 5px 10px grey;
 
   h3{
     margin-bottom: v.$fSize3;
