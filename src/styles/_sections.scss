@@ -23,6 +23,7 @@
   background-color: white;
   margin: v.$fSize2;
   border: outset;
+  border-radius: 15px;
   box-shadow: .5px 10px 10px rgb(74, 74, 74);
 }
 
@@ -67,6 +68,7 @@
   background-color: v.$pinkMain2;
   color: rgb(32, 32, 32);
   border: solid; //inset;
+  border-radius: 15px;
   overflow-y: scroll;
   line-height: 1.2;
   font-family: v.$fontSecond;
@@ -129,6 +131,7 @@
   //the content of the selector box.
 .selections {
   text-align: center;
+  background-color: v.$whiteMain;
   ul{
     display: flex;
     flex-direction: column;
