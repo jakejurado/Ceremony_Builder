@@ -12,6 +12,7 @@ import { formatCards } from "../../functions/wordCards/formatCards";
 import { useSwipeable } from 'react-swipeable';
 import { useTemplates } from "../../hooks/useTemplates";
 import { usePopup } from "../../hooks/usePopup";
+import { addSelectorSection } from "../../functions/sections/addSelectorSection";
 
   //Section component holds all the sections
 function Sections(props) {
@@ -19,7 +20,7 @@ function Sections(props) {
 
     //global context
   const { popupDispatch } = usePopup();
-  const { names, dispatch, currTemplate, templateTitle } = useTemplates();
+  const { names, dispatch, currTemplate, templateTitle, setSelectorSec } = useTemplates();
   const {description, script, title} = currTemplate[varname];
   const numOfCards = script.length - 1;
   const cardContent = script[cardIndex];
@@ -227,6 +228,11 @@ function Sections(props) {
     popupDispatch({ type: "boxAI", subAct: { dataVarname, dataIndex, dataCardContent, dataCardIndex } });
   }
 
+  function handleAddButtonClick(){
+    const insertSelector = addSelectorSection(id);
+    setSelectorSec(insertSelector);
+  }
+
 
   return (
     <div
@@ -290,9 +296,7 @@ function Sections(props) {
         </div>
         <SectionsButtonAdd
           key={`addButton-${varname}-${id}`}
-          belowSection={varname}
-          index={id}
-          dispatch={dispatch}
+          handleClick={handleAddButtonClick}
         />
         <SectionsButtonAI
           key='aiButton'
