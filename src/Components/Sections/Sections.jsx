@@ -121,11 +121,9 @@ function Sections(props) {
   function saveContent(){
       //removes names and adds line breaks
     const textContent = formatCards(cardDivRef.current.innerHTML, names);
-    const sectionName = cardDivRef.current.dataset.varname;
-    const cardIndex = parseInt(cardDivRef.current.dataset.cardindex);
     
       //update state
-    dispatch({type: 'updateWords', payload: {textContent, sectionName, cardIndex, templateTitle}})
+    dispatch({type: 'updateWords', payload: {textContent, sectionName: varname, cardIndex, templateTitle}})
   }
 
   //MOBILE 
