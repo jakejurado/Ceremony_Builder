@@ -2,7 +2,7 @@ import React from "react";
 import plusBtn from "../../../public/assets/plus-circle.svg";
 
   //a simple plus button to add a section
-function SectionsButtonAdd({handleClick}) {
+function ButtonAdd({handleClick}) {
   
 
   return (
@@ -19,4 +19,4 @@ function SectionsButtonAdd({handleClick}) {
   );
 }
 
-export default SectionsButtonAdd;
+export default ButtonAdd;

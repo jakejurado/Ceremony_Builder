@@ -1,8 +1,8 @@
 import React, { useRef, useEffect } from "react";
 // import SectionsWordCards from "./SectionsWordCards";
-import SectionsWordCards from "./SectionsWordCards";
-import SectionsButtonAdd from "./SectionsButtonAdd";
-import SectionsButtonAI from "./SectionsButtonAI";
+import WordCards from "./WordCards";
+import ButtonAdd from "./ButtonAdd";
+import ButtonAI from "./ButtonAI";
 import leftArrow from "../../../public/assets/arrowLft.png";
 import leftArrowF from "../../../public/assets/arrowLftFull.png";
 import arrow from "../../../public/assets/arrow-up-circle.svg";
@@ -261,7 +261,7 @@ function Section(props) {
             onMouseDown={toggleInsetClass}
             onMouseUp={toggleInsetClass}
           />
-          <SectionsWordCards
+          <WordCards
             className={`${varname}`}
             id={`${varname}`}
             cardContent={cardContent}
@@ -294,10 +294,10 @@ function Section(props) {
             onKeyDown={handleXbutton}
           />
         </div>
-        <SectionsButtonAdd
+        <ButtonAdd
           handleClick={handleAddButtonClick}
         />
-        <SectionsButtonAI
+        <ButtonAI
           handleClick={handleAiButtonClick}
         />
         <div className="upArrow">

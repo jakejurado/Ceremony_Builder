@@ -1,6 +1,6 @@
-import React, { useState, useContext, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Header from "./Header";
-import Section from "./Sections/Sections";
+import Section from "./Sections/Section";
 import SectionsSelector from "./Sections/SectionsSelector";
 import { useTemplates } from "../hooks/useTemplates";
 import { useSidebar } from "../hooks/useSidebar";
@@ -9,7 +9,6 @@ import { useScreen } from "../hooks/useScreen";
 //packages
 import { Draggable, DragDropContext, Droppable } from "react-beautiful-dnd";
 import { useSwipeable } from 'react-swipeable';
-import { set } from "mongoose";
 
 //The main display for the site
 function AppMainDisplay() {
@@ -41,7 +40,7 @@ function AppMainDisplay() {
 
     //creates section components from the template state
   function buildSectionsFromTemplate(temp, selectorSec){
-    const { order, ...rest } = temp;
+    const order = temp.order;
     let loadSections = [];
 
     for (let i = 0; i < order.length; i++) {
@@ -56,7 +55,6 @@ function AppMainDisplay() {
          />);
       }
       //load each section into the array to be displayed.
-      const { script } = rest[varTitle];
       loadSections.push(
         <Draggable draggableId={varTitle} index={i} key={varTitle}> 
           {(provided) => 

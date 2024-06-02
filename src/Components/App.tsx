@@ -1,6 +1,4 @@
-import React, {
-  useEffect,
-} from 'react';
+import React, { useEffect } from 'react';
 
 //React Components
 import AppMainDisplay from "./AppMainDisplay";

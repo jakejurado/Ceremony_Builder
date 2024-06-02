@@ -3,7 +3,7 @@ import { enterNames } from "../../functions/sections/names";
 import { useTemplates } from "../../hooks/useTemplates";
 import { useScreen } from "../../hooks/useScreen";
 
-function SectionsWordCards({ cardContent, cardIndex, cardDivRef, saveContent, handleCardDisplay }) {
+function WordCards({ cardContent, cardIndex, cardDivRef, saveContent, handleCardDisplay }) {
   const { names } = useTemplates();
   const { isMobile } = useScreen();
 
@@ -36,4 +36,4 @@ function SectionsWordCards({ cardContent, cardIndex, cardDivRef, saveContent, ha
   );
 }
 
-export default SectionsWordCards;
+export default WordCards;

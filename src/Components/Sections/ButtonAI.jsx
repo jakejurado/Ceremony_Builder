@@ -2,7 +2,7 @@ import React from "react";
 import aiBtn from "../../../public/assets/robot_2_.svg";
 
   //a robot button to interface with AI
-function SectionsButtonAI({handleClick}) {
+function ButtonAI({handleClick}) {
 
   return (
     <div
@@ -18,4 +18,4 @@ function SectionsButtonAI({handleClick}) {
   );
 }
 
-export default SectionsButtonAI;
+export default ButtonAI;
