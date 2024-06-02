@@ -12,7 +12,7 @@ import { useSwipeable } from 'react-swipeable';
 
 //The main display for the site
 function AppMainDisplay() {
-  const { selectorTitles, templateTitle, currTemplate, dispatch, selectorSec} = useTemplates();
+  const { templateTitle, currTemplate, dispatch, selectorSec} = useTemplates();
   const { openSidebar, closeSidebar } = useSidebar();
   const { isMobile } = useScreen();
 
@@ -50,9 +50,7 @@ function AppMainDisplay() {
         loadSections.push(
           <SectionsSelector 
             key="selectorBox" 
-            data={selectorTitles} 
             index={i} 
-            dispatch={dispatch}
          />);
       }
       //load each section into the array to be displayed.
@@ -72,7 +70,7 @@ function AppMainDisplay() {
                   varName={varTitle}
                   cardIndex={pos}
                   mobileClass=''
-                  cardDisplay = {cardDisplay}
+                  cardDisplay={cardDisplay}
                   handleCardDisplay={handleCardDisplay}
                 />
               </div>
@@ -86,9 +84,7 @@ function AppMainDisplay() {
       loadSections.push(
         <SectionsSelector 
             key="selectorBox" 
-            data={selectorTitles} 
             index={0} 
-            dispatch={dispatch}
          />
       )
     }
@@ -100,7 +96,6 @@ function AppMainDisplay() {
     const secIndex = cardDisplay
     const { order } = template;
     const [secName, pos] = order[secIndex]
-    const { title, description, script } = template[secName];
     
     const section = [];
     section.push(
