@@ -11,16 +11,19 @@ import ButtonClose from '../Utility/ButtonClose';
 import { formatCards } from "../../functions/wordCards/formatCards";
 import { useSwipeable } from 'react-swipeable';
 import { useTemplates } from "../../hooks/useTemplates";
+import { usePopup } from "../../hooks/usePopup";
 
   //Section component holds all the sections
 function Sections(props) {
   const {id, varname, cardIndex, mobileClass, cardDisplay, handleCardDisplay} = props
 
     //global context
+  const { popupDispatch } = usePopup();
   const { names, dispatch, currTemplate, templateTitle } = useTemplates();
   const {description, script, title} = currTemplate[varname];
   const numOfCards = script.length - 1;
   const cardContent = script[cardIndex];
+
 
     //card dom ref
   const cardDivRef = useRef(null)
@@ -215,6 +218,16 @@ function Sections(props) {
   }
 
 
+  function handleAiButtonClick(e) {
+    const dataVarname = varname
+    const dataIndex = id
+    const dataCardIndex = cardIndex
+    // const dataCardContent = e.target.parentNode.dataset.cardcontent;
+    const dataCardContent = cardDivRef.current.innerHTML
+    popupDispatch({ type: "boxAI", subAct: { dataVarname, dataIndex, dataCardContent, dataCardIndex } });
+  }
+
+
   return (
     <div
       // id="section"
@@ -282,16 +295,8 @@ function Sections(props) {
           dispatch={dispatch}
         />
         <SectionsButtonAI
-          proper = {props}
-          key={`aiButton-${varname}-${id}`}
-          belowSection={varname}
-          index={id}
-          varname={varname}
-          cardIndex={cardIndex}
-          cardContent={cardContent}
-          saveContent={saveContent}
-          handleCardDisplay={() => handleCardDisplay(id)}
-          cardDisplay={cardDisplay}
+          key='aiButton'
+          handleClick={handleAiButtonClick}
         />
         <div className="upArrow">
           <img
