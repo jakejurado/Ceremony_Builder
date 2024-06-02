@@ -12,7 +12,7 @@ import { formatCards } from "../../functions/wordCards/formatCards";
 import { useSwipeable } from 'react-swipeable';
 import { useTemplates } from "../../hooks/useTemplates";
 import { usePopup } from "../../hooks/usePopup";
-import { addSelectorSection } from "../../functions/sections/addSelectorSection";
+import { addSelectorSection } from "../../functions/sections/selectorSec";
 
   //Section component holds all the sections
 function Sections(props) {
@@ -259,7 +259,6 @@ function Sections(props) {
           />
           <SectionsWordCards
             className={`${varname}`}
-            key={`${varname}`}
             id={`${varname}`}
             cardContent={cardContent}
             cardIndex={cardIndex}
@@ -268,13 +267,11 @@ function Sections(props) {
             cardDivRef={cardDivRef}
             saveContent={saveContent}
             handleCardDisplay={()=>handleCardDisplay(id)}
-            cardDisplay={cardDisplay}
           />
           <img
             src={leftArrow}
             alt="right arrow to go to next card"
             className='rArrow'
-            data-dir="Right"
             onClick={() => handleLeftRightClick('Right')}
             onKeyDown={() => handleLeftRightClick('Right')}
             onMouseEnter={toggleImage}
@@ -289,17 +286,14 @@ function Sections(props) {
           <img
             src={plus}
             alt="x for closing the section box"
-            className={`${varname}-${id}`}
             onClick={handleXbutton}
             onKeyDown={handleXbutton}
           />
         </div>
         <SectionsButtonAdd
-          key={`addButton-${varname}-${id}`}
           handleClick={handleAddButtonClick}
         />
         <SectionsButtonAI
-          key='aiButton'
           handleClick={handleAiButtonClick}
         />
         <div className="upArrow">

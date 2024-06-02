@@ -1,6 +1,5 @@
 import React from "react";
 import aiBtn from "../../../public/assets/robot_2_.svg";
-import { usePopup } from "../../hooks/usePopup";
 
   //a robot button to interface with AI
 function SectionsButtonAI({handleClick}) {
