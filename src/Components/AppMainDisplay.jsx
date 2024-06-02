@@ -1,6 +1,6 @@
-import React, { useState, useContext, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Header from "./Header";
-import Section from "./Sections/Sections";
+import Section from "./Sections/Section";
 import SectionsSelector from "./Sections/SectionsSelector";
 import { useTemplates } from "../hooks/useTemplates";
 import { useSidebar } from "../hooks/useSidebar";
@@ -12,7 +12,7 @@ import { useSwipeable } from 'react-swipeable';
 
 //The main display for the site
 function AppMainDisplay() {
-  const { selectorTitles, templateTitle, currTemplate, dispatch, selectorSec} = useTemplates();
+  const { templateTitle, currTemplate, dispatch, selectorSec} = useTemplates();
   const { openSidebar, closeSidebar } = useSidebar();
   const { isMobile } = useScreen();
 
@@ -24,6 +24,8 @@ function AppMainDisplay() {
 
     //updates card view (when in mobile and card expands)
   function handleCardDisplay(secIndex){
+    console.log('handleCardDisplay', secIndex);
+
       //handle indexes out of range
     const overIndex = secIndex > currTemplate.order.length - 1;
     const underIndex = secIndex < 0
@@ -38,7 +40,7 @@ function AppMainDisplay() {
 
     //creates section components from the template state
   function buildSectionsFromTemplate(temp, selectorSec){
-    const { order, ...rest } = temp;
+    const order = temp.order;
     let loadSections = [];
 
     for (let i = 0; i < order.length; i++) {
@@ -49,13 +51,10 @@ function AppMainDisplay() {
         loadSections.push(
           <SectionsSelector 
             key="selectorBox" 
-            data={selectorTitles} 
             index={i} 
-            dispatch={dispatch}
          />);
       }
       //load each section into the array to be displayed.
-      const { title, description, script } = rest[varTitle];
       loadSections.push(
         <Draggable draggableId={varTitle} index={i} key={varTitle}> 
           {(provided) => 
@@ -68,15 +67,10 @@ function AppMainDisplay() {
                 <Section
                   key={varTitle}
                   id={i}
-                  title={title}
-                  cardContent={script[pos]}
-                  description={description}
-                  varName={varTitle}
+                  varname={varTitle}
                   cardIndex={pos}
-                  numOfCards={script.length - 1}
-                  dispatch={dispatch}
                   mobileClass=''
-                  cardDisplay = {cardDisplay}
+                  cardDisplay={cardDisplay}
                   handleCardDisplay={handleCardDisplay}
                 />
               </div>
@@ -90,9 +84,7 @@ function AppMainDisplay() {
       loadSections.push(
         <SectionsSelector 
             key="selectorBox" 
-            data={selectorTitles} 
             index={0} 
-            dispatch={dispatch}
          />
       )
     }
@@ -104,20 +96,14 @@ function AppMainDisplay() {
     const secIndex = cardDisplay
     const { order } = template;
     const [secName, pos] = order[secIndex]
-    const { title, description, script } = template[secName];
     
     const section = [];
     section.push(
       <Section
         key={secName}
         id={secIndex}
-        title={title}
-        cardContent={script[pos]}
-        description={description}
-        varName={secName}
+        varname={secName}
         cardIndex={pos}
-        numOfCards={script.length - 1}
-        dispatch={dispatch}
         mobileClass='section-mobile'
         cardDisplay = {cardDisplay}
         handleCardDisplay={handleCardDisplay}
@@ -189,7 +175,7 @@ function AppMainDisplay() {
     return () => documentRef({});
   });
 
-  if(!cardDisplay){
+  if(cardDisplay !== 0 && !cardDisplay){
     return (
       <div id='titleAndSections'>
         <Header />

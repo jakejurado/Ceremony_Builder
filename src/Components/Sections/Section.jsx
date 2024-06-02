@@ -1,8 +1,8 @@
-import React, { useRef } from "react";
+import React, { useRef, useEffect } from "react";
 // import SectionsWordCards from "./SectionsWordCards";
-import SectionsWordCards from "./SectionsWordCards";
-import SectionsButtonAdd from "./SectionsButtonAdd";
-import SectionsButtonAI from "./SectionsButtonAI";
+import WordCards from "./WordCards";
+import ButtonAdd from "./ButtonAdd";
+import ButtonAI from "./ButtonAI";
 import leftArrow from "../../../public/assets/arrowLft.png";
 import leftArrowF from "../../../public/assets/arrowLftFull.png";
 import arrow from "../../../public/assets/arrow-up-circle.svg";
@@ -11,15 +11,28 @@ import ButtonClose from '../Utility/ButtonClose';
 import { formatCards } from "../../functions/wordCards/formatCards";
 import { useSwipeable } from 'react-swipeable';
 import { useTemplates } from "../../hooks/useTemplates";
+import { usePopup } from "../../hooks/usePopup";
+import { addSelectorSection } from "../../functions/sections/selectorSec";
 
   //Section component holds all the sections
-function Sections(props) {
+function Section(props) {
+  const {id, varname, cardIndex, mobileClass, cardDisplay, handleCardDisplay} = props
 
     //global context
-  const { names, dispatch, currTemplate, templateTitle } = useTemplates();
+  const { popupDispatch } = usePopup();
+  const { names, dispatch, currTemplate, templateTitle, setSelectorSec } = useTemplates();
+  const {description, script, title} = currTemplate[varname];
+  const numOfCards = script.length - 1;
+  const cardContent = script[cardIndex];
+
 
     //card dom ref
   const cardDivRef = useRef(null)
+  const sectionRef = useRef(id)
+
+  useEffect(() => {
+    console.log('ref', sectionRef, sectionRef.current)
+  })
  
   //4 BUTTONS ON TOP OF SECTIONs (add, delete, move section up/down)
     //delete section: shrinks the section and then sends a dispatch to remove sec from order
@@ -40,11 +53,11 @@ function Sections(props) {
     sec.style.width = "0px";
     //END OF SHRINKS
 
-    const [_, index] = e.target.classList[0].split("-");
+    const index = id;
 
     setTimeout(() => {
       //delayed dispatch in order to see section shrink
-      props.dispatch({
+      dispatch({
         type: "deleteSEC",
         payload: { index: parseInt(index), templateTitle },
       });
@@ -52,10 +65,9 @@ function Sections(props) {
   }
 
     //handles the up and down arrows of a section, changing the section order.
-  function handleArrowClick(e) {
+  function handleArrowClick(dir) {
     saveContent();
-    const index = parseInt(e.target.dataset.index);
-    const dir = e.target.dataset.dir
+    const index = parseInt(id);
     const numOfSec = currTemplate.order.length - 1;
 
     let sourceIndex;
@@ -85,24 +97,24 @@ function Sections(props) {
 
   //SECTION CARDS NAVIGATION
     //swaping cards within a section using click
-  function handleLeftRightClick(e) {
-    //save the content of the cards
-  saveContent();
-  
-    //fill the payload object from the dataset
-  const payloadObj = {
-    varname: e.target.dataset.varname,
-    action: "updateSEC",
-    add: e.target.dataset.dir === "Right" ? 1 : -1,
-    index: parseInt(e.target.dataset.index),
-    cardIndex: parseInt(e.target.dataset.cardindex),
-    numOfCards: parseInt(e.target.dataset.numofcards),
-    templateTitle
-  };
+  function handleLeftRightClick(dir) {
+      //save the content of the cards
+    saveContent();
+    
+      //fill the payload object from the dataset
+    const payloadObj = {
+      varname,
+      action: "updateSEC",
+      add: dir === "Right" ? 1 : -1,
+      index: id,
+      cardIndex: cardIndex,
+      numOfCards,
+      templateTitle
+    };
 
-    //update state.
-  props.dispatch({ type: "updateSEC", payload: payloadObj });
-}
+      //update state.
+    dispatch({ type: "updateSEC", payload: payloadObj });
+  }
     //changes the arrow button when hoovering
   function toggleImage(e) {
     e.target.src = e.target.src === leftArrow ? leftArrowF : leftArrow;
@@ -116,11 +128,9 @@ function Sections(props) {
   function saveContent(){
       //removes names and adds line breaks
     const textContent = formatCards(cardDivRef.current.innerHTML, names);
-    const sectionName = cardDivRef.current.dataset.varname;
-    const cardIndex = parseInt(cardDivRef.current.dataset.cardindex);
     
       //update state
-    dispatch({type: 'updateWords', payload: {textContent, sectionName, cardIndex, templateTitle}})
+    dispatch({type: 'updateWords', payload: {textContent, sectionName: varname, cardIndex, templateTitle}})
   }
 
   //MOBILE 
@@ -130,18 +140,18 @@ function Sections(props) {
       event.stopPropagation();
     },
     onSwipedRight: ({event}) => {
-      handleLeftRightClickSwipe(event, 'Right')
+      handleLeftRightClickSwipe('Right')
     },
     onSwipedLeft: ({event}) => {
-      handleLeftRightClickSwipe(event, 'Left')
+      handleLeftRightClickSwipe('Left')
     },
     // onSwipedUp: ({event}) => {
-    //   if(props.mobileClass){
+    //   if(mobileClass){
     //     handleLeftRightClickSwipe(event, 'Up')
     //   }
     // },
     // onSwipedDown: ({event}) => {
-    //   if(props.mobileClass){
+    //   if(mobileClass){
     //     handleLeftRightClickSwipe(event, 'Down')
     //   }
     // },
@@ -154,13 +164,13 @@ function Sections(props) {
       event.stopPropagation();
     },
     onSwipedUp: ({event}) => {
-      if(props.mobileClass){
-        handleLeftRightClickSwipe(event, 'Up')
+      if(mobileClass){
+        handleLeftRightClickSwipe('Up')
       }
     },
     onSwipedDown: ({event}) => {
-      if(props.mobileClass){
-        handleLeftRightClickSwipe(event, 'Down')
+      if(mobileClass){
+        handleLeftRightClickSwipe('Down')
       }
     },
     
@@ -168,31 +178,29 @@ function Sections(props) {
   });
 
     //swaping cards within a section using swipe
-  function handleLeftRightClickSwipe(event, dir) {
+  function handleLeftRightClickSwipe(dir) {
     saveContent();
     
-    const dom = findParentNode(event.target, 'section');
     const returnObj= {
-      varname: dom.dataset.varname,
+      varname,
       action: "updateSEC",
       add: dir === 'Right' ? -1 : 1,
-      index: parseInt(dom.dataset.index),
-      cardIndex: parseInt(dom.dataset.cardindex),
-      numOfCards: parseInt(dom.dataset.numofcards),
+      index: id,
+      cardIndex,
+      numOfCards,
       templateTitle
     }
 
-    const i = parseInt(dom.dataset.index);
+    const i = parseInt(id);
     let returnIndex = dir === 'Up' ? i + 1 : i - 1
-
     switch(dir){
       case 'Right':
       case 'Left':
-        props.dispatch({ type: "updateSEC", payload: returnObj });
+        dispatch({ type: "updateSEC", payload: returnObj });
         break;
       case "Up":
       case "Down":
-          props.handleCardDisplay(returnIndex);
+          handleCardDisplay(returnIndex);
         break;
       default:
     }
@@ -201,7 +209,7 @@ function Sections(props) {
   //closes the full screen card when clicked.
   function handleMobileCloseButtonClick(e){
     saveContent();
-    props.handleCardDisplay();
+    handleCardDisplay(null);
   }
 
   //STORE WITH FUNCTIONS
@@ -215,61 +223,61 @@ function Sections(props) {
   }
 
 
+  function handleAiButtonClick(e) {
+    const dataVarname = varname
+    const dataIndex = id
+    const dataCardIndex = cardIndex
+    // const dataCardContent = e.target.parentNode.dataset.cardcontent;
+    const dataCardContent = cardDivRef.current.innerHTML
+    popupDispatch({ type: "boxAI", subAct: { dataVarname, dataIndex, dataCardContent, dataCardIndex } });
+  }
+
+  function handleAddButtonClick(){
+    const insertSelector = addSelectorSection(id);
+    setSelectorSec(insertSelector);
+  }
+
+
   return (
     <div
       // id="section"
-      className={`section ${props.varName} ${props.mobileClass} section shrinkWidth fadeIn`}
-      data-varname={props.varName}
-      data-cardindex={props.cardIndex}
-      data-numofcards={props.numOfCards}
-      data-index={props.id}
+      className={`section ${varname} ${mobileClass} section shrinkWidth fadeIn`}
+      ref={sectionRef}
       {...handlersSectiondBox}
     >
       <div className="innerBox shrinkHeight">
         <div className="title">
-          <h3 title={props.description}>{props.title}</h3>
+          <h3 title={description}>{title}</h3>
         </div>
         <div className="middleBox" {...handlersCardBox}>
           <img
             src={leftArrow}
             alt="left arrow to go to previous card"
-            className={`leftClick-${props.varName}-${props.id}-${props.cardIndex}-${props.numOfCards} lArrow`}
-            data-varname={props.varName}
-            data-cardindex={props.cardIndex}
-            data-numofcards={props.numOfCards}
-            data-index={props.id}
-            data-dir="Left"
-            onClick={handleLeftRightClick}
-            onKeyDown={handleLeftRightClick}
+            className='lArrow'
+            onClick={() => handleLeftRightClick('Left')}
+            onKeyDown={() => handleLeftRightClick('Left')}
             onMouseEnter={toggleImage}
             onMouseLeave={toggleImage}
             onMouseDown={toggleInsetClass}
             onMouseUp={toggleInsetClass}
           />
-          <SectionsWordCards
-            className={`${props.varName}`}
-            key={`${props.varName}`}
-            id={`${props.varName}`}
-            cardContent={props.cardContent}
-            cardIndex={props.cardIndex}
-            class={`${props.varName}-${props.cardIndex}`}
-            title={props.title} //only need for title.
+          <WordCards
+            className={`${varname}`}
+            id={`${varname}`}
+            cardContent={cardContent}
+            cardIndex={cardIndex}
+            class={`${varname}-${cardIndex}`}
+            title={title} //only need for title.
             cardDivRef={cardDivRef}
             saveContent={saveContent}
-            handleCardDisplay={props.handleCardDisplay}
-            cardDisplay={props.cardDisplay}
+            handleCardDisplay={()=>handleCardDisplay(id)}
           />
           <img
             src={leftArrow}
             alt="right arrow to go to next card"
-            className={`rightClick-${props.varName}-${props.id}-${props.cardIndex}-${props.numOfCards} rArrow`}
-            data-varname={props.varName}
-            data-cardindex={props.cardIndex}
-            data-numofcards={props.numOfCards}
-            data-index={props.id}
-            data-dir="Right"
-            onClick={handleLeftRightClick}
-            onKeyDown={handleLeftRightClick}
+            className='rArrow'
+            onClick={() => handleLeftRightClick('Right')}
+            onKeyDown={() => handleLeftRightClick('Right')}
             onMouseEnter={toggleImage}
             onMouseLeave={toggleImage}
             onMouseDown={toggleInsetClass}
@@ -282,36 +290,20 @@ function Sections(props) {
           <img
             src={plus}
             alt="x for closing the section box"
-            className={`${props.varName}-${props.id}`}
             onClick={handleXbutton}
             onKeyDown={handleXbutton}
           />
         </div>
-        <SectionsButtonAdd
-          key={`addButton-${props.varName}-${props.id}`}
-          belowSection={props.varName}
-          index={props.id}
-          dispatch={props.dispatch}
+        <ButtonAdd
+          handleClick={handleAddButtonClick}
         />
-        <SectionsButtonAI
-          proper = {props}
-          key={`aiButton-${props.varName}-${props.id}`}
-          belowSection={props.varName}
-          index={props.id}
-          varName={props.varName}
-          cardIndex={props.cardIndex}
-          cardContent={props.cardContent}
-          saveContent={saveContent}
-          handleCardDisplay={props.handleCardDisplay}
-          cardDisplay={props.cardDisplay}
+        <ButtonAI
+          handleClick={handleAiButtonClick}
         />
         <div className="upArrow">
           <img
-            className={`up-${props.id}`}
-            data-dir='Up'
-            data-index={props.id}
-            onClick={handleArrowClick}
-            // onKeyDown={{ handleArrowClick }}
+            onClick={() =>handleArrowClick('Up')}
+            onKeyDown={() =>handleArrowClick('Up')}
             alt="arrow pointing up"
             src={arrow}
           />
@@ -319,18 +311,15 @@ function Sections(props) {
         <div className="dnArrow">
           <img
             src={arrow}
-            className={`dn-${props.id}`}
-            data-dir='Down'
-            data-index={props.id}
-            onClick={handleArrowClick}
-            // onKeyDown={{ handleArrowClick }}
+            onClick={() =>handleArrowClick('Down')}
+            onKeyDown={() =>handleArrowClick('Down')}
             alt="arrow pointing down"
           />
         </div>
       </div>
-      { props.mobileClass && <ButtonClose classNames='' clickFunc={handleMobileCloseButtonClick} /> }
+      { mobileClass && <ButtonClose classNames='' clickFunc={handleMobileCloseButtonClick} /> }
     </div>
   );
 }
 
-export default Sections;
+export default Section;

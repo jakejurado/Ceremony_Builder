@@ -4,9 +4,9 @@ import { useAuth } from '../../hooks/useAuth'
 import { fetchSectionFromDatabase } from "../../functions/fetches/fetchSectionFromDatabase";
 import { useTemplates } from "../../hooks/useTemplates";
   //selector box to add a section to the template
-function SectionsSelector({ data, index, dispatch }) {
+function SectionsSelector({ index }) {
   const {currUser} = useAuth;
-  const {templateTitle, removeSelectorSec} = useTemplates();
+  const {templateTitle, removeSelectorSec, selectorTitles, dispatch} = useTemplates();
 
     //grabs the name of the selected section and adds that section.
   async function handleClick(e) {
@@ -42,7 +42,7 @@ function SectionsSelector({ data, index, dispatch }) {
         </div>
         <div className="middleBox">
           <div className="cards selections">
-            {Object.entries(data).map(([category, obj]) => (
+            {Object.entries(selectorTitles).map(([category, obj]) => (
               <ul
                 key={category}
                 className={"selector-category"}
