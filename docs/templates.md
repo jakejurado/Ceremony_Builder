@@ -113,7 +113,7 @@ At the heart of the *reducer* is a switch case. The reducer is expecting an obje
 ```{type: string, payload: any}```
 Depending on what string is in the type property, the reducer will have different expectations for the payload.  Here is a look at the different cases:
 
-## addSEC
+## addSEC (REMOVED)
 This case will add a new section from the database or cache.  This is initialized when a user initiates the load by selecting a *section* from the *sectionSelector*.
 
 The payload is expected to be an object with two properties:
@@ -259,7 +259,7 @@ When this case is entered, the following occurs:
  3. the new *order* is placed into the copy.
 
 
-## selectSEC
+## selectSEC (REMOVED)
 This case will insert the *sectionSelector* into the viewport in the spot that the user clicks.  The sectionSelector lists all the available sections that can be downloaded.
 
 The payload is expected to be an object with 2 properties:
@@ -282,7 +282,7 @@ When this case is entered, the following occurs:
 
 
 
-## saveTemplateToDatabase
+## saveTemplateToDatabase (REMOVED)
 This case save the current template to the database.  
 
 There is no payload
@@ -311,7 +311,7 @@ When this case is entered, the following occurs:
  1. adds the user templates to the default templates already there.
 
 
-## loadTEMPLATE
+## loadTEMPLATE (REMOVED)
 This case will replace the current *template* being displayed with another one, selected by the user..
 
 The payload is expected to be an object with 2 properties:
@@ -414,3 +414,30 @@ const action = {
 When this case is entered, the following occurs:
  1. the user is signed out
  2. the default state is updated.
+
+
+
+
+#### useTemplates Hook
+The *useTemplates* hook is used to acess the template from any component.
+
+You can deconstruct the useTemplate hook to access any of the following data:
+
+ 1. templates --> the state
+ 2. dispatch --> update state with dispatch
+ 3. templateTitle --> current template title
+ 4. setTemplateTitle --> setter for current template title
+ 5. fetchedData --> holds data that was fetched
+ 6. setFetchedData --> setter for fetchedData
+ 7. selectorTitles --> all section titles that are used in the sectionSelector
+ 8. setSelectorTitles --> setter for selectorTitles
+ 9. names --> the names that the user inputs for the ceremony
+10. setNames --> setter for the names.
+11. metaData --> meta data for the templates
+12. setMetaData --> setter for metaData
+13. currTemplate --> The current template being used
+14. allT --> the default/reset templates state
+15. selectorSec --> state for adding selector
+16. setSelectorSec --> setter for selectorSet
+17. resetTemplates --> function to reset Templates
+18. removeSelectorSec --> function to remove Selector from page
