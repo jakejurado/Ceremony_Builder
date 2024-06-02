@@ -59,7 +59,7 @@ function Sections(props) {
     //handles the up and down arrows of a section, changing the section order.
   function handleArrowClick(dir) {
     saveContent();
-    const index = id;
+    const index = parseInt(id);
     const numOfSec = currTemplate.order.length - 1;
 
     let sourceIndex;
@@ -89,24 +89,24 @@ function Sections(props) {
 
   //SECTION CARDS NAVIGATION
     //swaping cards within a section using click
-  function handleLeftRightClick(e) {
-    //save the content of the cards
-  saveContent();
-  
-    //fill the payload object from the dataset
-  const payloadObj = {
-    varname: e.target.dataset.varname,
-    action: "updateSEC",
-    add: e.target.dataset.dir === "Right" ? 1 : -1,
-    index: parseInt(e.target.dataset.index),
-    cardIndex: parseInt(e.target.dataset.cardindex),
-    numOfCards: parseInt(e.target.dataset.numofcards),
-    templateTitle
-  };
+  function handleLeftRightClick(dir) {
+      //save the content of the cards
+    saveContent();
+    
+      //fill the payload object from the dataset
+    const payloadObj = {
+      varname,
+      action: "updateSEC",
+      add: dir === "Right" ? 1 : -1,
+      index: id,
+      cardIndex: cardIndex,
+      numOfCards,
+      templateTitle
+    };
 
-    //update state.
-  dispatch({ type: "updateSEC", payload: payloadObj });
-}
+      //update state.
+    dispatch({ type: "updateSEC", payload: payloadObj });
+  }
     //changes the arrow button when hoovering
   function toggleImage(e) {
     e.target.src = e.target.src === leftArrow ? leftArrowF : leftArrow;
@@ -132,10 +132,10 @@ function Sections(props) {
       event.stopPropagation();
     },
     onSwipedRight: ({event}) => {
-      handleLeftRightClickSwipe(event, 'Right')
+      handleLeftRightClickSwipe('Right')
     },
     onSwipedLeft: ({event}) => {
-      handleLeftRightClickSwipe(event, 'Left')
+      handleLeftRightClickSwipe('Left')
     },
     // onSwipedUp: ({event}) => {
     //   if(mobileClass){
@@ -157,12 +157,12 @@ function Sections(props) {
     },
     onSwipedUp: ({event}) => {
       if(mobileClass){
-        handleLeftRightClickSwipe(event, 'Up')
+        handleLeftRightClickSwipe('Up')
       }
     },
     onSwipedDown: ({event}) => {
       if(mobileClass){
-        handleLeftRightClickSwipe(event, 'Down')
+        handleLeftRightClickSwipe('Down')
       }
     },
     
@@ -170,23 +170,21 @@ function Sections(props) {
   });
 
     //swaping cards within a section using swipe
-  function handleLeftRightClickSwipe(event, dir) {
+  function handleLeftRightClickSwipe(dir) {
     saveContent();
     
-    const dom = findParentNode(event.target, 'section');
     const returnObj= {
-      varname: dom.dataset.varname,
+      varname: varname,
       action: "updateSEC",
       add: dir === 'Right' ? -1 : 1,
-      index: parseInt(dom.dataset.index),
-      cardIndex: parseInt(dom.dataset.cardindex),
-      numOfCards: parseInt(dom.dataset.numofcards),
+      index: id,
+      cardIndex: cardIndex,
+      numOfCards,
       templateTitle
     }
 
-    const i = parseInt(dom.dataset.index);
+    const i = parseInt(id);
     let returnIndex = dir === 'Up' ? i + 1 : i - 1
-
     switch(dir){
       case 'Right':
       case 'Left':
@@ -241,8 +239,8 @@ function Sections(props) {
             data-numofcards={numOfCards}
             data-index={id}
             data-dir="Left"
-            onClick={handleLeftRightClick}
-            onKeyDown={handleLeftRightClick}
+            onClick={() => handleLeftRightClick('Left')}
+            onKeyDown={() => handleLeftRightClick('Left')}
             onMouseEnter={toggleImage}
             onMouseLeave={toggleImage}
             onMouseDown={toggleInsetClass}
@@ -270,8 +268,8 @@ function Sections(props) {
             data-numofcards={numOfCards}
             data-index={id}
             data-dir="Right"
-            onClick={handleLeftRightClick}
-            onKeyDown={handleLeftRightClick}
+            onClick={() => handleLeftRightClick('Right')}
+            onKeyDown={() => handleLeftRightClick('Right')}
             onMouseEnter={toggleImage}
             onMouseLeave={toggleImage}
             onMouseDown={toggleInsetClass}
