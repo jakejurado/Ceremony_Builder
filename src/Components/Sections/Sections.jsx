@@ -57,10 +57,9 @@ function Sections(props) {
   }
 
     //handles the up and down arrows of a section, changing the section order.
-  function handleArrowClick(e) {
+  function handleArrowClick(dir) {
     saveContent();
-    const index = parseInt(e.target.dataset.index);
-    const dir = e.target.dataset.dir
+    const index = id;
     const numOfSec = currTemplate.order.length - 1;
 
     let sourceIndex;
@@ -310,11 +309,8 @@ function Sections(props) {
         />
         <div className="upArrow">
           <img
-            className={`up-${id}`}
-            data-dir='Up'
-            data-index={id}
-            onClick={handleArrowClick}
-            // onKeyDown={{ handleArrowClick }}
+            onClick={() =>handleArrowClick('Up')}
+            onKeyDown={() =>handleArrowClick('Up')}
             alt="arrow pointing up"
             src={arrow}
           />
@@ -322,11 +318,8 @@ function Sections(props) {
         <div className="dnArrow">
           <img
             src={arrow}
-            className={`dn-${id}`}
-            data-dir='Down'
-            data-index={id}
-            onClick={handleArrowClick}
-            // onKeyDown={{ handleArrowClick }}
+            onClick={() =>handleArrowClick('Down')}
+            onKeyDown={() =>handleArrowClick('Down')}
             alt="arrow pointing down"
           />
         </div>
