@@ -18,13 +18,13 @@ function Sections(props) {
 
     //global context
   const { names, dispatch, currTemplate, templateTitle } = useTemplates();
-
   const {description, script, title} = currTemplate[varname];
   const numOfCards = script.length - 1;
   const cardContent = script[cardIndex];
 
     //card dom ref
   const cardDivRef = useRef(null)
+  const sectionRef = useRef(null)
  
   //4 BUTTONS ON TOP OF SECTIONs (add, delete, move section up/down)
     //delete section: shrinks the section and then sends a dispatch to remove sec from order
@@ -174,11 +174,11 @@ function Sections(props) {
     saveContent();
     
     const returnObj= {
-      varname: varname,
+      varname,
       action: "updateSEC",
       add: dir === 'Right' ? -1 : 1,
       index: id,
-      cardIndex: cardIndex,
+      cardIndex,
       numOfCards,
       templateTitle
     }
@@ -201,7 +201,7 @@ function Sections(props) {
   //closes the full screen card when clicked.
   function handleMobileCloseButtonClick(e){
     saveContent();
-    handleCardDisplay();
+    handleCardDisplay(id);
   }
 
   //STORE WITH FUNCTIONS
@@ -219,10 +219,7 @@ function Sections(props) {
     <div
       // id="section"
       className={`section ${varname} ${mobileClass} section shrinkWidth fadeIn`}
-      data-varname={varname}
-      data-cardindex={cardIndex}
-      data-numofcards={numOfCards}
-      data-index={id}
+      ref={sectionRef}
       {...handlersSectiondBox}
     >
       <div className="innerBox shrinkHeight">
@@ -233,12 +230,7 @@ function Sections(props) {
           <img
             src={leftArrow}
             alt="left arrow to go to previous card"
-            className={`leftClick-${varname}-${id}-${cardIndex}-${numOfCards} lArrow`}
-            data-varname={varname}
-            data-cardindex={cardIndex}
-            data-numofcards={numOfCards}
-            data-index={id}
-            data-dir="Left"
+            className='lArrow'
             onClick={() => handleLeftRightClick('Left')}
             onKeyDown={() => handleLeftRightClick('Left')}
             onMouseEnter={toggleImage}
@@ -256,17 +248,13 @@ function Sections(props) {
             title={title} //only need for title.
             cardDivRef={cardDivRef}
             saveContent={saveContent}
-            handleCardDisplay={handleCardDisplay}
+            handleCardDisplay={()=>handleCardDisplay(id)}
             cardDisplay={cardDisplay}
           />
           <img
             src={leftArrow}
             alt="right arrow to go to next card"
-            className={`rightClick-${varname}-${id}-${cardIndex}-${numOfCards} rArrow`}
-            data-varname={varname}
-            data-cardindex={cardIndex}
-            data-numofcards={numOfCards}
-            data-index={id}
+            className='rArrow'
             data-dir="Right"
             onClick={() => handleLeftRightClick('Right')}
             onKeyDown={() => handleLeftRightClick('Right')}
@@ -302,7 +290,7 @@ function Sections(props) {
           cardIndex={cardIndex}
           cardContent={cardContent}
           saveContent={saveContent}
-          handleCardDisplay={handleCardDisplay}
+          handleCardDisplay={() => handleCardDisplay(id)}
           cardDisplay={cardDisplay}
         />
         <div className="upArrow">

@@ -9,6 +9,7 @@ import { useScreen } from "../hooks/useScreen";
 //packages
 import { Draggable, DragDropContext, Droppable } from "react-beautiful-dnd";
 import { useSwipeable } from 'react-swipeable';
+import { set } from "mongoose";
 
 //The main display for the site
 function AppMainDisplay() {
@@ -24,7 +25,8 @@ function AppMainDisplay() {
 
     //updates card view (when in mobile and card expands)
   function handleCardDisplay(secIndex){
-    console.log('handleCardDisplay');
+    console.log('handleCardDisplay', secIndex);
+
       //handle indexes out of range
     const overIndex = secIndex > currTemplate.order.length - 1;
     const underIndex = secIndex < 0
@@ -175,7 +177,7 @@ function AppMainDisplay() {
     return () => documentRef({});
   });
 
-  if(!cardDisplay){
+  if(cardDisplay !== 0 && !cardDisplay){
     return (
       <div id='titleAndSections'>
         <Header />
