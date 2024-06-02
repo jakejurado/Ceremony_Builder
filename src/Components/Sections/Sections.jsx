@@ -14,9 +14,14 @@ import { useTemplates } from "../../hooks/useTemplates";
 
   //Section component holds all the sections
 function Sections(props) {
+  const {id, varName, cardIndex, mobileClass, cardDisplay, handleCardDisplay} = props
 
     //global context
   const { names, dispatch, currTemplate, templateTitle } = useTemplates();
+
+  const {description, script, title} = currTemplate[varName];
+  const numOfCards = script.length - 1;
+  const cardContent = script[cardIndex];
 
     //card dom ref
   const cardDivRef = useRef(null)
@@ -44,7 +49,7 @@ function Sections(props) {
 
     setTimeout(() => {
       //delayed dispatch in order to see section shrink
-      props.dispatch({
+      dispatch({
         type: "deleteSEC",
         payload: { index: parseInt(index), templateTitle },
       });
@@ -101,7 +106,7 @@ function Sections(props) {
   };
 
     //update state.
-  props.dispatch({ type: "updateSEC", payload: payloadObj });
+  dispatch({ type: "updateSEC", payload: payloadObj });
 }
     //changes the arrow button when hoovering
   function toggleImage(e) {
@@ -136,12 +141,12 @@ function Sections(props) {
       handleLeftRightClickSwipe(event, 'Left')
     },
     // onSwipedUp: ({event}) => {
-    //   if(props.mobileClass){
+    //   if(mobileClass){
     //     handleLeftRightClickSwipe(event, 'Up')
     //   }
     // },
     // onSwipedDown: ({event}) => {
-    //   if(props.mobileClass){
+    //   if(mobileClass){
     //     handleLeftRightClickSwipe(event, 'Down')
     //   }
     // },
@@ -154,12 +159,12 @@ function Sections(props) {
       event.stopPropagation();
     },
     onSwipedUp: ({event}) => {
-      if(props.mobileClass){
+      if(mobileClass){
         handleLeftRightClickSwipe(event, 'Up')
       }
     },
     onSwipedDown: ({event}) => {
-      if(props.mobileClass){
+      if(mobileClass){
         handleLeftRightClickSwipe(event, 'Down')
       }
     },
@@ -188,11 +193,11 @@ function Sections(props) {
     switch(dir){
       case 'Right':
       case 'Left':
-        props.dispatch({ type: "updateSEC", payload: returnObj });
+        dispatch({ type: "updateSEC", payload: returnObj });
         break;
       case "Up":
       case "Down":
-          props.handleCardDisplay(returnIndex);
+          handleCardDisplay(returnIndex);
         break;
       default:
     }
@@ -201,7 +206,7 @@ function Sections(props) {
   //closes the full screen card when clicked.
   function handleMobileCloseButtonClick(e){
     saveContent();
-    props.handleCardDisplay();
+    handleCardDisplay();
   }
 
   //STORE WITH FUNCTIONS
@@ -218,26 +223,26 @@ function Sections(props) {
   return (
     <div
       // id="section"
-      className={`section ${props.varName} ${props.mobileClass} section shrinkWidth fadeIn`}
-      data-varname={props.varName}
-      data-cardindex={props.cardIndex}
-      data-numofcards={props.numOfCards}
-      data-index={props.id}
+      className={`section ${varName} ${mobileClass} section shrinkWidth fadeIn`}
+      data-varname={varName}
+      data-cardindex={cardIndex}
+      data-numofcards={numOfCards}
+      data-index={id}
       {...handlersSectiondBox}
     >
       <div className="innerBox shrinkHeight">
         <div className="title">
-          <h3 title={props.description}>{props.title}</h3>
+          <h3 title={description}>{title}</h3>
         </div>
         <div className="middleBox" {...handlersCardBox}>
           <img
             src={leftArrow}
             alt="left arrow to go to previous card"
-            className={`leftClick-${props.varName}-${props.id}-${props.cardIndex}-${props.numOfCards} lArrow`}
-            data-varname={props.varName}
-            data-cardindex={props.cardIndex}
-            data-numofcards={props.numOfCards}
-            data-index={props.id}
+            className={`leftClick-${varName}-${id}-${cardIndex}-${numOfCards} lArrow`}
+            data-varname={varName}
+            data-cardindex={cardIndex}
+            data-numofcards={numOfCards}
+            data-index={id}
             data-dir="Left"
             onClick={handleLeftRightClick}
             onKeyDown={handleLeftRightClick}
@@ -247,26 +252,26 @@ function Sections(props) {
             onMouseUp={toggleInsetClass}
           />
           <SectionsWordCards
-            className={`${props.varName}`}
-            key={`${props.varName}`}
-            id={`${props.varName}`}
-            cardContent={props.cardContent}
-            cardIndex={props.cardIndex}
-            class={`${props.varName}-${props.cardIndex}`}
-            title={props.title} //only need for title.
+            className={`${varName}`}
+            key={`${varName}`}
+            id={`${varName}`}
+            cardContent={cardContent}
+            cardIndex={cardIndex}
+            class={`${varName}-${cardIndex}`}
+            title={title} //only need for title.
             cardDivRef={cardDivRef}
             saveContent={saveContent}
-            handleCardDisplay={props.handleCardDisplay}
-            cardDisplay={props.cardDisplay}
+            handleCardDisplay={handleCardDisplay}
+            cardDisplay={cardDisplay}
           />
           <img
             src={leftArrow}
             alt="right arrow to go to next card"
-            className={`rightClick-${props.varName}-${props.id}-${props.cardIndex}-${props.numOfCards} rArrow`}
-            data-varname={props.varName}
-            data-cardindex={props.cardIndex}
-            data-numofcards={props.numOfCards}
-            data-index={props.id}
+            className={`rightClick-${varName}-${id}-${cardIndex}-${numOfCards} rArrow`}
+            data-varname={varName}
+            data-cardindex={cardIndex}
+            data-numofcards={numOfCards}
+            data-index={id}
             data-dir="Right"
             onClick={handleLeftRightClick}
             onKeyDown={handleLeftRightClick}
@@ -282,34 +287,34 @@ function Sections(props) {
           <img
             src={plus}
             alt="x for closing the section box"
-            className={`${props.varName}-${props.id}`}
+            className={`${varName}-${id}`}
             onClick={handleXbutton}
             onKeyDown={handleXbutton}
           />
         </div>
         <SectionsButtonAdd
-          key={`addButton-${props.varName}-${props.id}`}
-          belowSection={props.varName}
-          index={props.id}
-          dispatch={props.dispatch}
+          key={`addButton-${varName}-${id}`}
+          belowSection={varName}
+          index={id}
+          dispatch={dispatch}
         />
         <SectionsButtonAI
           proper = {props}
-          key={`aiButton-${props.varName}-${props.id}`}
-          belowSection={props.varName}
-          index={props.id}
-          varName={props.varName}
-          cardIndex={props.cardIndex}
-          cardContent={props.cardContent}
+          key={`aiButton-${varName}-${id}`}
+          belowSection={varName}
+          index={id}
+          varName={varName}
+          cardIndex={cardIndex}
+          cardContent={cardContent}
           saveContent={saveContent}
-          handleCardDisplay={props.handleCardDisplay}
-          cardDisplay={props.cardDisplay}
+          handleCardDisplay={handleCardDisplay}
+          cardDisplay={cardDisplay}
         />
         <div className="upArrow">
           <img
-            className={`up-${props.id}`}
+            className={`up-${id}`}
             data-dir='Up'
-            data-index={props.id}
+            data-index={id}
             onClick={handleArrowClick}
             // onKeyDown={{ handleArrowClick }}
             alt="arrow pointing up"
@@ -319,16 +324,16 @@ function Sections(props) {
         <div className="dnArrow">
           <img
             src={arrow}
-            className={`dn-${props.id}`}
+            className={`dn-${id}`}
             data-dir='Down'
-            data-index={props.id}
+            data-index={id}
             onClick={handleArrowClick}
             // onKeyDown={{ handleArrowClick }}
             alt="arrow pointing down"
           />
         </div>
       </div>
-      { props.mobileClass && <ButtonClose classNames='' clickFunc={handleMobileCloseButtonClick} /> }
+      { mobileClass && <ButtonClose classNames='' clickFunc={handleMobileCloseButtonClick} /> }
     </div>
   );
 }

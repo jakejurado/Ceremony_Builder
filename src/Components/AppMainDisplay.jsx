@@ -24,6 +24,7 @@ function AppMainDisplay() {
 
     //updates card view (when in mobile and card expands)
   function handleCardDisplay(secIndex){
+    console.log('handleCardDisplay');
       //handle indexes out of range
     const overIndex = secIndex > currTemplate.order.length - 1;
     const underIndex = secIndex < 0
@@ -55,7 +56,7 @@ function AppMainDisplay() {
          />);
       }
       //load each section into the array to be displayed.
-      const { title, description, script } = rest[varTitle];
+      const { script } = rest[varTitle];
       loadSections.push(
         <Draggable draggableId={varTitle} index={i} key={varTitle}> 
           {(provided) => 
@@ -68,13 +69,8 @@ function AppMainDisplay() {
                 <Section
                   key={varTitle}
                   id={i}
-                  title={title}
-                  cardContent={script[pos]}
-                  description={description}
                   varName={varTitle}
                   cardIndex={pos}
-                  numOfCards={script.length - 1}
-                  dispatch={dispatch}
                   mobileClass=''
                   cardDisplay = {cardDisplay}
                   handleCardDisplay={handleCardDisplay}
@@ -111,13 +107,8 @@ function AppMainDisplay() {
       <Section
         key={secName}
         id={secIndex}
-        title={title}
-        cardContent={script[pos]}
-        description={description}
         varName={secName}
         cardIndex={pos}
-        numOfCards={script.length - 1}
-        dispatch={dispatch}
         mobileClass='section-mobile'
         cardDisplay = {cardDisplay}
         handleCardDisplay={handleCardDisplay}
