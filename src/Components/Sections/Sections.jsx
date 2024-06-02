@@ -205,7 +205,7 @@ function Sections(props) {
   //closes the full screen card when clicked.
   function handleMobileCloseButtonClick(e){
     saveContent();
-    handleCardDisplay(id);
+    handleCardDisplay(null);
   }
 
   //STORE WITH FUNCTIONS
