@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useEffect } from "react";
 // import SectionsWordCards from "./SectionsWordCards";
 import SectionsWordCards from "./SectionsWordCards";
 import SectionsButtonAdd from "./SectionsButtonAdd";
@@ -15,7 +15,7 @@ import { usePopup } from "../../hooks/usePopup";
 import { addSelectorSection } from "../../functions/sections/selectorSec";
 
   //Section component holds all the sections
-function Sections(props) {
+function Section(props) {
   const {id, varname, cardIndex, mobileClass, cardDisplay, handleCardDisplay} = props
 
     //global context
@@ -28,7 +28,11 @@ function Sections(props) {
 
     //card dom ref
   const cardDivRef = useRef(null)
-  const sectionRef = useRef(null)
+  const sectionRef = useRef(id)
+
+  useEffect(() => {
+    console.log('ref', sectionRef, sectionRef.current)
+  })
  
   //4 BUTTONS ON TOP OF SECTIONs (add, delete, move section up/down)
     //delete section: shrinks the section and then sends a dispatch to remove sec from order
@@ -49,7 +53,7 @@ function Sections(props) {
     sec.style.width = "0px";
     //END OF SHRINKS
 
-    const [_, index] = e.target.classList[0].split("-");
+    const index = id;
 
     setTimeout(() => {
       //delayed dispatch in order to see section shrink
@@ -318,4 +322,4 @@ function Sections(props) {
   );
 }
 
-export default Sections;
+export default Section;
