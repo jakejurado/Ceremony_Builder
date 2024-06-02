@@ -67,7 +67,7 @@ function AppMainDisplay() {
                 <Section
                   key={varTitle}
                   id={i}
-                  varName={varTitle}
+                  varname={varTitle}
                   cardIndex={pos}
                   mobileClass=''
                   cardDisplay={cardDisplay}
@@ -102,7 +102,7 @@ function AppMainDisplay() {
       <Section
         key={secName}
         id={secIndex}
-        varName={secName}
+        varname={secName}
         cardIndex={pos}
         mobileClass='section-mobile'
         cardDisplay = {cardDisplay}

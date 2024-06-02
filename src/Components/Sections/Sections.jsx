@@ -14,12 +14,12 @@ import { useTemplates } from "../../hooks/useTemplates";
 
   //Section component holds all the sections
 function Sections(props) {
-  const {id, varName, cardIndex, mobileClass, cardDisplay, handleCardDisplay} = props
+  const {id, varname, cardIndex, mobileClass, cardDisplay, handleCardDisplay} = props
 
     //global context
   const { names, dispatch, currTemplate, templateTitle } = useTemplates();
 
-  const {description, script, title} = currTemplate[varName];
+  const {description, script, title} = currTemplate[varname];
   const numOfCards = script.length - 1;
   const cardContent = script[cardIndex];
 
@@ -223,8 +223,8 @@ function Sections(props) {
   return (
     <div
       // id="section"
-      className={`section ${varName} ${mobileClass} section shrinkWidth fadeIn`}
-      data-varname={varName}
+      className={`section ${varname} ${mobileClass} section shrinkWidth fadeIn`}
+      data-varname={varname}
       data-cardindex={cardIndex}
       data-numofcards={numOfCards}
       data-index={id}
@@ -238,8 +238,8 @@ function Sections(props) {
           <img
             src={leftArrow}
             alt="left arrow to go to previous card"
-            className={`leftClick-${varName}-${id}-${cardIndex}-${numOfCards} lArrow`}
-            data-varname={varName}
+            className={`leftClick-${varname}-${id}-${cardIndex}-${numOfCards} lArrow`}
+            data-varname={varname}
             data-cardindex={cardIndex}
             data-numofcards={numOfCards}
             data-index={id}
@@ -252,12 +252,12 @@ function Sections(props) {
             onMouseUp={toggleInsetClass}
           />
           <SectionsWordCards
-            className={`${varName}`}
-            key={`${varName}`}
-            id={`${varName}`}
+            className={`${varname}`}
+            key={`${varname}`}
+            id={`${varname}`}
             cardContent={cardContent}
             cardIndex={cardIndex}
-            class={`${varName}-${cardIndex}`}
+            class={`${varname}-${cardIndex}`}
             title={title} //only need for title.
             cardDivRef={cardDivRef}
             saveContent={saveContent}
@@ -267,8 +267,8 @@ function Sections(props) {
           <img
             src={leftArrow}
             alt="right arrow to go to next card"
-            className={`rightClick-${varName}-${id}-${cardIndex}-${numOfCards} rArrow`}
-            data-varname={varName}
+            className={`rightClick-${varname}-${id}-${cardIndex}-${numOfCards} rArrow`}
+            data-varname={varname}
             data-cardindex={cardIndex}
             data-numofcards={numOfCards}
             data-index={id}
@@ -287,23 +287,23 @@ function Sections(props) {
           <img
             src={plus}
             alt="x for closing the section box"
-            className={`${varName}-${id}`}
+            className={`${varname}-${id}`}
             onClick={handleXbutton}
             onKeyDown={handleXbutton}
           />
         </div>
         <SectionsButtonAdd
-          key={`addButton-${varName}-${id}`}
-          belowSection={varName}
+          key={`addButton-${varname}-${id}`}
+          belowSection={varname}
           index={id}
           dispatch={dispatch}
         />
         <SectionsButtonAI
           proper = {props}
-          key={`aiButton-${varName}-${id}`}
-          belowSection={varName}
+          key={`aiButton-${varname}-${id}`}
+          belowSection={varname}
           index={id}
-          varName={varName}
+          varname={varname}
           cardIndex={cardIndex}
           cardContent={cardContent}
           saveContent={saveContent}

@@ -3,7 +3,7 @@ import aiBtn from "../../../public/assets/robot_2_.svg";
 import { usePopup } from "../../hooks/usePopup";
 
   //a simple plus button to add a section
-function SectionsButtonAI({index, varName, cardIndex, cardContent, props}) {
+function SectionsButtonAI({index, varname, cardIndex, cardContent, props}) {
   const { popupDispatch } = usePopup();
 
   //when add button is clicked, a dispatch is sent to add the selector box to the page
@@ -18,7 +18,7 @@ function SectionsButtonAI({index, varName, cardIndex, cardContent, props}) {
   return (
     <div
       data-index={index}
-      data-varname={varName}
+      data-varname={varname}
       data-cardindex={cardIndex}
       data-cardcontent={cardContent}
       className={`aiSectionButton aiButton`}
